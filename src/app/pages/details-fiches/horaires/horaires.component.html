@@ -1,0 +1,102 @@
+
+    <div class="modal-body">
+  
+      <span class="title_modifE   text-general">Ouverture d'ouverture</span>
+          <div class="row">
+<div class="col-xl-9 col-md-12">
+        <form [formGroup]="HorairesForm">
+            <div class="m-portlet m-portlet--creative m-portlet--first m-portlet--bordered-semi">
+              <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                  <div class="m-portlet__head-title">
+                    <span class="m-portlet__head-icon m--hide">
+                      <i class="flaticon-statistics"></i>
+                    </span>
+                  </div>
+                </div>
+                <div class="m-portlet__head-tools">
+                </div>
+              </div>
+              <div class="m-portlet__body" formArrayName="Listhoraire">
+                <div class="row" *ngFor="let items of Listhoraires().controls ; let horaireIndex=index">
+                  <div class="col-xl-12 mt-3">
+                    <div class="row" [formGroupName]="horaireIndex">
+                      <div class="col-md-1 col-sm-1 col-lg-1">
+                        <input disabled class="jours" type="text" formControlName="jours" name="jours"
+                          style="border: none;">
+                      </div>
+                      <div class="col-md-1 col-sm-1 col-lg-2">
+                        <span class="days">
+                          <ui-switch formControlName="etat" name="etat" size="small">
+                          </ui-switch>
+                        </span>
+                        <span class="jours" *ngIf="items.value.etat == 'true'"> Ouvert </span>
+                        <span class="jours" *ngIf="items.value.etat != 'true'"> Fermé </span>
+                      </div>
+                      <div class="col-md-9 col-sm-12 col-lg-9" formArrayName="horaire">
+                        <div *ngIf="items.value.etat != '' || items.value.etat == 'true' ">
+                          <div *ngFor="let item of listhorairess(horaireIndex).controls; let indexhorairesup=index ;let last = last">
+                            <div class="row" [formGroupName]="indexhorairesup">
+                              <div class="col-lg-9">
+                                <div class="control-group row">
+                                  <div class=" col-lg-10  mb-2">
+                                    <div class="row">
+                                      <div class=" col-lg-5 ">
+                                        <ng-select [items]="listTimes" placeholder="Ouverture" [virtualScroll]="true"
+                                          [disabled]="!editable" formControlName="heurdebut">
+                                        </ng-select>
+                                      </div>
+                                      <div class=" col-lg-1">
+                                        <span> - </span>
+                                      </div>
+                                      <div class=" col-lg-5">
+                                        <ng-select [items]="listTimes" placeholder="Ouverture" [virtualScroll]="true"
+                                          [disabled]="!editable" formControlName="heurfin">
+                                        </ng-select>
+                                      </div>
+                                      <div class=" col-lg-1" *ngIf="indexhorairesup >0">
+                                        <span class="btn-delete" (click)="removeH(horaireIndex,indexhorairesup)"> <i
+                                            class="fa fa-times"></i>
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-sm-2 col-lg-3"
+                                *ngIf="(items.value.etat != '' || items.value.etat == 'true') &&  last">
+                                <span class="btnAddHoraires mt-5" (click)="addHoraire(horaireIndex)">Ajouter des
+                                  horaires
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="btncnx mt-5">
+              <div style="  display: inline-block; "> <button type="button" class="btn btn-annulation"
+                  (click)="FermerAddhoraire()">Annuler</button></div>
+              <div style="  display: inline-block; "> <button (click)="valueChanged()" class="btn btn-pub ml-3">Appliquer</button>
+              </div>
+            </div>
+           
+         
+          </form><!-- Form ends -->
+        </div>
+        <div class="col-xl-3 col-md-12 "> 
+        <div class=" fichess "> 
+          <div  *ngFor="let item of items"> 
+            <span class="locations"> {{item.locationName}}</span></div> 
+          </div> 
+             <!-- <div  *ngFor="let item of selected"> 
+              {{item.locationName}}</div> 
+     
+            </div> -->
+    </div>
+  </div>

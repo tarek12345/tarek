@@ -1,0 +1,2441 @@
+@charset "UTF-8";
+@import "~leaflet/dist/leaflet.css";
+@import url("https://fonts.googleapis.com/css?family=Ubuntu");
+@import "~@ng-select/ng-select/themes/default.theme.css";
+@import '~ngx-ui-switch/ui-switch.component.scss';
+
+body {
+  background-color: #f9f9f9;
+  color: #5e5e5e !important;
+}
+h2.title {
+  text-align: left;
+  font: normal normal bold 18px/18px Ubuntu;
+  letter-spacing: 0px;
+  color: #5E5E5E;
+}
+
+
+
+.ng-select.ng-touched .ng-has-value .ng-placeholder {
+  display: none !important;
+}
+.form-control::placeholder {
+  font: normal normal normal 12px/16px Ubuntu;
+  letter-spacing: 0px;
+  color: #CBCBCB;
+  margin-top: -10px;
+}
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  color: #5e5e5e!important;
+}
+.theme-green .bs-datepicker-head   {
+  background-color: #b1cd45 !important;
+}
+.theme-green .bs-datepicker-body table td span.selected {
+  background-color: #b1cd45!important;
+}
+.theme-green .bs-datepicker-body table td.week span {
+  color: #b1cd45!important;
+}
+delete-icon path {
+  fill: #fff !important;
+}
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled {
+  color: #ccc;
+  font-size: 10px;
+  border-bottom-right-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+tag.ng-tns-c146-0.ng-trigger.ng-trigger-animation.ng-star-inserted {
+  margin-top: 5px;
+}
+
+.leaflet-div-icon {
+  background: transparent!important;
+  border: none!important;
+  color: #000!important;
+  width: 140px !important;
+}
+
+.ng-select.ng-select-single .ng-select-container {
+  margin-top: -4px !important;
+}
+tag {
+  background: #b1cd45 !important;
+  border-radius: 20px !important;
+  padding: 0px 3px 0px 5px !important;
+  height: 20px !important;
+  color: #fff !important;
+}
+delete-icon {
+  margin-top: -7px !important;
+}
+
+delete-icon svg {
+  width: 13px !important;
+}
+.tag__text {
+  margin-top: 1px !important;
+  font: normal normal 10px/18px Ubuntu;
+  letter-spacing: 0px;
+  color: #ffffff;
+}
+
+delete-icon svg {
+  margin-left: 10p !important;
+}
+
+.form-control:-ms-input-placeholder  , .autocomplete-container input::-webkit-input-placeholder , .ng-select .ng-select-container .ng-value-container .ng-placeholder{
+  font: normal normal normal 12px/16px Ubuntu;
+  letter-spacing: 0px;
+  color: #CBCBCB;
+  display: block;
+  padding-left: 19px;
+}
+
+.catselect .ng-select .ng-select-container .ng-value-container .ng-placeholder {
+  font: normal normal normal 12px/16px Ubuntu;
+  letter-spacing: 0px;
+  color: #ccc;
+  margin-top: -10px;
+  opacity: 1; /* Firefox */
+}
+.form-control::-ms-input-placeholder  {
+  font: normal normal normal 12px/16px Ubuntu;
+  letter-spacing: 0px;
+  color: #CBCBCB;
+}
+
+.force-to-the-bottom .tag {
+  background: red !important;
+}
+
+
+
+input.form-control.ng-touched.ng-dirty.ng-invalid  {
+  border-bottom: 1px solid red !important;
+  border-radius: initial!important;
+}
+.listcatsupp span.ng-arrow-wrapper{
+  display: none !important;
+}
+textarea.form-control.ng-dirty.ng-invalid.ng-touched
+{
+  border-bottom: 1px solid red !important;
+  border-radius: initial!important;
+}
+.tag-wrapper.ng-star-inserted {
+  background: #b1cd45 !important;
+  border-radius: 20px;
+  padding: 0px 5px 0px 10px;
+  color: #fff;
+}
+
+.tooltip {
+  z-index: 50 !important;
+}
+
+tag.ng-tns-c147-0.ng-trigger.ng-trigger-animation.ng-star-inserted {
+  background: #b1cd45 !important;
+  padding: 0px 10px 7px 16px !important;
+  color: #fff !important;
+}
+
+.form-control.selectlist.ng-select .ng-select-container {
+  border-bottom: none !important;
+}
+input::placeholder{
+  font: normal normal normal 12px/16px Ubuntu !important;
+  letter-spacing: 0px;
+  color: #CBCBCB;
+}
+.autocomplete-container .suggestions-container .heading {
+  display: none!important;
+}
+.ng-select .ng-select-container {
+  align-items: initial;
+}
+.autocomplete-container .suggestions-container {
+  box-shadow: initial!important;
+}
+.autocomplete-container .input-container input{
+  color: #5E5E5E !important;
+  font: normal normal normal 14px/18px Ubuntu !important;
+  letter-spacing: 0px;
+  padding-left: 0px;
+}
+delete-icon path {
+  fill: #fff;
+}
+
+tag :not(:focus):not(.tag--editing):not(:active):not(.readonly):hover {
+  background: transparent !important;
+  color: initial;
+  box-shadow: none !important;
+  color: #fff !important;
+}
+
+.ng2-tag-input {
+  min-height: 110px !important;
+}
+
+.ng2-tag-input.ng2-tag-input--focused {
+  border-bottom: 1px solid #ccc !important;
+}
+
+.title-renseignement {
+  white-space: nowrap;
+  text-align: left;
+  font-family: Ubuntu;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  color: rgba(94, 94, 94, 1);
+}
+.text-general {
+  line-height: 14px;
+  margin-top: 2px;
+  text-align: left;
+  font-family: Ubuntu;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  color: rgba(94, 94, 94, 1);
+}
+
+.card-header.bg-transparent.title-Dachboard {
+  border: none;
+}
+.text-bleu {
+  color: #0081c7 !important;
+}
+
+.text-gris {
+  color: #cbcbcb !important;
+}
+.progress-bar {
+  background-color: #eba10f !important;
+}
+
+.tooltip .tooltiptext::after {
+  display: none;
+}
+
+.progress {
+  margin-bottom: 10px !important;
+  background-color: rgba(203, 203, 203, 1) !important;
+}
+.modal-dialog {
+  margin: 0 auto !important;
+  margin-bottom: auto !important;
+  min-height: 100% !important;
+  min-height: 100vh !important;
+  display: flex !important;
+  align-items: center !important;
+}
+.card {
+  border-radius: 1em!important;
+}
+
+
+.close > span:not(.sr-only) {
+  background-color: transparent;
+  color: #fff !important;
+  line-height: 17px;
+  height: 1.25rem;
+  width: 1.25rem;
+  border-radius: 50%;
+  font-size: 29px;
+  display: block;
+  transition: all 0.15s ease;
+  position: absolute;
+  top: -2%;
+  right: -2%;
+}
+
+.modal-content {
+  border-radius: 20px !important;
+  margin: 0 auto !important;
+  display: flex !important;
+  justify-content: center !important;
+  width: 1200px !important;
+  height: 790px !important;
+  display: -ms-flexbox !important;
+  -ms-transform: translateY(-50%) !important;
+}
+
+.close {
+  opacity: 1 !important;
+}
+
+button.btn.btn-link {
+  padding-top: 0px;
+  padding-bottom: 2px;
+  width: 100%;
+}
+
+.collapse.show {
+  margin-top: -32px;
+}
+
+.notifications-client .card {
+  border: none;
+}
+
+.notifications-client .card .table td {
+  padding: 2px !important;
+  color: #c94040;
+  border: none !important;
+  width: 100%;
+}
+
+.notifications-client .card-header {
+  padding: 0px;
+  border-bottom: none;
+}
+
+.ng-untouched .input-group-alternative {
+  box-shadow: none !important;
+  border-bottom: 1px solid #ccc !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  transition: box-shadow 0.15s ease !important;
+}
+
+.input-group-alternative {
+  box-shadow: none !important;
+  border-bottom: 1px solid #ccc !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  transition: box-shadow 0.15s ease !important;
+}
+
+.form-control {
+  background: transparent !important;
+  font: normal normal normal 10px/11px Ubuntu;
+  letter-spacing: 0px;
+  color: #aaaaaa;
+  opacity: 1;
+}
+.btn:hover {
+  box-shadow: none!important ;
+  transform: none !important;
+}
+button.btn.btn-link:before {
+  float: left;
+  content: "";
+  color: #333;
+  top: 0px;
+  left: 0px;
+  position: absolute;
+  font-weight: bold;
+  font-family: "FontAwesome";
+}
+.old_info .form-control {
+  color: #c94040 !important;
+}
+.ngb-dp-header button.btn.btn-link:before {
+  display: none;
+}
+h5#modal-basic-title {
+  font: normal normal normal 12px/14px Ubuntu;
+  letter-spacing: 0px;
+  color: #5e5e5e;
+  opacity: 1;
+}
+button.btn.btn-link.collapsed:before {
+  float: left;
+  content: "";
+  color: #333;
+  top: 0px;
+  left: 0px;
+  position: absolute;
+  font-family: "FontAwesome";
+}
+
+
+
+.recherchefiche button.btn.btn-link.collapsed:before {
+  float: top;
+  content: "";
+  color: #333;
+  top: 4px;
+  left: 0px;
+  position: absolute;
+  font-family: "FontAwesome";
+}
+
+.modal-condtions-utilisation  button.btn.btn-link {
+  color: #0081C7!important;
+  text-align: justify!important;
+}
+
+
+.chart {
+  height: auto !important;
+}
+.iframe_form .kFwPee {
+  overflow-y: scroll;
+  height: 500px;
+  overflow-x: hidden;
+}
+.horeires-modal {
+  margin: 2px 0 8px 0;
+}
+span.title_franchise {
+  display: block;
+}
+
+.profil-pagination .ngx-pagination .current, .profil-pagination .ngx-pagination ,.profil-pagination  .ngx-pagination .disabled{
+  padding: 0px 4px;
+  font-size: 14px;
+}
+.profil-pagination .ngx-pagination li {
+  margin-right: 0px !important;
+}
+.profil-pagination  .ngx-pagination a{
+  padding: 0px 4px;
+  font-size: 14px;
+}
+.profil-pagination .ngx-pagination a:hover, .profil-pagination .ngx-pagination button:hover {
+  background: transparent;
+}
+
+.profil-pagination li.current span:before {
+  content: "\f104";
+  font-family: 'Font Awesome 5 Free';
+  font-size: 12px;
+  margin-right: 3px;
+}
+.profil-pagination li.current span:after {
+  content: "\f105";
+  font-family: 'Font Awesome 5 Free';
+  font-size: 12px;
+  margin-left: 3px;
+}
+
+.profil-pagination .ngx-pagination .pagination-previous a::before, .profil-pagination  .ngx-pagination .pagination-previous.disabled::before {
+  content: '«';
+  display: inline-block;
+  margin-right: 0;
+}
+.profil-pagination .ngx-pagination .pagination-next a::after, .profil-pagination .ngx-pagination .pagination-next.disabled::after {
+  content: '»';
+  display: inline-block;
+  margin-left: 0rem;
+}
+.modal-content_md.modal-dialog.photos .modal-content {
+  height: 726px!important;
+  display: block !important;
+  margin-top: 139px !important;
+}
+@media (min-width: 1080px) {
+  .modal-dialog {
+    max-width: 87% !important;
+  }
+
+  ngb-popover-window#ngb-popover-0 {
+    margin-top: 52% !important;
+    left: 60% !important;
+  }
+  .modal-content {
+    padding: 9px 20px 0px 0px;
+    width: 1200px !important;
+    height: 550px !important;
+  }
+}
+
+@media (min-width: 1200px) {
+  /**********style  avis ALL**********/
+  .tabperformance ul.justify-content-start.nav.nav-pills:after {
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+    content: "";
+    width: 90%;
+    border-bottom: 0.5px solid #e5e5e5;
+    position: absolute;
+    top: 164.4px;
+    left: 0;
+    margin: 0 auto;
+    display: flex;
+    right: 0;
+    text-align: center;
+}
+.avis-progress .progress {
+  margin: 3% auto;
+  width: initial;
+}
+.modal-content {
+  width: 1159px !important;
+  height: 771px  !important;
+}
+
+  .col-xl-6.col-md-7.welcome {
+    max-width: 63%;
+    flex: 0 0 63%;
+  }
+}
+@media (min-width: 1400px) {
+   /**********style  avis ALL**********/
+.avis-progress .progress {
+  margin: 3% auto;
+  width: initial;
+}
+  .modal-dialog {
+    max-width: 87% !important;
+  }
+
+  .modal-content {
+    padding: 0px 0px 0px 0px;
+  }
+
+  .col-xl-6.col-md-7.welcome {
+    max-width: 50%;
+    flex: 0 0 50%;
+  }
+
+}
+@media (min-width: 1440px) {
+  .tabperformance ul.justify-content-start.nav.nav-pills:after {
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+    content: "";
+    width: 90%;
+    border-bottom: 0.5px solid #e5e5e5;
+    position: absolute;
+    top: 163.4px;
+    left: 0;
+    margin: 0 auto;
+    display: flex;
+    right: 0;
+    text-align: center;
+  }
+  .tabperformance .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    background-color: transparent !important;
+    display: block;
+    text-align: center;
+    font: normal normal normal 16px/30px Ubuntu;
+    color: #0081C7 !important;
+    border-bottom: 3px solid #0081C7;
+    z-index: 99;
+    position: relative;
+  }
+  .content-mobile {
+    display: none;
+}
+.qte-encart span {
+  font: normal normal bold 27px/16px Ubuntu;
+}
+span.qte-encart-1 {
+  font: normal normal bold 13px/16px Ubuntu;
+}
+}
+@media (max-width: 1440px) {
+  .qte-encart span {
+    font: normal normal bold 27px/16px Ubuntu;
+  }
+  span.qte-encart-1 {
+    font: normal normal bold 13px/16px Ubuntu;
+  }
+  .modal-content_md.modal-dialog.photos .modal-body.listprofil {
+    margin: 0;
+    position: relative;
+    top: 0;
+    transform: none;
+    width: auto;
+    align-items: center;
+    left: 0;
+}
+  .selectes ng-dropdown-panel .ng-dropdown-panel-items.scroll-host {
+    max-height: 240px;
+}
+
+  .modal-content_md.modal-dialog.photos .modal-body.listprofil {
+    top: 0;
+}
+
+  .tabperformance .nav-pills .nav-item {
+    padding-right: 1rem;
+    padding: 0px 3px;
+    width: 33%;
+}
+  .content-desk {
+    display: block;
+}
+.content-mobile {
+  display: none;
+}
+.profil-pagination ul.ngx-pagination {
+  float: right;
+  margin-bottom: 0;
+  margin-top: 0px;
+  padding: 0px 0px;
+}
+.title-renseignement {
+  font-size: 21px;
+}
+}
+@media (min-width: 1920px) {
+  .qte-encart span {
+    font: normal normal bold 40px/16px Ubuntu;
+  }
+  span.qte-encart-1 {
+    font: normal normal bold 16px/16px Ubuntu;
+  }
+  .selectes ng-dropdown-panel .ng-dropdown-panel-items.scroll-host {
+    max-height: 390px;
+}
+  .tabperformance ul.justify-content-start.nav.nav-pills:after {
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+    content: "";
+    width: 532px;
+    border-bottom: 0.5px solid #e5e5e5;
+    position: absolute;
+    top: 192.4px;
+    left: 0;
+    margin: 0 auto;
+    display: flex;
+    right: 0;
+    text-align: center;
+  }
+  .tabperformance .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    background-color: transparent !important;
+    display: block;
+    text-align: center;
+    font: normal normal normal 16px/30px Ubuntu;
+    color: #0081C7 !important;
+    border-bottom: 3px solid #0081C7;
+    z-index: 99;
+    position: absolute;
+  }
+  .tabperformance .nav-pills .nav-item {
+    padding-right: 1rem;
+    padding: 0px 20px;
+    width: 33%;
+  }
+  .content-desk {
+    display: block;
+}
+.content-mobile {
+  display: none;
+}
+  .title-renseignement {
+    font-size: 24px;
+}
+  .profil-pagination ul.ngx-pagination {
+    float: right;
+    margin-bottom: 0;
+    margin-top: 3px;
+  }
+   /**********style  avis ALL**********/
+
+.avis-progress .progress {
+  margin: 4% 0px 0px -7px;
+  width: 400px;
+}
+  .modal-dialog {
+    max-width: 63% !important;
+
+  }
+
+  ngb-popover-window#ngb-popover-0 {
+    margin-top: 88% !important;
+    left: 49% !important;
+  }
+
+  .modal-content {
+    width: 1200px !important;
+    height: 750px !important;
+
+}
+
+}
+
+// .tabperformance ul.justify-content-start.nav.nav-pills:after {
+//   border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+//   content: "";
+//   width: 654px;
+//   border-bottom: 0.5px solid #e5e5e5;
+//   position: absolute;
+//   top: 195.4px;
+//   left: 0;
+//   margin: 0 auto;
+//   display: flex;
+//   right: 0;
+//   text-align: center;
+// }
+.tabperformance .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  background-color: transparent !important;
+  display: block;
+  text-align: center;
+  font: normal normal normal 16px/30px Ubuntu;
+  color: #0081C7 !important;
+  border-bottom: 3px solid #0081C7;
+  z-index: 99;
+  position: relative;
+}
+.tabperformance .nav-pills .nav-item {
+  padding-right: 1rem;
+  padding: 0px 20px;
+  width: 33%;
+}
+.agm-map-container-inner.sebm-google-map-container-inner {
+  position: initial !important;
+}
+
+agm-map {
+  height: 300px;
+}
+hr {
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
+}
+.description-bloc{
+  font: normal normal normal 12px/18px Ubuntu;
+letter-spacing: 0px;
+color: #5E5E5E;
+}
+
+span.nom-fiche {
+  text-align: left;
+  font: normal normal normal 10px/18px Ubuntu;
+  letter-spacing: 0px;
+  color: #707070;
+  padding-left: 19px;
+}
+.search-fiche input.form-control {
+  padding: 0px;
+  height: 26px;
+}
+
+.filtre-date input.form-control::-webkit-input-placeholder {
+  font: normal normal normal 12px/16px Ubuntu;
+  letter-spacing: 0.4px;
+  color: #CBCBCB !important;
+}
+.filtre-date input.form-control:-moz-placeholder {
+  font: normal normal normal 12px/16px Ubuntu;
+  letter-spacing: 0.4px;
+  color: #CBCBCB !important;
+}
+.filtre-date input.form-control::-moz-placeholder {
+  font: normal normal normal 12px/16px Ubuntu;
+  letter-spacing: 0.4px;
+  color: #CBCBCB !important;
+}
+.filtre-date input.form-control:-ms-input-placeholder {
+  font: normal normal normal 12px/16px Ubuntu;
+  letter-spacing: 0.4px;
+  color: #CBCBCB !important;
+}
+
+button.btn.btn-outline{
+  background: #C94040;
+  color: #fff;
+  padding: 7px 40px;
+  border-radius: 50px;
+  text-align: center;
+  font: normal normal normal 12px/13px Ubuntu;
+  letter-spacing: 0px;
+}
+
+
+ngb-datepicker .ngb-dp-weekday {
+  color: #0081c7 !important;
+}
+#ngb-popover-0 {
+  transform: translate(-214px, -90px) !important;
+}
+
+
+
+.details-post li span {
+  line-height: 18px;
+  margin-top: -3px;
+  text-align: left;
+  font: normal normal normal 8px/12px Ubuntu;
+  letter-spacing: 0.2px;
+  color: #fff;
+  border-radius: 30px;
+  padding: 5px 12px;
+
+}
+
+.details-post ul li:first-child span {
+  line-height: 18px;
+  margin-top: -3px;
+  text-align: left;
+  font: normal normal normal 8px/12px Ubuntu;
+  letter-spacing: 0.2px;
+  color: #fff;
+
+  border-radius: 30px;
+  padding: 5px 12px;
+
+}
+
+ngb-popover-window.bs-popover-left > .arrow,
+ngb-popover-window.bs-popover-right > .arrow {
+  display: none !important;
+}
+
+agm-map {
+  height: 300px;
+}
+agm-map a {
+  display: none !important;
+}
+
+agm-map button.gm-control-active.gm-fullscreen-control,
+.gmnoprint {
+  display: none !important;
+}
+
+.gm-style .gm-style-iw-d {
+  overflow: revert !important;
+}
+
+// button.gm-ui-hover-effect {
+//   display: none !important;
+// }
+.gm-style-iw.gm-style-iw-c {
+  padding: 14px !important;
+}
+
+.popover__content {
+  opacity: 0;
+  position: absolute;
+  margin-left: -100% !important;
+  transform: translate(0, 10px);
+  background-color: #fff !important;
+  padding: 1.5rem;
+  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 26%);
+  width: 253px !important;
+  margin-top: 35% !important;
+}
+
+.popover__content:before {
+  display: none !important;
+}
+
+input[type="checkbox"] {
+  position: relative;
+  cursor: pointer;
+}
+input[type="checkbox"]:before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 0;
+  left: 0;
+  border: 1px solid #cbcbcb;
+  border-radius: 3px;
+  background-color: white;
+}
+input[type="checkbox"]:checked:after {
+  content: "";
+  display: block;
+  width: 5px;
+  height: 10px;
+  border: solid #b1cd45;
+  border-width: 0 2px 2px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+  position: absolute;
+  top: 2px;
+  left: 6px;
+}
+
+.navbar-vertical.navbar-expand-md {
+  max-width: 120px !important;
+}
+
+.leaflet-control-attribution.leaflet-control {
+  display: none;
+}
+.leaflet-touch .leaflet-bar a {
+    color: #eba10f;
+    }
+
+.leaflet-popup-content-wrapper span.title-franchise {
+  text-align: left !important;
+  font: normal normal normal 18px/18px Ubuntu;
+  letter-spacing: 0px;
+  color: #5E5E5E;
+  font-weight: 200 !important;
+  white-space: nowrap;
+  width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: block;
+  cursor: pointer;
+}
+
+.row.viderating {
+  margin-top: 5px;
+}
+.row.dernier {
+  margin-bottom: 5px;
+}
+img.leaflet-marker-icon.leaflet-zoom-animated.leaflet-interactive {
+  margin-top: 0px!important;
+  height: auto!important;
+}
+
+// img.leaflet-marker-icon.leaflet-zoom-animated.leaflet-interactive {
+//   margin-left: -22px;
+//   margin-top: -94px;
+//   width: 49px!important;
+//   height: 48px !important;
+//   transform: translate3d(139px, 252px, 0px);
+//   z-index: 252;
+//   opacity: 1;
+//   outline: none;
+// }
+.leaflet-popup-content-wrapper span.maps-infos-post {
+  text-align: left;
+  font: normal normal normal 10px/18px Ubuntu;
+  letter-spacing: 0px;
+  color: #5e5e5e;
+}
+
+.leaflet-popup-content-wrapper span.maps-infos-post-value {
+  text-align: right;
+  font: normal normal bold 10px/18px Ubuntu;
+  letter-spacing: 0px;
+  color: #5e5e5e;
+}
+span.value-reviews {
+  font: normal normal 16px/30px Ubuntu;
+  letter-spacing: 0px;
+  color: #707070;
+  line-height: 12px;
+}
+
+.leaflet-popup-content-wrapper span.maps-infos {
+  text-align: left;
+  font: normal normal bold 12px/18px Ubuntu;
+  letter-spacing: 0px;
+  color: #5e5e5e;
+}
+
+.leaflet-popup-content-wrapper span.maps-infos-value {
+  padding-left: 100%;
+  text-align: right;
+  color: #b1cd45;
+}
+.leaflet-popup-content-wrapper .table-maps td {
+  padding: 0px !important;
+  border: none !important;
+}
+
+.leaflet-popup-tip,
+a.leaflet-popup-close-button {
+  display: none;
+}
+.leaflet-popup.leaflet-zoom-animated {
+  width: 367px !important;
+  bottom: -92px!important;
+}
+.ng-dropdown-panel-items.scroll-host span.ng-tag-label {
+  display: none;
+}
+.modal-body.libelles {
+  left: 0;
+  right: 0;
+  top: 0;
+  background: url(/assets/Avis/background-avis.svg) no-repeat;
+  background-position: bottom 0px center;
+}
+.ng-dropdown-panel.ng-select-bottom {
+  border-bottom: 0px solid #ccc!important;
+  box-shadow: none;
+}
+label.custom-control-label {
+  width: 302px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-align: justify;
+}
+.doc .ngx-pagination a span {
+  display: none!important;
+}
+.serash span.ng-option-label {
+  color: #0081c7!important;
+}
+ngx-dropzone.custom-dropzone.photos ngx-dropzone-remove-badge {
+  top: -5px !important;
+}
+
+ngx-dropzone.custom-dropzone.photos ngx-dropzone-image-preview {
+  width: 100%;
+  min-height: 62px!important;
+  height: 62px!important;
+}
+@media (min-width: 576px){
+
+}
+@media (max-width: 1024px) {
+
+  .modal-dialog {
+    max-width: 1000px!important;
+    margin: 1.75rem auto;
+}
+  .content-desk {
+    display: none;
+}
+.content-mobile {
+  text-align: center;
+  font: normal normal normal 15px/15px Ubuntu;
+  letter-spacing: 0px;
+  color: #AAAAAA;
+  opacity: 1;
+  margin: 5% auto;
+}
+.content-mobile {
+  display: block;
+}
+  body {
+    display: block;
+  }
+  nav#navbar-main {
+    display: none;
+}
+.navbar-vertical.navbar-expand-md {
+  display: none!important;
+}
+}
+@media (min-width: 1024px) {
+.content-mobile {
+  display: block;
+}
+}
+@media (min-width: 1025px) {
+
+.content-mobile {
+  display: none;
+}
+}
+/* chart tooltip*/
+.qte-encart span {
+  text-align: center;
+  // font: normal normal bold 40px/16px Ubuntu;
+  letter-spacing: 0px;
+  color: #5E5E5E;
+  vertical-align: middle;
+}
+span.qte-encart-1 {
+  text-align: center;
+  // font: normal normal bold 16px/16px Ubuntu;
+  letter-spacing: 0px;
+  color: #5E5E5E;
+  display: block;
+  margin-top: 9%;
+}
+.qte-encart {
+  text-align: center;
+  display: block;
+  margin: 15% auto;
+}
+.chartjs-render-monitor.tooltip{
+  box-shadow: 0px 5px 15px 0px rgba(0,0,0,0.3);
+}
+#tooltopvalue span.tooltip-text.tt-1, #tooltopvalue span.tooltip-text.tt-2 {
+  text-align: justify;
+  font: normal normal bold 12px/16px Ubuntu;
+  letter-spacing: 0px;
+  color: #5E5E5E;
+  opacity: 1;
+  padding: 0px 30px 0px 33px;
+  position: relative;
+  top: 0;
+  display: block;
+
+}
+span.date-center {
+  text-align: center;
+  font: normal normal normal 12px/16px Ubuntu;
+  letter-spacing: 0px;
+  color: #5E5E5E;
+  opacity: 1;
+  display: block;
+  margin: 8% 0% 2% 0%;
+}
+span.tooltip-subtext.ts-2,span.tooltip-subtext.ts-1 {
+  float: right;
+  margin-left: 20px;
+}
+.selectes .ng-select .ng-arrow-wrapper .ng-arrow:before {
+  content: "\f107" !important;
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 800;
+}
+.selectes .ng-select.ng-select-opened>.ng-select-container .ng-arrow:before {
+  font-family: 'Font Awesome 5 Free';
+  content: "\f106" !important;
+  font-weight: 800;
+}
+.selectes.form-group.mb-4.titlepost span.ng-arrow {
+  border-color: transparent transparent #fff;
+}
+.titlepost .titlepost ng-select.ng-select-opened>.ng-select-container{
+  background: transparent!important;
+
+}
+.selectes.form-group.mb-4.titlepost ng-select.ng-select.ng-select-single.ng-select-searchable.ng-select-clearable .ng-select-container {
+  background: transparent!important;
+}
+.selectes .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked,.selectes .ng-select .ng-select-container {
+  border-bottom: 0px solid #ccc!important;
+}
+.carousel-photos button.owl-next {
+  width: 42px;
+  height: 42px;
+  background: #FFFFFF 0% 0% no-repeat padding-box!important;
+  opacity: 1;
+  display: inline-block!important;
+}
+.carousel-photos button.owl-prev.disabled, .carousel-photos button.owl-prev {
+  width: 42px;
+  height: 42px;
+  background: #FFFFFF 0% 0% no-repeat padding-box!important;
+  display: inline-block!important;
+}
+.carousel-photos .owl-nav {
+  position: absolute;
+  top: 0%;
+  left: 75%;
+  display: inline-block;
+  width: 33%;}
+.carousel-photos .owl-theme .owl-nav [class*=owl-]:hover {
+  background: #869791;
+  color: #717070!important;
+  text-decoration: none;
+}
+.carousel-photos .owl-theme .owl-nav [class*=owl-] {
+  font-size: 14px;
+  margin: 5px;
+  padding: 4px 7px;
+  border-radius: 50px;
+}
+.carousel-photos i.fas.fa-angle-right, .carousel-photos i.fas.fa-angle-left {
+  font-size: 26px;
+  margin: 9px auto;
+}
+.carousel-photos button:focus {
+  outline: 1px dotted;
+  outline: 0px auto -webkit-focus-ring-color;
+}
+.carousel-photos .owl-carousel .owl-item.active img {
+  width: 100%;
+  height: auto;
+  background: #fff 0% 0% no-repeat padding-box;
+  box-shadow: 0px 0px 10px #00000014;
+  border: 2px solid #EBA10F;
+  border-radius: 10px;
+  opacity: 1;
+}
+.carousel-photos .owl-carousel .owl-item img {
+  width: 100%;
+  height: auto;
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  box-shadow: 0px 0px 10px #00000014;
+  border: 2px solid #EBA10F;
+  border-radius: 10px;
+  opacity: 1;
+}
+
+.carousel-photos .owl-carousel .owl-item.active img.icon-photos,
+ .carousel-photos .owl-carousel .owl-item img.icon-photos {
+  border: none !important;
+  width: 24px!important;
+  height: 24px!important;
+  display: block;
+  text-align: center;
+  box-shadow: none !important;
+  margin: 0 auto;
+}
+.modal-body.modal-avis .ng-select span {
+  text-align: left!important;
+  font: normal normal normal 14px/18px Ubuntu;
+  letter-spacing: 0px;
+  color: #CBCBCB;
+  display: block;
+
+}
+.uplodas-photos .ngx-file-drop__drop-zone {
+  border: 0px dotted #0782d0!important;
+  border-radius: 0!important;
+  height: auto!important;
+  margin: auto!important;
+}
+.carousel-photos .owl-stage .item {
+  margin: 0 9%;
+  min-height: 236px;
+}
+.selectes .ng-dropdown-panel .ng-dropdown-panel-items .ng-optgroup.ng-option-disabled {
+  cursor: default;
+  text-align: left;
+  font: normal normal bold 12px/14px Ubuntu;
+  letter-spacing: 0px;
+  color: #CBCBCB;
+  opacity: 1;
+}
+.selectes .ng-dropdown-panel .ng-dropdown-panel-items .ng-option span,.selectes  .ng-select .ng-select-container .ng-value-container .ng-input>input {
+  text-align: left;
+  font: normal normal normal 24px/18px Ubuntu;
+  letter-spacing: 0px;
+  color: #EBA10F;
+  opacity: 1;
+}
+
+.selectes .ng-select .ng-select-container .ng-value-container .ng-placeholder {
+  font: normal normal normal 15px/18px Ubuntu;
+}
+.selectes span.ng-option-label {
+  text-align: left;
+  font: normal normal normal 24px/18px Ubuntu;
+  letter-spacing: 0px;
+  color: #EBA10F;}
+  .selectes .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected .ng-option-label, .selectes .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected.ng-option-marked .ng-option-label {
+  font-weight: 600;
+  text-align: left;
+  font: normal normal bold 24px/18px Ubuntu;
+  letter-spacing: 0px;
+  color: #EBA10F;
+}
+.selectes .ng-select, .selectes .ng-select div, .selectes .ng-select input, .selectes .ng-select span {
+  box-sizing: border-box;
+  text-align: left;
+  font: normal normal normal 24px/18px Ubuntu;
+  letter-spacing: 0px;
+  color: #EBA10F;
+  background: transparent;
+}
+.selectes  .ng-arrow-wrapper .ng-arrow {
+  border-color: #999 transparent transparent;
+  border-style: solid;
+  border-width: 5px 5px 2.5px;
+  color: #5e5e5e;
+  font: normal normal bold 16px/18px Ubuntu;
+}
+#select-photo .ng-select.ng-select-opened>.ng-select-container {
+  background: #f8f9fe!important;}
+.selectes .ng-option-disabled.ng-optgroup span.ng-option-label {
+  text-align: left;
+  font: normal normal bold 12px/14px Ubuntu!important;
+  letter-spacing: 0px;
+  color: #CBCBCB;
+  opacity: 1;
+}
+ngb-modal-window.catorisable.d-block.fade.modal.show .modal-content {
+  padding: 0px 0px 0px 0px;
+}
+.form-control {
+  text-align: left!important;
+}
+.was-validated textarea#comment.form-control:invalid {
+  padding-right: calc(1.5em + 7.2rem)!important;
+}
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 7px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgb(217 217 217);
+  -webkit-box-shadow: 0 0 1px rgb(217 217 217);
+}
+.owl-theme .owl-nav {
+  margin-top: -64px!important;
+}
+ngb-modal-window.d-block.fade.modal.photo-small.show .modal-content {
+  width: 500px !important;
+  height: 500px !important;
+  padding: 0;
+  background-color: #fff0;
+  box-shadow: none;
+}
+.photo-small .close > span {
+  background: #ac005e!important;
+  padding: 2px;
+  top: 10%;
+  right: 16%;
+  border-radius: 10px;
+}
+div#tooltopvalue span.date-center {
+  margin: 0% 0% 2% 0%!important;
+}
+/* fin  chart tooltip*/
+/********* style générale****************/
+
+.filtre-date .ngb-dp-arrow.right {
+  margin-left: 17px !important;
+}
+
+.filtre-date
+  ngb-datepicker
+  .ngb-dp-header
+  ngb-datepicker-navigation
+  ngb-datepicker-navigation-select
+  .custom-select {
+  color: #0081c7 !important;
+  background: #cccccc54 !important;
+  margin: 0px 4px !important;
+}
+
+.filtre-date
+  ngb-datepicker
+  .ngb-dp-header
+  .filtre-date
+  ngb-datepicker-navigation
+  .ngb-dp-arrow-btn
+  .ngb-dp-navigation-chevron {
+  color: #0081c7 !important;
+}
+
+.filtre-date ngb-datepicker .ngb-dp-weekday {
+  color: #0081c7 !important;
+}
+
+button.btn.btn-outline-secondary.calendar {
+  width: 87% !important;
+  background: transparent !important;
+  position: absolute !important;
+  height: 100% !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+ngb-datepicker
+  .ngb-dp-header
+  ngb-datepicker-navigation
+  .ngb-dp-arrow-btn
+  .ngb-dp-navigation-chevron {
+  color: #0081c7 !important;
+}
+
+mat-sidenav {
+  width: 18vw !important;
+}
+
+.main-container {
+  height: 100vh;
+}
+
+.sidebar {
+  background-color: #000;
+}
+
+.content {
+  display: grid;
+  grid-template-rows: 12rem auto;
+  grid-template-areas:
+    "header-area"
+    "main-area";
+  padding-top: 0;
+  height: 100%;
+
+  &__header {
+    background-color: #eee;
+    width: 100%;
+    height: 12rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 0.5rem 1rem;
+    z-index: 3;
+  }
+  &__main {
+    background-color: #ccc;
+    grid-area: main-area;
+  }
+}
+
+.body__form {
+  padding: 2rem;
+}
+span.ng-option-label.ng-star-inserted {
+  font: normal normal normal 13px/18px Ubuntu;
+  letter-spacing: 0px;
+  color: #cbcbcb;
+  opacity: 1;
+  padding-left: 4%;
+}
+
+.ng-select .ng-select-container {
+  color: #333;
+  background-color: #fff;
+  border-radius: 4px;
+  border: none !important;
+  border-bottom: 1px solid #ccc !important;
+}
+.contentbloc .ng-select .ng-select-container {
+  border-radius: initial;
+}
+.search-fiche .ng-dropdown-panel {
+  width: 129% !important;
+}
+.ng-dropdown-panel.ng-select-bottom {
+  top: 100%;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  margin-top: -1px;
+}
+
+.autocomplete-container .input-container .x i {
+  display: none !important;
+}
+
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected,
+.ng-dropdown-panel
+  .ng-dropdown-panel-items
+  .ng-option.ng-option-selected.ng-option-marked  , .autocomplete-container .suggestions-container ul li a{
+    font: normal normal 12px/12px Ubuntu !important;
+    line-height: 20px;
+    letter-spacing: 0px;
+    color: #5e5e5e!important;
+}
+
+
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected,
+.ng-dropdown-panel
+  .ng-dropdown-panel-items
+  .ng-option.ng-option-selected.ng-option-marked {
+    font: normal normal 12px/12px Ubuntu;
+    line-height: 20px;
+    letter-spacing: 0px;
+    color: #5e5e5e!important;
+  background-color: #f5f5f5;
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+  background-color: #f5f5f5;
+  font: normal normal 12px/12px Ubuntu;
+  line-height: 20px;
+  letter-spacing: 0px;
+  color: #5e5e5e !important;
+  border-bottom: 1px solid #ccc;
+}
+.table {
+  color: #5e5e5e !important;
+}
+.ng-select.ng-select-single .ng-select-container .ng-value-container,
+.ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value {
+  overflow: initial!important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+  font: normal normal normal 12px/18px Ubuntu;
+  letter-spacing: 0px;
+  color: #5e5e5e!important;
+}
+
+.ng-select .ng-select-container .ng-value-container .ng-placeholder {
+  color: #ccc!important;
+}
+ngx-dropzone-remove-badge {
+  top: 33px !important;
+}
+span.ng-clear-wrapper.ng-star-inserted {
+  display: none;
+}
+
+input.ng-pristine.success.ng-valid.ng-touched input::-webkit-input-placeholder {
+  color: red !important;
+}
+input.ng-pristine.success.ng-valid.ng-touched input:-moz-placeholder {
+  /* Firefox 18- */
+  color: red !important;
+}
+input.ng-pristine.success.ng-valid.ng-touched input::-moz-placeholder {
+  /* Firefox 19+ */
+  color: red !important;
+}
+input.ng-pristine.success.ng-valid.ng-touched input:-ms-input-placeholder {
+  color: red !important;
+}
+
+.has-danger.form-control-feedback {
+  color: red;
+  text-align: left;
+  padding-top: 10px;
+  font: normal normal normal 10px/18px Ubuntu;
+  padding-left: 12px;
+}
+.ng2-tag-input__text-input {
+  height: 26px !important;
+}
+
+.symbol.required:before {
+  content: "*";
+  display: inline;
+  color: #e6674a;
+}
+
+.form-check-input[disabled] ~ .form-check-label, .form-check-input:disabled ~ .form-check-label {
+  color: #CBCBCB !important;
+}
+
+
+
+/*****************timer******************/
+
+
+.datepicker-container input {
+  outline: none;
+  border: 1px solid #cad1d7 !important;
+  padding: 0px!important;
+  border-radius: 0.375rem!important;
+  padding: 10px 2px!important;
+  text-align: center!important;
+  padding: 0.625rem 0.75rem;
+  font-weight: 400;
+  line-height: 1.5;
+  font: normal normal normal 12px/16px Ubuntu;
+  letter-spacing: 0.4px;
+  color: #5E5E5E;
+  text-transform: capitalize;
+}
+
+
+.datepicker-prog input {
+  padding: 10px 30px;
+  width: 304px;
+}
+.calenderprog input {
+  width: 255px;
+}
+
+.ng2-tag-input__text-input {
+  color: #5e5e5e;
+  font: normal normal normal 12px/16px Ubuntu !important;
+}
+
+
+.calenderprog input::-webkit-input-placeholder {
+  font: normal normal normal 12px/16px Ubuntu;
+  letter-spacing: 0.4px;
+  color: #ccc!important;
+}
+.calenderprog input:-moz-placeholder {
+  font: normal normal normal 12px/16px Ubuntu;
+  letter-spacing: 0.4px;
+  color: #ccc!important;
+}
+.calenderprog input::-moz-placeholder {
+  font: normal normal normal 12px/16px Ubuntu;
+  letter-spacing: 0.4px;
+  color: #ccc!important;
+}
+.calenderprog input:-ms-input-placeholder {
+  font: normal normal normal 12px/16px Ubuntu;
+  letter-spacing: 0.4px;
+  color: #ccc!important;
+}
+
+.datepicker-container input::-webkit-input-placeholder {
+  font: normal normal normal 12px/16px Ubuntu;
+  letter-spacing: 0.4px;
+  color: #ccc;
+}
+.datepicker-container input:-moz-placeholder {
+  font: normal normal normal 12px/16px Ubuntu;
+  letter-spacing: 0.4px;
+  color: #CBCBCB;
+}
+.datepicker-container input::-moz-placeholder {
+  font: normal normal normal 12px/16px Ubuntu;
+  letter-spacing: 0.4px;
+  color: #CBCBCB;
+}
+.datepicker-container input:-ms-input-placeholder {
+  font: normal normal normal 12px/16px Ubuntu;
+  letter-spacing: 0.4px;
+  color: #CBCBCB;
+}
+
+
+.datepicker-default .day-unit.is-selected, .datepicker-default .day-unit:hover, .datepicker-default .year-unit.is-selected, .datepicker-default .year-unit:hover {
+  background: #0081c7 !important;
+  color: #fff!important;
+}
+
+.datepicker-default .day-unit, .datepicker-default .year-unit {
+  color: #5e5e5e!important;
+}
+
+.datepicker-default .month-year-text {
+  color: #5e5e5e!important;
+}
+
+.ng-select .ng-select-container {
+  border-radius: initial !important;
+}
+
+.ng-select.ng-select.ng-select-single.ng-select-searchable.ng-select-clearable.ng-untouched.ng-pristine.ng-invalid .ng-placeholder {
+  display: block;
+}
+
+.ng-select.ng-select.ng-select-single.ng-select-searchable.ng-select-clearable.ng-untouched.ng-pristine.ng-invalid.ng-select-opened.ng-select-bottom.ng-select-filtered .ng-placeholder
+{
+  display: none;
+}
+
+
+.ZonesDesservies .ng-select.mb-5.ng-select.ng-select-single.ng-select-searchable.ng-select-clearable.ng-untouched.ng-pristine.ng-valid .ng-placeholder {
+  display: block;
+}
+
+.ZonesDesservies .ng-select.mb-5.ng-select.ng-select-single.ng-select-searchable.ng-select-clearable.ng-untouched.ng-pristine.ng-valid.ng-select-opened.ng-select-bottom.ng-select-filtered .ng-placeholder
+{
+  display: none;
+}
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+
+  background-color: #fff;
+  font: normal normal 12px/12px Ubuntu;
+  line-height: 20px;
+  letter-spacing: 0px;
+  color: #5e5e5e !important;
+  border-bottom: none;
+}
+.modal-sm .modal-content {
+  width: 700px!important;
+  height: 300px!important;
+}
+.search-fiche .ng-select .ng-arrow-wrapper {
+  display: none;
+}
+.autocomplete-container {
+  box-shadow: initial !important;
+}
+button.btn.btn-annuler
+{
+  background: #95ad3a;
+  color: #fff;
+  padding: 7px 40px;
+  border-radius: 50px;
+  text-align: center;
+  font: normal normal normal 12px/13px Ubuntu;
+  letter-spacing: 0px;
+}
+
+
+.custom-control-label::after{
+  display: none !important;
+}
+
+.custom-control-label::before {
+  display: none !important;
+}
+
+
+.search-fiche .ng-select .ng-select-container {
+  border-bottom: none!important;
+}
+.cat .ng-select .ng-select-container {
+
+  border-bottom: 1px solid #ccc !important;
+}
+span.ng-clear-wrapper {
+    display: none !important;
+}
+
+
+.libelles span.ng-arrow-wrapper {
+  display: none;
+}
+.switch.checked {
+  background: rgba(66,133,244,0.502) !important;
+}
+.switch {
+  background: #9aa0a6 !important;
+}
+.switch.checked small {
+  background: #0081c7;
+}
+.switch.switch-small {
+  min-width: 54px !important;
+  height: 13px !important;
+}
+
+.switch.switch-small small {
+  width: 18px;
+  height: 17px;
+  right: calc(100% - 18px)!important;
+}
+
+.switch.checked small {
+  right: 0!important;
+  left: auto!important;
+}
+
+.switch small {
+  top: -3px!important;
+  outline: none;
+}
+.addcatperso .ng-select-container input {
+  width: 100%!important;
+  border: none!important;
+  padding: 4px 10px !important;
+}
+.addcatperso .ng-select .ng-select-container {
+  border-bottom: none!important;
+}
+.addcatperso .ng-select .ng-arrow-wrapper {
+  display: none !important;
+}
+.addcatperso .ng-dropdown-panel .scroll-host {
+  -webkit-overflow-scrolling: touch;
+  display: block;
+  overflow: hidden;
+  margin-top: 6px;
+  width: 102%;
+  overflow-y: auto;
+  padding: 8px 0;
+  border: 1px solid rgba(0,0,0,.2);
+  background-color: #ffffff;
+  border-radius: 0 0 2px 2px;
+  box-shadow: 0px 4px 10px 1px rgb(0 0 0 / 26%);
+  position: relative;
+}
+.ng-select.ng-select-disabled>.ng-select-container {
+  background-color: #fff !important;
+}
+input {   background-color: transparent !important;}
+input:hover {   background-color: transparent !important;}
+input:focus {    background-color: transparent !important;}
+input:visited {   background-color: transparent !important;}
+ ngx-dropzone-remove-badge {
+  align-items: center;
+  background: #C94040 !important;
+  border-radius: 50%;
+}
+.form-control {
+  color: #5E5E5E !important;
+}
+span.title_modifE {
+  font: normal normal bold 20px/30px Ubuntu;
+  letter-spacing: 0px;
+  color: #5e5e5e;
+  display: block;
+  text-align: left;
+}
+span.lenghtname {
+  display: block;
+  float: right;
+  font-size: 12px;
+}
+.sr-only {
+position: absolute;
+width: 1px;
+height: 1px;
+padding: 0;
+margin: -1px;
+overflow: hidden;
+clip: rect(0, 0, 0, 0);
+white-space: nowrap;
+border: 0;
+}
+.selectcat p {
+    font: normal normal normal 10px/18px Ubuntu;
+    color: #707070;
+}
+input.form-control.ng-dirty.ng-invalid {
+  border-bottom: 1px solid red !important;
+  border-radius: initial;
+}
+a.right.carousel-control.carousel-control-next.ng-star-inserted
+{
+  background-image: url(/assets/Dashboard/icon-photos.png) !important;
+  z-index: 99999!important;
+  display: block !important;
+  background-repeat: no-repeat!important;
+}
+
+
+
+/************global style****************/
+.modal-md .modal-body  {
+  top: 64%!important;
+  width: 100% !important;
+  left: 0%!important;
+}
+.modal-md .modal-body {
+  transform: initial;
+  align-items: center;
+  width: 100% !important;
+  left: 0% !important;
+  height: 100%;
+  position: relative !important;
+  transform: initial!important;
+  padding: 0px;
+}
+.modal-md .modal-content {
+  width: 735px!important;
+  height: auto!important;
+  display: block !important;
+  padding-left: 0px!important;
+    padding-right: 0px!important;
+}
+
+
+button.btn.btn-pub {
+  background: #0081c7;
+  color: #fff;
+  padding: 6px 5px;
+  width: 100px;
+  border-radius: 50px;
+  text-align: center;
+  font: normal normal normal 12px/14px Ubuntu;
+}
+
+button.btn.btn-annulation {
+  background: transparent;
+  color: #dddddd;
+  border: 1px solid #dddddd;
+  padding: 6px 5px;
+  width: 100px;
+  border-radius: 50px;
+  text-align: center;
+  font: normal normal normal 12px/14px Ubuntu;
+}
+.alertdelete{
+  font: normal normal 18px/31px Ubuntu;
+  letter-spacing: 0px;
+  font-weight: bold;
+  color: #5e5e5e;
+}
+.doc .ngx-pagination li span, .doc .ngx-pagination .current {
+
+  margin: 0;
+}
+.doc ul.ngx-pagination {
+  padding: 0;
+  float: right;
+  margin-bottom: 0;
+  background: #FFFFFF1A 0% 0% no-repeat padding-box;
+  border: 1px solid #CBCBCB;
+  border-radius: 5px;
+  opacity: 1;
+}
+
+.doc li.pagination-previous {
+  border-right: 0px solid #cbcbcb;
+}
+
+.doc li.pagination-previous.disabled {
+  border-right: 0px solid #cbcbcb;
+  padding: 0;
+}
+ .doc .pagination-previous a::before, .doc  .pagination-previous.disabled::before {
+  padding: 6px;
+  content: '«';
+  display: inline-block;
+  margin-right: 8px;
+}
+.listprofil .ngx-pagination .current {
+  padding: 0.1875rem 0.625rem;
+  background: transparent;
+  color: #5e5e5e;
+  font-weight: 600;
+  cursor: default;
+}
+
+li.current span {
+  color: green;
+  background: transparent;
+  color: #5e5e5e;
+  font-weight: 600;
+}
+.ngx-pagination span {
+  color: #cacaca;
+}
+.doc .ngx-pagination li {
+  margin-right: 0px !important;
+  padding: 0;
+}
+.doc .ngx-pagination .pagination-next a::after, .doc .ngx-pagination .pagination-next.disabled::after {
+  content: '»';
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 7px;
+}
+.doc .ngx-pagination a, .doc  .ngx-pagination button {
+  cursor: pointer;
+  padding: 0;}
+/* fin pagination table*/
+.listfiches.table th, .listfiches.table td {
+    padding: 7px 10px;
+}
+.listpro.table th, .listpro.table td {
+  padding: 10px 10px;
+}
+
+
+
+/*******tabulation***********/
+
+
+.tabperformance.tabperformance .nav-pills .nav-link {
+  box-shadow: none !important;
+  border-radius: 0px!important;
+}
+
+
+.tabperformance .nav-pills .nav-link {
+  color: #5e5e5e!important;
+}
+
+.tabperformance ul.justify-content-start.nav.nav-pills {
+  border-bottom: 0px solid rgba(0, 0, 0, 0.1)
+}
+
+.bloc1 .tab-content {
+  padding: 0px 16px !important;
+}
+
+.serash .ng-select .ng-arrow-wrapper .ng-arrow {
+  display: none;
+}
+
+button.btn.btn-link:focus {
+  box-shadow: none;
+}
+.cluster {
+  background: #2d84c8;
+  border-radius: 50%;
+  text-align: center;
+  color: white;
+  font-weight: 700;
+  border: 1px solid red!important;
+  font-family: monospace;
+}
+.serash .ng-select span.ng-arrow-wrapper:before {
+  content: url(assets/photos/search.svg);
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: contents;
+}
+/****************horaire*******************/
+.jours {
+  background: transparent;
+  font: normal normal bold 12px/22px Ubuntu;
+  padding: 7px 5px;
+}
+
+
+span.btnAddHoraires {
+  background: transparent;
+  font: normal normal bold 11px/22px Ubuntu;
+  color: #0081c7;
+  padding: 7px 0px;
+  cursor: pointer;
+}
+
+
+
+.fade {
+  transition: initial !important;
+}
+
+.leaflet-marker-icon.marker-cluster.marker-cluster-small.leaflet-zoom-animated.leaflet-interactive,
+.leaflet-marker-icon.marker-cluster.marker-cluster-medium.leaflet-zoom-animated.leaflet-interactive div,
+.leaflet-marker-icon.marker-cluster.marker-cluster-large.leaflet-zoom-animated.leaflet-interactive {
+  background-image: url(/assets/Dashboard/global-marquer.png);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  min-height: 50px;
+  border-radius: 50%;
+  background-position: center center;
+}
+.leaflet-marker-icon.marker-cluster.marker-cluster-large.leaflet-zoom-animated.leaflet-interactive span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: block;
+  width: 100%;
+  text-align: center;
+  top: 13px;
+  color: white;
+}
+
+.leaflet-marker-icon.marker-cluster.marker-cluster-small.leaflet-zoom-animated.leaflet-interactive  div span,.leaflet-marker-icon.marker-cluster.marker-cluster-medium.leaflet-zoom-animated.leaflet-interactive div span{
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: block;
+  width: 100%;
+  text-align: center;
+  top: 13px;
+  color: white;
+}
+
+/************add service + categorie***************/
+.addcatperso {
+  display: inline-flex;
+  width: 100%;
+  height: 48px;
+  margin: 7px 15px 5px 15px;
+  position: relative;
+  border: none;
+  border-bottom: 1px solid #dadce0;
+}
+.editcat {
+  display: inline-block;
+  padding-right: 3%;
+  padding-top: 10px;
+}
+.editcat i.fa.fa-pencil-alt{
+  font-size: 12px;
+  cursor: pointer;
+  margin-top: 3px;
+}
+
+.addcatperso ng-select {
+  width: 100%!important;
+  border: none!important;
+  margin-top: 10px!important;
+}
+
+.groupe_categorie {
+  height: 447px;
+  max-height: 556px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  margin-bottom: 5%;
+  padding-right: 10%;
+}
+
+span.new_service {
+  display: block;
+  color: #5f6368;
+  font: normal normal bold 16px/34px Ubuntu;
+}
+
+i.far.fa-trash-alt {
+  cursor: pointer;
+}
+.imgavis img {
+  width: 58px !important;
+  margin-top: -2px;
+}
+
+
+
+.raccourcis input[type=checkbox] {
+  content: "";
+  display: block;
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: -1px;
+  left: 35px;
+  opacity: 0;
+  font-weight: bold;
+}
+
+
+.raccourcis input[type=checkbox]:before {
+  content: "";
+  display: block;
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  top: -35px;
+  left: 6px;
+  transform: none;
+  padding: 0px 5px 1px 3px;
+  color: #b1cd45;
+  font-size: 12px;
+  border: none;
+  font-weight: bold;
+  background: #fff;
+  border-radius: 100%;
+
+}
+
+
+.raccourcis input[type=checkbox]:checked:after{
+display: block;
+width: 15px;
+height: 15px;
+position: absolute;
+top: -35px;
+left: 6px;
+transform: none;
+content: "\2713";
+padding: 0px 5px 1px 3px;
+color: #b1cd45;
+font-size: 12px;
+border: none;
+font-weight: bold;
+background: #fff;
+border-radius: 100%;
+
+}
+.ngx-pagination li {
+margin-right: 10px !important;
+}
+.ng-select.old_info.ng-select-single .ng-select-container .ng-value-container .ng-value {
+    color: #c94040 !important;
+}
+.ngx-pagination .current {
+  padding: 0.1875rem 0.625rem;
+  background: transparent !important;
+  color: #5e5e5e !important;
+  font-weight: 600;
+  cursor: default;
+}
+.old_info_supp {
+  color: #c94040;
+  display: block;
+  text-decoration: none;
+  font: normal normal normal 12px/18px Ubuntu;
+  letter-spacing: 0px;
+}
+.old_info_supp.noir {
+  color: #5e5e5e;
+  display: block;
+  text-decoration: none;
+  font: normal normal normal 12px/18px Ubuntu;
+  letter-spacing: 0px;
+}
+.old_info {
+    color: #c94040;
+}
+
+.modal-content_md.modal-dialog {
+  width: 500px!important;
+  float: right!important;
+  display: block!important;
+  margin-right: 1% !important;
+}
+.modal-content_md .modal-content {
+  width: 500px !important;
+  height: 800px !important;
+  float: right !important;
+  display: block !important;
+  margin-right: -3% !important;
+  margin-top: 28% !important;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0px;
+}
+.modal-content_md .close > span:not(.sr-only) {
+  line-height: 50px;
+  font-size: 31px;
+  display: block;
+  transition: all 0.15s ease;
+  top: -3.2px;
+  color: #ccc!important;
+  left: 12.2px;
+  font-weight: 100;
+}
+
+button.close.avatar {
+  color: #fff;
+  background-color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  border-radius: 50%;
+  height: 48px;
+  left: -36px;
+  cursor: pointer;
+  width: 48px;
+  position: absolute
+}
+
+
+
+
+
+
+
+/* chart tooltip*/
+.qte-encart span {
+  text-align: center;
+  // font: normal normal bold 40px/16px Ubuntu;
+  letter-spacing: 0px;
+  color: #5E5E5E;
+  vertical-align: middle;
+}
+span.qte-encart-1 {
+  text-align: center;
+  // font: normal normal bold 16px/16px Ubuntu;
+  letter-spacing: 0px;
+  color: #5E5E5E;
+  display: block;
+  margin-top: 9%;
+}
+.qte-encart {
+  text-align: center;
+  display: block;
+  margin: 15% auto;
+}
+.chartjs-render-monitor.tooltip{
+  box-shadow: 0px 5px 15px 0px rgba(0,0,0,0.3);
+}
+#tooltopvalue span.tooltip-text.tt-1, #tooltopvalue span.tooltip-text.tt-2 {
+  text-align: justify;
+  font: normal normal bold 12px/16px Ubuntu;
+  letter-spacing: 0px;
+  color: #5E5E5E;
+  opacity: 1;
+  padding: 0px 30px 0px 33px;
+  position: relative;
+  top: 0;
+  display: block;
+
+}
+span.date-center {
+  text-align: center;
+  font: normal normal normal 12px/16px Ubuntu;
+  letter-spacing: 0px;
+  color: #5E5E5E;
+  opacity: 1;
+  display: block;
+  margin: 8% 0% 2% 0%;
+}
+span.tooltip-subtext.ts-2,span.tooltip-subtext.ts-1 {
+  float: right;
+  margin-left: 20px;
+}
+.selectes .ng-select .ng-arrow-wrapper .ng-arrow:before {
+  content: "\f107" !important;
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 800;
+}
+.selectes .ng-select.ng-select-opened>.ng-select-container .ng-arrow:before {
+  font-family: 'Font Awesome 5 Free';
+  content: "\f106" !important;
+  font-weight: 800;
+}
+.selectes.form-group.mb-4.titlepost span.ng-arrow {
+  border-color: transparent transparent #fff;
+}
+.titlepost .titlepost ng-select.ng-select-opened>.ng-select-container{
+  background: transparent!important;
+
+}
+.selectes.form-group.mb-4.titlepost ng-select.ng-select.ng-select-single.ng-select-searchable.ng-select-clearable .ng-select-container {
+  background: transparent!important;
+}
+.selectes .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked,.selectes .ng-select .ng-select-container {
+  border-bottom: 0px solid #ccc!important;
+}
+.carousel-photos button.owl-next {
+  width: 42px;
+  height: 42px;
+  background: #FFFFFF 0% 0% no-repeat padding-box!important;
+  opacity: 1;
+  display: inline-block!important;
+}
+.carousel-photos button.owl-prev.disabled, .carousel-photos button.owl-prev {
+  width: 42px;
+  height: 42px;
+  background: #FFFFFF 0% 0% no-repeat padding-box!important;
+  display: inline-block!important;
+}
+.carousel-photos .owl-nav {
+  position: absolute;
+  top: 0%;
+  left: 75%;
+  display: inline-block;
+  width: 33%;}
+.carousel-photos .owl-theme .owl-nav [class*=owl-]:hover {
+  background: #869791;
+  color: #717070!important;
+  text-decoration: none;
+}
+.carousel-photos .owl-theme .owl-nav [class*=owl-] {
+  font-size: 14px;
+  margin: 5px;
+  padding: 4px 7px;
+  border-radius: 50px;
+}
+.carousel-photos i.fas.fa-angle-right, .carousel-photos i.fas.fa-angle-left {
+  font-size: 26px;
+}
+.carousel-photos button:focus {
+  outline: 1px dotted;
+  outline: 0px auto -webkit-focus-ring-color;
+}
+.carousel-photos .owl-carousel .owl-item.active img {
+  width: 100%;
+  height: auto;
+  background: #fff 0% 0% no-repeat padding-box;
+  box-shadow: 0px 0px 10px #00000014;
+  border: 2px solid #EBA10F;
+  border-radius: 10px;
+  opacity: 1;
+}
+.carousel-photos .owl-carousel .owl-item img {
+  width: 100%;
+  height: auto;
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  box-shadow: 0px 0px 10px #00000014;
+  border: 0px solid #EBA10F;
+  border-radius: 10px;
+  opacity: 1;
+}
+
+.carousel-photos .owl-carousel .owl-item.active img.icon-photos,
+ .carousel-photos .owl-carousel .owl-item img.icon-photos {
+  border: none !important;
+  width: 24px!important;
+  height: 24px!important;
+  display: block;
+  text-align: center;
+  box-shadow: none !important;
+  margin: 0 auto;
+}
+.modal-body.modal-avis .ng-select span {
+  text-align: left!important;
+  font: normal normal normal 14px/18px Ubuntu;
+  letter-spacing: 0px;
+  color: #CBCBCB;
+  display: block;
+
+}
+.uplodas-photos .ngx-file-drop__drop-zone {
+  border: 0px dotted #0782d0!important;
+  border-radius: 0!important;
+  height: auto!important;
+  margin: auto!important;
+}
+.carousel-photos .owl-stage .item {
+  margin: 0 9%;
+}
+.selectes .ng-dropdown-panel .ng-dropdown-panel-items .ng-optgroup.ng-option-disabled {
+  cursor: default;
+  text-align: left;
+  font: normal normal bold 12px/14px Ubuntu;
+  letter-spacing: 0px;
+  color: #CBCBCB;
+  opacity: 1;
+}
+.selectes .ng-dropdown-panel .ng-dropdown-panel-items .ng-option span,.selectes  .ng-select .ng-select-container .ng-value-container .ng-input>input {
+  text-align: left;
+  font: normal normal normal 24px/18px Ubuntu;
+  letter-spacing: 0px;
+  color: #EBA10F;
+  opacity: 1;
+}
+
+.selectes .ng-select .ng-select-container .ng-value-container .ng-placeholder {
+  font: normal normal normal 15px/18px Ubuntu;
+}
+.selectes span.ng-option-label {
+  text-align: left;
+  font: normal normal normal 24px/18px Ubuntu;
+  letter-spacing: 0px;
+  color: #EBA10F;}
+  .selectes .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected .ng-option-label, .selectes .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected.ng-option-marked .ng-option-label {
+  font-weight: 600;
+  text-align: left;
+  font: normal normal bold 24px/18px Ubuntu;
+  letter-spacing: 0px;
+  color: #EBA10F;
+}
+.selectes .ng-select, .selectes .ng-select div, .selectes .ng-select input, .selectes .ng-select span {
+  box-sizing: border-box;
+  text-align: left;
+  font: normal normal normal 24px/18px Ubuntu;
+  letter-spacing: 0px;
+  color: #EBA10F;
+  background: transparent;
+}
+.selectes  .ng-arrow-wrapper .ng-arrow {
+  border-color: #999 transparent transparent;
+  border-style: solid;
+  border-width: 5px 5px 2.5px;
+  color: #5e5e5e;
+  font: normal normal bold 16px/18px Ubuntu;
+}
+#select-photo .ng-select.ng-select-opened>.ng-select-container {
+  background: #f8f9fe!important;}
+.selectes .ng-option-disabled.ng-optgroup span.ng-option-label {
+  text-align: left;
+  font: normal normal bold 12px/14px Ubuntu!important;
+  letter-spacing: 0px;
+  color: #CBCBCB;
+  opacity: 1;
+}
+ngb-modal-window.catorisable.d-block.fade.modal.show .modal-content {
+  padding: 0px 0px 0px 0px;
+}
+.form-control {
+  text-align: left!important;
+}
+.was-validated textarea#comment.form-control:invalid {
+  padding-right: calc(1.5em + 7.2rem)!important;
+}
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 7px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgb(217 217 217);
+  -webkit-box-shadow: 0 0 1px rgb(217 217 217);
+}
+.owl-theme .owl-nav {
+  margin-top: -64px!important;
+}
+ngb-modal-window.d-block.fade.modal.photo-small.show .modal-content {
+  width: 500px !important;
+  height: 500px !important;
+  padding: 0;
+  background-color: #fff0;
+  box-shadow: none;
+}
+.photo-small .close > span {
+  background: #ac005e!important;
+  padding: 2px;
+  top: 10%;
+  right: 16%;
+  border-radius: 10px;
+}
+div#tooltopvalue span.date-center {
+  margin: 0% 0% 2% 0%!important;
+}
+/* fin  chart tooltip*/
+
+.selectes .ng-dropdown-panel.ng-select-bottom {
+  border-bottom: 0px solid #ccc;
+}
+.selectes .ng-dropdown-panel.ng-select-bottom {
+  border-bottom: 0px solid #ccc;
+  box-shadow: none;
+}
+img.photo-galerie-pic {
+  width: 12px !important;
+  display: inline-block!important;
+  border: none !important;
+}
+.slide-text.pluss span.sub-imf-title.voir {
+  margin-bottom: 1%!important;
+}
+.serash.de span.ng-option-label.ng-star-inserted {
+  font: normal normal normal 13px/18px Ubuntu;
+  letter-spacing: 0px;
+  color: #0081c7;
+  opacity: 1;
+  padding-left: 4%;
+  padding: 6px 5px;
+  width: 100px;
+  text-align: center;
+  font: normal normal normal 12px/14px Ubuntu;
+}

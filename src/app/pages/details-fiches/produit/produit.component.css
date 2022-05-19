@@ -1,0 +1,102 @@
+button.btn.btn-add_prod {
+    background: transparent;
+    color: #dddddd;
+    border: none;
+    text-align: center;
+    color: #0081C7;
+    display: block;
+    margin: 10px 0px;
+    font: normal normal normal 12px/15px Ubuntu;
+    letter-spacing: 0px;
+    color: #fff;
+    background: #0081C7;
+    cursor: pointer;
+    margin: 0 auto;
+}
+ul.tab-group {
+    border: 0;
+    border-radius: 4px;
+    box-shadow: 0px 1px 4px rgb(0 0 0 / 26%);
+    overflow: hidden;
+    align-items: center;
+    background-color: #fff;
+    display: flex;
+    flex-wrap: nowrap;
+    margin-bottom: -4px;
+    margin-left: auto;
+}
+.tab.active {
+    border-bottom: 2px solid #0081c7;
+    color: #0081c7;
+}
+.tab {
+    display: inline-block;
+    margin: 0 0 -1px;
+    padding: 15px 12px;
+    text-align: center;
+    color: #555;
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+.modifEtablissement p {
+    font: normal normal normal 16px/25px Ubuntu;
+    letter-spacing: 0px;
+    color: #5E5E5E;
+}
+.formprod {
+    display: block;
+    width: 68%;
+    top: 0px;
+    top: 48%;
+    padding-right: 0;
+}
+.selectcat  p {
+    font: normal normal normal 12px/25px Ubuntu !important;
+    letter-spacing: 0px;
+}
+span.title_modifE{
+    font: normal normal bold 20px/30px Ubuntu;
+    letter-spacing: 0px;
+    color: #5e5e5e;
+    display: block;
+    text-align: left;
+}
+.tab-content-group {
+    width: 200px;
+    overflow: hidden;
+    width: 600px;
+    display: grid;
+    grid-template-columns: 190px 190px 190px;
+    align-items: start;
+    justify-content: space-between;
+}
+
+.modifphone  .form-control {
+    border: initial;
+    border-radius: initial!important;
+    border: none;
+}
+.addproduct {
+    display: block;
+    max-height: 631px;
+    height: 447px;
+    top: 0px;
+    top: 48%;
+    left: 11%;
+    padding-right: 42px;
+    overflow-y: scroll;
+}
+span.lenghtname {
+    display: block;
+    float: right;
+    font-size: 12px;
+}
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+  }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgb(217 217 217);
+    -webkit-box-shadow: 0 0 1px rgb(217 217 217);
+  }

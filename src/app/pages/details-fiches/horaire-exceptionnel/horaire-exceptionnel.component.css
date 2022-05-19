@@ -1,0 +1,43 @@
+.btnAddHoraires img {
+    width: 20px;
+    display: inline-block;
+}
+.calenderhoraire input.form-control.datetime {
+    border-radius: initial;
+    border: none !important;
+    border-bottom: 1px solid #ccc !important;
+}
+
+span.etatdate {
+    font: normal normal bold 10px/22px Ubuntu;
+    padding: 7px 5px;
+    cursor: pointer;
+    margin-top: 0px;
+    display: block;
+}
+.adddate {
+    border-top: 2px #ccc dashed;
+}
+span.locations {
+    padding: 10px 10px 10px 10px;
+    margin: 10px;
+    border: 1px solid #cbcbcb;
+    background: #fff;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 20px;
+    font: normal normal normal 12px/12px Ubuntu;
+    letter-spacing: 0.3px;
+    color: #0081c7;
+}
+
+.fichess {
+    margin-top: 14px;
+    height: 222px;
+    display: inline-block;
+    overflow: auto;
+    margin-bottom: 4px;
+}
+.fichess div {
+    display: inline-block;
+}

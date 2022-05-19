@@ -1,0 +1,76 @@
+       <div class="modal-body  pb-0 mb-0 mt-7" style=" width: 90%; left: 22%;">
+
+        <span class="title_modifE   text-general">Liens de votre fiche</span>
+        <p class="text-black mb-0 title-renseignement-3 text-left" > 
+          Indiquez les différents liens affichés dans votre fiche </p>
+           <div class="row coordonnes_fiche mt-5">
+            <div class="col-lg-1 mt-2 pt-1 col-md-1">
+
+                <img  alt="Ajouter un logo" class="img-suggestion mt-1" 
+                src="https://api-wallpost.bforbiz-dev.com/public/icon/icon_link.svg">
+
+
+            </div>
+            <div class="col-lg-7 col-md-10">
+              <div class="row coordonnes_fiche">
+                <div class="col-lg-1 mt-3 col-md-4">
+                  <label class="form-check-label">
+                    <input id="site" type="checkbox" class="form-check-input" 
+                     name="site" [(ngModel)]="valuerdv" (change) ="changerdv(valuerdv)"
+                       style="margin-top: -14px;">
+                  </label>
+                </div>
+
+
+                <div class="col-lg-10 col-md-10 pl-0 ml-0">
+                  <span class="nom-fiche">
+                    URL de pride de RDV </span>
+                  <div class="input-group mb-0 mt-0 input-group-alternative">
+                    <input type="text" class="form-control"  style="    height: 30px;" [(ngModel)]="lienrdv"  [readonly]="valuerdv != true "/>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row coordonnes_fiche mt-4">
+            <div class="col-lg-1 mt-2 pt-1 col-md-1">
+
+                <img  alt="Ajouter un logo" class="img-site mt-1" 
+                src="../assets/Dashboard/suggestion/icon_public.svg">
+
+
+            </div>
+            <div class="col-lg-7 col-md-10">
+              <div class="row coordonnes_fiche">
+                <div class="col-lg-1 mt-3 col-md-4">
+                  <label class="form-check-label">
+                    <input id="site" type="checkbox" class="form-check-input" 
+                     name="site" [(ngModel)]="valuesite" (change) ="changevlaue(valuesite)"
+                       style="margin-top: -14px;">
+                  </label>
+                </div>
+
+
+                <div class="col-lg-10 col-md-10 pl-0 ml-0">
+                  <span class="nom-fiche">
+                    URL du site web actuel </span>
+                  <div class="input-group mt-0 mb-0 input-group-alternative">
+                    <input type="text" class="form-control"  style="height: 30px;" [(ngModel)]="websiteUrl"  [readonly]="valuesite != true "/>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="btncnx mt-5">
+            <div style="  display: inline-block; "> <button type="button" class="btn btn-annulation"
+                (click)="Fermer()">Annuler</button></div>
+
+            <div style="  display: inline-block; "> <button (click)="valueChanged()"
+                class="btn btn-pub ml-3">Appliquer</button> </div>
+          </div>
+
+      </div>
+   

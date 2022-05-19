@@ -1,0 +1,57 @@
+i.fa.fa-trash {
+  cursor: pointer;
+}
+
+.uploadfile {
+  background: #eeeeee;
+  width: 100px;
+  height: 100px;
+  display: block;
+  border-radius: 1000%;
+  text-align: center;
+  display: block;
+  margin: 0 auto;
+  cursor: pointer;
+}
+.image-upload > input {
+  visibility: hidden;
+  width: 0;
+  height: 0;
+}
+
+#Trac_2673,#Trac_3026 {
+  fill: rgba(112, 112, 112, 1);
+}
+.Trac_2673,.Trac_3026 {
+  overflow: visible;
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  text-align: center;
+  align-items: center;
+  left: 44%;
+  top: 34%;
+}
+.actionphoto {
+    margin: 0 auto;
+    text-align: center;
+    display: block;
+}
+.actionphoto  span {
+    border: 0.5px solid #CBCBCB;
+    border-radius: 2px;
+    opacity: 1;
+    margin: 8px;
+    font-size: 12px;
+    padding: 4px 8px;
+    color: #CBCBCB;
+    cursor: pointer;
+}
+.uploadfile img {
+    border-radius: 1000%;
+    display: block;
+    max-height: 100%;
+    max-width: 100%;
+    height: 100%;
+    width: 100%;
+}

@@ -1,0 +1,136 @@
+.my_fiche{
+    color: #fff;
+    padding: 10px 10px 10px 10px;
+    margin: 10px;
+    border: 1px solid #CC0070;
+    background: #CC0070;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 20px;
+    font: normal normal normal 12px/12px Ubuntu;
+    letter-spacing: 0.3px;
+}
+
+.services fieldset{
+    border: 2px #cccccc9e dashed !important;
+    border-radius: 14px;
+}
+.services legend.scheduler-border.text-general {
+    text-align: left;
+    font: normal normal bold 14px/18px Ubuntu;
+    letter-spacing: 0px;
+    color: #5E5E5E;
+    opacity: 1;
+}
+
+.plus-suggestions {
+    color: #0081c7;
+    font-size: 12px;
+    cursor: pointer;
+    line-height: 18px;
+    margin-top: -3px;
+    text-align: center;
+    font-family: Ubuntu;
+    font-style: normal;
+    font-weight: normal;
+}
+.services legend.scheduler-border.text-general {
+    text-align: left;
+    font: normal normal bold 14px/18px Ubuntu;
+    letter-spacing: 0px;
+    color: #5E5E5E;
+    opacity: 1;
+    width: auto;
+    padding: 0px 10px;
+}
+
+.title-renseignement-3 {
+    line-height: 18px;
+    margin-top: -3px;
+    text-align: left;
+    font-family: Ubuntu;
+    font-weight: normal;
+    font-size: 12px;
+}
+.service {
+    padding-right: 10px;
+    padding: 5px 9px 5px 9px;
+    background: #fff;
+    margin: 10px;
+    border: 1px solid #ccc;
+    background: #fff;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 8px;
+    font: normal normal normal 13px/12px Ubuntu;
+    letter-spacing: 0.3px;
+    color: #5f6368;
+}
+
+.services .my_service {
+    color: #fff;
+    background: #0081c7;
+    border: 1px solid #0081c7;
+}
+
+
+
+.fichelogo {
+    display: contents;
+}
+
+.servicesfiches.blocfiche {
+ 
+    margin-top: 8px;
+    display: block;
+    max-height: 200px;
+    height: 105px;
+    top: 0px;
+    top: 48%;
+    left: 11%;
+    padding-right: 42px;
+    overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgb(217 217 217);
+    -webkit-box-shadow: 0 0 1px rgb(217 217 217);
+}
+
+
+.groupe_categories {
+    height: 313px;
+    max-height: 556px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin-bottom: 5%;
+    padding-right: 10%;
+}
+span.locations {
+    padding: 10px 10px 10px 10px;
+    margin: 10px;
+    border: 1px solid #cbcbcb;
+    background: #fff;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 20px;
+    font: normal normal normal 12px/12px Ubuntu;
+    letter-spacing: 0.3px;
+    color: #0081c7;
+}
+
+.fichess {
+    margin-top: 14px;
+    height: 290px;
+    display: inline-block;
+    overflow: auto;
+    margin-bottom: 4px;
+}
+.fichess div {
+    display: inline-block;
+}

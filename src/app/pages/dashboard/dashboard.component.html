@@ -1,0 +1,3078 @@
+<div *ngIf="!isMobileSmall">
+<div    class="header pb-8 pt-5 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+    </div>
+  </div>
+</div>
+
+  <div   [ngClass]="{'show': IsHiddens==false, 'hide':IsHiddens==true }" class="container-fluid mt--7 " id="TB">
+    <div class="row">
+      <div class=""  [ngClass]="{'col-xl-9 mb-xl-0  bloc1 ': isMobile === false , 'col-xl-11  col-sm-11 p-0 bloc1': isMobile === true}">
+
+            <div class="row bloc-dashboard">
+
+                <div class="col-xl-12 mb-12 mb-xl-12 mb-5 mb-xl-0 documents ">
+
+
+                    <div class="card  shadow doc">
+                        <div class="card-header bg-transparent title-Dachboard ">
+                            <div class=" ml-2 mt-4 row align-items-center">
+                                <div class="col-lg-9" >
+                                        <a >
+                                            <h2 class="text-black mb-2 title-renseignement document-title">
+                                              <i (click)="onReturn()"  class="fa fa-chevron-left" style="font-size: 19px;"></i>  {{tab_photosAdd}}
+                                            </h2>
+                                        </a>
+                                      <!-- <span *ngIf="photo_count != null" class="contents"> Vous avez <span style="color: #C94040">{{photo_count}} photo </span> ajoutée par un internaute</span>
+                                      <span *ngIf="photo_count == null"  class="contents">Vous avez 0 photo  ajoutée par un internaute</span> -->
+                                      <span  class="contents"> Vous avez
+                                        <span  *ngIf="CountCustomer <= 1" style="color: #C94040">{{CountCustomer}} photo </span>
+                                        <span *ngIf="CountCustomer >= 2" style="color: #C94040">{{CountCustomer}} photos </span>
+                                       ajoutées par un internaute</span>
+                                </div>
+                                <div class="col-lg-3" >
+                                <ul class="navbar-nav align-items-center d-none d-md-flex">
+                                  <li  class="nav-item ">
+                                    <a class="nav-link pr-0" role="button" (click)="openImage(content9,selected_fiche)">
+                                      <div class="media align-items-center  pl-5">
+                                        <div class="media-body ml-2 d-none d-lg-block">
+                                          <span class="mb-0 text-right d-lg-block add-photo">Ajouter des  <br />
+                                            photos dans la galerie</span>
+                                        </div>
+                                        <span class="avatar avatar-sm rounded-circle">
+                                          <i class="fa fa-plus"></i>
+                                        </span>
+                                      </div>
+                                    </a>
+                                  </li>
+                                </ul>
+                              </div>
+                                <div class="col-lg-12 pb-0 mt-3 ml-2">
+
+                                    <div class="row">
+                                      <div class="col-lg-3  col-md-12  col-sm-12 pb-0 ml-0">
+                                        <ul ngbNav #nav="ngbNav"
+                                        [(activeId)]="active"
+                                         class="nav-pills" orientation="vertical">
+                                          <li   *ngFor="let item of ListGalerie"
+                                           ngbNavItem="{{ item.Name }}"
+                                           (click)="onChangeGalerieType(item.value)">
+                                            <a ngbNavLink>{{ item.Name }}</a>
+                                            <ng-template ngbNavContent>
+                                                <div *ngFor="let item of tab_photos"    class="element-galerie">
+                                                <div class="infooo" *ngIf="item.category != 'CUSTOMER'"     >
+                                               
+                                                <div *ngIf="item.format =='PHOTO'"  style=" width: 100% ;display: block ;    min-height: 100%;   border-radius: 10px;"
+                                                [ngStyle]="{'background': 'url(' + item.file + ') no-repeat 0 0 / cover'}"></div>
+                                                <div *ngIf="item.format !='PHOTO'"  style=" width: 100% ;display: block ;    min-height: 100%;   border-radius: 10px;"
+                                                [ngStyle]="{'background': 'url(' + video + ') no-repeat 0 0 / cover'}"></div>
+                                    
+                                                <div  class="element-galerie-1">
+                                                  <a class="mr-2 mt-1 setup">
+                                                      <i class="fas fa-cog"></i>
+                                                      <div class="tooltiptext shadow ">
+                                                        <div class="text-left">
+                                                          <ul>
+
+                                                            <li> <span (click)="openCato(content11,item)"  class="actionpost">Catégoriser
+                                                              </span>
+                                                            </li>
+                                                            <li> <span (click)="openAvertir(content10,item)" class="actionpost">Avertir
+                                                              </span>
+                                                            </li>
+
+                                                            <li> <span (click)="opens(content12,item);" class="actionpost" style="color: #C94040;"
+                                                               >Supprimer </span>
+                                                            </li>
+
+                                                          </ul>
+                                                        </div>
+                                                      </div>
+                                                    </a>
+
+                                                    <a  *ngIf="item.dateAvertir!=null" class="mr-2 mt-1 setup drap">
+                                                      <span  class="drapeux"><i class="fas fa-flag"></i></span>
+                                                      <div class="tooltiptext shadow ">
+                                                        <div class="text-left Averti">
+                                                          <ul>
+
+                                                            <li > <i class="fas fa-flag"></i>  <span   class="actionpost">Averti le <b class="date-avertir">{{item.dateAvertir |date:'mm/dd/y'}}</b>
+                                                              </span>
+                                                            </li>
+
+                                                          </ul>
+                                                        </div>
+                                                      </div>
+                                                    </a>
+
+                                                    <div *ngIf="(item.category == 'PROFILE' ) || (item.category == 'LOGO' ) || (item.category == 'COVER')" class="ml-2 mt-1 setup-right sh">
+                                                        <span  (click)="openImage(content9,item)" >{{item.categoryFr}} </span><i class="fa fa-pencil-alt"></i>
+
+                                                    </div>
+
+                                                    <div class="setup-bottom pl-2">
+                                                    <span  class="text-black mb-0">
+                                                        <img  src="./assets/photos/post-picto-vue-blanc.svg" class="img-post">
+                                                        <span  class="value-post"> {{item.views}}  </span>
+                                                    </span>
+                                                    <span  class="text-black left mr-2">
+                                                        <span  class="value-post">{{item.date}}</span>
+                                                    </span>
+                                                </div>
+                                                </div>
+                                                <div (click)="openCato(content11,item)" class="ancre-image"> </div>
+                                              </div>
+                                                <div >
+                                                  <div  class="infooo" *ngIf="item.category == 'CUSTOMER' " >
+                                                  <!-- <img    class ="img-fonst red " src="{{item.file}}" alt="{{item.CategoryFR}}"/>  -->
+                                                  <div  *ngIf="item.format!='VIDEO'"  style=" border: 2px solid #C94040;width: 100% ;display: block ;    min-height: 100%;   border-radius: 10px;"
+                                                  [ngStyle]="{'background': 'url(' + item.file + ') no-repeat 0 0 / cover'}"></div>
+
+                                                  <div *ngIf="item.format !='PHOTO'"  style=" width: 100% ;display: block ;    min-height: 100%;   border-radius: 10px;"
+                                                [ngStyle]="{'background': 'url(' + video + ') no-repeat 0 0 / cover'}"></div>
+                                                  <a  class="mr-2 mt- 1 setup">
+                                                    <i  (click)="openCato(content22,item)" class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                                    </a>
+
+                                                    <a  *ngIf="item.signials > 0" class="mr-2 mt-1 setup drap">
+                                                      <span  class="drapeux"><i class="fas fa-flag"></i></span>
+                                                      <div class="tooltiptext shadow ">
+                                                        <div class="text-left Averti">
+                                                          <ul >
+
+                                                            <li > <i class="fas fa-flag"></i>  <span   class="actionpost" style="color:#C94040">Signaler le
+                                                              <b style="color:#C94040" class="date-avertir">{{item.signial_date |date:'mm/dd/y'}}</b>
+                                                              </span>
+                                                            </li>
+
+                                                          </ul>
+                                                        </div>
+                                                      </div>
+                                                    </a>
+                                                  <div   (click)="openCato(content13,item)" class="element-galerie-1">
+
+
+
+                                                      <div *ngIf="(item.category == 'PROFILE' ) || (item.category == 'LOGO' ) || (item.category == 'COVER')" class="ml-2 mt-1 setup-right sh">
+                                                          <span  (click)="open(content9,item)" >{{item.categoryFr}} </span><i class="fa fa-pencil-alt"></i>
+
+                                                      </div>
+
+                                                      <div class="setup-bottom pl-2">
+                                                      <span  class="text-black mb-0">
+                                                          <img  src="./assets/photos/post-picto-vue-blanc.svg" class="img-post">
+                                                          <span  class="value-post"> {{item.views}}  </span>
+                                                      </span>
+                                                      <span  class="text-black left mr-2">
+                                                          <span  class="value-post">{{item.date}}</span>
+                                                      </span>
+                                                  </div>
+                                                  </div>
+                                                  <div (click)="openCato(content22,item)" class="ancre-image"> </div>
+                                                  </div>
+                                                  <div>
+
+                                                  </div>
+                                                </div>
+
+                                              </div>
+                                              <div   *ngIf="selected_galerie_type != 'CUSTOMER'" class="element-galerie s ">
+                                                <a class="img-postsss" (click)="open(content9,selected_fiche)">
+                                                  <div  class="element-galerie s" *ngIf="selected_galerie_type != 'CUSTOMER'" style="    cursor: pointer; vertical-align: bottom ; display: inline-block ;   border-radius: 10px;"
+                                                  [ngStyle]="{'background': 'url(' + backgroundUrl + ') no-repeat 0 0 / cover'}">
+                                                 </div>
+                                                  
+                                                    </a>
+                                              </div>
+
+                                            </ng-template>
+
+                                          </li>
+
+                                        </ul>
+
+
+                                      </div>
+                                      <ng-template #content20 let-modal>
+                                        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <!-- <div class="iframe_form" [innerHTML]="takedownUrl"></div> -->
+                                        <iframe   class="e2e-iframe-trusted-src w-100" width="100%" height="100%" [src]="takedownUrl" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                                      </ng-template>
+                                      <div class="col-lg-9 col-md-12 col-sm-12  p-0 ml-0">
+                                      <div [ngbNavOutlet]="nav" class="ml-0"></div>
+                                      </div>
+                                      <div class="col-lg-12 mt-3 mb-3 ">
+
+                                        <span class="pagination-page" *ngIf="AllCount==0"> 0 photos sur {{AllCount}} </span>
+                                        <span class="pagination-page" *ngIf="AllCount <= Count && AllCount !=0">{{AllCount}} photos sur {{AllCount}} </span>
+                                        <span class="pagination-page" *ngIf="AllCount > Count"> {{Count}} photos sur {{AllCount}} </span>
+                                        <span (click)="ShowMore()" *ngIf="AllCount > Count" class=" pagination-avis mx-auto">+ Charger plus de photos</span>
+                                   </div>
+<!----------------------------------------popup Avertir------------------------------------------------------------------>
+                                    <div class="media hidesssss" id="Avertir" >
+                                      <div class="media-body">
+                                        <div id="notifs-client">
+                                          <ng-template #content10 let-modal>
+                                            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                                              <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <div class="modal-body ContenuPhoto galerie" >
+                                              <div class="reviews-members ">
+                                                <span
+                                                class=" pb-3 title-add-photos Avertir" id="modal-basic-title " >Avertir le propriétaire de l'image
+                                              </span >
+                                          </div>
+                                          <div class="row">
+                                            <div class="col-xl-3 col-md-3 ">
+                                              <img class src='{{tab_photoss}}' alt='{{tab_locationName}}' style="
+                                              width: 151px;
+                                              height: 151px;
+                                              border-radius: 20px;
+                                          "/>
+                                              </div>
+                                          <div class="col-xl-9  col-md-9 ">
+                                           <div class="reponse-body">
+                                            <div class="reponse-fiche gel">
+                                              <div class="form-group pl-4 pr-4 was-validated">
+                                                <span class="nom-fiche ">
+                                                  Contacter le propriétaitre</span
+                                                ><span class="symbol required"></span>
+                                                <textarea
+                                                  placeholder=" Envoyer votre message"
+                                                  class="form-control reponse_avis"
+                                                  rows="5"
+                                                  id="comment" required
+                                                  [(ngModel)]="AvertirMessage"
+                                                ></textarea>
+                                                <div class="valid-feedback"></div>
+                                                <div class="invalid-feedback"></div>
+                                              </div>
+                                            </div>
+                                            <div class="text-center buttons">
+                                              <button   class="btn btn-reponse" type="button" (click)="AviertirGategorieC(avertirItem.id, avertirItem.fiche_id) ">
+                                                Envoyer
+                                             </button>
+                                               <button
+                                                 type="button"
+                                                 class="btn btn-annulations"
+                                                 (click)="modal.close('Save click')"
+                                               >
+                                                 Annuler
+                                               </button>
+                                             </div>
+                                          </div>
+                                        </div>
+
+                                       </div>
+                                          </div>
+
+
+                                          <div class="modal-footer s" >
+
+                                            <div class="footer-modal-1"></div>
+                                          </div>
+                                          </ng-template>
+                                          </div>
+                                          </div>
+                                    </div>
+<!---------------------------------------- Fin popup Avertir------------------------------------------------------------------>
+<!----------------------------------------popup Dernier Avertir------------------------------------------------------------------>
+<div class="media hidesssss" id="Avertir" >
+  <div class="media-body">
+    <div id="notifs-client">
+      <ng-template #content7 let-modal>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="modal-body ContenuPhoto galerie" >
+          <div class="reviews-members ">
+            <span
+            class=" pb-3 title-add-photos Avertir" id="modal-basic-title " >Avertir le propriétaire de l'image
+          </span >
+      </div>
+      <div class="row">
+        <div class="col-xl-3 col-md-3 ">
+          <img class src='{{tab_photoss}}' alt='{{tab_locationName}}' style="
+          width: 151px;
+          height: 151px;
+          border-radius: 20px;
+      "/>
+          </div>
+      <div class="col-xl-9  col-md-9 ">
+       <div class="reponse-body">
+        <div class="reponse-fiche">
+          <div class="form-group pl-4 pr-4 was-validated">
+            <span class="nom-fiche">
+              Contacter le propriétaitre</span
+            ><span class="symbol required"></span>
+            <textarea
+              placeholder=" Envoyer votre message"
+              class="form-control reponse_avis"
+              rows="5"
+              id="comment" required
+              [(ngModel)]="AvertirMessage"
+            ></textarea>
+            <div class="valid-feedback"></div>
+            <div class="invalid-feedback"></div>
+          </div>
+        </div>
+        <div class="text-center buttons">
+          <button   class="btn btn-reponse" type="button" (click)="AviertirGategorieC(avertirItem.id, avertirItem.fiche_id) ">
+            Envoyer
+         </button>
+           <button
+             type="button"
+             class="btn btn-annulations"
+             (click)="modal.close('Save click')"
+           >
+             Annuler
+           </button>
+         </div>
+      </div>
+    </div>
+
+   </div>
+      </div>
+
+
+      <!-- <div class="modal-footer s" >
+
+        <div class="footer-modal-1"></div>
+      </div> -->
+      </ng-template>
+      </div>
+      </div>
+</div>
+<!---------------------------------------- Fin popup  Dernier Avertir------------------------------------------------------------------>
+<!----------------------------------------popup Catégoriser------------------------------------------------------------------>
+                  <div  class="media">
+                    <div class="media-body">
+                      <div id="notifs-client">
+                        <ng-template #content11 let-modal cato>
+                          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+
+                          <div class="modal-body Categoriser">
+                            <div class="row">
+                              <div class="col-xl-8 col-md-12 col-sm-12 font-images "style="
+                              border-radius: 20px 0 0 20px;
+                          ">
+                                <img class src='{{tab_photoss}}'  class="img-font-cato" alt='{{tab_locationName}}' />
+
+                                <div class="city-img"><span>{{tab_locationName}}</span></div>
+                              </div>
+                              <div class="col-xl-4 col-md-12 col-sm-12   Categoriser-left">
+                            <div class="reviews-members pb-2 Categoriser">
+                              <span
+                              class=" pb-3 title-add-photos in" id="modal-basic-title" >Informations
+                            </span >
+                            <span class="text-black mb-0">
+                              <img  src="./assets/Dashboard/post-picto-vue.svg" class="img-post">
+                              <span class="value-post"> {{tab_views}} consultations </span>
+                            </span>
+                            <span class="text-black mb-0">
+
+                              <img  src="./assets/photos/icon_calandar-grise.svg" class="img-post">
+                              <span class="value-post"> Il y a {{tab_date}}</span>
+                            </span>
+
+                            <span class="text-black ml-1 mb-0">
+                              <img  src="./assets/photos/insert-picture-icon-grise.png" class="img-post s">
+
+                              <span class="value-post"> {{tab_width}} x {{tab_height}} pixels</span>
+                            </span>
+                            <div class="text-black mb-0 mt-4">
+                              <!-- <img *ngIf="tab_lastName == null &&  tab_firstName == null && avertirItem.category != 'CUSTOMER'" src="./assets/photos/insert-picture-icon.png" class=" prop"> -->
+                              <img *ngIf="tab_lastName != null &&  tab_firstName != null && avertirItem.category != 'CUSTOMER' && avertirItem.photo == null" src="./assets/photos/insert-picture-icon.png" class=" prop">
+                              <img *ngIf="tab_lastName != null &&   tab_firstName != null && avertirItem.category != 'CUSTOMER'" src="{{avertirItem.photo}}" class=" prop">
+                              <img  *ngIf="avertirItem.category == 'CUSTOMER' "src="{{avertirItem.profilePhotoUrl}}" class=" prop">
+                              <span  class="value-post">
+                                {{avertirItem.profileName}}
+                                <!-- <span  *ngIf="tab_lastName == null &&   tab_firstName == null && avertirItem.category != 'CUSTOMER'" class="light">propriétaire</span> -->
+                                <span  *ngIf="tab_lastName != null &&   tab_firstName != null && avertirItem.category != 'CUSTOMER' && avertirItem.photo == null" class="light">propriétaire</span>
+                                <span  *ngIf="tab_lastName!= null &&   tab_firstName != null && avertirItem.category != 'CUSTOMER' " class="light">{{avertirItem.lastName}} {{avertirItem.firstName}}</span>
+                                <span  *ngIf=" avertirItem.category == 'CUSTOMER' " class="light">{{avertirItem.profileName}}</span>
+                              </span>
+                          </div>
+                        </div>
+                        <div class="reviews-members pb-2   Categoriser ">
+                          <span
+                          class=" pb-3 title-add-photos in " id="modal-basic-title" >Catégories
+                        </span >
+                        <div class="categor-galerie selected">
+                          <span class="categor-galerie-1" > <i class="fa fa-plus" aria-hidden="true"></i> {{avertirItem.categoryFr }}</span>
+                          </div>
+                       <div class="categor-galerie"  *ngFor="let cat of ListCategorieGal">
+                       <span class="categor-galerie-1" (click)=AddCategory(tab_fiche_id,tab_photoss,cat)>  <i class="fa fa-plus" aria-hidden="true"></i> {{cat.label}}</span>
+                       </div>
+                       <div class="modal-footer cat pl-1 pr-1">
+                        <div class="text-center buttons-catorisez">
+                          <button  type="button" (click)="DeleteGategorieC(tab_photo_id)" class="btn btn-supprimer"> Supprimer la photo </button>
+                          <button  (click)="openAvertir(content10,avertirItem)" type="button" class="btn btn-avertir"> Avertir le propriétaire </button>
+                        </div>
+
+                      </div>
+                    </div>
+                      </div>
+                      </div>
+                    </div>
+                        </ng-template>
+                        </div>
+                        </div>
+                  </div>
+
+ <!---------------------------------------- Fin popup Catégoriser---------------------------------------------->
+<!----------------------------------------popup Catégoriser border- rouge------------------------------------------------------------------>
+
+                  <div  class="media">
+                    <div class="media-body">
+                      <div id="notifs-client">
+                        <ng-template #content13 let-modal cato>
+                          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+
+                          <div class="modal-body Categoriser">
+                            <div class="row">
+                              <div class="col-xl-8 col-md-12 col-sm-12 font-images " style="
+                              border-radius: 20px 0 0 20px;
+                          ">
+                                <img class src='{{tab_photoss}}'  class="img-font-cato" alt='{{tab_locationName}}' />
+                                <div class="city-img rouge"><span>{{tab_locationName}}</span></div>
+                              </div>
+                              <div class="col-xl-4  col-md-12  col-sm-12  Categoriser-left">
+                            <div class="reviews-members pb-2 Categoriser">
+                              <span
+                              class=" pb-3 title-add-photos in " id="modal-basic-title" >Informations
+                            </span >
+                            <span class="text-black mb-0">
+                              <img  src="./assets/Dashboard/post-picto-vue.svg" class="img-post">
+                              <span class="value-post"> {{tab_views}} consultations </span>
+                            </span>
+                            <span class="text-black mb-0">
+
+                              <img  src="./assets/photos/icon_calandar-grise.svg" class="img-post">
+                              <span class="value-post"> Il y a {{tab_date}}</span>
+                            </span>
+
+                            <span class="text-black ml-1 mb-0">
+                              <img  src="./assets/photos/insert-picture-icon-grise.png" class="img-post s">
+
+                              <span class="value-post"> {{tab_width}} x {{tab_height}} pixels</span>
+                            </span>
+
+                            <div class="text-black mb-0 mt-4">
+                              <!-- <img *ngIf="tab_lastName == null &&  tab_firstName == null && informationItem.category != 'CUSTOMER'" src="./assets/photos/insert-picture-icon.png" class=" prop"> -->
+                              <img *ngIf="tab_lastName != null &&  tab_firstName != null && informationItem.category != 'CUSTOMER' && informationItem.photo == null" src="./assets/photos/insert-picture-icon.png" class=" prop">
+                              <img *ngIf="tab_lastName != null &&   tab_firstName != null && informationItem.category != 'CUSTOMER'" src="{{informationItem.photo}}" class=" prop">
+                              <img  *ngIf="informationItem.category == 'CUSTOMER' "src="{{informationItem.profilePhotoUrl}}" class=" prop">
+                              <span  class="value-post">
+                                {{informationItem.profileName}}
+                                <!-- <span  *ngIf="tab_lastName == null &&   tab_firstName == null && informationItem.category != 'CUSTOMER'" class="light">propriétaire</span> -->
+                                <span  *ngIf="tab_lastName != null &&   tab_firstName != null && informationItem.category != 'CUSTOMER' && informationItem.photo == null" class="light">propriétaire</span>
+                                <span  *ngIf="tab_lastName!= null &&   tab_firstName != null && informationItem.category != 'CUSTOMER' " class="light">{{informationItem.lastname}} {{informationItem.firstname}}</span>
+                                <span  *ngIf=" informationItem.category == 'CUSTOMER' " class="light">{{informationItem.profileName}}</span>
+                              </span>
+                          </div>
+
+                        </div>
+
+                      </div>
+                      </div>
+
+                    </div>
+                        </ng-template>
+                        </div>
+                        </div>
+                  </div>
+
+<!----------------------------------------Fin popup Catégoriser border- rouge------------------------------------------------------------------>
+<!----------------------------------------Fin popup Signler border- rouge gallerie------------------------------------------------------------------>
+
+<div  class="media">
+  <div class="media-body">
+    <div id="notifs-client">
+      <ng-template #content22 let-modal cato>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <div class="modal-body Categoriser">
+          <div class="row">
+            <div class="col-xl-8">
+              <img   *ngIf="tab_format!='VIDEO'" class="img-font-cato s" src="{{tab_photoss}}" alt="{{tab_locationName}}"/>
+              <video     *ngIf="tab_format=='VIDEO'"   width="400" controls autoplay class="img-font-cato"  src="{{tab_photoss}}" alt="{{tab_locationName}}"></video>
+              <!-- <img class src='{{tab_photoss}}'  class="img-font-cato" alt='{{tab_locationName}}' /> -->
+              <div class="city-img "><span>{{tab_locationName}}</span></div>
+            </div>
+            <div class="col-xl-4  Categoriser-left">
+          <div class="reviews-members pb-2 Categoriser">
+            <span
+            class=" pb-3 title-add-photos in " id="modal-basic-title" >Informations
+          </span >
+          <span class="text-black mb-0">
+            <img  src="./assets/Dashboard/post-picto-vue.svg" class="img-post">
+            <span class="value-post"> {{tab_views}} consultations </span>
+          </span>
+          <span class="text-black mb-0">
+
+            <img  src="./assets/photos/icon_calandar-grise.svg" class="img-post">
+            <span class="value-post"> Il y a {{tab_date}}</span>
+          </span>
+
+          <span class="text-black ml-1 mb-0">
+            <img  src="./assets/photos/insert-picture-icon-grise.png" class="img-post s">
+
+            <span class="value-post"> {{tab_width}} x {{tab_height}} pixels</span>
+          </span>
+          <div class="text-black mb-0 mt-4">
+            <img *ngIf="tab_lastName != null &&  tab_firstName != null && avertirItem.category != 'CUSTOMER' && avertirItem.photo == null" src="./assets/photos/insert-picture-icon.png" class=" prop">
+            <img *ngIf="tab_lastName != null &&   tab_firstName != null && avertirItem.category != 'CUSTOMER'" src="{{avertirItem.photo}}" class=" prop">
+            <img  *ngIf="avertirItem.category == 'CUSTOMER' "src="{{avertirItem.profilePhotoUrl}}" class=" prop">
+            <span  class="value-post">
+              {{avertirItem.profileName}}
+              <span  *ngIf="tab_lastName != null &&   tab_firstName != null && avertirItem.category != 'CUSTOMER' && avertirItem.photo == null" class="light">propriétaire</span>
+              <span  *ngIf="tab_lastName!= null &&   tab_firstName != null && avertirItem.category != 'CUSTOMER' " class="light">{{avertirItem.lastname}} {{avertirItem.firstname}}</span>
+              <span  *ngIf=" avertirItem.category == 'CUSTOMER' " class="light">{{avertirItem.profileName}}</span>
+            </span>
+        </div>
+      </div>
+      <div class="reviews-members pb-2 pt-5   ">
+        <div class="modal-footer cat pl-1 pr-1">
+         <div class="text-center buttons-catorisez signaler der">
+          <!--<button  type="button" (click)="SignalierGategorieC(tab_photo_id)" class="btn btn-supprimer signaler "> Signaler la photo </button>-->
+          <a  type="button" href="{{avertirItem.takedownUrl}}"  (click)="SignalierGategorieC(avertirItem.id)" target="_blank"  class="btn btn-supprimer signaler "> Signaler la photo </a>
+         </div>
+
+       </div>
+     </div>
+    </div>
+    </div>
+
+  </div>
+      </ng-template>
+      <ng-template #content46 let-modal>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <!-- <div class="iframe_form" [innerHTML]="takedownUrl"></div> -->
+        <iframe   class="e2e-iframe-trusted-src w-100" width="100%" height="100%" [src]="takedownUrl" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      </ng-template>
+      </div>
+      </div>
+</div>
+
+<!----------------------------------------Fin popup Signler border- rouge gallerie------------------------------------------------------------------>
+ <!----------------------------------------popup Supprimer------------------------------------------------------------------>
+ <div class="media" id="Avertir">
+  <div class="media-body">
+    <div id="notifs-client">
+      <ng-template #content12 let-modal>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="modal-body ContenuPhoto galerie">
+          <div class="reviews-members pb-5">
+            <span
+            class=" pb-3 title-add-photos Avertir" id="modal-basic-title " >Suppression d'image
+          </span >
+      </div>
+      <div class="row">
+        <div class="col-xl-5 col-md-5">
+          <img class="supp-img" src='{{tab_photoss}}' alt='{{tab_locationName}}' />
+          </div>
+      <div class="col-xl-7  col-md-7 p-0">
+       <div class="reponse-body">
+        <span class="supprission-text">Vous êtes sur le point de supprimer l'image ci-dessous, êtes-vous sûr ?</span>
+        <div class="text-center buttons">
+          <button   class="btn btn-reponse" type="button" (click)="DeleteGategorieC(delete_photo_id)">
+            Supprimer
+         </button>
+           <button
+             type="button"
+             class="btn btn-annulations"
+             (click)="modal.close('Save click')"
+           >
+             Annuler
+           </button>
+         </div>
+      </div>
+    </div>
+
+   </div>
+      </div>
+
+
+      <!-- <div class="modal-footer s" >
+
+        <div class="footer-modal-1"></div>
+      </div> -->
+      </ng-template>
+      </div>
+      </div>
+</div>
+<!---------------------------------------- Fin popup Supprimer---------------------------------------------->
+
+
+
+
+
+
+
+
+
+
+<!---------------------------------------- Debut couvetture ou logo ---------------------------------------------->
+<div class="media" id="Avertir">
+  <div class="media-body">
+    <div id="notifs-client">
+      <ng-template #content9 let-modal>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="modal-body ContenuPhoto couverture">
+          <div class="reviews-members pb-3">
+            <span
+            class=" pb-3 title-add-photos couverture" id="modal-basic-title " >Importer une photo
+          </span >
+      </div>
+      <form [formGroup]="AddPhotoForm" (ngSubmit)="onSubmit()">
+        <div class="custom-dropzone" [multiple]="false"  ngx-dropzone  accept=".webp, .gif, .png, .jpg, .jpeg" (change)="onSelect($event)">
+
+          <ngx-dropzone-label >
+            <div class="row row pl-0 pr-0 ml-0 mr-0">
+              <div class="col-xl-7">
+                <img  class="icon-modal" src='./assets/photos/picto-img-blue.svg' alt="Photos wallpost" style="width: 11%;">
+                <div class="text-justifier">
+                <span class="change-picture">Importer votre photo <br>
+                  <span class="change-picture-1">Photo
+                    Gif, Jpeg, Png, Webp
+                </span>
+                </span>
+            </div>
+              </div>
+              <div class="col-xl-5">
+                <i class="fas fa-upload"></i>
+              </div>
+            </div>
+          </ngx-dropzone-label >
+          <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files_dropped"
+            formControlName="file" [file]="f" [multiple]="false" [removable]="true" (removed)="onRemove(f)">
+          </ngx-dropzone-image-preview>
+        </div>
+        <span *ngIf="  files_dropped.length > 1" class="mesage"> {{message}}</span>
+        <div>
+          <ul>
+            <li class="list-group-item" *ngFor="let item of checklist">
+              <input type="checkbox" value="{{item.id}}" [attr.disabled]=" item.isDisabled ? true : null"
+                [checked]="checked"  (change)="isAllSelected(item)" formControlName="Category"
+                name="Category" />
+              <span class="itemList">{{item.value}} </span>
+            </li>
+          </ul>
+
+        </div>
+
+
+
+        <span class="nom-fiche"> Type de photo</span>
+        <ng-select [items]="TypePhotos" [(ngModel)]='setSelected' bindLabel="name"
+          [placeholder]="placeholder"  formControlName="Type_photo">
+        </ng-select>
+
+        <div class="btncnx mt-3">
+
+          <button type="submit" class="btn btn-pub" (click)= UploadPhoto()>Publier</button>
+          <button type="button" class="btn btn-annulation" (click)="FermerAddPhoto()">Annuler</button>
+        </div>
+      </form>
+
+      </div>
+
+
+      <div class="modal-footer" >
+
+        <div class="footer-modal-1"></div>
+      </div>
+      </ng-template>
+      </div>
+      </div>
+</div>
+
+<!---------------------------------------- Fin couvetture ou logo ---------------------------------------------->
+
+
+
+                                  </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="" [ngClass]="{'col-xl-1  col-md-1 ':    isMobile === true , 'col-xl-3  col-md-3': isMobile === false}">
+          <div *ngIf="!isMobile">
+            <app-sidebar-tb ></app-sidebar-tb>
+            <app-sidebar-general></app-sidebar-general>
+          </div>
+          <div *ngIf="isMobile" class="medium_screen text-center">
+            <span class="avatar avatar-md rounded-circle"
+            (click)="openblock(contentblock)">
+              <img  src="../assets/Dashboard/icon-franchises1.png"><sup class="sup-b"><i  class="fa fa-circle mod"></i></sup>
+          </span>
+
+          </div>
+          <div id="contentblock">
+            <ng-template #contentblock let-modal>
+
+              <button type="button" class="close avatar" aria-label="Close"
+              (click)="fermerpro()">
+             <i class="fa fa-times-thin fa-2x cross" aria-hidden="true"></i>
+              </button>
+
+              <div class="modal-body listprofil pb-0 mb-0">
+                <app-sidebar-tb ></app-sidebar-tb>
+                <app-sidebar-general></app-sidebar-general>
+              </div>
+            </ng-template>
+          </div>
+
+          </div>
+    </div>
+
+
+
+</div>
+
+<div  [ngClass]="{'hide': IsHiddens==false, 'show':IsHiddens==true }" class="container-fluid  mt--7">
+  <div class="row">
+    <div class=""  [ngClass]="{'col-xl-9 mb-xl-0 ': isMobile === false , 'col-xl-11  col-sm-11 p-0': isMobile === true}">
+<!--------------------TB general ---------------------->
+      <div class="row bloc-dashboard" *ngIf="fichindividuel == ''">
+        <div class="col-xl-12 mb-5 mb-xl-0">
+          <div class="card shadow">
+            <div class="card-header bg-transparent title-Dachboard">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h2 class="text-black mb-0 title-renseignement">
+                    Renseigner le profil de vos établissements
+                  </h2>
+                  <div *ngIf="isMobile"></div>
+                  <!-- {{isMobile}}
+                  {{width}} -->
+                </div>
+                <!-- <div *ngIf="isMobile=='MobileWidth'">I am a Mobile Device</div> -->
+
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-xl-8 mb-5 mb-xl-0">
+                  <div class="row">
+                    <div class="col-xl-2 col-md-2 mb-5 mb-xl-0 chart">
+                      <div>
+                        <canvas id="canvas" width="103 !important" height="103 !important">
+                        </canvas>
+                          <span class="chart-unique-value">
+                            <span class="js-count">
+                              {{totalprofil}}%
+                            </span>
+                          </span>
+                      </div>
+                    </div>
+                    <div class="col-xl-9 col-md-10  mb-xl-0">
+                      <h3 class="text-black mb-0 title-renseignement-2">
+                        Moyenne de complétude des profils établissement
+                      </h3>
+                      <h6 class="text-black mb-0 title-renseignement-3">
+                        Améliorez votre classement dans la recherche à proximité
+                        et présentez un profil complet à vos clients
+                      </h6>
+                    </div>
+                  </div>
+                  <div class="card-header bg-transparent title-Dachboard bloc-suggestion" *ngIf="existsuggestion != 0">
+                    <div class="row align-items-center">
+                      <div class="">
+                        <h2 class="text-black mb-0 Suggestion">Suggestion</h2>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="card-header bg-transparent title-Dachboard" style="padding-left: 0px" *ngIf="existsuggestion != 0">
+                  <div   *ngFor="let profils of Listsuggestions , let i = index">
+                    <div class="row align-items-center" style="padding-left: 1%" *ngIf="i <2">
+                      <div class="col-lg-6 icon-sugg">
+                        <img  src="{{ profils.icon }}" alt="Ajouter un logo"  class="img-suggestion mt-1"/>
+                        <h3 class="text-black mb-0 add-img">{{ profils.name }}</h3>
+                      </div>
+                      <div class="col-lg-6 text-right nbrfiche tabg"  *ngIf="role_id != 3"
+                      (click)="Opensuggestion(contentsuggestion) ; sugg(profils.name)">
+                        <span class="nbr-suggestion">
+                          <span class="nbrsugestion"> {{ profils.total }}</span>
+                          <span class="fiches"> fiches </span></span>
+                        <img src="./assets/Dashboard/icon-suggestion.png" alt="Suggestion" />
+                      </div>
+
+                      <div class="col-lg-6 text-right nbrfiche tabg"  *ngIf="role_id == 3">
+                        <span class="nbr-suggestion" style="margin-left: 4px; cursor: initial;">
+                          <span class="nbrsugestion"> {{ profils.total }}</span>
+                          <span class="fiches"> fiches </span></span>
+                        <img src="./assets/Dashboard/cartouch.png" alt="Suggestion" />
+                      </div>
+
+                    </div>
+                    <hr style="margin: 7px 0px !important"  *ngIf="i <1"/>
+                  </div>
+                  </div>
+                  <div class="row mt-1" *ngIf="role_id != 3" >
+                    <div class="col-lg-12">
+                      <div class="bg-transparent title-Dachboard">
+                        <div class="row align-items-center">
+                          <div class="col-lg-12 text-center" (click)="Opensuggestion(contentsuggestion)">
+                            <span class="text-center mb-0 plus-suggestions">
+                              <i class="fa fa-plus"></i> de suggestions</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="col-xl-4 p-completude" *ngFor="let profils of DataProfiles">
+                  <div class="row paginationd">
+
+                    <!-- <div class="col-xl-5">
+                      <span class="page"><i class="fa fa-angle-double-left"></i>{{TotalProfilCout}} <i class="fa fa-angle-double-right"></i></span>
+                    </div> -->
+
+                  <div class="col-xl-7 col-md-12 pr-0 pl-3">
+                  <h3 class="text-black mb-0 title-renseignement-2 pro">
+                    Profils les moins complétés
+                  </h3>
+                </div>
+                  <!-- <div class="col-xl-5  col-md-12  pr-2 pl-0  ">
+                    <pagination-controls id="some_id" class="profil-pagination"
+                    (pageChange)="nbcount = $event" previousLabel="" nextLabel=""
+                    pageSizeOptions="[5, 10, 20]"  [maxSize]="maxSize"    [responsive]="responsive"></pagination-controls>
+                  </div> -->
+                </div>
+                  <table class="table align-items-center table-flush listfiches " style="margin-top: 11px;">
+                    <tbody>
+                      <tr *ngFor="let fiche of listFiches ; let i='index' " (click)="detailsfranchise(fiche.id)"
+                        style="cursor: pointer;">
+
+                        <div *ngIf="i<4" >
+                          <th scope="row" class="text-bold">
+                           <span class="nomprofil">{{ fiche.locationName }}  </span>
+                          </th>
+                          <td class="text-right">
+                            <span class="profilsvalue"> {{ fiche.total }} %</span>
+                          </td>
+                        </div>
+
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div class="row " *ngIf="role_id != 3" >
+                  <div class="col-lg-12">
+                    <div class="bg-transparent title-Dachboard">
+                      <div class="row align-items-center">
+                        <div class="col-lg-12  text-center" >
+                          <span class="text-center mb-0 plus-suggestions" (click)="Openprofil(contentprofil)">
+                            <i class="fa fa-plus"></i> de profils</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+              </div>
+<!--
+              <div class="row mt-3" *ngIf="role_id != 3" >
+                <div class="col-lg-8">
+                  <div class="bg-transparent title-Dachboard">
+                    <div class="row align-items-center">
+                      <div class="col-lg-12 text-center" (click)="Opensuggestion(contentsuggestion)">
+                        <span class="text-center mb-0 plus-suggestions">
+                          <i class="fa fa-plus"></i> de suggestions</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="bg-transparent title-Dachboard">
+                    <div class="row align-items-center">
+                      <div class="col-lg-12  text-center" >
+                        <span class="text-center mb-0 plus-suggestions" (click)="Openprofil(contentprofil)">
+                          <i class="fa fa-plus"></i> de profils</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+<!--------------------TB INDIVIDUAL ---------------------->
+<div class=" bloc-dashboard  fichindividuel" *ngIf="fichindividuel != ''">
+
+  <a class="m-nav__link m-nav__link--icon btn-retour" value="Retour" onclick="history.go(-1)"    *ngIf="router.url == '/tableaux-de-bord'">
+       <i class="fa fa-chevron-left"></i> Retour
+     </a>
+     </div>
+      <div class="row bloc-dashboard " *ngIf="fichindividuel != ''">
+        <div class="col-xl-12 mb-5 mb-xl-0">
+          <div class="row">
+            <div class="col-xl-8 mb-5 mb-xl-0">
+
+              <div class="card shadow bloc-performance tabindivid">
+                <div class="card-header bg-transparent title-Dachboard">
+                  <div class="row align-items-center">
+                    <div class="col-xl-9 col-md-9">
+                      <h2 class="text-black mb-0 title-renseignement titleindiv">
+                        {{ficheName}}
+                      </h2>
+                    </div>
+
+                    <div class="col-xl-3 col-md-3 p-0">
+
+                      <div class="media mt-2 align-items-center"  (click)="detailsfranchise(fichindividuel)">
+                        <div class="media-body  ml-2 d-none d-lg-block">
+                          <span *ngIf="role_id != 3" class="mb-0 text-right d-lg-block view-franchise">Configuration  <br> de la fiche</span>
+                          <span *ngIf="role_id == 3" class="mb-0 text-right d-lg-block view-franchise">Voir détails  <br> de la fiche</span>
+
+                        </div>
+                        <span class="avatar  avatar-sm rounded-circle"><i class="fa fa-eye"></i></span>
+                      </div>
+                    </div>
+
+                  </div>
+
+
+                  <div class="row align-items-center">
+                    <div class="col-xl-12 mb-5 mb-xl-0">
+                      <div class="row">
+                        <div class="col-xl-2 col-md-2 mb-5 mb-xl-0 chart">
+                          <div>
+                            <canvas id="canvas" width="103 !important" height="103 !important">
+                            </canvas>
+                              <span class="chart-unique-value">
+                                <span class="js-count">
+                                  {{totalprofil}}%
+                                </span>
+                              </span>
+                          </div>
+                        </div>
+                        <div class="col-xl-9 col-md-10 mt-3 mb-xl-0">
+                          <h3 class="text-black mb-0 title-renseignement-2 indi">
+                            Moyenne de complétude des profils établissement
+                          </h3>
+                          <h6 class="text-black mb-0 title-renseignement-3">
+                            Améliorez votre classement dans la recherche à proximité
+                            et présentez un profil complet à vos clients
+                          </h6>
+                        </div>
+                      </div>
+
+                      <div class="card-header bg-transparent title-Dachboard bloc-suggestion" *ngIf="existsuggestion != 0">
+                        <div class="row align-items-center">
+                          <div class="">
+                            <h2 class="text-black mb-0 Suggestion">Suggestion </h2>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="card-header bg-transparent title-Dachboard indiv"
+                        style="padding-left: 0;padding-top: 8px ; padding-bottom: 16px;" >
+
+
+                        <div   *ngFor="let profils of Listsuggestions , let i = index">
+                          <div class="row align-items-center" style="padding-left: 1%" *ngIf="i <1">
+
+                            <div class="col-lg-9 icon-sugg">
+                              <img  src="{{ profils.icon }}" alt="Ajouter un logo"  class="img-suggestion mt-1"/>
+                              <h3 class="text-black mb-0 add-img">{{ profils.name }}</h3>
+                            </div>
+                            <div class="col-lg-2 text-right d-flex nbrfiche"
+                            (click)="Opensuggestion(contentsuggestion) ; sugg(profils.name)">
+                              <span class="nbr-suggestionndiv " *ngIf="role_id != 3">
+                                 <span   class="fiches">Modifier </span>
+                                </span>
+                              <img *ngIf="role_id != 3" src="./assets/Dashboard/icon-suggestion.png" alt="Ajouter un logo" />
+                            </div>
+
+
+
+                            <div  *ngIf="nbrsuggestions!=0" class="col-lg-1 text-center nbrfiche"
+
+                            (click)="Opensuggestion(contentsuggestion)"
+                             >
+                              <div  class="nbrsug">
+                                <span> + {{nbrsuggestions}} </span>
+                              </div>
+                            </div>
+
+
+                          </div>
+
+                        </div>
+                        <div  class="card-header bg-transparent title-Dachboard bloc-suggestion"
+                        *ngIf="notifphoto != 0 ||  notiffiche != 0">
+                          <div class="row align-items-center">
+                            <div class="">
+                              <h2 class="text-black mb-0 Suggestion">Notification</h2>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row align-items-center" *ngIf="notifphoto != 0 ||  notiffiche != 0"
+                        style="padding-left: 1%;    padding-top: 4px;">
+                          <div class="col-lg-9" style="display: inline-block;">
+                            <img src="{{picto}}" style="    width: 20px;     display: inline-block;">
+
+                            <h3 class="text-black mb-0 add-img">
+                              {{msg}}
+                            </h3>
+                          </div>
+
+                          <div *ngIf=" notifphoto != 0 && notiffiche != 0"   class="col-lg-2"  >
+                            <span class="nbr-suggestionndiv" *ngIf="role_id != 3">
+                              <span class="nbrsugestion"> {{ notifphoto }}</span>
+                              <span class="fiches ml-1">photos </span></span>
+                            <img *ngIf="role_id != 3" src="./assets/Dashboard/icon-notif.png" alt="Ajouter un logo" />
+                          </div>
+
+                          <div *ngIf=" notifphoto == 0 && notiffiche >  1 "  class="col-lg-2"  >
+                            <span class="nbr-suggestionndiv" *ngIf="role_id != 3">
+                              <span  class="nbrsugestion"> {{NotifNumber }}</span>
+                              <span class="fiches ml-1"> </span></span>
+                            <img *ngIf="role_id != 3" src="./assets/Dashboard/icon-notif.png" alt="Ajouter un logo" />
+                          </div>
+
+                          <div  *ngIf=" notifphoto != 0 && notiffiche != 0 " class="col-lg-1 text-center nbrfiche"
+                          (click)="role_id != 3 ? notificationfiche(contentnotification) : null">
+                            <div class="nbrsug">
+                              <span> + {{notiffiche}} </span>
+                            </div>
+                          </div>
+                          <div  *ngIf=" notifphoto == 0 && notiffiche >  1 " class="col-lg-1 text-center nbrfiche"
+                          (click)="role_id != 3 ? notificationfiche(contentnotification) : null">
+                            <div class="nbrsug">
+                              <span> + {{ NotifNumberZone}} </span>
+                            </div>
+                          </div>
+                          <div *ngIf=" notifphoto == 0 && notiffiche == 1 "  class="col-lg-2 "  >
+                            <span class="nbr-suggestionndiv" *ngIf="role_id != 3">
+                              <span class="nbrsugestion"> {{ notiffiche }}</span>
+                              </span>
+                            <img *ngIf="role_id != 3" src="./assets/Dashboard/icon-notif.png" alt="Ajouter un logo" />
+                          </div>
+                          <div  *ngIf=" notifphoto == 0 && notiffiche == 1 " class="col-lg-1  text-center nbrfiche" style="display:none;"
+                          (click)="role_id != 3 ? notificationfiche(contentnotification) : null">
+                            <div class="nbrsug">
+                              <span> + {{notiffiche}} </span>
+                            </div>
+                          </div>
+
+                          <div *ngIf=" notifphoto == 1 && notiffiche == 0 "  class="col-lg-2 "  >
+                            <span class="nbr-suggestionndiv" *ngIf="role_id != 3">
+                              <span class="nbrsugestion"> {{ notifphoto }}</span>
+                              <span class="fiches ml-1">photos </span>
+                              </span>
+                            <img *ngIf="role_id != 3" src="./assets/Dashboard/icon-notif.png" alt="Ajouter un logo" />
+                          </div>
+                          <div  *ngIf=" notifphoto == 1 && notiffiche == 0 " class="col-lg-1  text-center nbrfiche" style="display:none;"
+                          (click)="role_id != 3 ? notificationfiche(contentnotification) : null">
+                            <div class="nbrsug">
+                              <span> + {{notiffiche}} </span>
+                            </div>
+                          </div>
+
+
+
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-4  mb-5 mb-xl-0" >
+              <div class="card shadow bloc-performance raccourcis pb-3">
+                <div class="card-header bg-transparent title-Dachboard">
+                  <div class="row align-items-center">
+                    <div class="col-xl-10 col-md-10">
+                      <h2 class="text-black mb-0 title-renseignement">
+                        Raccourcis
+                      </h2>
+                    </div>
+                    <div class="col-xl-2 col-md-2 raccourcis" *ngIf="role_id != 3"
+                      (click)="Contentraccourcis(contentraccourcis)">
+                      <div class="media align-items-center" style="float: right;">
+                        <span class="avatar avatar-sm rounded-circle"><i class="fa fa-pen"></i></span>
+                      </div>
+                    </div>
+                  </div>
+
+
+
+                </div>
+                <div class="card-body mt-1 pb-0 ml-0">
+
+                  <div class="col-xl-12 mb-2 mb-xl-0">
+                    <div class="row pl-2 pr-2" >
+                      <div  class="col-xl-4 mb-5 col-md-4 mb-xl-0" *ngFor="let item of listsraccourcis , let i = 'index'">
+                        <div *ngIf="i <6  && i!=1">
+
+
+                          <div class=" postindiv tabindiv" *ngIf="role_id != 3"   [ngStyle]="{'background-color':item.color , 'border-color':item.color} "
+
+
+                          (click)=" openraccourcis(item , contentraccourci) "
+                          >
+                           <img [src]="item.icon">
+                           <span>{{item.name}}</span>
+                         </div>
+
+                        <div class=" postindiv tabindiv" *ngIf="role_id == 3" [ngStyle]="{'background-color':item.color , 'border-color':item.color} "
+
+
+                         (click)="item.name == 'Rédiger un post' ? openraccourcis(item , contentraccourci) : null"
+                         >
+                          <img [src]="item.icon">
+                          <span>{{item.name}}</span>
+                        </div>
+
+                      </div>
+                      <div *ngIf=" i==1">
+
+
+                        <div class=" postindiv tabindiv" *ngIf="role_id != 3"   [ngStyle]="{'background-color':item.color , 'border-color':item.color} "
+
+                        (click)="openAddPhotos(content9,item)"
+                        >
+                         <img [src]="item.icon">
+                         <span>{{item.name}}</span>
+                       </div>
+
+                      <div class=" postindiv tabindiv" *ngIf="role_id == 3" [ngStyle]="{'background-color':item.color , 'border-color':item.color} "
+
+
+                       (click)="item.name == 'Rédiger un post' ? openraccourcis(item , contentraccourci) : null"
+                       >
+                        <img [src]="item.icon">
+                        <span>{{item.name}}</span>
+                      </div>
+
+                    </div>
+                    </div>
+
+                      <div *ngIf="lenghtraccourcis < 4 && role_id != 3 " class="col-xl-4 mb-5 mb-xl-0 " (click)="Contentraccourcis(contentraccourcis)">
+                        <div class="videtabe tabindiv">
+                          <img src="../assets/Dashboard/icon-plus-circle.svg" style="width: 50px;">
+
+                        </div>
+                      </div>
+
+                      <div *ngIf="lenghtraccourcis < 5 && role_id != 3" class="col-xl-4 mb-5 mb-xl-0 " (click)="Contentraccourcis(contentraccourcis)">
+                        <div class="videtabe tabindiv">
+                          <img src="../assets/Dashboard/icon-plus-circle.svg" style="width: 50px;">
+
+                        </div>
+                      </div>
+                      <div  *ngIf="lenghtraccourcis < 6 && role_id !=3" class="col-xl-4 mb-5 mb-xl-0 " (click)="Contentraccourcis(contentraccourcis)">
+                        <div class="videtabe tabindiv">
+                          <img src="../assets/Dashboard/icon-plus-circle.svg" style="width: 50px;">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="userediteur" *ngIf="listsraccourcis.length == 0 && role_id == 3">
+                      <span class="raccourcisedit">Aucun raccourcis</span>
+                    </div>
+                  </div>
+                   <div  *ngIf="NbrePhotos!=0" class=" acceder">
+                    <div class="row" >
+                      <div class="col-xl-8 col-md-8">
+                    <img class="acceder-img mr-1" src="../../../assets/photos/galerie-dimages.svg">
+                    <span class="acceder-1"(click)="onReturn()"  >Accéder à ma galerie photos</span>
+
+                  </div>
+                  <div class="col-xl-4 col-md-4">
+                    <span class="acceder-photos"   *ngIf="NbrePhotos==1"><b class="acce">{{NbrePhotos}}</b> photo</span>
+                    <span class="acceder-photos"   *ngIf="NbrePhotos > 1"><b class="acce">{{NbrePhotos}}</b> photos</span>
+                  </div>
+                  </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+<!--------------------Fin TB INDIVIDUAL ---------------------->
+      <div class="row bloc-dashboard">
+        <div class="col-xl-12  mb-xl-0">
+          <div class="row">
+            <div class="col-xl-6 mb-5 mb-xl-0">
+              <div class="card shadow bloc-performance bloc1">
+                <div class="card-header bg-transparent title-Dachboard">
+                  <div class="row align-items-center">
+                    <div class="col-xl-5 col-md-5">
+                      <h2 class="text-black mb-0 title-renseignement">
+                        Performances
+                      </h2>
+                    </div>
+
+                    <div class="col-xl-7 col-md-7">
+                      <div class="filtre-date">
+                        <span class="datefiltre"> Du</span>
+                        <div class="input-group pl-1 pr-1">
+
+                          <input type="text"
+                           placeholder="Sam. 3 oct 2020"
+                            name="datedebut"
+                            class=" form-control datetime"
+                             bsDatepicker
+                              [bsValue] ="datedebut"
+                              [(ngModel)]="datedebut"
+                            (ngModelChange)="getperformance(datedebut , datefin)"
+                            [bsConfig]="{ isAnimated: true, dateInputFormat: '  DD MMM YYYY' ,   language: 'Fr'}">
+                        </div>
+
+                        <span class="datefiltre"> à </span>
+                        <div class="input-group pl-1 pr-1">
+                        <input type="text" placeholder="Sam. 3 oct 2020"
+                         name="datefin"
+                         class=" form-control datetime"
+                          bsDatepicker
+                           [(ngModel)]="datefin"
+                           [bsValue] ="datefin"
+                            (ngModelChange)="getperformance(datedebut , datefin)"
+                          [bsConfig]="{ isAnimated: true, dateInputFormat: '  DD MMM YYYY' ,   language: 'Fr'}">
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body pb-0 mt-3 tabperformance">
+                  <ngb-tabset type="pills">
+                    <ngb-tab>
+                      <ng-template ngbTabTitle>
+                        <span class="title-perfomance1">Vues</span>
+                        <span class="value-performance1"> {{Vuetotal}} </span>
+                      </ng-template>
+
+
+                      <ng-template ngbTabContent>
+                        <div class="row  serachvue">
+                          <div class="col-lg-9 mt-2 ">
+                            <span class="add-img"> Vues dans la recherche</span>
+                          </div>
+
+                          <div class="col-lg-2 pl-0  pr-3" *ngFor="let item of Psearch" >
+                            <span class="value-activite"> {{vuesearch}} </span>
+
+                          </div>
+
+                          <div class="col-lg-1 ml-0 mr-0 pl-0 pr-0 pourcentage" *ngFor="let item of Psearch" >
+
+                            <div class="value-percent" [ngStyle]="{'color': item.status == 'positif' ? '#b1cd45' : item.status == 'negative' ? '#c94040' : '#fff'  }">
+
+                                <span class="soit pr-2">Soit</span><span style="font-style: normal; font-weight: bold;font-size: 12px; "> {{item.pourcentage}} %</span>
+                            </div>
+                          </div>
+
+                        </div>
+
+                        <div class="row serachmaps">
+                          <div class="col-lg-9 mt-2 ">
+                            <span class="add-img ">Vues dans maps</span>
+                          </div>
+
+                          <div class="col-lg-2 pl-0 pr-3" *ngFor="let item of Pmaps">
+                            <span class="value-activite"> {{Vuemaps}} </span>
+
+                          </div>
+
+                          <div class="col-lg-1  ml-0 mr-0 pl-0 pr-0 pourcentage" *ngFor="let item of Pmaps">
+
+                            <div class="value-percent"    [ngStyle]="{'color': item.status == 'positif' ? '#b1cd45' : item.status == 'negative' ? '#c94040' : '#fff'    }">
+                              <span class="soit pr-2">Soit</span><span style="font-style: normal; font-weight: bold; font-size: 12px;"   >{{item.pourcentage}} %</span>
+                            </div>
+                          </div>
+                        </div>
+
+                      </ng-template>
+
+
+                    </ngb-tab>
+
+
+                    <ngb-tab>
+                      <ng-template ngbTabTitle>
+                        <span class="title-perfomance1">Recherche</span>
+                        <span class="value-performance1"> {{searchtotal}} </span>
+
+                      </ng-template>
+                      <ng-template ngbTabContent>
+
+                        <div class="row mt-3 pb-3 serachvue">
+                          <div class="col-lg-9">
+                            <span class="add-img"> Recherche directe
+                            </span>
+                          </div>
+
+                          <div class="col-lg-2 pr-0 " *ngFor="let item of pdirect">
+                            <span class="value-activite"> {{direct}} </span>
+
+                          </div>
+
+                          <div class="col-lg-1 ml-0 mr-0 pl-0 pr-0" *ngFor="let item of pdirect">
+
+                            <div class="value-percent"  [ngStyle]="{'color': item.status == 'positif' ? '#b1cd45' : item.status == 'negative' ? '#c94040' : '#fff'    }">
+                              <span class="soit pr-2">Soit</span><span style=" font-style: normal;font-weight: bold; font-size: 12px;"> {{item.pourcentage}}%</span>
+                            </div>
+                          </div>
+                          <div class="col-lg-12"><span class="text-general">Utilisateurs qui trouvent la fiche de votre établissement en recherchant le nom ou l'adresse de votre entreprise</span></div>
+
+                        </div>
+
+                        <div class="row mt-3">
+                          <div class="col-lg-9">
+                            <span class="add-img">Découverte</span>
+                          </div>
+
+
+                          <div class="col-lg-2 pr-0" *ngFor="let item of pindirect">
+                            <span class="value-activite"> {{indirect}} </span>
+
+                          </div>
+
+                          <div class="col-lg-1 ml-0 mr-0 pl-0 pr-0" *ngFor="let item of pindirect">
+                            <div class="value-percent"  [ngStyle]="{'color': item.status == 'positif' ? '#b1cd45' : item.status == 'negative' ? '#c94040' : '#fff'    }">
+                              <span class="soit pr-2">Soit</span><span style="font-style: normal;font-weight: bold;font-size: 12px;">{{item.pourcentage}} %</span>
+                            </div>
+                          </div>
+                          <div class="col-lg-12"><span  class="text-general d-block">Utilisateurs qui trouvent la fiche de votre établissement en recherchant une catégorie, un produit ou un service</span></div>
+
+
+                        </div>
+
+
+                      </ng-template>
+                    </ngb-tab>
+
+
+
+                    <ngb-tab>
+                      <ng-template ngbTabTitle>
+                        <span class="title-perfomance1">Activité</span>
+                        <span class="value-performance1"> {{activitetotal}} </span>
+
+                      </ng-template>
+                      <ng-template ngbTabContent>
+
+
+                        <div class="row mt-3 pb-3 serachvue">
+                          <div class="col-lg-9">
+                            <span class="add-img"> Visite de site web
+                            </span>
+                          </div>
+
+                          <div class="col-lg-2 pr-0 " *ngFor="let item of purl" >
+                            <span class="value-activite"> {{url}} </span>
+
+                          </div>
+
+
+                          <div class="col-lg-1 ml-0 mr-0 pl-0 pr-0 " *ngFor="let item of purl" >
+                           <div class="value-percent"  [ngStyle]="{'color': item.status == 'positif' ? '#b1cd45' : item.status == 'negative' ? '#c94040' : '#fff'    }">
+                            <span class="soit pr-2">Soit</span><span style=" font-style: normal;font-weight: bold; font-size: 12px;"> {{item.pourcentage}}%</span>
+                            </div>
+                          </div>
+
+
+                        </div>
+
+                        <div class="row mt-3 serachvue">
+                          <div class="col-lg-9">
+                            <span class="add-img">Appels</span>
+                          </div>
+                          <div class="col-lg-2 pr-0" *ngFor="let item of pappel">
+                            <span class="value-activite"> {{appel}} </span>
+
+                          </div>
+
+
+                          <div class="col-lg-1 ml-0 mr-0 pl-0 pr-0" *ngFor="let item of pappel">
+
+                            <div class="value-percent"  [ngStyle]="{'color': item.status == 'positif' ? '#b1cd45' : item.status == 'negative' ? '#c94040' : '#fff'    }">
+                              <span class="soit pr-2">Soit</span><span style="font-style: normal;font-weight: bold;font-size: 12px;">{{item.pourcentage}} %</span>
+                            </div>
+                          </div>
+
+
+                        </div>
+
+
+
+                        <div class="row mt-3 serachvue">
+                          <div class="col-lg-9">
+                            <span class="add-img">Vues des photos</span>
+                          </div>
+                          <div class="col-lg-2 pr-0" *ngFor="let item of pvuephoto">
+                            <span class="value-activite"> {{vuephoto}} </span>
+
+                          </div>
+
+
+                          <div class="col-lg-1 ml-0 mr-0 pl-0 pr-0" *ngFor="let item of pvuephoto">
+                           <div class="value-percent"  [ngStyle]="{'color': item.status == 'positif' ? '#b1cd45' : item.status == 'negative' ? '#c94040' : '#fff'    }">
+                            <span class="soit pr-2">Soit</span><span style="font-style: normal;font-weight: bold;font-size: 12px;">{{item.pourcentage}} %</span>
+                            </div>
+                          </div>
+
+                        </div>
+
+
+
+
+
+                        <div class="row mt-3">
+                          <div class="col-lg-9">
+                            <span class="add-img">Demandes d'itinéraire</span>
+                          </div>
+                          <div class="col-lg-2 pr-0"  *ngFor="let item of pitineraire">
+                            <span class="value-activite"> {{itineraire}} </span>
+
+                          </div>
+
+                          <div class="col-lg-1 ml-0 mr-0 pl-0 pr-0"  *ngFor="let item of pitineraire">
+                           <div class="value-percent"  [ngStyle]="{'color': item.status == 'positif' ? '#b1cd45' : item.status == 'negative' ? '#c94040' : '#fff'    }">
+                            <span class="soit pr-2">Soit</span><span style="font-style: normal;font-weight: bold;font-size: 12px;">{{item.pourcentage}} %</span>
+                            </div>
+                          </div>
+
+
+                        </div>
+                      </ng-template>
+                    </ngb-tab>
+
+
+                  </ngb-tabset>
+
+
+
+                </div>
+                <span class="text-p ">Performances au cours des {{nbjour}} derniers jours</span>
+              </div>
+            </div>
+
+            <div class="col-xl-6 mb-5 mb-xl-0">
+              <div class="card shadow bloc-performance">
+                <div class="card-header bg-transparent title-Dachboard">
+                  <div class="row align-items-center">
+                    <div class="col">
+                      <h2 class="text-black mb-0 title-renseignement">
+                        Moyenne globale des avis
+                      </h2>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body pb-0 ml-0">
+                  <div class="row ml-0" style="margin-left: -11% !important" *ngIf="TotalAvis != 0" >
+                    <div class="col-xl-10 col-md-10 ml-0 mb-5 mb-xl-0">
+                      <div class="row listAvis ml-0" *ngFor="let avis of ListAvis; let i = index">
+                        <div class="  col-xl-2 col-md-2 pr-0 ml-0 pl-0 text-right  mb-xl-0  moyglobal" style="margin-top: -10px">
+                          <span class="nbr-avis">{{ avis.Name }} </span>
+                          <i class="fa fa-star"></i>
+                        </div>
+                        <div class="col-xl-10 col-md-10 mb-xl-0">
+                          <ngb-progressbar [value]="avis.progressValue
+                          "></ngb-progressbar>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="
+                        col-xl-2 col-md-2 col-md-2
+                        text-center
+                        mb-xl-0
+                        note-avis
+                      ">
+                      <span class="value-avis"> {{TotalRate}} </span>
+                      <ng-template #t let-fill="fill">
+                        <span class="star gestion" [class.full]="fill === 100">
+                          <span class="half" [style.width.%]="fill"
+                            ><i class="fa fa-star s"></i></span
+                          ><i class="fa fa-star s"></i>
+                        </span>
+                      </ng-template>
+
+                      <ngb-rating
+                        [(rate)]="TotalRate"
+                        [starTemplate]="t"
+                        [readonly]="true"
+                        [max]="5"
+                      ></ngb-rating>
+<br>
+
+                      <span class="nbr-avis">{{TotalAvis}} avis</span>
+                    </div>
+                  </div>
+
+                  <div class="row ml-0" style="margin-left: -11% !important" *ngIf="TotalAvis == 0">
+
+                    <div class="col-xl-12 col-md-10  mt-7 ml-0 mb-5 mb-xl-0">
+                    <span class="aucunavis">Aucun avis disponible</span>
+
+                    </div>
+                  </div>
+
+
+                  <div class="wording mt-2">
+                    <!-- <span class="add-img">Wordings les plus tapés par vos utilisateurs</span> *ngIf="lastAvis.length > 0" -->
+
+                    <fieldset class="scheduler-border mb-" *ngIf="lastAvis.length > 0" >
+                      <legend class="scheduler-border text-general">
+                        Dernier avis
+                      </legend>
+                      <div class="reviews-members pb-2 Dernier" *ngFor="let last of lastAvis">
+                        <div class="media">
+
+                          <a href="#"><img alt="" src="../assets/Dashboard/Autre.png" class="mr-3 rounded-pill" /></a>
+                          <div class="media-body">
+                            <div class="reviews-members-header mt-2">
+                              <span class="star-rating float-right">
+                                Google MyBusness de
+                                <span class="nom-societe mt-0" (click)="detailsfranchise(last.fiche_id)">
+                                  {{last.locationName}}</span>
+                              </span>
+                              <h6 class="mb-1">
+                                <a class="Name-avis" [innerHTML]="last.title"> {{last.title}}></a>
+                              </h6>
+
+                              <p class="text-general ml-0" style="margin-top: -4px">
+                              <ng-template #t let-fill="fill">
+                                <span class="star gestion" [class.full]="fill === 100">
+                                  <span class="half" [style.width.%]="fill"
+                                    ><i class="fa fa-star s"></i></span
+                                  ><i class="fa fa-star s"></i>
+                                </span>
+                              </ng-template>
+
+                              <ngb-rating
+                                [(rate)]="last.rating"
+                                [starTemplate]="t"
+                                [readonly]="true"
+                                [max]="5"
+                              ></ngb-rating>
+                              {{ last.date }}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="media mt-3" style="padding-bottom: 0px">
+                          <div class="media-body">
+                            <div class="reviews-members-body">
+                              <div class="containers">
+                                <p *ngIf="last.content == null"
+                                  class="text-general text-muted"
+
+                                >
+                                  L'utilisateur n'a pas rédigé d'avis, il a
+                                  simplement donné une note.
+                                </p>
+                                <p
+                                  class="text-general"
+                                  *ngIf="last.content != null"
+                                >
+                                  {{ last.content }}
+                                </p>
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+
+
+
+
+                        <div class="media">
+                          <div class="media-body mt-2">
+
+
+                            <button
+                            *ngIf="last.reponse != null"
+                            class="btn-repondre "
+                            (click)="open(content)"
+                          >
+                            Modifier la réponse
+                          </button>
+                          <button
+                            *ngIf="last.reponse == null"
+                            class="btn-repondre  "
+                            (click)="open(content)"
+                          >
+                            Répondre
+                          </button>
+
+
+                          </div>
+                        </div>
+
+
+
+
+
+
+
+                      </div>
+                    </fieldset>
+
+
+                  </div>
+                  <div class="align-items-center text-center detailss " [routerLink]="['/avis']">
+                    <span class="details" > Gérer les avis</span>
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="" [ngClass]="{'col-xl-1 col-sm-1':    isMobile === true , 'col-xl-3': isMobile === false}">
+    <div *ngIf="!isMobile">
+      <app-sidebar-tb></app-sidebar-tb>
+      <app-sidebar-general></app-sidebar-general>
+    </div>
+    <div *ngIf="isMobile" class="medium_screen text-center">
+      <span class="avatar avatar-md rounded-circle"
+      (click)="openblock(contentblock)">
+        <img  src="../assets/Dashboard/icon-franchises1.png"><sup class="sup-b"><i  class="fa fa-circle mod"></i></sup>
+    </span>
+
+    </div>
+    </div>
+
+  </div>
+
+
+  <div class="row mt-2" style="margin-bottom: 36px;">
+    <div  [ngClass]="{'col-xl-9  mb-5 mb-xl-10 ': isMobile === false , 'col-xl-11 mb-5  mapsss ': isMobile === true}">
+      <div class="card shadow border-0 mapdashbord"  style="
+
+          overflow: auto;
+          display: block;
+          border-radius: 1rem;
+          overflow: hidden;
+        ">
+        <div id="mapId2" style="width: 100%; height: 100%" > </div>
+        
+      </div>
+    </div>
+  </div>
+  <div id="notifs-delete">
+    <ng-template #contentsuggestion let-modal>
+
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click') ; fermepopup()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+
+      <div class="modal-body blocsuggestion" style="top: 1%; width: 80%; left: 10%;" *ngIf="totalsuggestion == true "  [@sliderleft]>
+
+        <div class="pb-5">
+          <p class="infos-posts alert text-center"> <i class="fa fa-plus mr-2"></i> de suggestions </p>
+          <p *ngIf="fichindividuel ==''" class="text-black mb-0 title-renseignement-3 text-center">Nous avons remarqué que plusieurs de vos fiches ne disposent pas <br> des éléments suivants :</p>
+          <p *ngIf="fichindividuel !=''" class="text-black mb-0 title-renseignement-3 text-center">Nous avons remarqué que votre fiche ne dispose pas <br> des éléments suivants :</p>
+
+        </div>
+
+          <div class="card-header bg-transparent title-Dachboard pl-0 pt-1 listsugg pb-1"   *ngFor="let profils of Listsuggestions , let i = index  ;let last = last">
+          <div class="row align-items-center pb-2" style="padding-left: 4%"  [ngStyle]="{'border-bottom': ! last ? '1px solid #ccc' : '#fff'}">
+            <div class="col-lg-6">
+              <img  src="{{ profils.icon }}" alt="Ajouter un logo"  class="img-suggestion mt-1"/>
+              <h3 class="text-black mb-0 add-img">{{ profils.name }}</h3>
+            </div>
+            <div class="col-lg-6 text-right"   *ngIf="role_id != 3"
+            (click)=" sugg(profils.name)">
+              <span class="nbr-suggestion">
+                <span class="nbrsugestion">{{ profils.total }}</span>
+                <span class="fiches ml-1" *ngIf="profils.total > 1">fiches </span>
+                <span class="fiches ml-1" *ngIf="profils.total  == 1">fiche </span>
+
+              </span>
+              <img *ngIf="role_id != 3" src="./assets/Dashboard/icon-suggestion.png" alt="Ajouter un logo" />
+
+            </div>
+
+
+            <div class="col-lg-6 text-right"    *ngIf="role_id == 3"
+            >
+              <span class="nbr-suggestion ml-1">
+                <span class="nbrsugestion">{{ profils.total }}</span>
+                <span class="fiches ml-1" *ngIf="profils.total > 1">fiches </span>
+                <span class="fiches ml-1" *ngIf="profils.total  == 1">fiche </span>
+              </span>
+              <img src="./assets/Dashboard/cartouch.png" alt="Ajouter un logo" />
+
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="modal-body" style=" width: 80%; left: 10%;"  [ngStyle]="{'top': fichindividuel == '' ? '10%' : fichindividuel != '' ? '24%' : '10%'  }" *ngIf="addlogo == true && type =='Ajouter un logo' "  [@slideright]>
+
+        <div>
+          <p class="infos-posts  text-left"> Suggestions </p>
+
+
+          <p class="text-black mb-0 title-renseignement-3 text-left" *ngIf="fichindividuel == ''"> Nous avons remarqué que  <b> {{totlafiche}} de vos fiches </b>ne disposent pas de logo.<br>
+            Personnalisez dés maintenant vos fiches via notre gestionnaire.</p>
+
+            <p class="text-black mb-0 title-renseignement-3 text-left" *ngIf="fichindividuel != ''"> Nous avons remarqué que la fiche  <b> {{fichindividuel}} </b>ne dispose pas de logo.<br>
+             Personnalisez dés maintenant votre fiche via notre gestionnaire.</p>
+
+        </div>
+      <div class="row">
+        <div class="col-xl-7" style="border-right: 1px solid rgb(204, 204, 204)">
+          <app-logo-fiche (onLogoChanged)="GetDataLogo($event)" [ngStyle]="{'top': fichindividuel == '' ? '3%' : fichindividuel != '' ? '0%' : '10%'  }"
+          (onDelateImage)="GetImageDelated(photo_user)" [picture]="photo_user" ></app-logo-fiche>
+      
+           </div>
+        <!-- <div class="col-xl-6">
+        <div class="blocfiche" *ngIf="fichindividuel == ''">
+          <div *ngFor="let item of Listficheslogo" class="fichelogo">
+            <div class="ficheselectionnees" (click)="changestat(item)"
+              [ngClass]="{'my_class': item.status === true}">
+              <span> {{item.locationName}} </span>
+            </div>
+          </div>
+        </div>
+      
+      </div> -->
+      <div class="col-lg-5 listfiche blocscrol" *ngIf="fichindividuel == ''" >
+        <div *ngFor="let item of Listficheslogo">
+              <input type="checkbox"
+                     name="options"
+                     value="{{item.locationName}}"
+                     [(ngModel)]="item.status"
+                     (change)="updateCheckedOptions(item, $event)" />
+             <span class="pl-2 namefiche">  {{item.locationName}}</span>
+      </div>
+
+      </div>
+      </div>
+      <div class="btncnx mt-3">
+
+        <div style="display: inline-block; "> <button type="submit"  (click)= "sendlogo()" class="btn btn-pub">Valider</button> </div>
+        <div  style="display: inline-block; "> <button type="button" class="btn btn-annulation ml-3 "
+          (click)="FermerAdd()">Annuler</button></div>
+      </div>
+
+
+      </div>
+      <div class="modal-body" style=" width: 80%; left: 10%;" [ngStyle]="{'top': fichindividuel == '' ? '5%' : fichindividuel != '' ? '27%' : '5%'  }" *ngIf="addlogo == true && type =='Liens pour prise rendez-vous' "  [@slideright]>
+        <div>
+          <p class="infos-posts  text-left"> Suggestions </p>
+
+          <p class="text-black mb-0 title-renseignement-3 text-left" *ngIf="fichindividuel == ''"> Nous avons remarqué que  <b> {{totlafiche}} de vos fiches </b>n'ont pas de lien pour la prise de rendez-vous.<br>
+            Personnalisez dés maintenant vos fiches via notre gestionnaire.</p>
+
+            <p class="text-black mb-0 title-renseignement-3 text-left" *ngIf="fichindividuel != ''"> Nous avons remarqué que la fiche  <b> {{fichindividuel}} </b>n'a pas de lien pour la prise de rendez-vous.<br>
+             Personnalisez dés maintenant votre fiche via notre gestionnaire.</p>
+
+        </div>
+
+        <div  [ngClass]="{'blocsug': fichindividuel == '' ,  'blocsug2': fichindividuel != ''}">
+
+
+          <form [formGroup]="RDVForm" (ngSubmit)="sendRDV()">
+            <div class="form-group blocrdv  titlepost" formArrayName="listfiche">
+              <div *ngFor="let fiche of RDVForm.controls['listfiche']['controls']; let i=index">
+                <div class="numfiche" [formGroupName]="i">
+
+                  <div class="row" style="margin-left: -42px;">
+
+                    <div class="col-lg-1 text-right pr-0 mt-2">
+                      <img  alt="Ajouter un logo" class="img-rdv" src="../assets/Fiche/icon_link.svg">
+                    </div>
+                    <div class="col-lg-5 pl-0">
+                      <div class="input-group input-group-alternative namefiche mb-0 pb-0" >
+                        <input class="form-control" placeholder="locationName" type="text" formControlName="locationName" disabled
+                          name="locationName">
+
+                      </div>
+
+                    </div>
+
+                    <div class="col-lg-5">
+                      <div class="input-group input-group-alternative mb-0 pb-0">
+                        <input class="form-control" placeholder="http//" type="text" formControlName="urlvalues"
+                          name="urlvalues">
+
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+            <!-- Submit Button -->
+            <div class="btncnx mt-3">
+
+              <div style="  display: inline-block; "> <button type="submit" class="btn btn-pub">Valider</button> </div>
+              <div style="  display: inline-block; "> <button type="button" class="btn btn-annulation pl-2 ml-3"
+                (click)="FermerAdd()">Annuler</button></div>
+            </div>
+          </form><!-- Form ends -->
+
+
+
+
+
+        </div>
+
+
+
+      </div>
+
+      <div class="modal-body" style=" width: 80%; left: 10%;"  [ngStyle]="{'top': fichindividuel == '' ? '9%' : fichindividuel != '' ? '27%' : '5%'  }"  *ngIf="addlogo == true && type =='Ajouter un site' "  [@slideright]>
+
+        <div>
+          <p class="infos-posts  text-left"> Suggestions </p>
+
+          <p class="text-black mb-0 title-renseignement-3 text-left" *ngIf="fichindividuel == ''"> Nous avons remarqué que  <b> {{totlafiche}} de vos fiches </b>n'ont pas de site web<br>
+            Personnalisez dés maintenant vos fiches via notre gestionnaire.</p>
+
+            <p class="text-black mb-0 title-renseignement-3 text-left" *ngIf="fichindividuel != ''"> Nous avons remarqué que la fiche  <b> {{fichindividuel}} </b>n'a pas de site web<br>
+             Personnalisez dés maintenant votre fiches via notre gestionnaire.</p>
+
+
+        </div>
+
+
+        <div class=""   [ngClass]="{'blocsug': fichindividuel == '' ,  'blocsug2': fichindividuel != ''}"  >
+          <form [formGroup]="SiteForm" (ngSubmit)="sendSite()">
+            <div class="form-group blocrdv  titlepost" formArrayName="listsitefiche">
+              <div *ngFor="let fiche of SiteForm.controls['listsitefiche']['controls']; let i=index">
+                <div class="numfiche" [formGroupName]="i">
+
+                  <div class="row" style="margin-left: -42px;">
+
+                    <div class="col-lg-1 text-right pr-0 mt-2">
+                      <img  alt="Ajouter un logo" class="img-rdv" src="../assets/Fiche/icon_public.svg">
+                    </div>
+                    <div class="col-lg-5 pl-0">
+                      <div class="input-group input-group-alternative namefiche mb-0 pb-0" >
+                        <input class="form-control" placeholder="locationName" type="text" formControlName="locationName" disabled
+                          name="locationName">
+
+                      </div>
+
+                    </div>
+
+                    <div class="col-lg-5">
+                      <div class="input-group input-group-alternative mb-0 pb-0">
+                        <input class="form-control" placeholder="http//" type="text" formControlName="websiteUrl"
+                          name="websiteUrl">
+
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+            <!-- Submit Button -->
+            <div class="btncnx mt-3">
+
+              <div style="  display: inline-block; "> <button type="submit" class="btn btn-pub">Valider</button> </div>
+              <div style="  display: inline-block; "> <button type="button" class="btn btn-annulation pl-2 ml-3"
+                (click)="FermerAdd()">Annuler</button></div>
+            </div>
+          </form><!-- Form ends -->
+        </div>
+
+
+      </div>
+      <div class="modal-body" style="width: 80%; left: 10%;"
+       [ngStyle]="{'top': fichindividuel == '' ? '16%' : fichindividuel != '' ? '27%' : '5%'  }" *ngIf="addlogo == true && type =='Ajouter un numéro de téléphone' "  [@slideright]>
+        <p class="infos-posts  text-left"> Suggestions </p>
+        <p class="text-black mb-0 title-renseignement-3 text-left" *ngIf="fichindividuel == ''"> Nous avons remarqué que  <b> {{totlafiche}} de vos fiches </b>n'ont pas de numéro de téléphone<br>
+          Personnalisez dés maintenant vos fiches via notre gestionnaire.</p>
+          <p class="text-black mb-0 title-renseignement-3 text-left" *ngIf="fichindividuel != ''"> Nous avons remarqué que la fiche  <b> {{fichindividuel}} </b>n'a pas de numéro de téléphone<br>
+           Personnalisez dés maintenant votre fiche via notre gestionnaire.</p>
+        <div class="">
+          <form [formGroup]="NumeroForm" (ngSubmit)="sendNumero()">
+            <div class="form-group blocrdv  titlepost" formArrayName="listnumerofiche">
+              <div *ngFor="let fiche of NumeroForm.controls['listnumerofiche']['controls']; let i=index">
+                <div class="numfiche" [formGroupName]="i">
+
+                  <div class="row" style="margin-left: -42px;">
+
+                    <div class="col-lg-1 text-right pr-0 mt-2">
+                      <img  alt="Ajouter un logo" class="img-rdv" src="../assets/Fiche/icon_phone.svg">
+                    </div>
+                    <div class="col-lg-5 pl-0">
+                      <div class="input-group input-group-alternative namefiche mb-0 pb-0" >
+                        <input class="form-control" placeholder="locationName" type="text" formControlName="locationName" disabled
+                          name="locationName">
+
+                      </div>
+
+                    </div>
+
+                    <div class="col-lg-5">
+                      <div class="input-group input-group-alternative mb-0 pb-0">
+                        <input class="form-control" placeholder="Téléphone" type="text" formControlName="numerotel"
+                          name="numerotel">
+
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+            <!-- Submit Button -->
+            <div class="btncnx mt-3">
+
+              <div style="  display: inline-block; "> <button type="submit" class="btn btn-pub">Valider</button> </div>
+              <div style="  display: inline-block; "> <button type="button" class="btn btn-annulation pl-2 ml-3"
+                (click)="FermerAdd()">Annuler</button></div>
+            </div>
+          </form><!-- Form ends -->
+        </div>
+      </div>
+
+      <div class="modal-body" style="top: 5%; width: 90%; left: 8%;" *ngIf="addlogo == true && type =='Horaires' "  [@slideright]>
+        <p class="infos-posts  text-left"> Suggestions </p>
+        <p class="text-black mb-0 title-renseignement-3 text-left" *ngIf="fichindividuel == ''"> Nous avons remarqué que  <b> {{totlafiche}} de vos fiches </b>n'ont pas d'horaires d'ouverture<br>
+           Personnalisez dés maintenant vos fiches via notre gestionnaire.</p>
+
+           <p class="text-black mb-0 title-renseignement-3 text-left" *ngIf="fichindividuel != ''"> Nous avons remarqué que la fiche  <b> {{fichindividuel}} </b>n'a pas d'horaires d'ouverture<br>
+            Personnalisez dés maintenant votre fiche via notre gestionnaire.</p>
+
+
+        <div class="row ">
+
+          <div class="col-lg-8"  [ngStyle]="{'border-right': fichindividuel == '' ? '1px solid #ccc' : fichindividuel != '' ? 'initial' : '1px solid #ccc'  }">
+            <form [formGroup]="HorairesForm" (ngSubmit)="Modifhoraires()">
+              <div class="m-portlet m-portlet--creative m-portlet--first m-portlet--bordered-semi">
+                <div class="m-portlet__body" formArrayName="Listhoraire">
+                  <div class="row" *ngFor="let items of Listhoraires().controls ; let horaireIndex=index">
+                    <div class="col-lg-12 mt-3">
+                      <div class="row" [formGroupName]="horaireIndex">
+                        <div class="col-md-1 col-sm-1 col-lg-1 ml-0 pl-0 text-left">
+                          <input disabled class="jours" type="text" formControlName="jours" name="jours"
+                            style="border: none;">
+                        </div>
+                        <div class="col-md-1 col-sm-1 col-lg-1">
+                          <span class="days">
+                            <ui-switch formControlName="etat" name="etat" size="small">
+                            </ui-switch>
+                          </span>
+                        </div>
+
+
+                        <div class="col-md-1 col-sm-1 col-lg-1 mt-1 text-right">
+
+                         <img src="./assets/Fiche/horaires.svg" style="width: 76%;">
+                        </div>
+
+
+
+                        <div class="col-md-9 col-sm-12 col-lg-9 pl-0 pr-0" formArrayName="horaire">
+                          <div *ngIf="items.value.etat != '' || items.value.etat == 'true' ">
+                            <div *ngFor="let item of listhorairess(horaireIndex).controls; let indexhorairesup=index ;let last = last">
+                              <div class="row" [formGroupName]="indexhorairesup">
+                                <div class="col-lg-12 " >
+                                  <div class="control-group row">
+                                    <div class=" col-lg-9  pl-5 pr-0 mb-2">
+                                      <div class="row">
+                                        <div class=" col-lg-4 ">
+                                          <ng-select [items]="listTimes" placeholder="Ouverture" [virtualScroll]="true"
+                                            [disabled]="!editable" formControlName="heurdebut">
+                                          </ng-select>
+                                        </div>
+                                        <div class=" col-lg-1">
+                                          <span> - </span>
+                                        </div>
+                                        <div class=" col-lg-4">
+                                          <ng-select [items]="listTimes" placeholder="Ouverture" [virtualScroll]="true"
+                                            [disabled]="!editable" formControlName="heurfin">
+                                          </ng-select>
+                                        </div>
+                                        <div class="col-lg-2" *ngIf="indexhorairesup >0" (click)="removeH(horaireIndex,indexhorairesup)">
+                                          <span class="btn-delete" > <i
+                                              class="fa fa-times"></i>
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-4 col-lg-3" style="margin-left: -5% !important;"
+                                    *ngIf="(items.value.etat != '' || items.value.etat == 'true') &&  last">
+                                    <span class="btnAddHoraires mt-5" (click)="addHoraire(horaireIndex)">Ajouter des
+                                      horaires
+                                    </span>
+                                  </div>
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+            </form><!-- Form ends -->
+          </div>
+
+
+          <div class="col-lg-4 listfiche blocscrol" *ngIf="fichindividuel == ''">
+            <div *ngFor="let option of Listficheslogo">
+              <span>
+                  <input type="checkbox"
+                         name="options"
+                         value="{{option.locationName}}"
+                         [(ngModel)]="option.status"
+                         (change)="updateCheckedOptions(option, $event)" />
+                 <span class="pl-2 namefiche">  {{option.locationName}}</span>
+              </span>
+          </div>
+
+          </div>
+
+
+          <div class="col-lg-8">
+            <div class="btncnx text-center mt-5">
+              <div style="  display: inline-block; "> <button  (click)="sendHoraire()" type="submit" class="btn btn-pub">Valider</button>
+              </div>
+              <div style="  display: inline-block; "> <button type="button" class="btn btn-annulation ml-3"
+                  (click)="FermerAdd()">Annuler</button></div>
+
+            </div>
+          </div>
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="modal-body" style="top: 5%; width: 93%; left: 6%;"  *ngIf="addlogo == true && exceptionalsugg =='horaires exceptional' "  [@slideright]>
+        <p class="infos-posts  text-left"> Suggestions </p>
+
+
+        <p class="text-black mb-0 title-renseignement-3 text-left" *ngIf="fichindividuel == ''"> Nous avons remarqué que  <b>   {{totlafiche}} de vos fiches    </b>  n'ont pas d'horaires d'ouverture exceptionnels<br>
+          Personnalisez dés maintenant vos fiches via notre gestionnaire.</p>
+
+
+        <p class="text-black mb-0 title-renseignement-3 text-left" *ngIf="fichindividuel != ''"> Nous avons remarqué que  la fiche  <b>  {{fichindividuel}}  </b>  n'a pas d'horaires d'ouverture exceptionnels<br>
+           Personnalisez dés maintenant votre fiche via notre gestionnaire.</p>
+        <div class="row ">
+
+
+          <div class="col-lg-8 exceptional"  [ngStyle]="{'border-right': fichindividuel == '' ? '1px solid #ccc' : fichindividuel != '' ? 'initial' : '1px solid #ccc'  }"  >
+            <form [formGroup]="HorairesExceptionalForm" >
+              <div class="m-portlet m-portlet--creative m-portlet--first m-portlet--bordered-semi">
+                <div class="m-portlet__body" formArrayName="Listhoraire">
+                  <div class="row" *ngFor="let items of Listhorairesexceptional().controls ; let horaireIndex=index">
+                    <div class="col-lg-12 mt-3">
+                      <div class="row" [formGroupName]="horaireIndex">
+                        <div class="col-md-1 col-sm-1 col-lg-1 ml-0 pt-3 pr-0 text-right">
+                        <img src="../assets/Dashboard/suggestion/post-picto-calandar.svg" class="settingcorbeille" style="width: 47%; display: block;" >
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-lg-2 ml-0 pl-0 text-center">
+                          <div class="input-group calenderhoraire">
+                            <input type="text" formControlName="date"
+                              placeholder="yyyy-mm-dd" format="yyyy-mm-dd" class="form-control datetime" bsDatepicker
+                              [bsConfig]="{ isAnimated: true, dateInputFormat: 'YYYY-MM-DD' ,   language: 'Fr'}">
+                          </div>
+                        </div>
+                        <div class="col-md-1 col-sm-1 col-lg-1 mt-1">
+                          <span class="days">
+                            <ui-switch formControlName="etat" name="etat" size="small" [(ngModel)] ="items.etat">
+                            </ui-switch>
+                          </span>
+                        </div>
+                        <div class="col-md-1 col-sm-1 col-lg-2 mt-1">
+                          <span class="etatdate" *ngIf="items.etat == true"> Ouvert </span>
+                          <span class="etatdate" *ngIf="items.etat == false"> Fermé </span>
+                        </div>
+                        <div class="col-md-9 col-sm-12 col-lg-6 pl-0 pr-0 mt-1" formArrayName="horaire">
+                          <div *ngIf="items.value.etat != '' || items.value.etat == 'true' ">
+                            <div *ngFor="let item of listhorairessexceptional(horaireIndex).controls; let indexhorairesup=index ;let last = last">
+                              <div class="row" [formGroupName]="indexhorairesup">
+                                <div class="col-lg-12 " >
+                                  <div class="control-group row">
+                                    <div class=" col-lg-8  pl-0 pr-0 mb-2">
+                                      <div class="row">
+                                        <div class=" col-lg-4 pl-0 pr-0 ">
+                                          <ng-select [items]="listTimes" placeholder="Ouverture" [virtualScroll]="true"
+                                            [disabled]="!editable" formControlName="heurdebut">
+                                          </ng-select>
+                                        </div>
+                                        <div class=" col-lg-1">
+                                          <span> - </span>
+                                        </div>
+                                        <div class="col-lg-4 pl-0 pr-0">
+                                          <ng-select [items]="listTimes" placeholder="Ouverture" [virtualScroll]="true"
+                                            [disabled]="!editable" formControlName="heurfin">
+                                          </ng-select>
+                                        </div>
+                                        <div class="col-lg-2" *ngIf="indexhorairesup >0" (click)="removeHExceptional(horaireIndex,indexhorairesup)">
+                                          <span class="btn-delete" > <i
+                                              class="fa fa-times"></i>
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-4 col-lg-4  pl-0 text-left"
+                                    *ngIf="(items.value.etat != '' || items.value.etat == 'true') &&  last">
+                                    <span class="btnAddHoraires mt-5" (click)="addHoraireexceptional(horaireIndex)">Ajouter des
+                                      horaires
+                                    </span>
+                                  </div>
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="adddate pt-5 mt-5">
+              <span class="btnAddHoraires mt-5" (click)="addHoraireexceptional22()">
+                <img src="../assets/Dashboard/suggestion/post-picto-calandar.svg" class="settingcorbeille mr-3"> + Ajouter une date </span>
+            </div>
+            </form>
+          </div>
+
+
+          <div class="col-lg-4 listfiche blocscrol" *ngIf="fichindividuel == ''" >
+            <div *ngFor="let option of Listficheslogo">
+                  <input type="checkbox"
+                         name="options"
+                         value="{{option.locationName}}"
+                         [(ngModel)]="option.status"
+                         (change)="updateCheckedOptions(option, $event)" />
+                 <span class="pl-2 namefiche">  {{option.locationName}}</span>
+          </div>
+
+          </div>
+
+
+
+          <div class="col-lg-8">
+            <div class="btncnx text-center mt-5">
+
+              <div style="  display: inline-block; "> <button  (click)="SendHoraireExceptional()" type="submit" class="btn btn-pub">Valider</button>
+              </div>
+
+              <div style="  display: inline-block; "> <button type="button" class="btn btn-annulation ml-3"
+                  (click)="FermerAdd()">Annuler</button></div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-body services" style=" width: 80%; left: 10%;" [ngStyle]="{'top': fichindividuel == '' ? '6%' : fichindividuel != '' ? '14%' : '6%'  }" *ngIf="addlogo == true && type =='Services' "  [@slideright]>
+        <p class="infos-posts  text-left"> Suggestions </p>
+
+        <p class="text-black mb-0 title-renseignement-3 text-left" *ngIf="fichindividuel == ''"> Nous avons remarqué que <b>  {{totlafiche}} de vos fiches  </b> ne disposent pas de services. <br>
+          Personnalisez dés maintenant vos fiches via notre gestionnaire. </p>
+
+
+        <p class="text-black mb-0 title-renseignement-3 text-left" *ngIf="fichindividuel != ''"> Nous avons remarqué que la fiche <b>   {{fichindividuel}}   </b> ne dispose pas de services. <br>
+           Personnalisez dés maintenant votre fiche via notre gestionnaire. </p>
+           <div>
+
+            <div *ngIf="addservice == false" [@sliderleft]>
+            <div class="row">
+             
+              <div class="col-xl-7" style="border-right: 1px solid rgb(204, 204, 204);">
+                <fieldset class="scheduler-border pl-3 pr-3" [ngStyle]="{'margin-top': fichindividuel == '' ? '0px' : fichindividuel != '' ? '3%' : '0px'  }">
+                  <legend class="scheduler-border text-general"> Services </legend>
+                  <div class="servicesfiches blocfiche">
+                    <div *ngFor="let item of listServices" class="fichelogo">
+                      <div class="ficheselected" (click)="changestatservices(item)"
+                        [ngClass]="{'my_fiche': item.status === true}">
+                        <span> {{item.name}} </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div (click)="Addservice()" class=" pl-5 pb-5 ">
+                    <span  class="text-center mb-0 plus-suggestions"><i  class="fa fa-plus"></i> Ajouter un service</span>
+                  </div>
+
+
+
+                </fieldset>
+              </div>
+              <!-- <div class="col-xl-6">
+                <div class="blocfiche" *ngIf="fichindividuel == ''">
+                  <div *ngFor="let item of Listficheslogo" class="fichelogo">
+                    <div class="ficheselectionnees" (click)="changestat(item)"
+                      [ngClass]="{'my_class': item.status === true}">
+                      <span> {{item.locationName}} </span>
+                    </div>
+                  </div>
+                  </div>
+                </div> -->
+                <div class="col-lg-5 listfiche blocscrol" *ngIf="fichindividuel == ''" >
+                  <div *ngFor="let item of Listficheslogo">
+                        <input type="checkbox"
+                               name="options"
+                               value="{{item.locationName}}"
+                               [(ngModel)]="item.status"
+                               (change)="updateCheckedOptions(item, $event)" />
+                       <span class="pl-2 namefiche">  {{item.locationName}}</span>
+                </div>
+      
+                </div>
+            </div>
+                <div class="btncnx mt-5">
+
+                  <div style="  display: inline-block; ">
+                    <button type="submit"  (click)= "sendservices()" class="btn btn-pub ">Valider</button> </div>
+
+                  <div  style="  display: inline-block; ">
+                    <button type="button" class="btn btn-annulation ml-3 "
+                    (click)="FermerAdd()">Annuler</button></div>
+                </div>
+            </div>
+
+
+              <div class="mt-3" *ngIf="addservice == true" [@slideright]>
+                <span class="new_service"> Ajouter la catégorie</span>
+                <span  class="text-black mb-0 title-renseignement-3 text-left" >Catégorie supplémentaire </span>
+
+
+                <div >
+                  <form [formGroup]="CategorieForm" (ngSubmit)="Addnewservice()">
+                    <div class="groupe_categories  mt-3">
+                    <div class="addcatperso">
+                    <ng-select [items]="listcategories" [(ngModel)]='setSelected'
+                    (keyup)="CategorieChange($event.target.value)" bindLabel="displayName"  notFoundText="Aucun catégorie trouvée"
+                    [disabled]="!editable" (change)="onChangecategorie($event)" formControlName="Name_cat">
+                    </ng-select>
+                      <span class="editcat">
+                        <i (click)="EditCat(Categorie_value)" class="fa fa-pencil-alt"></i>
+                      </span>
+                    </div>
+                    <div class="addcate" [ngStyle]="{'height': fichindividuel == '' ? '237px' : fichindividuel != '' ? '145px' : '237px'  }">
+                    <div *ngIf="servicesCat.length != 0">
+                    <span  class="text-black mb-0 title-renseignement-3 text-left" >  Ajoutez les services que vous proposez pour permettre aux clients de vous découvrir</span>
+                      <div class="" *ngFor="let service of servicesCat">
+                        <div class="service" (click)="changeserviceCat(service)"
+                          [ngClass]="{'my_service': service.status === true}">
+                          <span *ngIf="service.status === false"> <i class="fa fa-plus"></i></span>
+                          <span *ngIf="service.status === true"> <i class="fa fa-check"></i> </span>
+
+                          <span> {{service.name}}</span>
+
+                        </div>
+                      </div>
+                    </div>
+                      <div class="addservice mt-5" *ngIf="selectedOption !=''">
+                        <span  class="text-black mb-0 title-renseignement-3 text-left" >   Un service que vous proposez ne figure pas dans la liste ? Ajoutez-le vous même. </span>
+                        <div class="form-group mb-4 titlepost" formArrayName="listServices">
+                          <div class="text-left mt-1  mb-0 plus-suggestions" (click)="add_service_persocat()"> <i class="fa fa-plus"></i> Ajouter un
+                            service personnalisé</div> <br>
+                          <div class="mb-3" *ngFor="let item of CategorieForm.controls['listServices']['controls']; let i=index">
+                            <div class="numfiche" [formGroupName]="i">
+
+                              <div class="autreservice">
+                                <div class="addserviceperso">
+                                  <div class="input-group input-group-alternative">
+                                    <input class="form-control" type="text" id="name_serviceperso" formControlName="name"
+                                      name="name" >
+                                    <i class="far fa-trash-alt mt-2" (click)="removeServicePerso(i,id)"></i>
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      </div>
+              </div>
+                    <div class="btncnx mt-5">
+
+
+                      <div style="  display: inline-block; "  > <button  type ="submit" class="btn btn-pub">Enregistrer</button>
+                      </div>
+
+                      <div style="  display: inline-block; "> <button type="button" class="btn btn-annulation  ml-3"
+                          (click)="fermerserviceperso()">Annuler</button></div>
+
+                    </div>
+                  </form>
+                </div>
+
+
+
+            </div>
+
+
+          </div>
+    </div>
+
+    <div class="modal-footer mt0 pb-0" >
+      <!-- <div style="background: url(./assets/Dashboard/bg-footer.png); background-size: 100% 100%; height: 87px;"></div> -->
+    </div>
+
+    </ng-template>
+    <simple-notifications></simple-notifications>
+  </div>
+  <div id="raccourcis">
+    <ng-template #contentraccourci let-modal>
+
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click') ; fermepopup()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <div class="modal-body listprofil pb-0 mb-0" style="top: 5%; width: 100%; left: 0%;">
+        <div  *ngIf="raccourcis == 'Horaires' ">
+          <app-horaires (valueChange)='displayhoraires($event)'></app-horaires>
+        </div>
+
+        <div  *ngIf="raccourcis == 'Ouverture exceptionnelle' ">
+
+          <app-horaire-exceptionnel (valueChange)='displayhorairesExcep($event)'></app-horaire-exceptionnel>
+        </div>
+        <div   *ngIf="raccourcis == 'Ajouter un service' ">
+          <app-services (valueChange)='displayservices($event)'></app-services>
+        </div>
+
+
+
+        <div   *ngIf="raccourcis == 'Ajouter un produit' ">
+          <app-produit (valueChange)='produitsraccourcis($event)'></app-produit>
+        </div>
+
+        <div   *ngIf="raccourcis == 'Ajouter un Attribut' ">
+          <app-attribut (valueChange)='attributsraccourcis($event)'></app-attribut>
+        </div>
+
+        <div   *ngIf="raccourcis == 'Gérer les liens' ">
+          <app-liens (valueChange)='liensraccourcis($event)'></app-liens>
+        </div>
+      </div>
+
+      <div class="modal-footer " > </div>
+
+
+    </ng-template>
+    <simple-notifications></simple-notifications>
+  </div>
+
+
+
+
+  <div class="media" id="Avertir">
+    <div class="media-body">
+      <div id="notifs-client">
+        <ng-template #content9 let-modal>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <div class="modal-body ContenuPhoto couverture">
+            <div class="reviews-members pb-3">
+              <span
+              class=" pb-3 title-add-photos couverture" id="modal-basic-title " >Importer une photo
+            </span >
+        </div>
+        <form [formGroup]="AddPhotoForm" (ngSubmit)="onSubmit()">
+          <div class="custom-dropzone"  [multiple]="false"  ngx-dropzone  accept=".webp, .gif, .png, .jpg, .jpeg" (change)="onSelect($event)">
+
+            <ngx-dropzone-label >
+              <div class="row row pl-0 pr-0 ml-0 mr-0">
+                <div class="col-xl-7">
+                  <img  class="icon-modal" src='./assets/photos/picto-img-blue.svg' alt="Photos wallpost" style="width: 11%;">
+                  <div class="text-justifier">
+                  <span class="change-picture">Importer votre photo <br>
+                    <span class="change-picture-1">Photo
+                      Gif, Jpeg, Png, Webp
+                  </span>
+                  </span>
+              </div>
+                </div>
+                <div class="col-xl-5">
+                  <i class="fas fa-upload"></i>
+                </div>
+              </div>
+            </ngx-dropzone-label>
+            <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files_dropped"
+              formControlName="File" [file]="f" [multiple]="false" [removable]="true" (removed)="onRemove(f)">
+            </ngx-dropzone-image-preview>
+
+          </div>
+          <span *ngIf="files_dropped.length > 1" class="mesage"> {{message}}</span>
+          <div>
+            <ul>
+              <li class="list-group-item" *ngFor="let item of checklist">
+                <input type="checkbox" value="{{item.id}}" [attr.disabled]=" item.isDisabled ? true : null"
+                  [checked]="checked"  (change)="isAllSelected(item)" formControlName="Category"
+                  name="Category" />
+                <span class="itemList">{{item.value}} </span>
+              </li>
+            </ul>
+
+          </div>
+
+
+
+          <span class="nom-fiche"> Type de photo</span>
+          <ng-select [items]="TypePhotos" [(ngModel)]='setSelected' bindLabel="name"
+            [placeholder]="placeholder"  formControlName="Type_photo">
+          </ng-select>
+
+          <div class="btncnx mt-3 text-center">
+
+            <button type="submit" class="btn btn-pub" (click)= UploadPhoto()>Publier</button>
+            <button type="button" class="btn btn-annulation" (click)="FermerAddPhoto()">Annuler</button>
+          </div>   
+        </form>
+
+        </div>
+
+        </ng-template>
+        </div>
+        </div>
+  </div>
+
+
+
+
+
+
+
+  <div id="notifs-profil">
+    <ng-template #contentprofil let-modal>
+
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click') ; fermepopup()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <div class="modal-body listprofil" style="top: 10%; width: 85%; left: 8%;">
+
+        <div class="row mb-0">
+
+
+          <div class=" col-md-6  mb-0 text-right">
+            <p class="infos-posts  text-left"> Taux de complétude des profils </p>
+            <p class="text-black mb-0 title-renseignement-3 text-left">Ci-dessous la liste des vos fiches et leurs taux
+              de complétudes </p>
+          </div>
+
+          <div class=" col-md-6  mb-0 text-right">
+            <pagination-controls (pageChange)="cp = $event" previousLabel="" nextLabel="" pageSizeOptions="[5, 10, 20]">
+            </pagination-controls>
+          </div>
+        </div>
+        <div>
+
+          <div class="row mt-4  mb-0" (click)="detailsfranchise(fiche.id)" style="cursor: pointer;">
+            <div class="col-lg-6  mb-0 pl-4 pr-4"
+              *ngFor="let fiche of listFiches   | paginate: { itemsPerPage: 20, currentPage: cp  } ; let i='index'">
+              <table class="table align-items-center mb-0 table-flush listpro">
+                <tbody>
+                  <tr  class="pro" style="border-bottom: 1px solid #dee2e6;" (click)="detailsfranchise(fiche.id) ; fermerpro()">
+                    <th scope="row" class="text-bold titlepro">
+                      {{ fiche.locationName }}
+                    </th>
+                    <td class="text-right">
+                      <span class="profilsvalue"> {{ fiche.total }} %</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    <simple-notifications></simple-notifications>
+  </div>
+  <div class="media">
+    <div class="media-body">
+      <div class="reviews-members-footer">
+        <ng-template #content let-modal>
+          <div class="modal-header">
+            <button
+              type="button"
+              class="close"
+              aria-label="Close"
+              (click)="modal.dismiss('Cross click')"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <!--body Modal negatif --->
+          <div class="modal-body mt-20 modal-avis" *ngFor="let last of lastAvis">
+            <div class="reviews-members pb-2">
+              <span
+                class="modal-title basic-title"
+                id="modal-basic-title "
+                >Réponse</span
+              >
+              <div class="media">
+                <a href="#">
+                  <img
+                    alt="{{ last.title }}"
+                    src="{{ last.photo }}"
+                    class="mr-3 rounded-pill"
+                  />
+                </a>
+
+                <div class="media-body">
+                  <div
+                    class="reviews-members-header mt-2"
+                  >
+                    <span
+                      class="star-rating float-right"
+                    >
+                      Google MyBusness de <br />
+                      <span class="nom-societe">
+                        {{
+                          last.locationName
+                        }}</span
+                      >
+                    </span>
+                    <h6 class="mb-1">
+                      <a
+                        class="Name-avis"
+                        [innerHTML]="last.title"
+                      >
+                      </a>
+                    </h6>
+                    <p
+                      class="text-general"
+                      style="margin-top: -4px"
+                    >
+                      <ng-template #t let-fill="fill">
+                        <span
+                          class="star gestion"
+                          [class.full]="fill === 100"
+                        >
+                          <span
+                            class="half"
+                            [style.width.%]="fill"
+                            ><i
+                              class="fa fa-star s"
+                            ></i></span
+                          ><i class="fa fa-star s"></i>
+                        </span>
+                      </ng-template>
+
+                      <ngb-rating
+                        [(rate)]="last.rating"
+                        [starTemplate]="t"
+                        [readonly]="true"
+                        [max]="5"
+                        class="mr-1"
+                      ></ngb-rating>
+                      {{ last.date }}
+                    </p>
+
+
+
+
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="media"
+                style="padding-bottom: 0px"
+              >
+                <div class="media-body resum">
+                  <div class="reviews-members-body">
+                    <div
+                      class="container-modal"
+                      [class.show]="show"
+                    >
+                      <p
+                        class="text-general text-muted"
+                        *ngIf="
+                        last.content == null
+                        "
+                      >
+                        L'utilisateur n'a pas rédigé
+                        d'avis, il a simplement donné
+                        une note.
+                      </p>
+                      <p
+                        class="text-general"
+                        *ngIf="
+                        last.content != null
+                        "
+                      >
+                        {{ last.content }}
+                      </p>
+                    </div>
+                    <div class="container">
+                      <a
+                        class="show-more"
+                        *ngIf="
+                        last.content != null
+                        "
+                        (click)="show = !show"
+                        >{{ show ? "Plus" : "Plus" }}</a
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="media">
+                <a
+                  href="#"
+                  *ngIf="last.logo != null"
+                >
+                  <img
+                    alt="{{ last.title }}"
+                    src="{{ last.logo }}"
+                    class="mr-3 rounded-pill"
+                  />
+                </a>
+                <a
+                  href="#"
+                  *ngIf="last.logo == null"
+                >
+                  <img
+                    alt=""
+                    src="../assets/Avis/groupe-6469-fusuion.svg  "
+                    class="mr-3 rounded-pill"
+                  />
+                </a>
+                <div class="media-body">
+                  <div
+                    class="reviews-members-header mt-2"
+                  >
+                    <span class="star-rating">
+                      <span class="location-name">{{
+                        last.locationName
+                      }}</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="reponse-body">
+                <div class="reponse-fiche">
+                  <div class="form-group pl-4 pr-4">
+                    <span class="nom-fiche">
+                      Votre réponse</span
+                    >
+                    <textarea
+                      placeholder="Rédiger votre réponse"
+                      class="form-control reponse_avis"
+                      rows="5"
+                      id="comment"
+                      [(ngModel)]="last.reponse"
+                    ></textarea>
+                  </div>
+                </div>
+                <div class="media s">
+                  <p class="text-general">
+                    Veuillez noter que votre réponse
+                    sera affichée publiquement sur
+                    Google et doit respecter les règles
+                    Google relatives au contenu.
+                    <a  class="show-more"  > Conditions d'utilisation</a>
+                  </p>
+                </div>
+                <div class="text-center">
+                <div style="display: inline-block; margin-right: 18px;">
+                  <button
+                    type="button"
+                    class="btn btn-reponse"
+                    (click)="
+                      getTextreponse(
+                        last.reponse,
+                        last.code,
+                        last.FicheName,
+                        last.id,
+                        last.fiche_id
+                      )
+                    "
+                  >
+                    Publier la réponse
+                  </button>
+                </div>
+                <div style="display: inline-block">
+                  <button
+                    type="button"
+                    class="btn btn-annulations"
+                    (click)="modal.close('Save click')"
+                  >
+                    Annuler
+                  </button>
+                </div>
+              </div>
+              </div>
+              <div class="modal-footer btns ">
+                </div>
+            </div>
+          </div>
+        </ng-template>
+        <!--fin body Modal positif --->
+
+      </div>
+    </div>
+  </div>
+  <div id="notifs-raccourcis">
+    <ng-template #contentraccourcis let-modal>
+
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click') ; fermepopup()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <div class="modal-body listprofil" style="top: 10%; width: 85%; left: 8%;">
+        <div class=" col-md-12  mb-0 text-center">
+          <p class="infos-raccourcis  text-center"> Gérer les raccourcis  <span class="totalraccourcis ml-2"> {{totalActif}}</span>
+            <span class="nbrraccourcis">/ 6 </span>  </p>
+          <p class="text-black mb-0 title-renseignement-3 text-center">Configurez les accès rapide pour l'ensemble des fiches  </p>
+        </div>
+
+        <form [formGroup]="raccourcisForm"  class="mt-5">
+        <div class="raccourcis" style="width: 50%; margin: 0 auto;">
+        <div class="row">
+          <div class="col-xl-3  ml-0 mr-0 pl-1 pr-1 pb-1 mb-xl-0" *ngFor="let item of listsraccourcis , let i = 'index'">
+            <div (change)="Selection(item)" class=" postindiv tabindiv ml-0 mr-0 pl-0 pr-0"  [ngStyle]="{'background-color':item.color , 'border-color':item.color} "  >
+              <span >
+                <img [src]="item.icon">
+                <span>{{item.name}}</span>
+                <input type="checkbox" class="form-check-input" id="item{{i}}"  [style.background-color]="item.color"
+                name="tagOptions"  [value]="item.state"
+                [style.background-color]="item.color">
+
+                <div class="checkraccourcis" > <i class="fa fa-check" *ngIf="item.state == true"></i> </div>
+
+              </span>
+
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="footer-form mt-5 text-center">
+      <button class="btn  btn-pub  my-4" [disabled]="!raccourcisForm.valid" (click)="onSubmitraccourcis()">Enregistrer</button>
+      <button type="submit" class="btn btn-annulation ml-3" (click)="modal.close('Save click')">Annuler</button>
+
+  </div>
+    </form>
+
+
+
+
+
+      </div>
+
+      <div class="modal-footer mt0 pb-0" stule="margin-top: 51%;" >
+        <div style="background: url(./assets/Dashboard/bg-footer.png); background-size: 100% 100%; height: 87px;"></div>
+      </div>
+
+    </ng-template>
+    <simple-notifications></simple-notifications>
+  </div>
+  <div id="raccourcis">
+    <ng-template #contentnotification let-modal>
+
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click') ; fermepopup()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <div class="modal-body listprofil pb-0 mb-0" style="top: 14%; width: 85%; left: 8%;">
+        <div class="row">
+          <div class=" col-lg-9  mb-3 text-left">
+            <p class="infos-notifs"> Modification sur la fiche "{{namefiche}}" </p>
+            <div class="" *ngIf="typenotifs == 'fournis'">
+            <span  class="info_franchise type-notifs">Changement fournis par l'établissement</span>
+            <div class=""  *ngFor="let item of NameficheAttributeAll">
+              <div class="col-lg-12 col-md-12  p-0">
+                <span class="titire-att">{{item.groupDisplayName}}</span>
+
+                 <span *ngFor="let items of item.Services" class="info_franchise">
+
+                  <span   class="old_info_supp">
+                    {{items.displayName}}
+                   </span>
+                 </span>
+              </div>
+            </div>
+        </div>
+
+         </div>
+
+          <!-- <div *ngFor="let item of ServiceAttribute ">
+            {{item|json}}
+          </div> -->
+         <div class="voir-notif col-lg-3">
+          <span (click)="detailsfranchise(fichindividuel) ; fermerpro()">
+            <i class="fa fa-less-than"></i> Aller dans la fiche
+          </span>
+        </div>
+        </div>
+      <div class="" *ngIf="typenotifs == 'telephone'">
+        <div class="col-lg-12 col-md-12 mb-3"> <span class="type-notifs">Changement numéro de téléphone</span></div>
+        <div class="row notifs ml-3">
+
+          <span class="info_franchise">
+            <span *ngFor="let tel of telephone">
+              <!-- <span> {{tel.phone.number}}</span>  -->
+              <span [ngClass]="{'old_info_supp' : tel.phone.etatvalidation ==false} "> {{tel.phone.number}}</span>
+
+            </span>
+         </span>
+
+       </div>
+      </div>
+      <div class="" *ngIf="typenotifs == 'locationName'">
+        <div class="col-lg-12 col-md-12 mb-3">
+           <span class="type-notifs">Changement nom de la fiche</span></div>
+
+        <span class="title_franchise ml-3">
+          <span class="old_info ">{{locationName.locationNamenew}}</span>
+          <span class="old_info_supp ml-3">{{locationName.locationNameold}}</span>
+        </span>
+
+      </div>
+
+      <div class="" *ngIf="typenotifs == 'zonedesservies'">
+        <div class="col-lg-12 col-md-12 mb-3">
+           <span class="type-notifs">Changement zone de la fiche</span></div>
+
+        <span class="title_franchise ml-3" *ngFor="let item of namefichedec">
+          <span class="old_info ">{{item.description}}</span>
+        </span>
+
+      </div>
+
+      <div class="" *ngIf="typenotifs == 'email'">
+        <div class="col-lg-12 col-md-12 mb-3">
+           <span class="type-notifs">Changement email de la fiche</span></div>
+
+        <span class="title_franchise ml-3">
+          <span class="old_info ">{{email.email}}</span>
+          <!-- <span class="old_info_supp ml-3">{{email.emailold}}</span>  -->
+        </span>
+
+      </div>
+
+      <div class="" *ngIf="typenotifs == 'lienprend'">
+        <div class="col-lg-12 col-md-12 mb-3">
+           <span class="type-notifs">Changement lien de rendez-vous de la fiche</span></div>
+
+        <span class="title_franchise ml-3">
+          <span class="old_info ">{{lienprend.lienprend}}</span>
+          <!-- <span class="old_info_supp ml-3">{{lienprend.lienprendold}}</span>  -->
+        </span>
+
+      </div>
+
+
+
+      <div class="ml-3" *ngIf="typenotifs == 'horaires'">
+        <div class="row" *ngFor="let item of horaires">
+          <div class="col-lg-4">
+            <span class="info_franchise" [ngClass]="{'jourshashoraire' : etatsm ==false}">
+              {{item.jours}} </span>
+          </div>
+          <div class="horeires-modal  col-lg-4" >
+            <div *ngIf="item.etat != ''">
+              <div *ngFor="let items of item.horaire">
+                <div class="info_franchise" *ngIf="items.heurdebut != '' && items.heurfin != ''  ">
+                  <span    class="old_info_supp noir " *ngIf="items.etatvalidation == true" >{{items.heurdebut}} - {{items.heurfin}}</span>
+                  <span  class="old_info_supp" *ngIf="items.heurdebut   && items.heurfin  &&  items.etatvalidation == false ">
+                    {{items.heurdebut}} - {{items.heurfin}}</span>
+
+                </div>
+              </div>
+            </div>
+            <div class="info_franchise old_info_supp noir" *ngIf="item.etat === '' ">
+              <span>Fermé</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="" *ngIf="typenotifs == 'description'">
+        <div class="col-lg-12 col-md-12 mb-3">
+           <span class="type-notifs">Changement description de la fiche</span></div>
+        <div class="row notifs">
+
+            <span class="title_franchise ml-3">
+          <span class="old_info ml-3">{{description.description}}</span>
+          <!-- <span class="old_info_supp ml-3">{{description.descriptionold}}</span>  -->
+        </span>
+       </div>
+      </div>
+       <div class="row notifservice" *ngIf="typenotifs == 'service'">
+        <div class="col-lg-12 col-md-12 mb-3">
+           <span class="type-notifs">Changement service de la fiche</span>
+           <div *ngFor="let ser of service ;let i = index;">
+            <div  class="info_franchise">
+              <span [ngClass]="{'old_info' : ser.etatvalidation == false}"> <b> {{ser.nameCat}}</b></span>
+            <span *ngFor="let service of ser.Services ;let i = index;" class="old_info_supp">
+            <span *ngIf="service.etatvalidation  == false" class="old_info_supp">  {{service.name}}</span>
+            <span *ngIf="service.etatvalidation  == true " class="old_info">  {{service.name}}</span>
+          </span>
+
+            </div>
+
+            </div>
+
+          </div>
+      </div>
+      <div class="row notifservice" *ngIf="typenotifs == 'listlibelle'">
+        <div class="col-lg-12 col-md-12 mb-3">
+           <span class="type-notifs">Changement listlibelle de la fiche</span>
+        <div class=" notifs">
+
+          <span class="info_franchise" *ngFor="let libelle of listlibelle ">
+            <span class=""> {{libelle.libelle_value}}</span>
+            <!-- <span class="old_info_supp"> {{libelle.libelle_valueold}}</span> -->
+
+         </span>
+       </div>
+      </div>
+      </div>
+      <div class="row" *ngIf="typenotifs == 'codemagasin'">
+        <div class="col-lg-12 col-md-12 mb-3">
+           <span class="type-notifs mb-3">Changement listlibelle de la fiche</span>
+
+
+          <span class="info_franchise">
+           <span>Nouveau code : <span class="old_info ml-3" style="display: initial;"> {{codemagasin.codemagasin}}</span> </span>  <br>
+           <!-- <span> Encien code :  <span class="old_info_supp" style="display: initial;"> {{codemagasin.codemagasinold}}</span>  </span>  -->
+
+         </span>
+       </div>
+      </div>
+      <div class="row" *ngIf="typenotifs == 'site'">
+        <div class="col-lg-12 col-md-12 mb-3">
+           <span class="type-notifs">Changement site de la fiche</span></div>
+        <div class="row notifs">
+
+          <span class="info_franchise">
+            Nouveau site : <span class="old_info ml-3"> {{site.codemagasin}}</span>
+            <!-- Encien site :  <span class="old_info_supp"> {{site.codemagasinold}}</span> -->
+
+         </span>
+       </div>
+      </div>
+      <div class="row" *ngIf="typenotifs == 'websiteUrl'">
+        <div class="col-lg-12 col-md-12 mb-3">
+           <span class="type-notifs">Changement site de la fiche</span></div>
+        <div class="row notifs">
+
+          <span class="info_franchise">
+           <span> Nouveau site : <span class="old_info ml-3"> {{websiteUrl.websiteUrl}}</span> </span>
+           <!-- <span> Encien site :  <span class="old_info_supp" style="display: initial;"> {{websiteUrl.websiteUrlold}}</span> </span>  -->
+
+         </span>
+       </div>
+      </div>
+      <div class="row" *ngIf="typenotifs == 'address'">
+        <div class="col-lg-12 col-md-12 mb-3">
+           <span class="type-notifs">Changement address de la fiche</span>
+        <div class="mt-3 notifs">
+
+          <span class="info_franchise">
+         <span> Nouveau address : <span class="old_info ml-3"> {{address.adresse}}</span>  </span> <br>
+          <!-- <span> Encien address :  <span class="old_info_supp" style="display: initial;"> {{address.adresseold}}</span> </span>  -->
+        </span>
+       </div>
+      </div>
+      </div>
+      <div class="row" *ngIf="typenotifs == 'categorie'">
+        <div class="col-lg-12 col-md-12 mb-3">
+           <span class="type-notifs mb-3">Changement catégorie de la fiche</span>
+        <div class="row notifs" style="display: block;">
+
+          <div class="info_franchise" *ngFor="let cat of categorie ">
+            <span class="old_info ml-3" *ngIf="cat.displayName !='' || cat.displayName !=null "> {{cat.displayName}}</span>
+         <!-- <span class="old_info_supp ml-3" *ngIf="cat.displayNameold !='' || cat.displayNameold !=null "> {{cat.displayNameold}}</span> -->
+          </div>
+        </div>
+       </div>
+      </div>
+
+      <!-- <div class="btncnx mt-5">
+
+
+        <div  style="display: inline-block; "> <button type="button" class="btn btn-annulation mr-3 "
+          (click)="fermerpro()">Annuler</button></div>
+        <div style="display: inline-block; "> <button type="submit"  (click)= "validernotifs(typenotifs)" class="btn btn-pub">Valider</button> </div>
+
+      </div> -->
+      </div>
+
+
+
+      <div class="modal-footer mt-0 pb-0" >
+        <div style="background: url(./assets/Dashboard/bg-footer.png); background-size: 100% 100%; height: 65px;"></div>
+      </div>
+
+
+    </ng-template>
+  </div>
+
+  <div id="contentblock">
+    <ng-template #contentblock let-modal>
+
+      <button type="button" class="close avatar" aria-label="Close"
+      (click)="fermerpro()">
+     <i class="fa fa-times-thin fa-2x cross" aria-hidden="true"></i>
+      </button>
+
+      <div class="modal-body listprofil pb-0 mb-0">
+        <app-sidebar-tb ></app-sidebar-tb>
+        <app-sidebar-general></app-sidebar-general>
+      </div>
+    </ng-template>
+  </div>
+
+
+</div>
+</div>

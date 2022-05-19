@@ -1,0 +1,45 @@
+
+<div class="picture-group mt-3">
+
+
+
+    <i class="fa fa-trash-alt" (click)="removePicture();" *ngIf="picture && canDelete"></i>
+    <div class="picture-wrapper" (click)="bringFileSelector();">
+      <img [src]="picture"  *ngIf="picture">
+      <img [src]="defaultPicture" *ngIf="!picture && !!defaultPicture">
+    </div>
+  
+  
+
+
+  
+    <div>
+
+        <div (click)="bringFileSelector()" class=" add_img row" *ngIf="!picture"> 
+
+            <div class="col-lg-3 select_photo ml-0" >
+                <img src="./assets/Fiche/picto-img-plus.svg" style="width: 50%;">
+    
+            </div>
+            <div class="col-lg-4 select_photo ml-0 pl-0 text-left" >
+                <span>Importez votre image</span>
+                 <span style="color :#CBCBCB">Logo</span>
+              </div>
+    
+              <div class="col-lg-5">
+                <i class="fa fa-download"></i>
+              </div>
+        </div>
+    
+
+        <input #fileUpload ngFileSelect    [options]="options"
+        (uploadOutput)="onUploadOutput($event)"
+        [uploadInput]="uploadInput"
+        multiple="multiple"
+         type="file" hidden="true">
+
+      </div>
+
+
+  
+  </div>

@@ -1,0 +1,32 @@
+
+<div class="picture-group">
+
+
+
+    <i class="fa fa-trash-alt" (click)="removePicture();" *ngIf="picture && canDelete"></i>
+    <div class="picture-wrapper" (click)="bringFileSelector();">
+      <img [src]="picture"  *ngIf="picture">
+      <img [src]="defaultPicture" *ngIf="!picture && !!defaultPicture">
+    </div>
+  
+  
+  
+  
+    <div class="add_img row">
+
+        <div class="col-lg-12 select_photo"  *ngIf="!picture " (click)="bringFileSelector()">
+          <span>Faire glisser une photo ici <br> ou</span>
+          <boutton>Sélectionner une photo</boutton>
+        </div>
+
+        <input #fileUpload ngFileSelect    [options]="options"
+        (uploadOutput)="onUploadOutput($event)"
+        [uploadInput]="uploadInput"
+        multiple="multiple"
+         type="file" hidden="true">
+
+      </div>
+
+
+  
+  </div>

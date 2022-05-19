@@ -1,0 +1,470 @@
+<div class="header pb-8 pt-5 pt-md-8">
+    <div class="container-fluid">
+        <div class="header-body">
+        </div>
+    </div>
+    <a class="m-nav__link m-nav__link--icon btn-retour" value="Retour" onclick="history.back()">
+        <i class="fa fa-chevron-left"></i> Retour
+      </a>
+</div>
+
+<div class="container-fluid mt--7 " id="TB">
+    <div class="row">
+        <div  [ngClass]="{'col-xl-9 mb-xl-0  bloc1 ': isMobile === false , 'col-xl-11  col-sm-11 p-0 bloc1': isMobile === true}">
+
+
+            <div class="row bloc-dashboard">
+
+                <div class="col-xl-12 mb-5 mb-xl-0">
+
+                    <div class="card  shadow">
+                        <div class="card-header bg-transparent title-Dachboard">
+                            <div class="row align-items-center">
+                                <div class="col-lg-9">
+                                    <h2 class="text-black mb-0 title-renseignement">Vos étiquettes de personnalisation </h2>
+                                </div>
+                                <div class="col-lg-3">
+                                    <span class="nbr-groupe"><b>{{listGroupe.length}} </b> groupes / 3</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-xl-4  col-md-4">
+                                    <div class="row">
+                                        <div id="myDIV" class="col-lg-12 bloc1_etiquette" style="display: flex;">
+                                            <div class="add-etiquette" id="content">
+                                                <div class="pb-3"><span class="title-etiquette">Étiquettes</span> </div>
+
+
+                                                <div *ngFor="let items of listEtiquette , let Index_Etiquette = index;">
+                                              
+                                                    <div class="new-etiquette"
+                                                        *ngIf="items.Etat_Etiquette == false && items.Add_Etiquette == false"
+                                                        (click)="change(items);setFocus(Index_Etiquette)">
+                                                         <sup class="icon-supprime" >
+                                                            <!-- <a  (click)="deleteEtiq(customer,Index_Etiquette)">
+                                                                <i class="fa fa-times-thin fa-2x cross" aria-hidden="true"></i>
+                                                            </a> -->
+                                                            <a  (click)="deleteTag(i)">
+                                                                <i class="fa fa-times-thin fa-2x cross" aria-hidden="true"></i>
+                                                            </a>
+                                                        </sup>
+                                                        <input [disabled]=" !items.Etat_Etiquette"
+                                                            style="cursor: pointer;"
+                                                            [ngClass]="items.status ? 'success' : 'danger'"
+                                                            placeholder="Nouvelle étiquette " type="text"
+                                                            [(ngModel)]="items.Nom_etiquette">
+                                                
+                                                        
+                                                        <span class="icon-add">
+                                                            <img class="img-edit" src="./assets/etiquette/edit.svg"
+                                                                *ngIf="!items.Etat_Etiquette && !items.Add_Etiquette">
+
+                                                        </span>
+                                                    </div>
+
+
+
+                                                    <div class="new-etiquette" *ngIf="items.Etat_Etiquette == true">
+                                                       
+                                                        <input [disabled]=" !items.Etat_Etiquette " type="text"
+                                                            #txtInput [(ngModel)]="items.Nom_etiquette"
+                                                            [ngClass]="Exist ? 'dejaexist' : 'nonexist'"
+                                                            (ngModelChange)="onSearchEtiquette($event)"
+                                                            (keydown.enter)="Exist ? true : Addgroupe(items , Index_Etiquette)">
+
+                                                        <span class="icon-add">
+                                                            <img class="img-disabled"
+                                                                src="./assets/etiquette/disabled_save.svg"
+                                                                (click)="Exist ? true : Addgroupe(items ,  Index_Etiquette)"
+                                                                *ngIf="items.Etat_Etiquette && Exist">
+
+
+
+                                                            <img class="img-edit" src="./assets/etiquette/save.svg"
+                                                                (click)="Exist ? true : Addgroupe(items ,  Index_Etiquette)"
+                                                                *ngIf="items.Etat_Etiquette && !Exist">
+
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                              
+                                                <div class="pb-3" (click)="addEtiquette()">
+                                             
+                                                     <span
+                                                        class=" mb-0 plus-etiquette"><i class="fa fa-plus"></i>
+                                                        Ajouter une étiquette</span>
+                                                </div>
+                                                <div class="col-lg-12 GroupeEtiquette">
+                                                    <fieldset cdkDropList cdkDropListOrientation="vertical"
+                                                        [cdkDropListData]="GroupeEtiquette"
+                                                        [cdkDropListConnectedTo]="cdkDropTrackLists"
+                                                        (cdkDropListDropped)="drop($event)">
+
+                                                        <div class="bloc-etiquette bloc-news">
+                                                            <div class="drag-box"
+                                                                *ngFor="let customer of GroupeEtiquette , let Index_Etiquette = index;"
+                                                                cdkDrag>
+                                                                {{customer.Nom_etiquette}}
+
+                                                                <div class="actionetiquette tooltip ml-4">
+                                                                    <img  src="../assets/etiquette/dots_etiquette2.svg" class="settingcorbeille" style="    width: 15px;">
+                                                                    <div class="tooltiptext shadow " style="    margin-top: 0.9em; margin-left: -4.5pc;">
+                                                                        <div class="text-left">
+                                                                            <ul>
+                                                                             
+                                                                                <li> <span class="actionpost" 
+                                                                                    (click)="openaction(actionetiquette , customer , '' , 'deplacement' , Index_Etiquette) ; getlistgroupes(customer)" >Déplacer</span> 
+                                                                                
+                                                                                </li> 
+                                                                                <li> <span class="actionpost"  style="color: #C94040;" (click)="deleteEtiq(customer,Index_Etiquette)">Supprimer</span></li>
+            
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div> 
+<!--                                                                 
+                                                                <img class="img-supp"
+                                                                    src="./assets/Dashboard/picto-supp.svg" (click)="deleteEtiq
+                                                                (customer,Index_Etiquette)"> -->
+                                                            </div>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+
+
+                                            </div>
+
+
+
+
+                                        </div>
+                                        <p id="demo"></p>
+                                        <div class="col-lg-12 corbeille">
+                                            <fieldset class="scheduler-border box-list box-list" cdkDropList
+                                                cdkDropListOrientation="vertical" [cdkDropListData]="corbeille"
+                                                [cdkDropListConnectedTo]="cdkDropTrackLists"
+                                                (cdkDropListDropped)="drop($event)">
+                                                <legend class="scheduler-border">Corbeille</legend>
+                                                <div class="bloc-etiquette bloc-corbeille">
+                                                    <div class="drag-box" *ngFor="let etiquette of corbeille" cdkDragb>
+
+                                                        <span class="valueetiquette">
+                                                            {{etiquette.Value_etiquette}}</span>
+                                                             {{etiquette.Nom_etiquette}}
+                                                        <div class=" corbeille actionetiquette tooltip">
+                                                       
+                                                            <img src="../assets/etiquette/dots_corbeille.svg" class="settingcorbeille">
+                                                            <div class="tooltiptext shadow ">
+                                                                <div class="text-left">
+                                                                    <ul>
+                                                                        <li> <span class="actionpost"  (click)="Restaureretiquette( etiquette)">Restaurer</span> </li>
+                                                                        <li> <span class="actionpost"  style="color: #C94040;" (click)="openaction(actionetiquette , etiquette ,'' , 'Supprimer')">Supprimer</span></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div> 
+
+                                                        <!-- <img *ngIf="customer.Value_etiquette == 0" class="img-supp"
+                                                            src="./assets/Dashboard/picto-supp.svg"
+                                                            (click)="delete(customer)">
+                                                        <img *ngIf="customer.Value_etiquette > 0"
+                                                            (click)="Restaurer(customer)" class="img-supp"
+                                                            src="./assets/etiquette/restaurer.png"> -->
+
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-8 col-md-8">
+                                    <div class="listgroupe" *ngFor="let items of listGroupe , let i = index;">
+                                        <fieldset class="scheduler-border box-list box-list" cdkDropList
+                                            cdkDropListOrientation="vertical" [cdkDropListData]="items.ettiquettes"
+                                            [cdkDropListConnectedTo]="cdkDropTrackLists"
+                                            (cdkDropListDropped)="drop($event)">
+                                            <legend class="scheduler-border">{{items.Name_groupe}}
+                                            <!-- 
+                                                <span *ngIf="i==2 " class="edit-groupe"
+                                                    (click)="open(content2 , 'Edit' ,items)"> <i
+                                                        class="fa fa-pencil-alt"></i>
+                                                           
+                                                    </span> -->
+                                                        <div class=" deletegroupe actionetiquette tooltip" *ngIf="i==2 ">
+                                                            <img src="../assets/etiquette/setting.svg" class="imgsetting">
+                                                            <div class="tooltiptext shadow ">
+                                                                <div class="text-left">
+                                                                    <ul>
+                                                                        <li> <span class="actionpost"  (click)="open(content2 , 'Edit' ,items)">Modifier</span> </li>
+                                                                        <li *ngIf="items.ettiquettes.length  == 0"> <span class="actionpost"  style="color: #C94040;" (click)="openaction(actionetiquette, ' ' ,items , 'deletegroupe' ,'')">Supprimer</span></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div> 
+
+                                             
+
+
+
+                                            </legend>
+                                            <div class="bloc-etiquette bloc-groupe">
+
+                                                <div class="drag-box" *ngFor="let itemetiquette of items.ettiquettes"
+                                                    cdkDrag [ngStyle]="{'background-color':items.couleur_groupe }">
+                                                    <span class="valueetiquette"
+                                                        [ngStyle]="{'color':items.couleur_groupe === '#fff' ? '#fff' : items.couleur_groupe , 'background-color':items.couleur_groupe === '#fff' ? '#5e5e5e' : '#fff'}">
+                                                        {{itemetiquette.Value_etiquette}}</span>
+                                                    <input name="EditEtiquette" class="etiquettevalue"
+                                                        [ngModel]="itemetiquette.Nom_etiquette"
+                                                        [ngStyle]="{'color':items.couleur_groupe === '#fff' ? '#5e5e5e' : '#fff'  }"
+                                                        [style.width]="itemetiquette.Nom_etiquette.length * 10 + 'px'"
+                                                        [ngClass]="itemetiquette.status ? 'success' : 'danger'"
+                                                        (keydown.enter)="onKeypress(itemetiquette)"
+                                                        (cdkDragMoved)="dragMoved($event, action)"
+                                                        (ngModelChange)="onSearchChange(itemetiquette , $event)">
+                                                    <span class="name-etiquette"></span>
+                                                    <div class=" actionetiquette tooltip">
+                                                        
+                                                        <img src="../assets/etiquette/dots_etiquette.svg" class="settingcorbeille" *ngIf="items.couleur_groupe != '#fff'">
+                                                        <img src="../assets/etiquette/dots.svg" class="settingcorbeille" *ngIf="items.couleur_groupe == '#fff'">
+
+                                                        <!-- <i class="fa fa-ellipsis-v"  [ngStyle]="{'color':items.couleur_groupe === '#fff' ? '#000' : '#fff'  }" aria-hidden="true"></i> -->
+                                                        <div class="tooltiptext shadow ">
+                                                            <div class="text-left">
+                                                                <ul>
+                                                                    <li> <span class="actionpost"  (click)="openaction(actionetiquette , itemetiquette , items  , 'renommer')">Renommer</span> </li>
+                                                                    <li> <span class="actionpost" (click)="openaction(actionetiquette , itemetiquette , items , 'deplacement') ; getlistgroupes(items)" >Déplacer</span> </li>
+                                                                    <li> <span class="actionpost"  style="color: #C94040;" (click)="deletetiquette(itemetiquette)">Supprimer</span></li>
+
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div> 
+                                                    <!-- <span class="edit-etiquette"
+                                                        (click)="ModifTitle(customer) ; clickEvent(customer) ;">
+                                                        <i class="fa fa-pencil-alt" [ngStyle]="{'color':items.couleur_groupe === '#fff' ? '#000' : '#fff' }"></i></span> -->
+                                                </div>
+                                            </div>
+                                        </fieldset>
+
+
+
+
+
+                                    </div>
+                                    <div class="listgroupe" *ngIf="listGroupe.length < 3">
+
+                                        <fieldset class="scheduler-border box-list box-list">
+
+                                            <div class="text-center new_groupe">
+                                                <div (click)="open(content2 , 'Add')" class="creategroupe"> <i
+                                                        class="fa fa-plus"></i> <br>
+                                                    <span class="add_groupe"> Créer un groupe </span>
+                                                </div>
+
+
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <!-- <pre>{{pre}}</pre>  -->
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="" [ngClass]="{'col-xl-1  col-md-1 ':    isMobile === true , 'col-xl-3  col-md-3': isMobile === false}">
+            <div *ngIf="!isMobile">
+                <app-sidebar-tb></app-sidebar-tb>
+                <app-sidebar-general></app-sidebar-general>
+            </div>
+            <div *ngIf="isMobile" class="medium_screen text-center">
+              <span class="avatar avatar-md rounded-circle"  
+              (click)="openblock(contentblock)">
+                <img  src="../assets/Dashboard/icon-franchises1.png"><sup class="sup-b"><i  class="fa fa-circle mod"></i></sup>
+            </span>
+            
+            </div>
+            <div id="contentblock">
+              <ng-template #contentblock let-modal>
+          
+                <button type="button" class="close avatar" aria-label="Close" 
+                (click)="fermerpro()">
+               <i class="fa fa-times-thin fa-2x cross" aria-hidden="true"></i>
+                </button>
+                
+                <div class="modal-body listprofil pb-0 mb-0">
+                    <app-sidebar-tb></app-sidebar-tb>
+                    <app-sidebar-general></app-sidebar-general>
+                </div>
+              </ng-template>
+            </div>
+          
+            </div>
+    </div>
+
+
+
+</div>
+
+
+
+
+<!--------------------Rennomer groupe------------------>
+<div id="notifs-client">
+    <ng-template #actionetiquette let-modal>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="modal-body mt-5" *ngIf="action == 'renommer'">
+
+                <span class="text-left create_groupe"> Nom étiquette </span>
+                <div class="input-group input-group-alternative addgroupe mt-3">
+                    <input type="text" [(ngModel)]="currentnometiquette" placeholder="Nom étiquette"
+                        class="form-control ">
+                </div>
+        
+            <div class="footer-form mt-5 text-right">
+                <button class="btn btn-pub my-4" (click)="Renommeretiquette(currentnometiquette)">Enregistrer</button>
+                <button type="submit" class="btn btn-annulation" (click)="modal.close('Save click')">Annuler</button>
+            </div>
+        </div>
+
+        <div class="modal-body mt-5" *ngIf="action == 'deplacement'">
+                <span class="text-left create_groupe"> Sélectionner un  groupe </span>
+                <div class="deplacement mt-3">
+                    <ul>
+                        <li class="list-group-item" *ngFor="let item of Listgroupes">
+                          <input type="checkbox"  value="{{item.id_groupe}}" [attr.disabled]=" item.isDisabled ? true : null"
+                          [checked]="item.isDisabled" (change)="selectgroupe(item)"   value="{{item.Name_groupe}}"/>
+                          <span class="itemList">{{item.Name_groupe}} </span>
+                        </li>
+                      </ul>
+                </div>
+
+            <div class="footer-form mt-5 text-right">
+                <button class="btn btn-pub my-4" (click)="deplaceretiquette(categoriechecked)">Enregistrer</button>
+                <button type="submit" class="btn btn-annulation" (click)="modal.close('Save click')">Annuler</button>
+            </div>
+        </div>
+        <div class="modal-body mt-5" *ngIf="action == 'Supprimer'">
+           <p class="alertdelete text-center"> Êtes vous sûr de vouloir supprimer définitivement cette étiquette ? </p>
+        <div class="footer-form mt-5 text-right">
+            <button class="btn btn-outline" (click)="deletetiquettedefinitivemeent(currentetiquette)">Oui</button>
+            <button type="submit" class="btn btn-annuler" (click)="modal.close('Save click')">Non</button>
+        </div>
+       </div>
+
+
+       <div class="modal-body mt-5" *ngIf="action == 'deletegroupe'">
+        <p class="alertdelete text-center"> Êtes vous sûr de vouloir supprimer définitivement ce groupe ? </p>
+     <div class="footer-form mt-5 text-right">
+         <button class="btn btn-outline" (click)="deletegroupe(currentegroupe)">Oui</button>
+         <button type="submit" class="btn btn-annuler" (click)="modal.close('Save click')">Non</button>
+     </div>
+    </div>
+
+
+
+
+
+    </ng-template>
+</div>
+
+<!--------------------fin Rennomer groupe------------------>
+
+<!--------------------Création groupe------------------>
+<div id="notifs-client">
+    <ng-template #content2 let-modal>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-lg-12 col-md-6">
+                    <div class=" bg-secondary Addgroupe">
+                        <div class=" bg-transparent ">
+                            <div class="  mt-20 mb-3">
+                                <span class="text-center create_groupe">Création de groupe</span>
+                                <span class="text-center text-groupe"> Créer votre groupe de personnalisation
+                                    d'étiquette</span>
+
+
+                                <form [formGroup]="phaseForm">
+                                    <span class="nom-groupe text-left"> Nom de groupe <span
+                                            class="symbol required"></span></span>
+                                    <div class="input-group input-group-alternative addgroupe"
+                                        [ngClass]="!displayMessage.Name_groupe ? 'success' : 'has-danger'">
+                                        <input type="text" formControlName="Name_groupe" [(ngModel)]="Name_groupe"
+                                            placeholder="(Champ obligatoire)" class="form- control">
+                                    </div>
+                                    <div class="" *ngIf="displayMessage.Name_groupe">
+                                        <i class="fa fa-exclamation-triangle"></i>
+                                    </div>
+                                    <span class="text-groupe text-left"> Choisissez la couleur du groupe parmi les
+                                        propositions ou rentrez votre code hexadécimal</span>
+
+                                    <div class="row addgroupe">
+                                        <div class="col-lg-8 col-md-6"
+                                            style="  margin-left: -29px;  display: -webkit-inline-box;">
+
+                                            <span class="bloc-color" *ngFor="let item of categories ,let i = index">
+                                                <span class="checkbox-label"><span class="bloc-color"></span></span>
+                                                <input type="checkbox" class="form-check-input" id="item{{i}}" 
+                                                    name="tagOptions" (change)="Selection(item)" [value]="item.checked"
+                                                    [checked]="item.checked" [style.background-color]="item.color">
+
+
+                                            </span>
+
+                                        </div>
+                                        <div class="col-lg-4 col-md-6 addgroupe " style="padding-top: 5%; margin-left: 29px;">
+                                            <span class="nom-groupe text-left"> Code couleur <span
+                                                    class="symbol required"></span></span>
+                                            <div class="input-group input-group-alternative ng-tns-c114-0">
+                                                <input style="padding-top: 0px;margin-top: -8px;" type="text"
+                                                    (keyup)="keyupColor($event.target.value)" (click)="onKey($event)"
+                                                    formControlName="couleur_groupe" [(ngModel)]="valuecolor"
+                                                    [ngClass]="!displayMessage.couleur_groupe ? 'success' : 'has-danger'"
+                                                    placeholder="Exemple : #ffffff" class="form-control ng-tns-c114-0">
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="footer-form mt-5">
+                                        <button class="btn  btn-pub  my-4" [disabled]="!phaseForm.valid" (click)="onSubmit()">Enregistrer</button>
+                                        <button type="submit" class="btn btn-annulation" (click)="modal.close('Save click')">Annuler</button>
+
+                                    </div>
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+        <div class="modal-footer">
+            <div style=" background: url(./assets/Dashboard/bg-footer.png);
+        background-size: 100% 100%;
+        height: 87px;"> </div>
+        </div>
+
+    </ng-template>
+</div>
+<!--------------------fin Création groupe------------------>

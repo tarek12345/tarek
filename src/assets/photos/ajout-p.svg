@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="165" height="165" viewBox="0 0 165 165">
+  <g id="Groupe_6885" data-name="Groupe 6885" transform="translate(-1075 -643)">
+    <g id="Rectangle_432" data-name="Rectangle 432" transform="translate(1075 643)" fill="none" stroke="#707070" stroke-width="2" stroke-dasharray="5 5" opacity="0.4">
+      <rect width="165" height="165" rx="10" stroke="none"/>
+      <rect x="1" y="1" width="163" height="163" rx="9" fill="none"/>
+    </g>
+    <g id="Groupe_6884" data-name="Groupe 6884" transform="translate(-636.431 557.569)">
+      <g id="Ellipse_1" data-name="Ellipse 1" transform="translate(1749.431 123.431)" fill="none" stroke="#cecece" stroke-width="1">
+        <circle cx="45" cy="45" r="45" stroke="none"/>
+        <circle cx="45" cy="45" r="44.5" fill="none"/>
+      </g>
+      <g id="Groupe_3" data-name="Groupe 3" transform="translate(1782.773 157.266)">
+        <path id="Tracé_10" data-name="Tracé 10" d="M0,0V22.331" transform="translate(11.67)" fill="none" stroke="#cecece" stroke-width="2"/>
+        <line id="Ligne_4" data-name="Ligne 4" x2="23.315" transform="translate(0 11.475)" fill="none" stroke="#cecece" stroke-width="2"/>
+      </g>
+    </g>
+  </g>
+</svg>

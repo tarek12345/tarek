@@ -1,0 +1,248 @@
+
+<div  class="pb-3" style="padding: 0%;     border-radius: 1rem;">
+  <div class="row ml-1 mr-1 mb-5 mt-2">
+    <div class="col-lg-6 bloc-top">
+      <div class="card-header bg-transparent p-0 title-Dachboard">
+        <div class="row align-items-center" style=" padding: 10px 0px 10px 0px; margin: 0px;">
+
+          <i class="fa fa-arrow-up" aria-hidden="true"></i>
+
+          <div class="col content-top">
+            <h2 class="title-renseignement-2 text-white mb-0">Top</h2>
+            <span>Post GMB <br><span class="acitve-plus">le plus vue</span></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-lg-6 bloc-flop">
+      <div class="card-header bg-transparent p-0 title-Dachboard">
+        <div class="row align-items-center" style=" padding: 10px 0px 10px 0px; margin: 0px;">
+          <i class="fas fa-arrow-down" aria-hidden="true"></i>
+          <div class="col content-top">
+            <h2 class="title-renseignement-2  text-white mb-0">Flop</h2>
+
+            <span>Post GMB <br> le moins vue</span>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+
+    <div class="col-lg-6 bloc-top-stat">
+      <div class="classement-frnachises title-Dachboard pt-4 pb-5" >
+        <div class="row align-items-center respo">
+
+          <div   *ngFor="let tops of TopPost; let i =index" class="col content-top-stat">   
+              <div class="col-xl-1 col-md-1 col-xs-1 ">
+                  <i  *ngIf="tops.Classify == 0"  class="fa fa-arrow-up classify_top_three" aria-hidden="true"></i>
+                  <i   *ngIf="tops.Classify == 1 "  class="fa fa-minus  classify_top_three" aria-hidden="true"></i>
+                  <i   *ngIf="tops.Classify == 2 "  class="fa fa-arrow-down  classify_top_three" aria-hidden="true"></i>
+              </div>
+              <div class="col-xl-5 col-md-5 col-xs-5 pl-2 pr-0">
+            <span class=" text-black title-stat  mb-0">{{tops.Name}}<br> <span class="desc-stat">{{tops.City}} </span></span>
+          </div>
+          <div class="col-xl-6 col-md-6 col-xs-6 pl-0 pr-0">
+            <span class=" vues"> {{tops.Views}} </span> 
+          </div>
+          
+         </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-lg-6 bloc-flop-stat">
+      <div class="classement-frnachises title-Dachboard pt-4" >
+          <div class="row align-items-center respo">
+
+            <div   *ngFor="let tops of FlopPost; let i =index" class="col content-top-stat">   
+                <div class="col-xl-1 col-md-1 col-xs-1 ">
+                    <i  *ngIf="tops.Classify == 0"  class="fa fa-arrow-up classify_top_three" aria-hidden="true"></i>
+                    <i   *ngIf="tops.Classify == 1 "  class="fa fa-minus  classify_top_three" aria-hidden="true"></i>
+                    <i   *ngIf="tops.Classify == 2 "  class="fa fa-arrow-down  classify_top_three" aria-hidden="true"></i>
+                </div>
+                <div class="col-xl-5 col-md-5 col-xs-5 pl-2 pr-0">
+              <span class=" text-black title-stat  mb-0">{{tops.Name}}<br> <span class="desc-stat">{{tops.City}} </span></span>
+            </div>    
+            <div class="col-xl-6 col-md-6 col-xs-6 pl-0 pr-0">
+              <span class=" vues"> {{tops.Views}} </span> 
+            </div>
+            
+           </div>
+          </div>
+        </div>
+
+    </div>
+
+
+  </div>
+
+
+
+  <a class="show-more avis"
+  (click)="open(content)"
+  ><span class="classement avis">Voir le classement</span></a >
+  <div class="media">
+      <div class="media-body">
+       <div class="reviews-members-footer">
+         <ng-template #content let-modal>
+           <div class="modal-header">
+             <button
+               type="button"
+               class="close"
+               aria-label="Close"
+               (click)="modal.dismiss('Cross click')"
+             >
+               <span aria-hidden="true">&times;</span>
+             </button>
+           </div>
+           <!--body Modal negatif --->
+           <div class="modal-body mt-20 modal-avis">
+             <div class="reviews-members pb-2">
+               <span
+                  class=" pb-3 modal-title basic-title classements"
+                 id="modal-basic-title  "
+                 >Classement</span >
+               <div class="media ">
+                 <div class="media-body">
+                   <div class=" container pl-9 pr-9">
+                   <div class=" row  mt-2">
+                     <div class="col-xl-4 col-md-4 col-xs-12 d-block mx-auto text-center" >
+                       <div class="classemnent-fiche">
+                      <span class="number-class">2<sup>ème</sup></span> 
+                      <div *ngFor="let fiche of AllTopFlopPost; let i =index" >
+                       <div class="classemnent-fiche-1" *ngIf="i == 1">
+                      <div class="header-classify  content-top-stat mt-4" >
+                       <i  *ngIf="fiche.Classify == 0"  class="fa fa-arrow-up classify_top_three" aria-hidden="true"></i>
+                       <i   *ngIf="fiche.Classify == 1 "  class="fa fa-minus  classify_top_three" aria-hidden="true"></i>
+                       <i   *ngIf="fiche.Classify == 2 "  class="fa fa-arrow-down  classify_top_three" aria-hidden="true"></i>
+                        <span   class=" header-classify text-black title-stat">
+   
+                          {{ fiche.Name }}<br>
+                          <span class="text-region pr-3" >{{fiche.City}}</span>
+                        </span>
+                      </div>
+                      
+                      <div class="content-top-stat">
+                        <span class="nbr-avis">{{ fiche.Count }}</span>
+                      </div>
+                    </div>
+                    </div>
+                     </div>
+                   </div>
+                     <div class="col-xl-4 col-md-4 col-xs-12  d-block mx-auto text-center" >
+                       <div class="classemnent-fiche first">
+                         <span class="number-class"> 1<sup>er</sup></span> 
+                         <div *ngFor="let fiche of AllTopFlopPost; let i =index" >
+                          <div class="classemnent-fiche-1" *ngIf="i == 0">
+                         <div class="header-classify  content-top-stat mt-4" >
+                           <i  *ngIf="fiche.Classify == 0"  class="fa fa-arrow-up classify_top_three" aria-hidden="true"></i>
+                         <i   *ngIf="fiche.Classify == 1 "  class="fa fa-minus  classify_top_three" aria-hidden="true"></i>
+                         <i   *ngIf="fiche.Classify == 2 "  class="fa fa-arrow-down  classify_top_three" aria-hidden="true"></i>
+                           <span   class="text-black title-stat">
+                             {{ fiche.Name }}<br>
+                             <span class="text-region pr-3" >{{fiche.City}}</span>
+                           </span>
+                         </div>
+                         
+                       
+                       </div>
+                       </div>
+                        </div>
+                   </div>
+                     <div class="col-xl-4 col-md-4 col-xs-12 d-block  mx-auto text-center" >
+                       <div class="classemnent-fiche third">
+                         <span class="number-class"> 3<sup>ème</sup> </span> 
+                         <div *ngFor="let fiche of AllTopFlopPost; let i =index" >
+                          <div class="classemnent-fiche-1" *ngIf="i == 2">
+                         <div class="header-classify content-top-stat mt-4" >
+                           <i  *ngIf="fiche.Classify == 0"  class="fa fa-arrow-up classify_top_three" aria-hidden="true"></i>
+                         <i   *ngIf="fiche.Classify == 1 "  class="fa fa-minus  classify_top_three" aria-hidden="true"></i>
+                         <i   *ngIf="fiche.Classify == 2 "  class="fa fa-arrow-down  classify_top_three" aria-hidden="true"></i>
+                           <span   class="text-black title-stat">
+                             {{ fiche.Name }}<br>
+                             <span class="text-region pr-3" >{{fiche.City}}</span>
+                           </span>
+                         </div>
+                         
+                      
+                       </div>
+                       </div>
+                        </div>
+                     </div>
+                   </div>
+                   <div class="all-franchisess mt-3" >
+                   <div
+                   *ngFor="let fiche of AllTopFlopPost; let i =index"
+                     class="row card-header bg-transparent title-Dachboard   pt-2 pb-0 pl-0 pr-3"  >
+               
+                     <div *ngIf="i >= 3" class="col-lg-1 content-top-stat  text-right pl-1 pr-1" >
+                      <span class="avis_classify pr-2 mt-0 pb-2">{{i+1}}</span> 
+          
+                  </div>
+                         
+                      <div *ngIf="i >= 3" class="col-lg-2 content-top-stat  text-left pl-1 pr-1">
+                         <span   class="text-black s title-stat mr-0 ml-0 pr-3">
+                           {{ fiche.FicheName }}<br>
+                           <span class="text-region pr-3" >{{fiche.City}}</span>
+                         </span>
+                       </div>
+                       <div *ngIf="i >= 3" class="col-lg-3 content-top-stat  text-left pl-1 pr-1">
+                        <span   class="text-post-modalt mr-0 ml-0 pr-3">
+                          {{ fiche.Name }}
+                        </span>
+                       <!-- <span   class="text-post-modalt mr-0 ml-0 pr-3">
+                          {{ fiche.Desc }}
+                        </span>-->
+                      </div>
+                       <div *ngIf="i >= 3" class="col-lg-2 content-top-stat  text-right pl-1 pr-1" >
+                        <span class="text-black mb-0"> <img src="./assets/post/autre/post-picto-calandar-v-2.svg" class="img-post mo"> <span
+                          class="value-post">{{fiche.Date}}
+                           </span></span>
+                     
+                    
+                     </div>
+                
+                      <div *ngIf="i >= 3" class="col-lg-2 content-top-stat  text-left pl-1 pr-1">
+                          <span class="text-black mb-0 text-center d-block">
+                            <img src="./assets/Dashboard/post-picto-vue.svg" class="img-post mo"> <span class="value-post mo"> {{fiche.Views}}
+                            </span></span>
+                      
+                      </div>
+                 
+                       <div *ngIf="i >= 3" class="col-lg-2 content-top-stat  text-left pl-1 pr-1">
+                        <span class="text-black mb-0"> <img src="./assets/Dashboard/post-picto-clic.svg" class="img-post mo"> <span
+                          class="value-post">{{fiche.Clics}}
+                           </span></span>
+                      </div>
+                      <div *ngIf="i >= 3" style="width:90%;margin: 0 auto ;border-bottom:1px solid #CBCBCB;" class=" "></div>
+                   </div>
+                  </div>
+                  </div>
+                 </div>
+               </div>
+           </div>
+     
+       </div>
+         </ng-template>
+         <!--fin body Modal  --->
+     
+       </div>
+     </div>
+     </div>
+
+</div>
+
+
+
+
+
+
+<!--Fin Top Flop -->
+  <!-------------Fiche administreé---------------->
+

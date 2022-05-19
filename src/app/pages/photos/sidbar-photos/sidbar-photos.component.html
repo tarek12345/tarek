@@ -1,0 +1,256 @@
+<div class="row ml-1 mr-1 mb-5 mt-1">
+    <div class="col-lg-12 bloc-top">
+      <div class="card-header bg-transparent p-0 title-Dachboard">
+        <div
+          class="row align-items-center"
+          style="padding: 10px 0px 10px 0px; margin: 0px"
+        >
+          <i class="fa fa-arrow-up" aria-hidden="true"></i>
+  
+          <div class="col content-top">
+            <h2 class="title-renseignement-2 text-white mb-0">
+                Photo la plus consultée
+            </h2>
+           
+      
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bloc-top-stat pt-2">
+        <div  *ngFor="let fiche of FichesPhotos; let i =index" class=" containers  pl-3 pr-5">
+      <div  class="row "*ngIf="i == 0">
+            <div class=" col-xl-6 col-md-6 ">
+        <div class="element-galerie mt-2 mr-2">
+            <a (click)="openCato(content,item)">
+              <!-- <img  class ="img-fonst " src="{{fiche.file}}" alt="{{fiche.locationName}}"/> -->
+              <div class ="img-fonst " style=" width: 100% ;display: block ;    min-height: 100%;   border-radius: 10px;"
+              [ngStyle]="{'background': 'url(' + fiche.file + ') no-repeat 0 0 / cover'}">  <div class="claque-noir"></div></div>
+            
+            </a>
+            </div>
+            <div  class="date-pho mr-2"> 
+                <span  class="photos-date">{{fiche.date}}</span>
+               
+            </div>
+        </div>
+        <div class="col-xl-6 col-md-6">
+            <div class="setup-bottom pl-2">
+                <span  class="text-black viwss mb-0">
+                    <img  src="./assets/Dashboard/post-picto-vue.svg" class="img-post">
+                    <span  class="value-post"> {{fiche.views}} </span>
+                    <span class="text-2">{{fiche.locationName}} <span class="text-light mt-1">{{fiche.city}}</span> </span>
+                </span>
+               
+            </div>
+        </div>
+
+<!----------------------------------------popup Catégoriser------------------------------------------------------------------>
+<div  class="media">
+  <div class="media-body">
+    <div id="notifs-client">
+      <ng-template #content let-modal cato>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <div  *ngFor="let fiche of FichesPhotos; let i=index"  class="modal-body Categoriser">
+          <div *ngIf="i==0" class="row">
+            <div class="col-xl-8 col-md-12 font-images">
+              <img class src='{{fiche.file}}'  class="img-font-cato" alt='{{fiche.locationName}}' />
+              <div class="city-img"><span>{{fiche.locationName}}</span></div>
+            </div>
+            <div class="col-xl-4  col-md-12 pt-5  pl-4 Categoriser-left">
+          <div class="reviews-members pb-2 Categoriser">
+            <span
+            class=" pb-3 title-add-photos" id="modal-basic-title" >Informations
+          </span >
+          <span class="text-black mb-0">
+            <img  src="./assets/Dashboard/post-picto-vue.svg" class="img-post">
+            <span class="value-post"> {{fiche.views}} consultations </span>
+          </span>
+          <span class="text-black mb-0">
+
+            <img  src="./assets/photos/icon_calandar-grise.svg" class="img-post">
+            <span class="value-post"> Il y a {{fiche.date}}</span>
+          </span>
+
+          <span class="text-black mb-0">
+            <img  src="./assets/photos/insert-picture-icon-grise.png" class="img-post s">
+
+            <span class="value-post"> {{fiche.width}} x {{fiche.height}} pixels</span>
+          </span>
+          <!-- <div *ngIf="fiche.profileName != null || fiche.profilePhotoUrl != null " class="text-black mb-0 mt-4">
+            <img  src="{{fiche.profilePhotoUrl}}" alt='{{fiche.locationName}}' class=" prop">
+            <span  class="value-post">
+              {{fiche.profileName}}
+              <span class="light">propriétaire</span>
+            </span>
+        </div>
+        <div *ngIf="fiche.profileName == null || fiche.profilePhotoUrl == null " class="text-black mb-0 mt-4">
+          <img  src="{{fiche.thumbnail}}" alt='{{fiche.locationName}}' class=" prop">
+          <span  class="value-post">
+            {{fiche.firstName}}    {{fiche.lastName}}
+            <span class="light">propriétaire</span>
+          </span>
+      </div> -->
+      </div>
+    </div>
+    </div>
+  </div>
+      </ng-template>
+      </div>
+      </div>
+</div>
+<!---------------------------------------- Fin popup Catégoriser---------------------------------------------->
+      </div>
+    </div>
+      <a class="show-more avis"
+      (click)="open(content)"
+      ><span class="classement avis  mt-2  mb-2">Voir le classement</span></a >
+    
+    <div class="media">
+     <div class="media-body">
+      <div class="reviews-members-footer">
+        <ng-template #content let-modal>
+          <div class="modal-header">
+            <button
+              type="button"
+              class="close"
+              aria-label="Close"
+              (click)="modal.dismiss('Cross click')"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <!--body Modal negatif --->
+          <div class="modal-body mt-20 modal-avis">
+            <div class="reviews-members pb-2">
+              <span
+                 class=" pb-3 modal-title basic-title classements"
+                id="modal-basic-title  "
+                >Classement</span >
+              <div class="media ">
+                <div class="media-body">
+                  <div class=" container pl-9 pr-9">
+                  <div class=" row  mt-2 ">
+                    <div class="col-xl-4 col-md-4 col-xs-12 d-block mx-auto text-center" >
+                      <div class="classemnent-fiche">
+                     <span class="number-class">2<sup>ème</sup></span> 
+                     <div *ngFor="let fiche of FichesPhotos; let i =index" >
+                      <div class="classemnent-fiche-1" *ngIf="i == 1">
+                        <img src="{{fiche.file}}"    alt="{{fiche.locationName}}" class="img-fonst  classe">
+                        
+                     <div class="header-classify  content-top-stat " >
+                      <i  *ngIf="fiche.classify == 0"  class="fa fa-arrow-up classify_top_three" aria-hidden="true"></i>
+                      <i   *ngIf="fiche.classify == 1 "  class="fa fa-minus  classify_top_three" aria-hidden="true"></i>
+                      <i   *ngIf="fiche.classify == 2 "  class="fa fa-arrow-down  classify_top_three" aria-hidden="true"></i>
+                       <span   class=" header-classify text-black title-stat">
+  
+                         {{ fiche.locationName }}
+                         <span class="text-region">{{ fiche.city }}</span>
+                       </span>
+                     </div>
+                    
+                   </div>
+                   </div>
+                    </div>
+                  </div>
+                    <div class="col-xl-4 col-md-4 col-xs-12  d-block mx-auto text-center" >
+                      <div class="classemnent-fiche first">
+                        <span class="number-class"> 1<sup>er</sup></span> 
+                        <div *ngFor="let fiche of FichesPhotos; let i =index" >
+                         <div class="classemnent-fiche-1" *ngIf="i == 0">
+                          <img src="{{fiche.file}}"    alt="{{fiche.locationName}}" class="img-fonst  classe">
+                        <div class="header-classify  content-top-stat " >
+                          <i  *ngIf="fiche.classify == 0"  class="fa fa-arrow-up classify_top_three" aria-hidden="true"></i>
+                        <i   *ngIf="fiche.classify == 1 "  class="fa fa-minus  classify_top_three" aria-hidden="true"></i>
+                        <i   *ngIf="fiche.classify == 2 "  class="fa fa-arrow-down  classify_top_three" aria-hidden="true"></i>
+                          <span   class="text-black title-stat">
+                            {{ fiche.locationName }}
+                            <span class="text-region">{{ fiche.city }}</span>
+                          </span>
+                        </div>
+                        
+                      </div>
+                      </div>
+                       </div>
+                  </div>
+                    <div class="col-xl-4 col-md-4 col-xs-12 d-block  mx-auto text-center" >
+                      <div class="classemnent-fiche third">
+                        <span class="number-class"> 3<sup>ème</sup> </span> 
+                        <div *ngFor="let fiche of FichesPhotos; let i =index" >
+                            
+                         <div class="classemnent-fiche-1" *ngIf="i == 2">
+                         <img src="{{fiche.file}}"    alt="{{fiche.locationName}}" class="img-fonst  classe">
+                        <div class="header-classify content-top-stat " >
+                        <i  *ngIf="fiche.classify == 0"  class="fa fa-arrow-up classify_top_three" aria-hidden="true"></i>
+                        <i   *ngIf="fiche.classify == 1 "  class="fa fa-minus  classify_top_three" aria-hidden="true"></i>
+                        <i   *ngIf="fiche.classify ==  2"  class="fa fa-arrow-down  classify_top_three" aria-hidden="true"></i>
+                 
+                        
+                          <span   class="text-black title-stat">
+                            {{ fiche.locationName }}
+                            <span class="text-region">{{ fiche.city }}</span>
+                          </span>
+                        </div>
+                      </div>
+                      </div>
+                       </div>
+                    </div>
+                  </div>
+                  <div class="all-franchisess mt-4" >
+                  <div
+                  *ngFor="let fiche of FichesPhotos; let i =index"
+                    class="row card-header bg-transparent title-Dachboard pl-5 pr-5"  >
+              
+    
+                         <div *ngIf="i >= 3" class="col-lg-1 content-top-stat  text-right pl-1 pr-1" >
+                          <span class="avis_classify pr-2">{{i+1}}</span>
+                     
+              
+                      </div>    
+                     <div *ngIf="i >= 3" class="col-lg-7 content-top-stat  text-left pl-1 pr-1">
+                        <span   class="text-black title-stat mt-3">
+                          {{ fiche.locationName }}
+                          <span class="text-region">{{ fiche.city }}</span>
+                        </span>
+                      </div>
+                      
+                      <div class="col-lg-4 content-top-stat  text-right pl-1 pr-1" *ngIf="i >= 3">
+                        <div class="row">
+                        <div *ngIf="i >= 3" class="col-lg-8 col-md-8 content-top-stat  text-left pl-1 pr-1">
+                          <span class=" viws-pho text-black mb-0 float-right text-right d-block">
+                            <img src="./assets/Dashboard/post-picto-vue.svg" alt='{{fiche.locationName}}' class="img-post mo"> 
+                            <span class="value-photos mo"> {{fiche.views}}
+                            </span></span>
+                      
+                      </div>
+                      <div *ngIf="i >= 3" class="col-lg-4 col-md-4  content-top-stat  text-left pl-1 pr-5">
+                      <div class="element-galeries modald "><img src="{{fiche.file}}" alt="{{fiche.locationName}}" class="img-fonst"></div>
+                      </div>
+                    </div>
+                  </div>
+                    <div *ngIf="i >= 3" style="width:90%;margin: 0 auto ;border-bottom:1px solid #CBCBCB;" class=" pt-0 pb-0"></div>
+                  </div>
+                  </div>
+                </div>
+                </div>
+              </div>
+          </div>
+    
+      </div>
+        </ng-template>
+        <!--fin body Modal positif --->
+    
+      </div>
+    </div>
+    </div>
+    </div>
+    
+  
+    
+  </div>
+  
+  
+  

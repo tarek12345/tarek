@@ -1,0 +1,151 @@
+<div class="services">
+  
+    <div class="row  mt-3 infos" [ngClass]="{'singleClass' : etatsm ==false}">
+
+        <div class="col-lg-1">
+          <img *ngIf=" etatsm ==true" src="./assets/Fiche/horaires.svg">
+          <img *ngIf=" etatsm ==false" src="./assets/Fiche/horaireN.svg">
+        </div>
+        <div class="col-lg-9 ">
+          <div class="row" *ngFor="let item of horaires">
+            <div class="col-lg-6">
+              <span class="info_franchise" [ngClass]="{'jourshashoraire' : etatsm ==false}">
+                {{item.jours}} </span>
+            </div>
+            <div class="col-lg-6" *ngIf=" etatsm ==true">
+              <div *ngIf="item.etat != ''">
+                <div *ngFor="let items of item.horaire ;first as isFirst">
+                  <div class="info_franchise" *ngIf="items.heurdebut != '' && items.heurfin != '' ">
+                    <span *ngIf="isFirst">{{items.heurdebut}} - {{items.heurfin}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="info_franchise" *ngIf="item.etat === '' ">
+                <span>Fermé</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2" (click)="ModifContentInfos(contentInfos , 'horaires' )">
+          <i class="fa fa-pencil-alt"></i>
+        </div>
+      </div>
+
+
+
+
+
+
+      <div id="notifs-client">
+        <ng-template #contentInfos let-modal>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+ 
+        <!----------horaires------------>
+        <div class="modal-body  libelles"  style="width: 90%;left: 5%;">
+            <span class="title_modifE  mb-4 text-general">Horaires d'ouverture</span>
+            <div class="horaireE">
+              <form [formGroup]="HorairesForm" (ngSubmit)="Modifhoraires()">
+                <div class="m-portlet m-portlet--creative m-portlet--first m-portlet--bordered-semi">
+                  <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                      <div class="m-portlet__head-title">
+                        <span class="m-portlet__head-icon m--hide">
+                          <i class="flaticon-statistics"></i>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                    </div>
+                  </div>
+                  <div class="m-portlet__body" formArrayName="Listhoraire">
+                    <div class="row" *ngFor="let items of Listhoraires().controls ; let horaireIndex=index">
+                      <div class="col-lg-12 mt-3">
+                        <div class="row" [formGroupName]="horaireIndex">
+                          <div class="col-md-1 col-sm-1 col-lg-1">
+                            <input disabled class="jours" type="text" formControlName="jours" name="jours"
+                              style="border: none;">
+                          </div>
+                          <div class="col-md-1 col-sm-1 col-lg-2">
+                            <span class="days">
+                              <ui-switch formControlName="etat" name="etat" size="small">
+                              </ui-switch>
+                            </span>
+                            <span class="jours" *ngIf="items.value.etat == 'true'"> Ouvert </span>
+                            <span class="jours" *ngIf="items.value.etat != 'true'"> Fermé </span>
+                          </div>
+                          <div class="col-md-9 col-sm-12 col-lg-9" formArrayName="horaire">
+                            <div *ngIf="items.value.etat != '' || items.value.etat == 'true' ">
+                              <div *ngFor="let item of listhorairess(horaireIndex).controls; let indexhorairesup=index ;let last = last">
+                                <div class="row" [formGroupName]="indexhorairesup">
+                                  <div class="col-lg-9">
+                                    <div class="control-group row">
+                                      <div class=" col-lg-10  mb-2">
+                                        <div class="row">
+                                          <div class=" col-lg-5 ">
+                                            <ng-select [items]="listTimes" placeholder="Ouverture" [virtualScroll]="true"
+                                              [disabled]="!editable" formControlName="heurdebut">
+                                            </ng-select>
+                                          </div>
+                                          <div class=" col-lg-1">
+                                            <span> - </span>
+                                          </div>
+                                          <div class=" col-lg-5">
+                                            <ng-select [items]="listTimes" placeholder="Ouverture" [virtualScroll]="true"
+                                              [disabled]="!editable" formControlName="heurfin">
+                                            </ng-select>
+                                          </div>
+                                          <div class=" col-lg-1" *ngIf="indexhorairesup >0">
+                                            <span class="btn-delete" (click)="removeH(horaireIndex,indexhorairesup)"> <i
+                                                class="fa fa-times"></i>
+                                            </span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-2 col-lg-3"
+                                    *ngIf="(items.value.etat != '' || items.value.etat == 'true') &&  last">
+                                    <span class="btnAddHoraires mt-5" (click)="addHoraire(horaireIndex)">Ajouter des
+                                      horaires
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+    
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="btncnx mt-3">
+                  <div style="  display: inline-block; "> <button type="button" class="btn btn-annulation"
+                      (click)="FermerAddhoraire()">Annuler</button></div>
+                  <div style="  display: inline-block; "> <button type="submit" class="btn btn-pub">Appliquer</button>
+                  </div>
+                </div>
+                <hr>
+                <p>
+                  <b> Remarque</b> : Nous pourrons examiner vos modifications pour nous assurer de leur qualité. Un délai de
+                  trois jours peut s'écouler avant publication.
+                  <a href="https://support.google.com/business/answer/3038311?hl=fr&p=appearance_time&_ga=2.247880903.1770917851.1627024792-981338355.1624523967&visit_id=637626261118919073-2525337260&rd=1"
+                    target="_blank">En savoir plus </a>
+                </p>
+              </form><!-- Form ends -->
+            </div>
+          </div>
+          <!----------------fin horaires------------->
+          <!-------------footer----------->
+          <div class="modal-footer" style="top: 42%;">
+            <div style="background: url(./assets/Dashboard/bg-footer.png); background-size: 100% 100%; height: 87px;"></div>
+          </div>
+          <!-------------fin footer----------->
+        </ng-template>
+      </div>
+
+
+
+</div>

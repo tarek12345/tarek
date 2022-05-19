@@ -1,0 +1,29 @@
+span.locations {
+    padding: 10px 10px 10px 10px;
+    margin: 10px;
+    border: 1px solid #cbcbcb;
+    background: #fff;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 20px;
+    font: normal normal normal 12px/12px Ubuntu;
+    letter-spacing: 0.3px;
+    color: #0081c7;
+    width: 269px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: inline-block;
+    margin-top: 2px !important;
+}
+
+.fichess {
+    margin-top: 14px;
+    height: 63px;
+    display: inline-block;
+    overflow: auto;
+    margin-bottom: 4px;
+}
+.fichess div {
+    display: inline-block;
+}

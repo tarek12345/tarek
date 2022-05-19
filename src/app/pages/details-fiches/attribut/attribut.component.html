@@ -1,0 +1,67 @@
+
+        <div class="modal-body modifEtablissement Attributs">
+           
+          
+        <span class="title_modifE   text-general">Ajouter un Attribut</span>
+        <div  class="row "> 
+        <div  class="col-xl-8 col-md-12 "> 
+            <div class="search-fiche">
+              <span class="nom-fiche"> Rechercher dans ces attributs</span>
+              <div class="input-group input-group-alternative">
+                <i class="fa fa-search" style="margin-top: 1%;"></i>
+                <input type="text" name="search" notFoundText="Aucun établissement trouvée" [(ngModel)]="searchAttribut"
+                  style="padding-left: 4%;" (keyup)=" getListAttributs(searchAttribut)"
+                  placeholder="Rechercher dans ces attributs" autocomplete="off" class="form-control">
+              </div>
+            </div>
+            <p class="descrition_attributs mt-4"> Pour partager plus d'informations sur votre établissement avec les
+              clients,affichez des attributs sur sa fiche. Ces attributs peuvent apparaître publiquement dans la recherche,
+              sur
+              Maps et dans d'autres services Google.<br>
+              <a target="_blank"
+                href="https://support.google.com/business/answer/9049526?authuser=1&authuser=1&hl=fr&p=attributes&_ga=2.255851535.667695829.1627545327-547569408.1626430930&visit_id=637637448587444687-944420013&rd=1">En
+                savoir plus</a>
+            </p>
+            <div class="Attributs2">
+              <div *ngFor="let item of listeAttributs , let is = index">
+                <span class="type_attribut">{{item.groupeattribute}}</span>
+                <div *ngFor="let attribut of item.details">
+                  <div class="service" (click)="changeattribut(attribut)" [ngClass]="{'attributselected': attribut.etat == 'true' ,  'class2': attribut.etat == 'false',
+                  'Closed': attribut.etat == 'Closed'}">
+                    <span *ngIf="attribut.etat == 'true'"> <i class="fa fa-check"></i> </span>
+                    <span *ngIf="attribut.etat == 'Closed'" style="color: '#1967d2';"> <img
+                        src="../assets/Fiche/closed.png" /></span>
+                    <span *ngIf="attribut.etat == 'false'"> <i class="fa fa-plus"></i></span>
+                    <span> {{attribut.displayName}}</span>
+                  </div>
+                </div>
+                <hr *ngIf="is != (listeAttributs.length -1)">
+              </div>
+            </div>
+            <div class="btncnx mt-5">
+              <div style="  display: inline-block; "> <button type="button" class="btn btn-annulation"
+                  (click)="Fermer()">Annuler</button></div>
+
+              <div style="  display: inline-block; "> <button (click)="valueChanged()"
+                  class="btn btn-pub ml-3">Appliquer</button> </div>
+            </div>
+          </div>
+            <div  class="col-xl-4 col-md-12 fichess"> 
+              <div  *ngFor="let item of items"> 
+                <span class="locations"> {{item.locationName}}</span></div> 
+
+
+                  <!-- <div *ngFor="let item of items">
+                        <input type="checkbox"
+                               name="options"
+                               value="{{item.locationName}}"
+                               [(ngModel)]="item.status"
+                               (change)="updateCheckedOptions(item, $event)" />
+                       <span class="pl-2 namefiche">  {{item.locationName}}</span>
+                </div> -->
+          
+              
+              </div>
+          </div>
+        </div>
+  

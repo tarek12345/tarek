@@ -1,0 +1,126 @@
+<div class="modal-body services pl-0 ml-0 mt-5" style=" width: 100%; left :0">
+
+  <span class="title_modifE  text-general">Ajouter un service</span>
+  <div class="row ">
+    <div class="col-xl-8 col-md-12 ">
+      <div class="mt-4" *ngIf="addservice == false" [@sliderleft]>
+        <fieldset class="scheduler-border pl-3 pr-3">
+          <legend class="scheduler-border ml-5 text-general"> Services </legend>
+          <div class="servicesfiches blocfiche">
+            <div *ngFor="let item of listServices22" class="fichelogo">
+              <div class="ficheselected" (click)="changestatservices(item)"
+                [ngClass]="{'my_fiche': item.status === true}">
+                <span> {{item.name}} </span>
+              </div>
+            </div>
+          </div>
+
+          <div (click)="Addservice()" class=" pl-5 mt-3 pb-3 ">
+            <span class="text-center mb-0 plus-suggestions"><i class="fa fa-plus"></i> Ajouter un service</span>
+          </div>
+
+
+
+        </fieldset>
+
+        <div class="btncnx mt-5">
+
+          <div style="  display: inline-block; ">
+            <button type="button" class="btn btn-annulation  " (click)="Fermer()">Annuler</button>
+          </div>
+
+          <div style="  display: inline-block; ">
+            <button type="submit" (click)="valueChanged()" class="btn btn-pub ml-3">Valider</button>
+          </div>
+
+
+        </div>
+      </div>
+
+
+      <div class="mt-3" *ngIf="addservice == true" [@slideright]>
+        <span class="new_service"> Ajouter la catégorie</span>
+        <span class="text-black mb-0 title-renseignement-3 text-left">Catégorie supplémentaire </span>
+
+
+        <div>
+          <form [formGroup]="CategorieForm" (ngSubmit)="Addnewservice()">
+            <div class="groupe_categories mt-3">
+              <div class="addcatperso">
+                <ng-select [items]="listcategories" [(ngModel)]='setSelected'
+                  (keyup)="CategorieChange($event.target.value)" bindLabel="displayName"
+                  notFoundText="Aucun catégorie trouvée" [disabled]="!editable" (change)="onChangecategorie($event)"
+                  formControlName="Name_cat">
+                </ng-select>
+                <span class="editcat">
+                  <i (click)="EditCat(Categorie_value)" class="fa fa-pencil-alt"></i>
+                </span>
+              </div>
+              <div *ngIf="servicesCat.length != 0">
+                <span class="text-black mb-0 title-renseignement-3 text-left"> Ajoutez les services que vous proposez
+                  pour permettre aux clients de vous découvrir</span>
+                <div class="" *ngFor="let service of servicesCat">
+                  <div class="service" (click)="changeserviceCat(service)"
+                    [ngClass]="{'my_service': service.status === true}">
+                    <span *ngIf="service.status === false"> <i class="fa fa-plus"></i></span>
+                    <span *ngIf="service.status === true"> <i class="fa fa-check"></i> </span>
+
+                    <span> {{service.name}}</span>
+
+                  </div>
+                </div>
+              </div>
+              <div class="addservice mt-5" *ngIf="selectedOption !=''">
+                <span class="text-black mb-0 title-renseignement-3 text-left"> Un service que vous proposez ne figure
+                  pas dans la liste ? Ajoutez-le vous même. </span>
+                <div class="form-group mb-4 titlepost" formArrayName="listServices">
+                  <div class="text-left mt-1  mb-0 plus-suggestions" (click)="add_service_persocat()"> <i
+                      class="fa fa-plus"></i> Ajouter un
+                    service personnalisé</div> <br>
+                  <div class="mb-3"
+                    *ngFor="let item of CategorieForm.controls['listServices']['controls']; let i=index">
+                    <div class="numfiche" [formGroupName]="i">
+
+                      <div class="autreservice">
+                        <div class="addserviceperso">
+                          <div class="input-group input-group-alternative">
+                            <input class="form-control" type="text" id="name_serviceperso" formControlName="name"
+                              name="name">
+                            <i class="far fa-trash-alt mt-2" (click)="removeServicePerso(i,id)"></i>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="btncnx mt-5">
+
+
+              <div style="  display: inline-block; "> <button type="button" class="btn btn-annulation "
+                  (click)="fermerserviceperso()">Annuler</button></div>
+
+              <div style="  display: inline-block; "> <button class="btn btn-pub  ml-3">Enregistrer</button>
+              </div>
+
+
+
+            </div>
+
+
+          </form>
+        </div>
+
+
+      </div>
+    </div>
+    <div class="col-xl-4 col-md-12 fichess">
+      <div *ngFor="let item of items">
+        <span class="locations"> {{item.locationName}}</span>
+      </div>
+    </div>
+
+  </div>

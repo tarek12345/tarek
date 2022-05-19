@@ -1,0 +1,511 @@
+.addhoraire input#fsAn {
+    width: 22px;
+    display: inline-block;
+    height: 18px;
+    margin-right: 8px;
+  }
+  
+  
+  
+  span.btnDeletetracking {
+    font-size: 0.7rem;
+    font-weight: 500;
+    padding-right: 25px;
+    padding-left: 25px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    color: #fff;
+    background-color: #f12143;
+    border-color: #f01539;
+    border-radius: 5px;
+    display: block;
+    cursor: pointer;
+    float: right;
+  }
+  
+  i.fa.fa-trash {
+    cursor: pointer;
+  }
+  span.btnDeleteHoraire {
+    color: #f12143;
+    margin-left: 3%;
+    margin-top: -2% !important;
+    display: block;
+    cursor: pointer;
+  }
+  
+  
+  .addhoraire{
+    display: flex;
+  }
+  .image-upload > input {
+    visibility: hidden;
+    width: 0;
+    height: 0
+  }
+  span.horaiersouverture {
+    text-transform: uppercase;
+    padding-left: 10px;
+    display: inline-block;
+    margin-top: -1px !important;
+  }
+  i.fa.fa-plus-circle {
+  FONT-SIZE: 35PX;
+  COLOR: #b1cd45;
+  }
+  
+  .horairetrackings{
+    display: inline-block;
+    padding: 0% 2% 0% 0%;
+    margin: 9px 0px 0px 0px;
+  }
+  ::placeholder {
+    color: #ccc !important;
+    opacity: 1; /* Firefox */
+  }
+  
+  :-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color: #ccc!important;
+  }
+  
+  ::-ms-input-placeholder { /* Microsoft Edge */
+   color: #ccc!important;
+  
+  }
+  
+  
+  .timerhoraires .timer {
+    margin: 0px 74px 10px 0px;
+  }
+  .timerhoraires .timer {
+    margin: 0px 74px 10px 0px;
+  }
+  
+  .toggle-switch {
+    height: 36px;
+    width: 62px;
+    display: inline-block;
+    position: relative;
+  
+  }
+  
+    .slider {
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      background-color: grey;
+      transition: 2s;
+   
+    }
+  
+  
+  
+  .slider::after {
+    position: absolute;
+    content: '';
+    height: 28px;
+    width: 28px;
+    background-color: white;
+    left: 4px;
+    bottom: 4px;
+    transition: 2s;
+  }
+  
+  .horairetracking table tr.text-center {
+    display: none !important;
+  }
+  .timerhoraires.ng-untouched.ng-pristine.ng-valid {
+    text-align: center;
+  }
+  span.btnAddHoraires {
+    cursor: pointer;
+  }
+  
+  .timerhoraires .bs-chevron {
+  display: none !important;
+  }
+  .timerhoraires button.btn.btn-default.text-center {
+  display: none!important;
+  }
+  
+  .btnAddtracking
+  {
+    font-size: 15px;
+    font-weight: 500;
+    padding-right: 25px;
+    padding-left: 25px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    color: #fff;
+    border-radius: 5px;
+    margin-top: -42px;
+    cursor: pointer;
+    display: block;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    text-transform: uppercase;
+    width: 30%;
+    color: #888;
+    border: 1px solid #d3cfcf;
+    margin-bottom: 8%;
+    border-top: none !important;
+  
+  }
+  
+  
+  .timerhoraires .bs-chevron {
+  
+  display: none !important;
+  }
+  
+  @media screen and (max-width: 600px) {
+    .title_icon {
+        visibility: hidden;
+        clear: both;
+        float: left;
+        margin: 10px auto 5px 20px;
+        width: 28%;
+        display: none;
+    }
+  }
+  
+  
+  
+  .col-md-11 {
+    margin: auto
+  }
+  
+  
+  .title2-client{
+    font-size: 16px;
+    padding-left: 0px;
+    font-weight: initial;
+    vertical-align: -webkit-baseline-middle;
+    display: -webkit-inline-box;
+    text-align: center;
+    }
+  .m-subheader .m-subheader__title.m-subheader__title--separator {
+     border-right: none; 
+  
+  }
+  
+  a.m-btn--icon.save-button--form.formButtons.btn.btn-sm.btn-info.active.fiche-client {
+    padding: 6px 10px;
+    margin-top: 12px;
+    vertical-align: middle;
+  }
+  
+  .fiche-client i.la.la-link {
+    background: #fff;
+    border-radius: 50%;
+    padding: 10px 4px;
+    background-size: 100%;
+    font-size: 12px;
+    color: #0c9dcc;
+  }
+  
+  .form_body {
+    border: 1px solid #d3cfcf;
+  }
+  
+  .m-input-icon.m-input-icon--left .form-control {
+    padding-left: 9px;
+  }
+  
+  .m-form__heading-help-icon {
+    background-color: #9999999e;
+  }
+  m--margin-top-30 {
+    margin-top: 30px !important;
+  }
+  
+  
+  .m-demo {
+    margin-bottom: 43px;
+  }
+  
+  
+  .block-body {
+    border: 1px solid #d3cfcf !important;
+  }
+  .body_fom {
+    border-left: 1px solid #d3cfcf !important;
+  }
+  
+  
+  .m-portlet {
+     -webkit-box-shadow: none !important; 
+    -moz-box-shadow: none !important; 
+     box-shadow: none !important; 
+  
+  }
+  
+  
+  .form_body {
+    padding-top: 38px;
+  }
+  
+  .m-radio.m-radio--success > span  , .m-radio.m-radio--success > input:checked ~ span{
+    margin-top: 10px !important;
+  }
+  
+  .contactTM .form-control.m-input--solid {
+  text-transform: lowercase;
+  }
+  
+  
+  
+  /*Downloaded from https://www.codeseek.co/adamstuartclark/checkboxes-and-visual-affordance-indicators-EKJWRx */
+  *, *:after, *:before {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+  
+  
+  
+  /*=====================*/
+  .checkbox {
+    position: relative;
+    display: block;
+    margin: 1rem auto 3rem;
+  }
+  .checkbox label {
+    width: 53px;
+    height: 10px;
+    background: #e0dee2;
+    position: relative;
+    display: inline-block;
+    -moz-border-radius: 46px;
+    -webkit-border-radius: 46px;
+    border-radius: 46px;
+    -moz-transition: 0.25s;
+    -o-transition: 0.25s;
+    -webkit-transition: 0.25s;
+    transition: 0.25s;
+  
+  }
+  .checkbox label:after, .checkbox label:before {
+    content: '';
+    text-shadow: 0px 0px 2px rgb(0 0 0 / 25%);
+    position: absolute;
+    width: 21px;
+    height: 21px;
+    padding: 0px 9px 17px 5px;
+    border-radius: 100%;
+    left: -2px;
+    line-height: 35px;
+    top: -6px;
+    background: #9a5918;
+    box-shadow: 0 0 5px rgb(0 0 0 / 20%);
+    transition: 0.25s;
+  }
+  
+  .checkbox label:before {
+    content: '\F08D';
+    content: '\F00D';
+    font-family: FontAwesome;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 22px;
+    color: #00ff80;
+    color: #fff;
+    z-index: 1;
+    overflow: hidden;
+  }
+  .checkbox input {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .checkbox input:not(:checked) ~ label .indicators::before {
+    color: red;
+  }
+  .checkbox input:checked ~ label .indicators::after {
+    color: blue;
+  }
+  .checkbox input:not(:disabled):hover + label:after {
+    -moz-box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.2), 0 3px 8px 0 rgba(0, 0, 0, 0.15);
+    -webkit-box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.2), 0 3px 8px 0 rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.2), 0 3px 8px 0 rgba(0, 0, 0, 0.15);
+  }
+  .checkbox input:checked + label {
+    background: #008040;
+  }
+  .checkbox input:checked + label:after, .checkbox input:checked + label:before {
+    content: "\f00c";
+    background: #00ff80;
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    font-size: 13px;
+    padding: 0px 3px 13px 4px;
+    left: 33px;
+  }
+  .checkbox input:checked + label:before {
+    -moz-animation: 0.25s pin-on forwards;
+    -webkit-animation: 0.25s pin-on forwards;
+    animation: 0.25s pin-on forwards;
+  }
+  
+  
+  .checkbox {
+    position: relative;
+    width: 100px;
+  }
+  
+  .checkbox.disabled::after {
+    content: "\f023";
+    position: absolute;
+    top: 10px;
+    left: 66px;
+    font-family: FontAwesome;
+    color: rgba(0, 0, 0, 0.5);
+    text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
+  }
+  
+  .checkbox.ban.disabled::after {
+    content: '\f05e';
+  }
+  
+  .checkbox.disabled.checked::after {
+    left: 24px;
+    color: rgba(255, 255, 255, 0.75);
+  }
+  
+  .disabled input {
+    cursor: not-allowed;
+  }
+  
+  small {
+    display: block;
+    font-size: 12px;
+    font-weight: normal;
+  }
+  
+  .indicators {
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+  .indicators::before, .indicators::after {
+    position: absolute;
+    line-height: 40px;
+    cursor: pointer;
+  }
+  .indicators::before {
+    left: -50px;
+    text-align: right;
+    content: attr(data-label-off);
+  }
+  .indicators::after {
+    right: -50px;
+    text-align: left;
+    content: attr(data-label-on);
+  }
+  
+  .selecttracking select:invalid {
+    color: #ccc !important;
+  }
+  option[value=""][disabled] {
+    display: none;
+  }
+  
+  
+  select option[disabled] { color: #000; font-weight: bold }
+  
+  select[disabled='disabled']::-ms-value {
+    color: #ccc;
+  }
+  /*Specific to chrome and firefox*/
+  select[disabled='disabled'] {
+    color: #ccc;
+  }
+  
+  
+  select option[disabled] { color: #000 !important; font-weight: bold }
+
+
+  .select_photo boutton {
+    text-align: center;
+    color: #0081C7;
+    display: block;
+    margin: 10px 0px;
+    font: normal normal normal 12px/15px Ubuntu;
+    letter-spacing: 0px;
+    color: #fff;
+    background: #0081C7;
+    width: 42%;
+    padding: 2% 2%;
+    cursor: pointer;
+    margin: 0 auto;
+}
+.select_photo span{
+
+    display: block;
+    font: normal normal normal 14px/20px Ubuntu;
+}
+i.fa.fa-trash-alt {
+    font-size: 11px;
+    background: #C94040;
+    cursor: pointer;
+    color: #fff;
+    height: 25px;
+    width: 25px;
+    right: 56%;
+    padding: 0 3px;
+    position: absolute;
+    border-radius: 50%;
+}
+i.fa.fa-download {
+    color: #CBCBCB;
+}
+.add_img.row {
+    margin-top: -25%;
+}
+  .picture-group i:before {
+    line-height: 25px;
+  }
+  .picture-group i:hover {
+    color: #CBCBCB;
+  }
+.picture-group {
+  height: 106px;
+  width: 516px;
+  border: 2px dashed #CBCBCB;
+  border-radius: 10px;
+  text-align: center;
+  padding-top: 6%;
+  display: block;
+  margin-left: 0;
+}
+.dynamicClass {
+    display: none;
+}
+.picture-group img {
+    max-width: 100%;
+    max-height: 62%;
+    width: auto;
+    margin-top: -3%;
+}
+.picture-wrapper {
+     height: 123px;
+    overflow: hidden;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}

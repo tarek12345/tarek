@@ -1,0 +1,523 @@
+.navbar-nav a.nav-link {
+    display: grid;
+    text-align: center;
+
+}
+
+
+.footersidebar{
+    display: block;
+    position: fixed;
+    bottom: 15px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+li#logocliqeo {
+    display: block;
+    margin-left: 0;
+}
+
+span.title-dashboard {
+    display: block;
+    padding-top: 19%;
+    margin-top: 6px;
+    font: normal normal  12px/12px Ubuntu;
+}
+
+li.nav-item:first-child  a.nav-link.active {
+    background: #0081c7;
+    color: #fff !important;
+    background-image: url(/assets/Dashboard/icon-dashboard2.svg);
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-origin: content-box;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    margin: 0 auto;
+    background-size: 24px;
+}
+
+li.nav-item:first-child  a.nav-link {
+
+    color: #d2d2d2 !important;
+    background-image: url(/assets/Dashboard/icon-dashboard2-b.svg);
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-origin: content-box;
+    border-bottom: 1px solid #cbcbcb4a;
+    max-width: 89%;
+    margin: 0 auto;
+
+    background-size: 24px;
+}
+
+
+a.nav-link.active i.ni {
+    color: #fff !important;
+}
+
+li.nav-item:nth-child(2)  a.nav-link {
+    color: #d2d2d2 !important;
+    background-image: url(/assets/Dashboard/icon-photos2.svg);
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-origin: content-box;
+    border-bottom: 1px solid #cbcbcb4a;
+    max-width: 89%;
+    margin: 0 auto;
+    background-size: 24px;
+}
+li.nav-item:nth-child(2)  a.nav-link.active {
+    background: #b1cd45;
+    color: #fff !important;
+    background-image: url(/assets/Dashboard/icon-photos2-b.svg);
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-origin: content-box;
+    border-bottom: 1px solid #cbcbcb4a;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    max-width: 89%;
+    margin: 0 auto;
+    background-size: 24px;
+}
+
+
+li.nav-item:nth-child(3)  a.nav-link {
+
+    color: #d2d2d2;
+    background-image: url(/assets/Dashboard/icon-avis2.svg);
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-origin: content-box;
+    border-bottom: 1px solid #cbcbcb4a;
+    max-width: 89%;
+    margin: 0 auto;
+    background-size: 24px;
+}
+
+li.nav-item:nth-child(3)  a.nav-link.active {
+    background: #eba10f;
+    color: #fff;
+    background-image: url(/assets/Dashboard/icon-avis2-b.svg);
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-origin: content-box;
+    border-bottom: 1px solid #cbcbcb4a;
+    max-width: 89%;
+    margin: 0 auto;
+    background-size: 24px;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+li.nav-item:nth-child(4)  a.nav-link {
+    color: #d2d2d2;
+    background-image: url(/assets/Dashboard/icon-posts2.svg);
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-origin: content-box;
+    border-bottom: 1px solid #cbcbcb4a;
+    max-width: 100%;
+    margin: 0 auto;
+    background-size: 24px;
+}
+
+li.nav-item:nth-child(4)  a.nav-link.active {
+    background: #b1cd45;
+    color: #fff;
+    background-image: url(/assets/Dashboard/icon-posts2-b.svg);
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-origin: content-box;
+    border-bottom: 1px solid #cbcbcb4a;
+    max-width: 89%;
+    margin: 0 auto;
+    background-size: 24px;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+li.nav-item:nth-child(5)  a.nav-link {
+    color: #d2d2d2;
+    background-image: url(/assets/Dashboard/icon-franchises2.svg);
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-origin: content-box;
+    max-width: 100%;
+    margin: 0 auto;
+    background-size: 24px;
+}
+
+
+
+li.nav-item:nth-child(5)  a.nav-link.active {
+    background: #cc0070;
+    color: #fff;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    background-image: url(/assets/Dashboard/icon-franchises2-blanc.svg);
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-origin: content-box;
+    max-width: 89%;
+    margin: 0 auto;
+    background-size: 24px;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+.tooltip {
+    position: relative;
+    display: inline-block;
+    opacity: 1;
+  }
+
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 181px;
+    background-color: #fff;
+    color: #000;
+    text-align: center;
+    border-radius: 6px;
+    padding: 13px 16px 0px 16px;
+    position: absolute;
+    z-index: 1;
+    left: 51%;
+    margin-left: 10px;
+    margin-top: -10%;
+    transition: opacity 0.3s;
+  }
+  
+  .tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+
+  }
+  ul.menu-notifs {
+    list-style: none;
+    padding: 0px;
+    text-align: left;
+}
+.menu-notifs a {
+    font-size: 12px;
+    line-height: 30px;
+    color: #5e5e5e;
+}
+
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .menu-notifs .decnxion a {
+    cursor: pointer;
+    color: #c94040 !important;
+}
+
+#ngb-tooltip-0.tooltip
+
+{
+    max-width: 340px!important;
+    text-align: left!important;
+    background-color: #fff !important;
+    color: #000!important;
+    border-radius: 30px!important;
+    box-shadow: 0 0 3px #00000040!important;
+}
+
+.open-notifs{
+    cursor: pointer;
+}
+
+.modal-dialog {
+    margin: 20% auto !important;
+}
+.modal-header.header-notifs.items-center {
+    display: block !important;
+    text-align: center !important;
+}
+
+h2#modal-basic-title {
+    padding-bottom: 5%;
+    height: 27px;
+    text-align: center;
+    font: normal normal bold 24px/20px Ubuntu;
+    letter-spacing: 0px;
+    color: #C94040;
+
+}
+
+.title-notif {
+    text-align: left;
+    letter-spacing: 0px;
+    color: #5E5E5E;
+    font-size: 13px;
+    font: normal normal normal 14px/14px Ubuntu;
+
+
+
+}
+
+i.fas.fa-less-than {
+    font-weight: 600;
+    font-size: 9px;
+    letter-spacing: 0px;
+    color: #0081C7;
+
+}
+.voir-notif {
+
+    font: normal normal normal 12px/14px Ubuntu;
+    letter-spacing: 0px;
+    color: #0081C7;
+    display: block;
+    width: 100%;
+    padding-top: 4%;
+}
+i.fa.fa-less-than {
+    font-size: 10px;
+}
+.modif-num{
+    padding-top: 3%;
+    cursor: pointer;
+}
+span.type-notifs {
+    text-align: left;
+    font: normal normal normal 12px/14px Ubuntu;
+    letter-spacing: 0px;
+    color: #5E5E5E;
+    opacity: 1;
+}
+.numb-notif {
+    color: #c94040;
+}
+.title-notif  {
+    height: 29px;
+    overflow: hidden;
+}
+.nomfiche {
+    height: 31px;
+    overflow: hidden;
+}
+.modif-pen {
+    margin-top: 4px;
+}
+i.fa.fa-pen {
+    color: #707070;
+    opacity: 1;
+    font-size: 12px;
+    float: left;
+    cursor: pointer;
+}
+.modal-footer {
+    text-align: center;
+    display: block;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+}
+button.btn.btn-outline {
+    background: #C94040;
+    color: #fff;
+    padding: 7px 40px;
+    border-radius: 50px;
+    text-align: center;
+    font: normal normal normal 12px/13px Ubuntu;
+    letter-spacing: 0px;
+
+}
+
+.notif-horaires{
+    max-height: 307px;
+    overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+   // height: 100%;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+   // height: 100%;
+    background-color: #707070;
+    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+}
+
+input.form-control {
+    color: #c940408c;
+}
+span.bienvenue {
+    text-align: center;
+    font: normal normal bold 16px/14px Ubuntu;
+    letter-spacing: 0px;
+    color: #5E5E5E;
+}
+
+@media (min-width: 1080px)
+{
+    .numb-notif{
+        font-size: 11px;
+    }
+    .voir-notif{
+        font: normal normal normal 9px/9px Ubuntu;
+   
+       
+    }
+
+    .title-notif{
+        font: normal normal normal 12px/12px Ubuntu;
+    }
+    .text-sm {
+        font-size: 11px !important;
+    }
+
+    .notif-horaires {
+        max-height: 217px;
+        overflow-y: scroll;
+    }
+
+
+}
+
+@media (min-width: 1400px)
+{
+    .numb-notif{
+        font-size: 12px;
+    }
+    .voir-notif{
+        font: normal normal normal 11px/9px Ubuntu;
+       
+    }
+
+    .title-notif{
+        font: normal normal normal 13px/13px Ubuntu;
+    }
+    .text-sm {
+        font-size: 13px !important;
+    }
+
+    .notif-horaires {
+        max-height: 291px;
+        overflow-y: scroll;
+    }
+}
+
+
+
+
+@media (min-width: 1800px)
+{
+    .numb-notif{
+        font-size: 13px;
+    }
+    .voir-notif{
+        font: normal normal normal 12px/12px Ubuntu;
+       
+    }
+
+    .title-notif{
+        font: normal normal normal 14px/14px Ubuntu;
+        width: 180px !important;
+        overflow: hidden!important;
+        display: block!important;
+        white-space: nowrap!important;
+        margin-top: 4px;
+        text-overflow: ellipsis!important;
+    }
+    .text-sm {
+        font-size: 13px !important;
+    }
+
+    .notif-horaires {
+        max-height: 303px;
+        overflow-y: scroll;
+    }
+}
+/***********style notifications***********/
+
+span.modifsfiche {
+    text-align: left;
+    font: normal normal normal 12px/18px Ubuntu;
+    letter-spacing: 0px;
+    color: #C94040;
+    display: block;
+    width: 100%;
+}
+.imgnotifs img {
+    display: block;
+    width: 100%;
+}
+.voir-notif {
+    text-align: right;
+}
+.photosmodifs {
+    padding: 0px;
+    border: 1px solid #C94040;
+}
+
+
+
+
+
+.tooltip{
+    position: relative;
+    display: inline-block;
+    opacity: 1;
+  }
+  .details-post{
+    float: right;
+    padding: 0px;
+    margin: 0px;
+    text-align: right;
+  }
+
+  .details-post.post1.complete.tooltip.navbar-brand.pt-0 {
+    float: none;
+    text-align: center;
+}
+.title-notif.complet {
+    width: 100%!important;
+    overflow: initial!important;
+}
+.complete.tooltip:hover .tooltiptext {
+    // visibility: visible;
+    opacity: 1;
+    width: 441px;
+    box-shadow: none !important;
+    background: #fff;
+    
+}
+.complete.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 181px;
+    background-color: #fff;
+    color: #000;
+    text-align: center;
+    border-radius: 6px;
+    padding: 13px 16px 0px 16px;
+    position: absolute;
+    z-index: 0;
+    left: 0;
+    margin-left: -21px;
+    margin-top: -26%;
+    transition: opacity 0.8s;
+}
+::ng-deep .tooltip-inner {
+    background-color: #0081c7;
+    font: normal normal normal 12px/12px Ubuntu;
+    color: #fff;
+    display :block;
+
+
+}
+
+  
+  ::ng-deep .bs-tooltip-top .arrow::before {
+    border-top-color: #68c6f9 !important;
+  }
