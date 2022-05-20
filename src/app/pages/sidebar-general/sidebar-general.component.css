@@ -2117,6 +2117,9 @@ span.btn-autre {
     opacity: 1;
     display: block;
 }
+button.btn.btn-pub.pass {
+    width: 225px;
+}
 .modal-body.ContenuPhoto{
     width: 71% !important;
     margin: 79px auto;
