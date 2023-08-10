@@ -32,7 +32,6 @@ exports.login = async (req, res, next) => {
     }
   
     /***************** end Check if user exists ************/
-    console.log("user.passsssssssssssssword",user.password)
     /***************** Check if pass is valid ************/
     const salt = process.env.SALT;
     const plainTohash = await bcrypt.hash(password, salt);
