@@ -1,0 +1,154 @@
+.allusers {
+    display: inline-grid;
+    margin: 9px 1%;
+    border: 1px solid #fff;
+    padding: 15px;
+    width: 363px;
+    border-radius: 0 10px 0 10px;
+    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px);
+}
+.listUser {
+    display: initial;
+}
+.profilencart {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+}
+.enteteinfo span {
+    display: block;
+    color: #fff;
+    text-align: justify;
+}
+.enteteimg {
+    border: 1px solid #fff;
+    padding: 15px;
+    border-radius: 0px 10px 0px 10px;
+}
+.enteteimg i {
+    color: #fff;
+    font-size: 30px;
+}
+
+.btnsusers span {
+    padding: 8px;
+    cursor: pointer;
+}
+button.delete {
+    background: #b92424;
+    color: #fff;
+    border: transparent;
+}
+button.imprimer {
+    background: green;
+    color: #fff;
+    border: transparent;
+}
+i.fa-solid.fa-xmark.closeSideBar {
+    cursor: pointer;
+}
+.add_page_modal_header.modal-header {
+    display: block;
+}
+.modal_header_add_page {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.btnsusers {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    color: #fff;
+}
+.headers {
+    display: flex;
+    justify-content: space-around;
+}
+.headers h2 {
+    color: #fff;
+}
+
+
+
+[placeholder] {
+    color: #fff;
+    font-size: 12px;
+}
+.input-group.serash-users {
+    width: 50%;
+}
+.headers input.form-control {
+    background: #eeeeeea2;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+    border-left: 1px solid #fff;
+    border-right: none;
+    color: #fff;
+    border-radius: 0px 0px 0px 11px!important;
+}
+.serash-users button.iclosed {
+    background: #fff;
+    border: none;
+    border-radius: 50%!important;
+    bottom: 0;
+    cursor: pointer;
+    display: block;
+    font-size: 12px;
+    height: 15px;
+    line-height: 16px;
+    margin: auto;
+    outline: none;
+    padding: 0;
+    position: absolute;
+    right: 70px;
+    top: 0;
+    transition: .1s;
+    width: 15px;
+    z-index: 9!important;
+}
+input:placeholder-shown+button {
+    opacity: 0;
+    pointer-events: none;
+}
+button.ok {
+    background: #eeeeeea2;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+    border-left: 1px solid #fff;
+    border-right: none;
+    color: #fff;
+    border-radius: 0px 11px 0px 0px!important;
+}
+
+.fade.modalEdits.modal.show .modal-content  .input-box {
+    position: relative;
+    width: 100%;
+    margin: 0px 0;
+    border-bottom: 2px solid #fff;
+}
+
+.fade.modalEdits.modal.show .modal-content .input-box input {
+    padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+    -moz-padding-start: calc(0.75rem - 3px);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    height: 100%;
+}
+@media print {
+    body * {
+      display: none;
+    }
+    .print-content {
+      display: block;
+    }
+    /* Add any other print-specific styles here */
+  }

@@ -1,0 +1,8 @@
+section.homes {
+    display: block;
+    min-height: 100vh;
+    background: url('../../assets/bg.jpg') no-repeat;
+    background-size: cover;
+    background-position: center;
+    animation:  animateBg 5s linear infinite
+}

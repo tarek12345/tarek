@@ -1,0 +1,111 @@
+#CreateLogin .login-box {
+    height: 853px;
+}
+
+#CreateLogin .input-boxs {
+    position: relative;
+    width: 310px;
+    margin: 30px 0;
+    border-bottom: none
+}
+
+#CreateLogin  .input-boxs  label {
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-80%);
+    font-size: 1em;
+    color: #fff;
+    pointer-events: none;
+    transition: 0.5s;
+    }
+
+    #CreateLogin .login-box select.form-select {
+        background: transparent;
+        border-bottom: 2px solid #fff;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-radius: 0;
+        color: #fff;
+        padding: 20px 0px 20px 0;
+    }
+    #mySelect option {
+
+        color: #000; /* Replace with your desired text color */
+        backdrop-filter: blur(15px);
+      }
+
+      span.Retour{
+        color:#fff;
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+
+      #CreateLogin [type=file] {
+        height: 0;
+        overflow: hidden;
+        width: 0;
+      }
+      
+      #CreateLogin [type=file] + label {
+        background: #353535;
+        border: none;
+        border-radius: 5px;
+        color: #fff;
+        cursor: pointer;
+        display: inline-block;
+        font-family: "Rubik", sans-serif;
+        font-size: inherit;
+        font-weight: 500;
+        margin-bottom: 1rem;
+        outline: none;
+        padding: 1rem 50px;
+        position: relative;
+        transition: all 0.3s;
+        vertical-align: middle;
+        margin: 0 auto;
+        display: table;
+      }
+      #CreateLogin [type=file] + label:hover {
+        background-color: #d3460d;
+      }
+      
+      
+      #CreateLogin [type=file] + label.btn-2 {
+        background-color: #F6C344 0% 0% no-repeat padding-box;
+        border-radius: 50px;
+        overflow: hidden;
+      }
+      #CreateLogin [type=file] + label.btn-2::before {
+        color: #fff;
+        content: "";
+        font-family: "Font Awesome 5 Pro";
+        font-size: 100%;
+        height: 100%;
+        right: 130%;
+        line-height: 3.3;
+        position: absolute;
+        top: 0px;
+        transition: all 0.3s;
+      }
+      #CreateLogin [type=file] + label.btn-2:hover {
+        background-color: #F6C344
+      }
+      #CreateLogin [type=file] + label.btn-2:hover::before {
+        right: 75%;
+      }
+      
+      #CreateLogin .files {
+        background: rgb(255 255 255 / 0%);
+        background-position: 50%;
+        border: 2px dashed #ffffff;
+        border-radius: 15px;
+        color: white;
+        justify-content: center;
+        opacity: 1;
+        width: 100%;
+        min-height: 173px;
+        padding: 15px;
+    }

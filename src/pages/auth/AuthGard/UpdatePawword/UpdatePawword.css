@@ -1,0 +1,46 @@
+#ResetLogin .login-box {
+    height: 400px;
+}
+
+#ResetLogin .input-boxs {
+    position: relative;
+    width: 310px;
+    margin: 30px 0;
+    border-bottom: none
+}
+#ResetLogin span.emailrest{
+color:#fff
+}
+#ResetLogin  .input-boxs  label {
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-80%);
+    font-size: 1em;
+    color: #fff;
+    pointer-events: none;
+    transition: 0.5s;
+    }
+
+    #ResetLogin .login-box select.form-select {
+        background: transparent;
+        border-bottom: 2px solid #fff;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-radius: 0;
+        color: #fff;
+        padding: 20px 0px 20px 0;
+    }
+    #mySelect option {
+
+        color: #000; /* Replace with your desired text color */
+        backdrop-filter: blur(15px);
+      }
+
+      span.Retour{
+        color:#fff;
+        cursor: pointer;
+        font-weight: bold;
+      }
+
