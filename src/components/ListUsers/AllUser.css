@@ -17,6 +17,9 @@
     align-items: center;
 
 }
+.enteteimg.chef {
+    background: #a47324;
+}
 .enteteinfo span {
     display: block;
     color: #fff;

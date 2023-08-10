@@ -267,7 +267,11 @@ export default function AllUser() {
             <div className="listUser" key={index}>
               <div className="allusers">
                 <div className="profilencart">
-                  <div className="enteteimg">
+                   
+                  <div className= {user.poste=="Chef d'equipe"?
+                      'enteteimg chef'
+                    :'enteteimg'
+                    }>
                     {user.sexe == "Homme" ? (
                       <i className="fa-regular fa-user-tie-hair"></i>
                     ) : (
