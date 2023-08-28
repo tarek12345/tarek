@@ -16,6 +16,7 @@ import { useEffect } from "react";
 import Home from "./pages/home/home";
 import CreateLogin from "./pages/auth/CreateLogin/CreateLogin";
 import UpdatePawword from "./pages/auth/AuthGard/UpdatePawword/UpdatePawword";
+import Conge from "./components/Conge/Conge";
 
 function App() {
   const cookies = new Cookies();
@@ -72,6 +73,15 @@ function App() {
             element={
               <ProtectedRoutes>
                 <Home />
+              </ProtectedRoutes>
+            }
+          /> 
+            <Route
+            
+            path={"/Conge"}
+            element={
+              <ProtectedRoutes>
+                <Conge/>
               </ProtectedRoutes>
             }
           />

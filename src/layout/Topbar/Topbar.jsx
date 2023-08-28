@@ -33,6 +33,28 @@ export default function Topbar() {
                      <img src={logo} alt="Shyrine prod"  className='logo'/>
                     </NavLink>
                   </li>
+                 <li>
+                    <NavLink
+                      id="creations"
+                      to="/Conge"
+                      className={({ isActive }) =>
+                        isActive ? "active" : "not-active-class"
+                      }
+                    >
+                   <i class="fa-solid fa-calendar-days"></i> Creé un congé
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      id="creations"
+                      to="/Conge"
+                      className={({ isActive }) =>
+                        isActive ? "active" : "not-active-class"
+                      }
+                    >
+                   <i class="fa-solid fa-calendar-days"></i> Creé une  autoriation
+                    </NavLink>
+                  </li>
                   <li>
                     <div className="dropdown">
                       <a

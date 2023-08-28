@@ -4,7 +4,7 @@ ul.SidebarList {
     border-bottom: 1px solid #fff;
     list-style: none;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
 }
 
@@ -25,7 +25,11 @@ ul.SidebarList .dropdown {
     align-items: center;
     justify-content: center;
 }
-
+a#creations {
+    color: #fff;
+    text-decoration: none;
+    font-size: 20px;
+}
 img.logo {
     width: 58px;
 }

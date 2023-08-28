@@ -1,0 +1,52 @@
+#conges {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#conges .input-box {
+    width: 500px;
+}
+
+#conges .react-datepicker__input-container input[type="text"] {
+    width: 100%;
+    height: 50px;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 1em;
+    color: #fff;
+    padding: 0 35px 0 5px;
+}
+section.homes h1 {
+    color: #fff;
+}
+.headersform {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.react-datepicker__input-container input::placeholder {
+    color: #fff; /* Replace with your color value */
+  }
+  
+  /* Optional: You can also style the selected date text */
+  .react-datepicker__input-container input {
+    color: #fff; /* Replace with your color value */
+  }
+  .feuille span  , .feuille i{
+    color: #fff;
+    cursor: pointer;
+  }
+
+  @media print {
+    body * {
+      display: block;
+    }
+    .printts {
+        display: block;
+      }
+    .no-print {
+        display: none;
+      }
+    /* Add any other print-specific styles here */
+  }

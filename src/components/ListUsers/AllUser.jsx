@@ -234,7 +234,7 @@ export default function AllUser() {
   }, []);
   return (
     <>
-      <div className="headers container">
+      <div className="headers mt-4 mb-4">
         <h2> Listes des employers</h2>
 
         <div className="input-group mb-3 serash-users">
@@ -261,10 +261,10 @@ export default function AllUser() {
           </div>
         </div>
       </div>
-      <div>
+      <div className="mb-4">
         {AllUsers.map((user, index) => {
           return (
-            <div className="listUser" key={index}>
+            <div className="listUser " key={index}>
               <div className="allusers">
                 <div className="profilencart">
                    
