@@ -50,6 +50,7 @@ app.get("/", (req, res) => {
 
 require("./Routes/UsersRoutes")(app);
 require("./Routes/AuthRoutes")(app);
+require("./Routes/UsersCongeRoutes")(app);
 
 
 
