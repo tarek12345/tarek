@@ -1,12 +1,15 @@
-#conges {
+.struc {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-evenly;
+    align-items: baseline;
 }
 #conges .input-box {
     width: 500px;
 }
-
+.feuille h2 {
+  color: #fff;
+  font-size: 30px;
+}
 #conges .react-datepicker__input-container input[type="text"] {
     width: 100%;
     height: 50px;
@@ -19,11 +22,31 @@
 }
 section.homes h1 {
     color: #fff;
+    text-align: justify;
 }
-.headersform {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
+.tous{
+  overflow-y: scroll;
+  max-height: 250px;
+  padding: 5px
+}
+.tous::-webkit-scrollbar {
+  width: 0.3em;
+  
+}
+.tous::-webkit-scrollbar-track {
+  background-color: #fff;
+ 
+}
+ 
+.tous::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+  
+}
+.liste {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .react-datepicker__input-container input::placeholder {
     color: #fff; /* Replace with your color value */
@@ -33,11 +56,15 @@ section.homes h1 {
   .react-datepicker__input-container input {
     color: #fff; /* Replace with your color value */
   }
-  .feuille span  , .feuille i{
+
+   
+
+  .feuille span, .feuille i {
     color: #fff;
     cursor: pointer;
-  }
-
+    font-size: 17px;
+    margin: 10px auto;
+}
   @media print {
     body * {
       display: block;
