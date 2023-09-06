@@ -4,8 +4,49 @@ const Conges = require("../Models/CongeUsers");
 const bcrypt = require('bcrypt');
 const mongoose = require("mongoose");
 
+exports.get = async (req, res) => {
+
+  try {
+    const conge = await Conges.find()
+    if (conge) {
+
+      res.status(200).send({
+        data:
+        conge
+      });
+    }
+
+  } catch (error) {
+
+    return res.status(403).send({
+      message:
+        error.message || "Some error occurred while creating the conge."
+    });
 
 
+  }
+
+}
+exports.delete = (req, res) => {
+  const id = req.params.id;
+  Conges.findByIdAndRemove(id)
+    .then(data => {
+      if (!data) {
+        res.status(404).send({
+          message: `Cannot delete User with id=${id}. Maybe User was not found!`
+        });
+      } else {
+        res.send({
+          message: "Congé was deleted successfully!"
+        });
+      }
+    })
+    .catch(err => {
+      res.status(403).send({
+        message: "Could not delete Congé with id=" + id
+      });
+    });
+};
 exports.create = async (req, res) => {
   // Validate request
   if (!req.body.name) {
@@ -35,7 +76,6 @@ exports.create = async (req, res) => {
 
 
   };
-console.log(CongeUser)
 
 
   // Save User in the database
@@ -68,6 +108,6 @@ console.log(CongeUser)
     }
 
   }
-
+ 
 
 };
