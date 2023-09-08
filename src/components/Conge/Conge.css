@@ -65,12 +65,21 @@ section.homes h1 {
     font-size: 17px;
     margin: 10px auto;
 }
+.printes{
+  display: none
+}
   @media print {
     body * {
       display: block;
     }
-    .printts {
+    .printes {
         display: block;
+      }
+      .hedertabs{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
       }
     .no-print {
         display: none;

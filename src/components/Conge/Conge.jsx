@@ -1,20 +1,23 @@
-import React, { useState, useEffect } from "react";
-
+import React, { useState, useEffect,useRef } from "react";
+import logo from "../../assets/logo.svg"
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import Topbar from "../../layout/Topbar/Topbar";
 import { Button, Modal } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import fr from "date-fns/locale/fr";
-
+import ReactToPrint from 'react-to-print-advanced';
 import "react-datepicker/dist/react-datepicker.css";
 import "./Conge.css";
-
+import { format } from 'date-fns';
 import axios from "axios";
 import { useJwt } from "react-jwt";
 import Cookies from "universal-cookie";
+import StructConge from "./StructConge/StructConge";
 const baseURL = process.env.REACT_APP_API_URL;
 function Conge() {
+
+
   const [AllConge, setAllConge] = useState([]);
   const [conge, setConge] = useState('');
   const [nom, setNom] = useState("");
@@ -24,6 +27,9 @@ function Conge() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const [startDate, endDate] = dateRange;
+  const navigate = useNavigate();
+
+
   const createUser = async () => {
     try {
       const formattedStartDate = startDate.toISOString().split("T")[0];
@@ -48,6 +54,7 @@ function Conge() {
           });
           getConge();
           Reset();
+          
         })
         .catch(function (error) {
           console.log(error.response.data.message);
@@ -151,9 +158,19 @@ function Conge() {
     setDateRange("");
     setJour("");
     setDescription("");
+    navigate('/')
   };
-
-
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return 'Invalid Date';
+    }
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+  const componentRef = useRef();
   useEffect(() => {
     getConge();
   }, []);
@@ -229,21 +246,58 @@ function Conge() {
           <Toaster />
         </div>
         <div className="feuille">
+        <div className="btn retour"></div>
           <h2>
             Listes des congés<sup>({AllConge.length})</sup>
           </h2>
        
           <div className="tous">
-         {AllConge.length==0? <span>Pas de  congé</span>
+         {AllConge.length==0? <span>Pas de  congé </span>
           : <>{AllConge.map((cong) => {
             return (
               <div className="liste">
                 
-                <div className="titrecong">
-                  <span className="me-2">Nombres du jour {cong.jour}</span>
+                <div className="titrecong"> 
+                  <span className="me-2">Nombres du jour <sup>({cong.jour})</sup>  le {formatDate(cong.datedebut)} à  {formatDate(cong.datefin)}</span>
                 </div>
                 <div className="actions">
-                  <i class="fa-solid fa-print me-2 " ></i>
+                <div>
+      <ReactToPrint
+        trigger={() => <i class="fa-solid fa-print me-2 " ></i>}
+        content={() => componentRef.current}
+      />
+   <table class="table printes" ref={componentRef}>
+  <thead>
+    <tr className="d-flex">
+      <th scope="col">   <img src={logo} alt="Shyrine prod"  className='logo'/></th>
+      <th scope="col"><h1>Demande  de  congé</h1></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Date de la  demande </th>
+      <td>Mark</td>
+    </tr>
+    <tr>
+      <th scope="row">Nom & prénom </th>
+      <td>Mark</td>
+    </tr>
+    <tr>
+      <th scope="row">Date debut congé</th>
+      <td>Mark</td>
+    </tr>
+    <tr>
+      <th scope="row">Date réprise</th>
+      <td>Mark</td>
+    </tr>
+    <tr>
+      <th scope="row">Nombre de  jours de  congés pris</th>
+      <td>Mark</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+                  
                   <i
                     class="fa-solid fa-trash"
                     onClick={() => supModal(cong)}
@@ -286,7 +340,7 @@ function Conge() {
               <div className="addPageOptions">
                 <div className="add_Page_Options_title">
                   Voulez-vous vraiment supprimer l'utilisateur
-                  <b> {conge.name} ? </b>
+                  <b> {conge.name} ?  </b>
                   Cette action supprimera l'utilisateur ainsi que l'ensemble du
                   contenu qui lui est associé.
                   <br />
