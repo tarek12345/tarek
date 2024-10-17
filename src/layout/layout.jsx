@@ -10,15 +10,15 @@ export default function Layout() {
   return (
     <div className="header">
       <Header />
-      <div class="d-flex align-items-start">
+      <div className="d-flex align-items-start">
         <div
-          class="nav flex-column nav-pills me-3"
+          className="nav flex-column nav-pills me-3"
           id="v-pills-tab"
           role="tablist"
           aria-orientation="vertical"
         >
           <button
-            class="nav-link active"
+            className="nav-link active"
             id="v-pills-home-tab"
             data-bs-toggle="pill"
             data-bs-target="#v-pills-home"
@@ -30,7 +30,7 @@ export default function Layout() {
             Users
           </button>
           <button
-            class="nav-link"
+            className="nav-link"
             id="v-pills-profile-tab"
             data-bs-toggle="pill"
             data-bs-target="#v-pills-profile"
@@ -42,7 +42,7 @@ export default function Layout() {
             Photos
           </button>
           <button
-            class="nav-link"
+            className="nav-link"
             id="v-pills-messages-tab"
             data-bs-toggle="pill"
             data-bs-target="#v-pills-messages"
@@ -54,7 +54,7 @@ export default function Layout() {
             Albums
           </button>
           <button
-            class="nav-link"
+            className="nav-link"
             id="v-pills-settings-tab"
             data-bs-toggle="pill"
             data-bs-target="#v-pills-settings"
@@ -66,9 +66,9 @@ export default function Layout() {
             Comments
           </button>
         </div>
-        <div class="tab-content" id="v-pills-tabContent">
+        <div className="tab-content" id="v-pills-tabContent">
           <div
-            class="tab-pane fade show active"
+            className="tab-pane fade show active"
             id="v-pills-home"
             role="tabpanel"
             aria-labelledby="v-pills-home-tab"
@@ -76,7 +76,7 @@ export default function Layout() {
             <Users />
           </div>
           <div
-            class="tab-pane fade"
+            className="tab-pane fade"
             id="v-pills-profile"
             role="tabpanel"
             aria-labelledby="v-pills-profile-tab"
@@ -84,7 +84,7 @@ export default function Layout() {
             <Photos />
           </div>
           <div
-            class="tab-pane fade"
+            className="tab-pane fade"
             id="v-pills-messages"
             role="tabpanel"
             aria-labelledby="v-pills-messages-tab"
@@ -92,7 +92,7 @@ export default function Layout() {
             <Albums />
           </div>
           <div
-            class="tab-pane fade"
+            className="tab-pane fade"
             id="v-pills-settings"
             role="tabpanel"
             aria-labelledby="v-pills-settings-tab"

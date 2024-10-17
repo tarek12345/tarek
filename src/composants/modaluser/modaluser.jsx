@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 export default function Modaluser({ showModal, handleClose, user, onUpdate }) {
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -34,12 +32,12 @@ export default function Modaluser({ showModal, handleClose, user, onUpdate }) {
   const handleUpdateUser = async (id, updatedUser) => {
     try {
       await axios.put(`${apiUrl}/users/${id}`, updatedUser);
-      toast.success('User updated successfully!');
+
       onUpdate(); // Call the onUpdate function to refresh user data
       handleClose(); // Close the modal after successful update
     } catch (error) {
       console.error('Error updating user:', error);
-      toast.error('Failed to update user.');
+
     }
   };
 
@@ -135,7 +133,6 @@ export default function Modaluser({ showModal, handleClose, user, onUpdate }) {
           </div>
         </div>
       </div>
-      <ToastContainer />
     </div>
   );
 }

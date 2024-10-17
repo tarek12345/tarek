@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 import ModaluserEdit from '../../composants/modaluser/modaluser';
@@ -12,33 +11,23 @@ function Users() {
   const [showModal, setShowModal] = useState(false);
   const [showModalDelete, setShowModalDelete] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const toastShown = useRef(false);
+
   const apiUrl = process.env.REACT_APP_API_URL;
 
-  const fetchUsers = () => {
+  // Use useCallback to avoid re-creating the function in every render
+  const fetchUsers = useCallback(() => {
     axios
       .get(`${apiUrl}/users`)
       .then((response) => {
         setUsers(response.data);
-        if (!toastShown.current) {
-          toast.success('Data fetched successfully!', {
-            position: "top-right",
-            autoClose: 3000,
-          });
-          toastShown.current = true;
-        }
+
       })
       .catch((error) => {
         console.error('There was an error!', error);
-        if (!toastShown.current) {
-          toast.error('Failed to fetch data.', {
-            position: "top-right",
-            autoClose: 3000,
-          });
-          toastShown.current = true;
-        }
+      
+        
       });
-  };
+  }, [apiUrl]); // Include apiUrl as a dependency for fetchUsers
 
   const handleOpenModal = (user) => {
     if (user) {
@@ -52,7 +41,6 @@ function Users() {
   };
 
   const handleOpenModalDelete = (user) => {
-    console.log(user);
     setSelectedUser(user);
     setShowModalDelete(true);
   };
@@ -69,7 +57,7 @@ function Users() {
 
   useEffect(() => {
     fetchUsers(); // Fetch users when component mounts
-  }, []);
+  }, [fetchUsers]); // Include fetchUsers as a dependency to avoid stale closure
 
   return (
     <div className="users">
@@ -91,42 +79,46 @@ function Users() {
               <td>{user.username}</td>
               <td>{user.phone}</td>
               <td>{user.email}</td>
-              <td>{user.address.city} {user.address.street} {user.address.zipcode}</td>
+              <td>{`${user.address.city}, ${user.address.street}, ${user.address.zipcode}`}</td>
               <td>
                 <div className="d-flex gap-2">
-                <button
-                  type="button"
-                  className="btn btn-success"
-                  onClick={() => handleOpenModal(user)}
-                >
-                  <FontAwesomeIcon icon={faPenToSquare} />
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-danger"
-                  onClick={() => handleOpenModalDelete(user)}
-                >
-                  <FontAwesomeIcon icon={faTrash} />
-                </button>
+                  <button
+                    type="button"
+                    className="btn btn-success"
+                    onClick={() => handleOpenModal(user)}
+                  >
+                    <FontAwesomeIcon icon={faPenToSquare} />
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={() => handleOpenModalDelete(user)}
+                  >
+                    <FontAwesomeIcon icon={faTrash} />
+                  </button>
                 </div>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <ModaluserEdit
-        user={selectedUser}
-        showModal={showModal}
-        handleClose={handleCloseModal}
-        onUpdate={fetchUsers} // Pass the fetchUsers function to refresh the list
-      />
-      <ModaluserDelete
-        user={selectedUser}
-        showModalDelete={showModalDelete}
-        handleClose={handleCloseModalDelete} // Consistent naming
-        handleDelete={handleDelete}
-      />
-      <ToastContainer />
+      {selectedUser && (
+        <>
+          <ModaluserEdit
+            user={selectedUser}
+            showModal={showModal}
+            handleClose={handleCloseModal}
+            onUpdate={fetchUsers} // Pass the fetchUsers function to refresh the list
+          />
+          <ModaluserDelete
+            user={selectedUser}
+            showModalDelete={showModalDelete}
+            handleClose={handleCloseModalDelete}
+            handleDelete={handleDelete}
+          />
+        </>
+      )}
+
     </div>
   );
 }
