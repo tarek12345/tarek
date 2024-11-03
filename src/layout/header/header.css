@@ -1,0 +1,287 @@
+span.logotext {
+    font-size: 24px;
+    line-height: 34px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: bold;
+    color:#fff;
+}
+
+.sectionheader {
+  padding: 22px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #170122;
+  border-radius: 0px;
+  border: 2px solid #812fab;
+  margin: 14px auto;
+  z-index: 999;
+  position: relative
+}
+.logo {
+  margin: 0 0VH 0 9VH;
+}
+div#carouselExampleSlidesOnly {
+  position: absolute;
+  top: 0;
+}
+.sectionright {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+/* Style général pour le menu */
+.dlmenu {
+    display: flex;
+    align-items: center;
+    font-family: Arial, sans-serif;
+  }
+  
+  .dlmenu nav ul {
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .dlmenu nav ul li {
+    margin-right: 20px;
+  }
+  
+  .dlmenu nav ul li a {
+    text-decoration: none;
+    color: gray; /* Couleur grise pour l'état normal */
+    padding: 10px 15px;
+    transition: color 0.3s ease;
+  }
+  
+  /* État actif (élément sélectionné) */
+  .dlmenu nav ul li a.active {
+    color: white; /* Couleur blanche pour l'état actif */
+    background-color: black; /* Fond noir pour l'état actif */
+    border-radius: 5px;
+  }
+  
+  /* Effet au survol */
+  .dlmenu nav ul li a:hover {
+    color: white;
+  }
+  /* Base styles for navigation */
+.dlmenu {
+    position: relative;
+  }
+  
+  .burger-icon {
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: none; /* Hide by default */
+  }
+  
+  .menu {
+    display: flex;
+  }
+  
+  .menu ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+  }
+  
+  .menu ul li {
+    margin: 0 10px;
+  }
+  
+  .active {
+    font-weight: bold;
+    color: blue;
+  }
+  
+ /* Container for the menu */
+.dlmenu {
+    position: relative;
+  }
+  
+  /* Styling the burger icon */
+  .burger-icon {
+    font-size: 24px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+  }
+  
+  /* Menu styles */
+  .menu {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 250px;
+    background-color: #333;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .menu.open {
+    transform: translateX(0);
+  }
+  
+  /* Menu items */
+  .menu ul {
+    list-style: none;
+    padding: 60px 20px;
+  }
+  
+  .menu li {
+    margin-bottom: 20px;
+  }
+  
+  .menu li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+  }
+  
+  .menu li a.active {
+    font-weight: bold;
+    color: #00bfa5; /* Highlighted color for active link */
+  }
+  .sectionheader-all {
+    position: relative;
+    width: 100%;
+  }
+  
+  .carousel-item {
+    position: relative;
+  }
+  
+  .img-t {
+    width: 100%;
+    height: auto;
+  }
+  
+  /* Overlay text styling */
+  .discrptionnameall {
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+    top: 20%;
+    left: 0;
+    width: 100%;
+    color: #fff;
+    text-align: left;
+    font-size: 2rem;
+    font-weight: bold;
+    text-transform: capitalize;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+.discrptionname {
+  width: 60%;
+  position: relative;
+}
+
+.buttons {
+  width: 40%;
+  position: relative;
+  display: flex;
+  justify-content: end;
+}
+  .discrptionname h1 {
+    font-size: 10rem;
+    background: linear-gradient(to right, #ffffff, #c75dd2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: #00000014;
+    font-family: "Righteous", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+@keyframes shadow-pulse {
+  0% {
+    box-shadow: 0 4px 15px rgba(116, 79, 168, 0.75);
+  }
+  50% {
+    box-shadow: 0 8px 30px rgba(116, 79, 168, 0.5);
+  }
+  100% {
+    box-shadow: 0 4px 15px rgba(116, 79, 168, 0.75);
+  }
+}
+
+.btn-hover {
+  width: 200px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  margin: 20px;
+  height: 55px;
+  text-align: center;
+  border: none;
+  background-size: 300% 100%;
+  border-radius: 50px;
+  transition: all 0.4s ease-in-out;
+}
+
+.btn-hover:hover {
+  background-position: 100% 0;
+}
+
+.btn-hover:focus {
+  outline: none;
+}
+
+.btn-hover.color-3 {
+  background-image: linear-gradient(to right, #667eea, #764ba2, #6B8DD6, #8E37D7);
+  width: 10rem;
+  height: 10rem;
+  font-size: 3rem; /* Adjusted for readability */
+  border-radius: 50%;
+  animation: shadow-pulse 2s infinite ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(116, 79, 168, 0.75);
+}
+
+  /* Responsive for larger screens */
+  @media (min-width: 768px) {
+    .burger-icon {
+      display: none;
+    }
+  
+    .menu {
+      position: static;
+      transform: none;
+      height: auto;
+      background-color: transparent;
+      flex-direction: row;
+    }
+  
+    .menu ul {
+      padding: 0;
+      display: flex;
+    }
+  
+    .menu li {
+      margin: 0 15px;
+    }
+  
+    .menu li a {
+      font-size: 16px;
+      color: #333;
+    }
+  
+    .menu li a.active {
+      font-weight: bold;
+      color: #333;
+    }
+  }
