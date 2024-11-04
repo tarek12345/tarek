@@ -46,3 +46,36 @@
 .mySwiper.first .swiper-slide:hover {
   color: #fff;
 }
+.circular-image {
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  object-fit: cover;
+  filter: brightness(0.5) sepia(1) hue-rotate(-131deg);
+}
+div#section1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 6% auto;
+  position: relative;
+}
+
+div#section1 .img-right {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+div#section1 .img-left {
+  width: 50%;
+}
+.img-right h2 {
+  font-family: "Righteous", sans-serif;
+  font-size: 89px;
+  position: absolute;
+  left: 38%;
+  top: 0;
+}

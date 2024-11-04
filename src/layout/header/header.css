@@ -231,17 +231,7 @@ span.logotext {
     font-weight: 400;
     font-style: normal;
 }
-@keyframes shadow-pulse {
-  0% {
-    box-shadow: 0 4px 15px rgba(116, 79, 168, 0.75);
-  }
-  50% {
-    box-shadow: 0 8px 30px rgba(116, 79, 168, 0.5);
-  }
-  100% {
-    box-shadow: 0 4px 15px rgba(116, 79, 168, 0.75);
-  }
-}
+
 
 .btn-hover {
   width: 200px;
@@ -276,7 +266,25 @@ span.logotext {
   display: flex;
   justify-content: center;
   align-items: center;
+  color: white; /* Couleur du texte pour meilleure lisibilité */
+  text-decoration: none; /* Supprime le soulignement si c'est un lien */
   box-shadow: 0 4px 15px rgba(116, 79, 168, 0.75);
+}
+
+/* Définition de l'animation */
+@keyframes shadow-pulse {
+  0% {
+      transform: scale(1);
+      box-shadow: 0 4px 15px rgba(116, 79, 168, 0.75);
+  }
+  50% {
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(116, 79, 168, 0.85);
+  }
+  100% {
+      transform: scale(1);
+      box-shadow: 0 4px 15px rgba(116, 79, 168, 0.75);
+  }
 }
 
   /* Responsive for larger screens */
