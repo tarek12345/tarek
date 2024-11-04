@@ -9,7 +9,7 @@ export default function Page() {
   };
 
   return (
-    <div className='dlmenu'>
+    <div className="dlmenu">
       <Router>
         <nav>
           <ul>
@@ -25,8 +25,8 @@ export default function Page() {
             <li>
               <Link
                 to="/#section1"
-                onClick={() => handleSetActive('/#section1')}
-                className={activeLink === '/#section1' ? 'active' : ''}
+                onClick={() => handleSetActive('#section1')}
+                className={activeLink === '#section1' ? 'active' : ''}
               >
                 À Propos
               </Link>
@@ -34,7 +34,6 @@ export default function Page() {
             {/* Repeat for additional links as needed */}
           </ul>
         </nav>
-     
       </Router>
     </div>
   );
