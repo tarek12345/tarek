@@ -5,28 +5,74 @@ import Fancybox from "../../../componsants/Fancybox/Fancybox";
 import bforbiz from "../../../assets/b-forbiz.png";
 import flashcartegrise from "../../../assets/flashcartegrise.png";
 import lesrousses from "../../../assets/lesrousses.png";
-
+import Bbord from "../../../assets/bborad.png";
+import Bborddetaile from "../../../assets/bboraddetaille.png";
+import yellowsmidth from "../../../assets/buildersite.png";
+import yellowsmidthdetaile from "../../../assets/ys-auth.png";
+import yellowsmidthlist from "../../../assets/ysdetaille.png";
 export default function Projects(props) {
   // Define separate image arrays for each project type
   const wordpressImages = [
-    { url: "https://www.lesrousses.com/", thumbnail: lesrousses, caption: "Flach carte grise" },
-    { url: "https://www.b-forbiz.com/", thumbnail: bforbiz, caption: "b-forbiz" },
-    { url: "https://www.flash-carte-grise.fr/", thumbnail: flashcartegrise, caption: "Flach carte grise" },
+    {
+      url: "https://www.lesrousses.com/",
+      thumbnail: lesrousses,
+      caption: "Station des  rousses",
+      captionen: "Station  rousses",
+    },
+    {
+      url: "https://www.b-forbiz.com/",
+      thumbnail: bforbiz,
+      caption: "b-forbiz",
+      captionen: "b-forbiz"
+    },
+    {
+      url: "https://www.flash-carte-grise.fr/",
+      thumbnail: flashcartegrise,
+      caption: "Flach carte grise",
+      captionen: "Flach carte grise",
+      
+    },
   ];
-  
+
   const angularImages = [
-    { url: "/path/to/angular-image1.jpg", thumbnail: "/path/to/angular-thumbnail1.jpg", caption: "Angular Image 1" }
+    {
+      url: "https://bboard.b-forbiz.com/login",
+      thumbnail: Bbord,
+      caption: "Authentification",
+      captionen: "Authentication",
+    },
+    {
+      url: "https://bboard.b-forbiz.com/index/administration",
+      thumbnail: Bborddetaile,
+      caption: " Tableaux du bord",
+      captionen: "Bbord",
+    },
   ];
-  
+
   const reactImages = [
-    { url: "/path/to/react-image1.jpg", thumbnail: "/path/to/react-thumbnail1.jpg", caption: "React Image 1" },
-    { url: "/path/to/react-image2.jpg", thumbnail: "/path/to/react-thumbnail2.jpg", caption: "React Image 2" },
+    {
+      url: "https://ysbuilder.b-forbiz.com/editor/",
+      thumbnail: yellowsmidthdetaile,
+      caption: "Crée site",
+      captionen: "Create  website",
+    },
+    {
+      url: "https://ysbuilder.b-forbiz.com/",
+      thumbnail: yellowsmidthlist,
+      caption: "Listes des  sites ",
+      captionen: "Site Lists",
+    },
+    {
+      url: "https://ysbuilder.b-forbiz.com/",
+      thumbnail: yellowsmidth,
+      caption: "Bbord bforbiz",
+    },
   ];
 
   return (
     <div id="section3">
       <div className="img-right">
-        <h2>
+      <sup> {props.long === "FR" ? "Mes Exemples" : "My Examples"}</sup> <h2>
           {props.long === "FR" ? "Mes projets" : "My projects"}{" "}
           <FontAwesomeIcon icon={faArrowDown} />
         </h2>
@@ -43,7 +89,9 @@ export default function Projects(props) {
             aria-controls="pills-wordpress"
             aria-selected="true"
           >
-            Projets WordPress
+            {props.long === "FR"
+              ? " Projets WordPress"
+              : "   Projects WordPress"}
           </button>
         </li>
         <li className="nav-item" role="presentation">
@@ -57,7 +105,7 @@ export default function Projects(props) {
             aria-controls="pills-angular"
             aria-selected="false"
           >
-            Projets Angular
+            {props.long === "FR" ? "Projets Angular" : "   Projects Angular"}
           </button>
         </li>
         <li className="nav-item" role="presentation">
@@ -71,7 +119,7 @@ export default function Projects(props) {
             aria-controls="pills-react"
             aria-selected="false"
           >
-            Projets React
+            {props.long === "FR" ? "Projets React" : "   Projects React"}
           </button>
         </li>
       </ul>
@@ -83,7 +131,7 @@ export default function Projects(props) {
           aria-labelledby="pills-wordpress-tab"
           tabIndex="0"
         >
-          <Fancybox galleryName="wordpress-gallery" images={wordpressImages} />
+          <Fancybox galleryName="wordpress-gallery" images={wordpressImages} longth={props} />
         </div>
         <div
           className="tab-pane fade"
@@ -92,7 +140,7 @@ export default function Projects(props) {
           aria-labelledby="pills-angular-tab"
           tabIndex="1"
         >
-          <Fancybox galleryName="angular-gallery" images={angularImages} />
+          <Fancybox galleryName="angular-gallery" images={angularImages} longth={props}/>
         </div>
         <div
           className="tab-pane fade"
@@ -101,7 +149,7 @@ export default function Projects(props) {
           aria-labelledby="pills-react-tab"
           tabIndex="2"
         >
-          <Fancybox galleryName="react-gallery" images={reactImages} />
+          <Fancybox galleryName="react-gallery" images={reactImages} longth={props}/>
         </div>
       </div>
     </div>

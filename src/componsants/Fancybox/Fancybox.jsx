@@ -6,7 +6,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearchPlus } from "@fortawesome/free-solid-svg-icons";
 import "./Fancybox.css";
 
-export default function Fancybox({ galleryName, images }) {
+export default function Fancybox({ galleryName, images ,longth}) {
+  console.log(longth);
   useEffect(() => {
     // Initialize Fancybox for the specified gallery name
     NativeFancybox.bind(`[data-fancybox='${galleryName}']`, {
@@ -26,7 +27,8 @@ export default function Fancybox({ galleryName, images }) {
           key={index}
           href={image.thumbnail}  // Ensure this is the full-size image
           data-fancybox={galleryName}
-          data-caption={image.caption}
+          data-caption={`<span>${longth.long==="FR"?"Nom :":"Name :"} </span> ${longth.long==="FR"?image.caption:image.captionen} <br> <span> Url : </span><a href="${image.url}" target="_blank">${image.url}</a>`}
+
           className="fancybox-image-wrapper"
         >
           <img src={image.thumbnail} alt={image.caption} className="fancybox-image" />

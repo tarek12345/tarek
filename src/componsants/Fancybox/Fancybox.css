@@ -45,7 +45,7 @@
   }
   
   .fancybox-image-wrapper:hover .fancybox-image {
-    transform: scale(1.05);
+    transform: scale(1.00);
   }
   
   .overlay {
