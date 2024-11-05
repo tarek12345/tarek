@@ -20,6 +20,25 @@ export default function Slider(props) {
       delay: 3000, // Delay in milliseconds (3000ms = 3s)
       disableOnInteraction: false, // Autoplay will not stop after user interaction
     }}
+    breakpoints={{
+      220: {
+        slidesPerView: 1
+      },
+      320: {
+        slidesPerView: 1
+      },
+      640: {
+        slidesPerView: 1
+      },
+      1024: {
+        slidesPerView: 2,
+        spaceBetween: 20,
+      },
+      1440: {
+        slidesPerView: 3,
+        spaceBetween: 30,
+      },
+    }}
     modules={[FreeMode, Pagination,Autoplay]}
     className="mySwiper first"
   >

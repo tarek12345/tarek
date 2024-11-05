@@ -19,7 +19,14 @@ export default function Route(props) {
       setIsMenuOpen(false); // Close menu after scrolling
     }
   };
-
+  const scrollToSection2 = (id) => {
+    const section = document.querySelector(id);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+      setActiveLink(id); // Set active link for highlighting
+      setIsMenuOpen(false); // Close menu after scrolling
+    }
+  };
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -61,7 +68,7 @@ export default function Route(props) {
                 href="#section2"
                 onClick={(e) => {
                   e.preventDefault();
-                  scrollToSection('#section2');
+                  scrollToSection2('#section2');
                 }}
                 className={activeLink === '#section2' ? 'active' : ''}
               >

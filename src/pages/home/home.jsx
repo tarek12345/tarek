@@ -8,6 +8,7 @@ import Competences from './sectionhome/competences';
 
 export default function Home() {
   const [language, setLanguage] = useState("FR");
+  const [activeLink, setActiveLink] = useState('/');
   const [compteur] = useState([
     { namfr: "Projet", namen: "Project", value: "400" },
     { namfr: "Expérience", namen: "Experience", value: "6" },
@@ -20,7 +21,13 @@ export default function Home() {
   // Using a ref to hold count data for the interval function
   const countRef = useRef(count);
   countRef.current = count;
-
+  const scrollToSection2 = (id) => {
+    const section = document.querySelector(id);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+      setActiveLink(id); // Set active link for highlighting
+    }
+  };
   useEffect(() => {
     count.forEach((item, index) => {
       const targetValue = parseInt(item.value, 10);
@@ -93,14 +100,17 @@ export default function Home() {
                 ))}
               </div>
             </div>
-            <button class="btn-hover color-7">
+            <button class="btn-hover color-7"  onClick={(e) => {
+                  e.preventDefault();
+                  scrollToSection2('#section2');
+                }}>
               {language === "FR" ? "En savoir plus" : "Learn more"}{" "}
               <FontAwesomeIcon icon={faArrowDown} />{" "}
             </button>
           </div>
         </div>
       </div>
-      <Competences/>
+      <Competences  long={language}/>
       <Footer long={language} />
     </>
   );

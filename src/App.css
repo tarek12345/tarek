@@ -40,7 +40,7 @@
   font-weight: 400;
   font-style: normal;
   font-size: 29px;
-  transition: color 0.3s ease; /* Ajout de la transition */
+  transition: color 0.3s ease; /* Ajout de la transition */;
 }
 
 .mySwiper.first .swiper-slide:hover {
@@ -85,9 +85,12 @@ h2.display-4.valuecompteur {
   position: absolute;
   left: 26%;
   top: 0px;
-  background: linear-gradient(90deg, #fdb6ff, #532966);
+  background: linear-gradient(90deg, #f0b3f3, #ae24ec);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+div#section2 .img-right svg.svg-inline--fa.fa-arrow-down {
+  color: #fff;
 }
 .btn-hover.color-7 {
   background-image: linear-gradient(to right, #6253e1, #852D91, #A3A1FF, #F24645);
@@ -96,3 +99,107 @@ h2.display-4.valuecompteur {
 .img-left {
   margin-top: 7%;
 }
+div#section2 .img-right h2 {
+  position: relative;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}
+
+div#section2 .img-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#section2{
+  background: linear-gradient(135deg, #7f00ff, #000000);
+  padding: 30px 0;
+}
+.skills {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px; /* Adjust the gap as needed */
+  padding: 20px; /* Optional: padding around the skills section */
+}
+.skills svg {
+  color: #fff;
+  font-size: 24px;
+}
+.card-skills {
+  background: transparent;
+  padding: 12px;
+  text-align: center;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.card-skills span {
+  color: #fff;
+  font-family: "Righteous", sans-serif;
+  font-size: 24px;
+}
+.skills {
+  margin-top: 20px;
+}
+
+.card-skills {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.circle-container {
+  display: flex;
+  margin-left: 10px;
+}
+
+.circle {
+  width: 20px; /* Taille du cercle */
+  height: 20px;
+  border-radius: 50%; /* Transforme en cercle */
+  background-color: #e0e0e0; /* Couleur par défaut des cercles */
+  margin-right: 5px; /* Espace entre les cercles */
+  transition: background-color 0.3s ease; /* Animation de la couleur */
+}
+
+.circle.filled {
+  background-color: #d018b8;
+}
+@media (max-width: 1360px) {
+  .skills {
+    grid-template-columns: repeat(auto-fill, minmax(50%, 2fr)); /* 1 colonne ou plusieurs, selon l'espace */
+  }
+  .mySwiper.first .swiper-slide {
+    height: auto;
+  
+  }}
+@media (max-width: 1024px) {
+  .skills {
+    grid-template-columns: repeat(auto-fill, minmax(50%, 2fr)); /* 1 colonne ou plusieurs, selon l'espace */
+  }
+  .mySwiper.first .swiper-slide {
+    height: auto;
+  
+  }}
+@media (max-width: 767px) {
+  .skills {
+    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); /* 1 colonne ou plusieurs, selon l'espace */
+  }
+.mySwiper.first .swiper-slide {
+  height: auto;
+  font-size: 15px;
+  line-height: 59px;
+
+}}
+@media (max-width: 600px) {
+  .skills {
+    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); /* 1 colonne ou plusieurs, selon l'espace */
+  }
+.mySwiper.first .swiper-slide {
+  height: auto;
+  font-size: 15px;
+  line-height: 59px;
+
+}}
