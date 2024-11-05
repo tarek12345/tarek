@@ -24,7 +24,7 @@ export default function Fancybox({ galleryName, images }) {
       {images.map((image, index) => (
         <a
           key={index}
-          href={image.full}  // Ensure this is the full-size image
+          href={image.thumbnail}  // Ensure this is the full-size image
           data-fancybox={galleryName}
           data-caption={image.caption}
           className="fancybox-image-wrapper"
