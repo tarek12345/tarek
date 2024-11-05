@@ -21,7 +21,7 @@ export default function Header({ long, toggleLanguage }) {
         </div>
         <div className="sectionright">
           <div className="menu">
-            <Menu />
+            <Menu long={long} toggleLanguage={toggleLanguage} />
           </div>
           <div className="suitechcolor">
             <span className="label-right">FR</span>

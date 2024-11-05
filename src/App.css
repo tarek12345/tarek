@@ -51,7 +51,11 @@
   height: 550px;
   border-radius: 50%;
   object-fit: cover;
-  filter: brightness(0.5) sepia(1) hue-rotate(-131deg);
+  filter: brightness(0.5) sepia(0.2) hue-rotate(220deg) saturate(1.5);
+  transition: transform 0.5s ease, filter 0.5s ease;
+}
+svg.svg-inline--fa.fa-arrow-down {
+  transform: rotate(-45deg);
 }
 div#section1 {
   display: flex;
@@ -59,7 +63,7 @@ div#section1 {
   align-items: center;
   margin: 6% auto;
   position: relative;
-  gap: 20px;
+  gap: 50px;
 }
 
 div#section1 .img-right {
@@ -84,4 +88,11 @@ h2.display-4.valuecompteur {
   background: linear-gradient(90deg, #fdb6ff, #532966);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+.btn-hover.color-7 {
+  background-image: linear-gradient(to right, #6253e1, #852D91, #A3A1FF, #F24645);
+  box-shadow: 0 4px 15px 0 rgba(126, 52, 161, 0.75);
+}
+.img-left {
+  margin-top: 7%;
 }
