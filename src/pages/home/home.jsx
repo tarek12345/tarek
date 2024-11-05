@@ -5,6 +5,7 @@ import Footer from '../../layout/footer/footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDown } from '@fortawesome/free-solid-svg-icons'; // Import the downward arrow icon
 import Competences from './sectionhome/competences';
+import Projects from './sectionhome/projects';
 
 export default function Home() {
   const [language, setLanguage] = useState("FR");
@@ -28,6 +29,7 @@ export default function Home() {
       setActiveLink(id); // Set active link for highlighting
     }
   };
+  
   useEffect(() => {
     count.forEach((item, index) => {
       const targetValue = parseInt(item.value, 10);
@@ -111,6 +113,7 @@ export default function Home() {
         </div>
       </div>
       <Competences  long={language}/>
+      <Projects  long={language}/>
       <Footer long={language} />
     </>
   );

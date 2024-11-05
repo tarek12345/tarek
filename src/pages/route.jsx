@@ -27,6 +27,14 @@ export default function Route(props) {
       setIsMenuOpen(false); // Close menu after scrolling
     }
   };
+  const scrollToSection3 = (id) => {
+    const section = document.querySelector(id);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+      setActiveLink(id); // Set active link for highlighting
+      setIsMenuOpen(false); // Close menu after scrolling
+    }
+  };
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -73,6 +81,18 @@ export default function Route(props) {
                 className={activeLink === '#section2' ? 'active' : ''}
               >
                 {props.long === "FR" ? "Compétences" : "Skills"}
+              </a>
+            </li>
+            <li>
+              <a
+                href="#section3"
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToSection3('#section3');
+                }}
+                className={activeLink === '#section2' ? 'active' : ''}
+              >
+                {props.long === "FR" ? "Mes projets" : "My projects"}
               </a>
             </li>
           </ul>

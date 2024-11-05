@@ -167,6 +167,48 @@ div#section2 .img-right {
 .circle.filled {
   background-color: #d018b8;
 }
+div#section3 .img-right h2 {
+  position: relative;
+  left: 0;
+}
+div#section3 {
+  padding: 30px 0;
+}
+
+
+div#section3 ul#pills-tab {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div#section3 .nav-pills .nav-link.active {
+    background: linear-gradient(135deg, #7f00ff, #000000);
+    padding: 30px 57px;
+    border-radius: 0;
+    color: #fff;
+    font-family: "Righteous", sans-serif;
+    font-size: 24px;
+    box-shadow: 0px 0px 31px #d018b8;
+}
+
+
+div#section3 .nav-pills .nav-link {
+  background: linear-gradient(135deg, #bd83f7, #000000);
+    padding: 30px 57px;
+    border-radius: 0;
+    color: #fff;
+    font-family: "Righteous", sans-serif;
+    font-size: 24px;
+    box-shadow: 0px 0px 31px #000;
+}
+
+div#section3 .img-right {
+    display: flex;
+    justify-content: center;
+}
+
 @media (max-width: 1360px) {
   .skills {
     grid-template-columns: repeat(auto-fill, minmax(50%, 2fr)); /* 1 colonne ou plusieurs, selon l'espace */
