@@ -6,7 +6,7 @@ import 'swiper/css/free-mode';
 import 'swiper/css/pagination';
 // import required modules
 import { FreeMode, Pagination,Autoplay  } from 'swiper/modules';
-export default function Slider() {
+export default function Slidersofware() {
 
   return (
     <Swiper
@@ -31,11 +31,11 @@ export default function Slider() {
         slidesPerView: 1
       },
       1024: {
-        slidesPerView: 2,
+        slidesPerView: 1,
         spaceBetween: 20,
       },
       1440: {
-        slidesPerView: 3,
+        slidesPerView: 1,
         spaceBetween: 30,
       },
     }}

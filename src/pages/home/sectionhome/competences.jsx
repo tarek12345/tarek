@@ -16,11 +16,11 @@ export default function Competences(props) {
   const [skills] = useState([
     { name: "HTML 5", level: 100, icon: faHtml5 },
     { name: "CSS 3", level: 100, icon: faCss3Alt },
-    { name: "Tailwind CSS", level: 70, icon: faBootstrap },
-    { name: "Bootstrap", level: 75, icon: faBootstrap },
+    { name: "Tailwind CSS", level: 80, icon: faBootstrap },
+    { name: "Bootstrap", level: 95, icon: faBootstrap },
     { name: "JavaScript", level: 80, icon: faJsSquare },
     { name: "React JS", level: 90, icon: faReact },
-    { name: "Angular JS", level: 60, icon: faAngular },
+    { name: "Angular JS", level: 80, icon: faAngular },
     { name: "Vue JS", level: 70, icon: faVuejs }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée.
     { name: "Next JS", level: 90, icon: faJsSquare }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée.
   ]);

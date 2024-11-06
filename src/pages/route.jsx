@@ -35,6 +35,14 @@ export default function Route(props) {
       setIsMenuOpen(false); // Close menu after scrolling
     }
   };
+  const scrollToSection4 = (id) => {
+    const section = document.querySelector(id);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+      setActiveLink(id); // Set active link for highlighting
+      setIsMenuOpen(false); // Close menu after scrolling
+    }
+  };
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -90,9 +98,21 @@ export default function Route(props) {
                   e.preventDefault();
                   scrollToSection3('#section3');
                 }}
-                className={activeLink === '#section2' ? 'active' : ''}
+                className={activeLink === '#section3' ? 'active' : ''}
               >
                 {props.long === "FR" ? "Mes projets" : "My projects"}
+              </a>
+            </li>
+            <li>
+              <a
+                href="#section4"
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToSection4('#section4');
+                }}
+                className={activeLink === '#section4' ? 'active' : ''}
+              >
+                {props.long === "FR" ? "Logiciels" : "Software"}
               </a>
             </li>
           </ul>

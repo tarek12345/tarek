@@ -60,6 +60,7 @@
     align-items: center;
     justify-content: center;
     transition: opacity 0.3s ease;
+    border-radius: 8px;
   }
   
   .fancybox-image-wrapper:hover .overlay {

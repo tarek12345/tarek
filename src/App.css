@@ -183,7 +183,7 @@ div#section3 .img-right h2 {
   left: 0;
 }
 div#section3 {
-  padding: 30px 0;
+  padding: 110px 0 30px 0;
 }
 
 
@@ -192,6 +192,7 @@ div#section3 ul#pills-tab {
     display: flex;
     justify-content: center;
     align-items: center;
+    gap:10px;
 }
 
 div#section3 .nav-pills .nav-link.active {
@@ -200,7 +201,7 @@ div#section3 .nav-pills .nav-link.active {
   color: #fff;
   font-family: "Righteous", sans-serif;
   font-size: 24px;
-  box-shadow: 0px 0px 31px #d018b8;
+  border-radius: 8px;
 }
 #section3 sup{
   background: linear-gradient(135deg, #7f00ff, #000000);
@@ -222,7 +223,7 @@ div#section3 .nav-pills .nav-link {
   color: #fff;
   font-family: "Righteous", sans-serif;
   font-size: 24px;
-  box-shadow: 0px 0px 31px #000;
+border-radius: 8px;
   width: 376px;
 }
 
