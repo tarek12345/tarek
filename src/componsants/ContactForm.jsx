@@ -3,7 +3,7 @@ import emailjs from '@emailjs/browser';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function ContactForm() {
+export default function ContactForm(tras) {
   const form = useRef();
   const serviceID = 'service_dx1ob8i';
   const templateID = 'template_ddbjogq';
@@ -47,7 +47,7 @@ export default function ContactForm() {
             name="user_name"
             id="user_name"
             className="form-control"
-             placeholder='Nom'
+             placeholder={tras.long==="FR"?"Nom":"Name"}
             required
           />
         </div>
@@ -57,7 +57,7 @@ export default function ContactForm() {
             name="user_email"
             id="user_email"
             className="form-control"
-            placeholder='Email'
+            placeholder={tras.long==="FR"?'Email':'Email'}
             required
           />
         </div>
@@ -67,11 +67,11 @@ export default function ContactForm() {
             id="message"
             className="form-control"
             rows="4"
-             placeholder='Message'
+             placeholder={tras.long==="FR"?'Message':'Message'}
             required
           ></textarea>
         </div>
-        <button type="submit" className="btn-hover color-7">Envoyer</button>
+        <button type="submit" className="btn-hover color-7">{tras.long==="FR"?"Envoyer":"Send"}</button>
       </form>
 
       {/* Composant ToastContainer pour afficher les notifications */}
