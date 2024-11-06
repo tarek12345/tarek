@@ -100,7 +100,7 @@ h2.display-4.valuecompteur {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-div#section2 .img-right svg.svg-inline--fa.fa-arrow-down {
+div#section2 .img-right svg.svg-inline--fa.fa-arrow-down,div#section4 .img-right svg.svg-inline--fa.fa-arrow-down  {
   color: #fff;
 }
 .btn-hover.color-7 {
@@ -110,19 +110,19 @@ div#section2 .img-right svg.svg-inline--fa.fa-arrow-down {
 .img-left {
   margin-top: 7%;
 }
-div#section2 .img-right h2 {
+div#section2 .img-right h2 ,div#section4 .img-right h2 {
   position: relative;
   left: 0;
   right: 0;
   margin: 0 auto;
 }
 
-div#section2 .img-right {
+div#section2 .img-right ,div#section4 .img-right  {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-#section2{
+#section2,#section4{
   background: linear-gradient(135deg, #7f00ff, #000000);
   padding: 30px 0;
 }
@@ -231,7 +231,68 @@ div#section3 .img-right {
     display: flex;
     justify-content: center;
 }
+div#section5 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 6% auto;
+}
 
+div#section5 .img-right {
+  width: 50%;
+}
+
+div#section5 .img-left {
+  width: 50%;
+}
+div#section5 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 6% auto;
+  flex-direction: row-reverse;
+  position: relative;
+}
+div#section5 svg.svg-inline--fa.fa-arrow-down {
+  transform: rotate(56deg);
+}
+div#section5 .img-right {
+  width: 50%;
+}
+div#section5 .img-right h2 {
+  z-index: 99;
+}
+div#section5 .img-left {
+  width: 50%;
+}
+.section-left {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: center;
+}
+
+.formaulire-contact {
+  width: 50%;
+}
+
+.infos-pratique {
+  width: 50%;
+}
+.champs input, .champs textarea {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #fff;
+  border-top: none;
+  border-radius: 0px;
+  color: #fff; /* Ensure the text is white */
+  font-size: 16px; /* Adjust font size as needed */
+}
+
+.champs input::placeholder, .champs textarea::placeholder {
+  color: #fff; /* Set the color of the placeholder text */
+  opacity: 0.6; /* Make the placeholder text a little faded */
+}
 @media (max-width: 1360px) {
   .skills {
     grid-template-columns: repeat(auto-fill, minmax(50%, 2fr)); /* 1 colonne ou plusieurs, selon l'espace */

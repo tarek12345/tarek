@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 
-
 export default function Route(props) {
   const [activeLink, setActiveLink] = useState('/');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+const sections =[
+  { id: '#section1', label: props.long === "FR" ? "Sur moi" : "About me" },
+  { id: '#section2', label: props.long === "FR" ? "Compétences" : "Skills" },
+  { id: '#section3', label: props.long === "FR" ? "Mes projets" : "My projects" },
+  { id: '#section4', label: props.long === "FR" ? "Infos" : "Info" },
+  { id: '#section5', label: props.long === "FR" ? "Logiciels" : "Software" }
+];
   const handleSetActive = (path) => {
     setActiveLink(path);
     setIsMenuOpen(false); // Close menu after clicking a link
@@ -19,30 +24,7 @@ export default function Route(props) {
       setIsMenuOpen(false); // Close menu after scrolling
     }
   };
-  const scrollToSection2 = (id) => {
-    const section = document.querySelector(id);
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
-      setActiveLink(id); // Set active link for highlighting
-      setIsMenuOpen(false); // Close menu after scrolling
-    }
-  };
-  const scrollToSection3 = (id) => {
-    const section = document.querySelector(id);
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
-      setActiveLink(id); // Set active link for highlighting
-      setIsMenuOpen(false); // Close menu after scrolling
-    }
-  };
-  const scrollToSection4 = (id) => {
-    const section = document.querySelector(id);
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
-      setActiveLink(id); // Set active link for highlighting
-      setIsMenuOpen(false); // Close menu after scrolling
-    }
-  };
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -67,54 +49,20 @@ export default function Route(props) {
                 {props.long === "FR" ? "Accueil" : "Home"}
               </Link>
             </li>
-            <li>
-              <a
-                href="#section1"
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection('#section1');
-                }}
-                className={activeLink === '#section1' ? 'active' : ''}
-              >
-                {props.long === "FR" ? "Sur moi" : "About me"}
-              </a>
-            </li>
-            <li>
-              <a
-                href="#section2"
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection2('#section2');
-                }}
-                className={activeLink === '#section2' ? 'active' : ''}
-              >
-                {props.long === "FR" ? "Compétences" : "Skills"}
-              </a>
-            </li>
-            <li>
-              <a
-                href="#section3"
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection3('#section3');
-                }}
-                className={activeLink === '#section3' ? 'active' : ''}
-              >
-                {props.long === "FR" ? "Mes projets" : "My projects"}
-              </a>
-            </li>
-            <li>
-              <a
-                href="#section4"
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection4('#section4');
-                }}
-                className={activeLink === '#section4' ? 'active' : ''}
-              >
-                {props.long === "FR" ? "Logiciels" : "Software"}
-              </a>
-            </li>
+            {sections.map((section) => (
+              <li key={section.id}>
+                <a
+                  href={section.id}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection(section.id);
+                  }}
+                  className={activeLink === section.id ? 'active' : ''}
+                >
+                  {section.label}
+                </a>
+              </li>
+            ))}
           </ul>
         </nav>
       </Router>

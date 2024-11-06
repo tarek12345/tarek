@@ -7,7 +7,6 @@ import { faSearchPlus } from "@fortawesome/free-solid-svg-icons";
 import "./Fancybox.css";
 
 export default function Fancybox({ galleryName, images ,longth}) {
-  console.log(longth);
   useEffect(() => {
     // Initialize Fancybox for the specified gallery name
     NativeFancybox.bind(`[data-fancybox='${galleryName}']`, {

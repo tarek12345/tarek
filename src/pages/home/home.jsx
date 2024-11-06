@@ -7,6 +7,8 @@ import { faArrowDown } from '@fortawesome/free-solid-svg-icons'; // Import the d
 import Competences from './sectionhome/competences';
 import Projects from './sectionhome/projects';
 import Logiciels from './sectionhome/logiciels';
+import Contact from './sectionhome/infos';
+
 
 export default function Home() {
   const [language, setLanguage] = useState("FR");
@@ -115,6 +117,7 @@ export default function Home() {
       </div>
       <Competences  long={language}/>
       <Projects  long={language}/>
+      <Contact  long={language}/>
       <Logiciels  long={language}/>
       <Footer long={language} />
     </>
