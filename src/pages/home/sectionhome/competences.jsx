@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowDown } from '@fortawesome/free-solid-svg-icons'; // Icônes solid
+import { faArrowDown,faSearch,faCode,faLayerGroup    } from '@fortawesome/free-solid-svg-icons'; // Icônes solid
 import {
   faHtml5,
   faCss3Alt,
   faJsSquare,
   faReact,
   faAngular,
-  faBootstrap
+  faBootstrap,
+  faWordpress 
 } from '@fortawesome/free-brands-svg-icons'; // Icônes brands
 import { faVuejs } from '@fortawesome/free-brands-svg-icons'; // Import de l'icône Vue.js
 
@@ -18,11 +19,17 @@ export default function Competences(props) {
     { name: "CSS 3", level: 100, icon: faCss3Alt },
     { name: "Tailwind CSS", level: 80, icon: faBootstrap },
     { name: "Bootstrap", level: 95, icon: faBootstrap },
+    { name: "Matriel ui", level: 95, icon: faLayerGroup  },
     { name: "JavaScript", level: 80, icon: faJsSquare },
     { name: "React JS", level: 90, icon: faReact },
     { name: "Angular JS", level: 80, icon: faAngular },
     { name: "Vue JS", level: 70, icon: faVuejs }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée.
+    { name: "REST API", level: 80, icon: faCode },
     { name: "Next JS", level: 90, icon: faJsSquare }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée.
+    { name: "Wordpress elemntor", level: 100, icon: faWordpress },
+    { name: "Wordpress divi", level: 100, icon: faWordpress }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée.
+    { name: "Wordpress Gutenberg", level: 90, icon: faWordpress }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée.
+    { name: "Seo", level: 80, icon: faSearch }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée
   ]);
 
   return (

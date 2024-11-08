@@ -1,5 +1,6 @@
 import React, { useEffect, useState,useRef } from 'react';
 import programming from "../../assets/programming.jpg";
+import whatsapp from "../../assets/whatsapp.png"
 import Header from '../../layout/header/header';
 import Footer from '../../layout/footer/footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -32,7 +33,14 @@ export default function Home() {
       setActiveLink(id); // Set active link for highlighting
     }
   };
+  const toggleLanguage = () => {
+    setLanguage((prevLanguage) => (prevLanguage === "FR" ? "EN" : "FR"));
+  };
+  useEffect(() => {
+
+  }, [activeLink])
   
+
   useEffect(() => {
     count.forEach((item, index) => {
       const targetValue = parseInt(item.value, 10);
@@ -57,11 +65,6 @@ export default function Home() {
       return () => clearInterval(interval);
     });
   }, []);
-
-  const toggleLanguage = () => {
-    setLanguage((prevLanguage) => (prevLanguage === "FR" ? "EN" : "FR"));
-  };
-
   return (
     <>
       <Header long={language} toggleLanguage={toggleLanguage} />
@@ -105,7 +108,7 @@ export default function Home() {
                 ))}
               </div>
             </div>
-            <button class="btn-hover color-7"  onClick={(e) => {
+            <button className="btn-hover color-7"  onClick={(e) => {
                   e.preventDefault();
                   scrollToSection2('#section2');
                 }}>
@@ -120,6 +123,11 @@ export default function Home() {
       <Contact  long={language}/>
       <Logiciels  long={language}/>
       <Footer long={language} />
+      <div className="fixed-bottom right-100 p-300 p-3" style={{zIndex:6 , left: "initial"}}>
+       <a href="https://wa.me/50269194?text=Bonjour je suis intéressé pour  un autre  oprtunité" target="_blank">
+       <img src={whatsapp} width="60" alt="whatsupp" />
+       </a>
+      </div>
     </>
   );
 }

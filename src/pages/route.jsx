@@ -5,6 +5,7 @@ export default function Route(props) {
   const [activeLink, setActiveLink] = useState('/');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 const sections =[
+  
   { id: '#section1', label: props.long === "FR" ? "Sur moi" : "About me" },
   { id: '#section2', label: props.long === "FR" ? "Compétences" : "Skills" },
   { id: '#section3', label: props.long === "FR" ? "Mes projets" : "My projects" },
@@ -30,7 +31,7 @@ const sections =[
   };
 
   return (
-    <div className="dlmenu">
+    <div className="dlmenu" id="dl">
       <Router>
         {/* Burger Icon */}
         <div className="burger-icon" onClick={toggleMenu}>
@@ -43,7 +44,7 @@ const sections =[
             <li>
               <Link
                 to="/"
-                onClick={() => handleSetActive('/')}
+                onClick={() => [handleSetActive('/'),scrollToSection("#sectionfirsts")]}
                 className={activeLink === '/' ? 'active' : ''}
               >
                 {props.long === "FR" ? "Accueil" : "Home"}

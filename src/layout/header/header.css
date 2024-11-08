@@ -4,6 +4,7 @@ span.logotext {
     font-family: "Montserrat", sans-serif;
     font-weight: bold;
     color:#fff;
+    font-family: "Righteous", sans-serif;
 }
 .suitechcolor {
   display: flex;
@@ -20,11 +21,13 @@ span.logotext {
 .suitechcolor  .label-left {
   margin-right: 0px; /* Espace à droite du label EN */
   color: #fff;
+  font-family: "Righteous", sans-serif;
 }
 
 .suitechcolor  .label-right {
   margin-left: 0px; /* Espace à gauche du label FR */
   color: #fff;
+  font-family: "Righteous", sans-serif;
 }
 
 .sectionheader {
@@ -42,7 +45,7 @@ span.logotext {
 }
 
 .sectionheader.container {
-  position: absolute;
+  position: fixed;
   left: 0;
   right: 0;
   border-radius: 50px;
@@ -88,6 +91,7 @@ span.logotext {
     color: gray; /* Couleur grise pour l'état normal */
     padding: 10px 15px;
     transition: color 0.3s ease;
+    font-family: "Righteous", sans-serif;
   }
   
   .dlmenu nav ul li a.active,
@@ -258,7 +262,10 @@ span.logotext {
   text-decoration: none; /* Supprime le soulignement si c'est un lien */
   box-shadow: 0 4px 15px rgba(116, 79, 168, 0.75);
 }
-
+.buttons p {
+  margin: 0;
+  display: block;
+}
 /* Définition de l'animation */
 @keyframes shadow-pulse {
   0% {
@@ -274,97 +281,10 @@ span.logotext {
       box-shadow: 0 4px 15px rgba(116, 79, 168, 0.75);
   }
 }
-/* Mobile-specific styling */
-@media (max-width: 767px) {
-  .img-right h2 {
-    position: relative;
-    left: 0;
-    font-size: 40px;
-}
-
-div#section1 {
-    flex-direction: column;
-}
-
-div#section1 .img-right {
-    flex-direction: column-reverse;
-}
-
-.circular-image {
-    width: 300px;
-    height: 300px;
-}
-
-.img-left {
-    margin: 0px auto;
-}
-
-.btn-hover {
-    margin: 15px auto;
-    text-align: center;
-    display: block;
-}
-  span.logotext {
-    font-size: 17px;
-    line-height: 27px;
-  }
-  .sectionheader.container {
-    padding: 5px 14px;
-    top: 2px;
-}
-  .discrptionname h1 {
-    font-size: 30px;
-  }
-  
-  .discrptionname p {
-    font-size: 12px;
-  }
-  .dlmenu .burger-icon {
-    display: block;
-    position: relative;
-    top: 0;
-    right: 0;
-}
-
-  /* Hide menu initially on mobile */
-  .dlmenu nav.menu ul {
-    display: none;
-    flex-direction: column;
-    padding: 10px;
-    background: #702f9d;
-    position: absolute;
-    top: 40px;
-    right: 0;
-}
-  /* Show menu when open */
-  .dlmenu nav.menu.open ul {
-      display: flex;
-  }
-
-  .menu li {
-      margin-bottom: 20px;
-      border-bottom: 1px solid #ccc;
-  }
-  .sectionright {
-    flex-direction: row-reverse;
-}
-.discrptionnameall {
-  font-size: 17px;
-  gap: 0;
-}
-.btn-hover.color-3 {
-  width: 3rem;
-  height: 3rem;
-  font-size: 12px;
-  margin: 15px;
-}
-.mySwiper.first {
-  position: relative;
-  top: 0;
-
-}
-}
 @media (max-width: 1024px) {
+  .dlmenu nav ul li a {
+    font-size: 12px;
+}
   .img-right h2 {
     position: relative;
     left: 0;
@@ -440,9 +360,122 @@ div#section1 .img-right {
   font-size: 12px;
   margin: 15px;
 }
+.buttons p {
+  display: none;
+}
+}
+/* Mobile-specific styling */
+@media (max-width: 767px) {
+  .buttons p {
+    display: none;
+}
+  .dlmenu nav ul li a {
+    font-size: 12px;
+}
+  .img-right h2 {
+    position: relative;
+    left: 0;
+    font-size: 35px;
 }
 
+div#section1 {
+    flex-direction: column;
+    gap: 0px;
+}
+
+div#section1 .img-right {
+    flex-direction: column-reverse;
+}
+
+.circular-image {
+  width: 200px;
+  height: 200px;
+}
+
+.img-left {
+    margin: 0px auto;
+}
+
+.btn-hover {
+    margin: 15px auto;
+    text-align: center;
+    display: block;
+}
+  span.logotext {
+    font-size: 17px;
+    line-height: 27px;
+  }
+  .sectionheader.container {
+    padding: 5px 14px;
+    top: 2px;
+}
+  .discrptionname h1 {
+    font-size: 30px;
+  }
+  
+  .discrptionname p {
+    font-size: 12px;
+  }
+  .dlmenu .burger-icon {
+    display: block;
+    position: relative;
+    top: 0;
+    right: 0;
+}
+
+  /* Hide menu initially on mobile */
+  .dlmenu nav.menu ul {
+    display: none;
+    flex-direction: column;
+    padding: 10px;
+    background: #702f9d;
+    position: absolute;
+    top: 40px;
+    right: 0;
+}
+  /* Show menu when open */
+  .dlmenu nav.menu.open ul {
+      display: flex;
+  }
+
+  .menu li {
+      margin-bottom: 20px;
+      border-bottom: 1px solid #ccc;
+  }
+  .sectionright {
+    flex-direction: row-reverse;
+}
+.discrptionnameall {
+  font-size: 17px;
+  gap: 0;
+}
+.btn-hover.color-3 {
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 12px;
+  margin: 15px;
+}
+.mySwiper.first {
+  position: relative;
+  top: 0;
+
+}
+}
+
+
 @media (max-width:430px) {
+  .btn-hover.color-3 {
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 12px;
+    margin: 15px;
+  }
+  .buttons p {
+    display: none;
+}
+  .dlmenu nav ul li a {
+    font-size: 12px;
+}
   .suitechcolor .label-right,.suitechcolor .label-left  {
     font-size: 12px;
 }

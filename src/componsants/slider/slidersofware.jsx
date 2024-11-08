@@ -11,7 +11,11 @@ import gitlabimg from "../../assets/gitlabimg.png";
 import vscodeimg from "../../assets/vscodeimg.png";
 import dockerdsktop from "../../assets/dockerdsktop.png";
 import ZohoSprintimg from "../../assets/ZohoSprintimg.png";
+import jiraimg from "../../assets/jiraimg.png";
+import zohocc from "../../assets/zohocc.png";
+import XD from "../../assets/XD.png";
 import { FreeMode, Pagination, Autoplay } from 'swiper/modules';
+
 export default function Slidersofware() {
   const imgsatware = [
     { caption: "bitbucket", urlthaimber: bitbakedimg },
@@ -19,8 +23,13 @@ export default function Slidersofware() {
     { caption: "gitlab", urlthaimber: gitlabimg },
     { caption: "vs code", urlthaimber: vscodeimg },
     { caption: "Docker desktop", urlthaimber: dockerdsktop },
-    { caption: "Zoho CRM", urlthaimber: ZohoSprintimg },
+    { caption: "Zoho Sprint", urlthaimber: ZohoSprintimg },
+    { caption: "Zoho CRM", urlthaimber: zohocc },
+    {caption: "Jira CRM", urlthaimber: jiraimg },
+    {caption: "Adope xd", urlthaimber: XD },
+    
   ];
+
   return (
     <Swiper
       slidesPerView={3}
@@ -58,8 +67,9 @@ export default function Slidersofware() {
       {imgsatware &&
         imgsatware.map((item, index) => {
           return (
-            <SwiperSlide key={index}>
+            <SwiperSlide key={index} className="slide-item">
               <img src={item.urlthaimber} alt={item.caption} />
+              <p className="caption sliders">{item.caption}</p>
             </SwiperSlide>
           );
         })}

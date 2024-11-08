@@ -215,7 +215,10 @@ border-radius: 40px;
 color: #fff;
 font-family: "Righteous", sans-serif;
 }
-
+p.caption.sliders {
+  font-family: "Righteous", sans-serif;
+  text-transform: capitalize;
+}
 div#section3 .nav-pills .nav-link {
   background: linear-gradient(135deg, #bd83f7, #000000);
   padding: 30px 57px;
@@ -226,7 +229,21 @@ div#section3 .nav-pills .nav-link {
 border-radius: 8px;
   width: 376px;
 }
+span.swiper-pagination-bullet {
+  background: #9C27B0 !important;
+}
+.swiper-pagination {
+  top: 224px!important;
+}
 
+.swiper-wrapper {
+  position: relative;
+}
+#section5 .swiper-slide img {
+  height: 200px;
+  object-fit: cover;
+  object-position: top;
+}
 div#section3 .img-right {
     display: flex;
     justify-content: center;
@@ -260,7 +277,20 @@ div#section5 .img-right {
   width: 50%;
 }
 div#section5 .img-right h2 {
+  gap: 10px;
   z-index: 99;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+div#section5 svg.svg-inline--fa.fa-arrow-down {
+  transform: rotate(0deg);
+}
+.carousel {
+  z-index: 1;
 }
 div#section5 .img-left {
   width: 50%;
@@ -387,6 +417,12 @@ li a {
   
   }}
 @media (max-width: 767px) {
+  div#section3 .img-right h2 {
+    font-size: 28px;
+ }
+.titlefooter {
+    font-size: 49px;
+}
   .section-left {
     display: flex;
     flex-direction: column-reverse;
@@ -401,6 +437,8 @@ li a {
   width: 100%;
   bottom: 0;
   left: 0;
+  padding: 20px;
+
 }
   .skills {
     grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); /* 1 colonne ou plusieurs, selon l'espace */
@@ -410,8 +448,82 @@ li a {
   font-size: 15px;
   line-height: 59px;
 
-}}
+}
+.card-skills span {
+  font-size: 17px;
+}
+.circle {
+width: 5px;
+height: 5px;}
+div#section3 .nav-pills .nav-link {
+  font-size: 18px;
+  padding: 14px 39px;
+  width: 318px;
+}
+#section3 sup {
+  height: auto;
+  padding: 20px;
+}
+
+div#section3 .img-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+div#section3 {
+  padding: 68px 0 30px 0;
+}
+div#section5 .img-right {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+}
 @media (max-width: 600px) {
+  div#section3 {
+    padding: 68px 0 30px 0;
+}
+  #section3 sup {
+    height: auto;
+    padding: 20px;
+}
+
+div#section3 .img-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+  .card-skills span {
+    font-size: 17px;
+}
+.circle {
+  width: 5px;
+  height: 5px;}
+  div#section3 .nav-pills .nav-link {
+    font-size: 18px;
+    padding: 14px 39px;
+}
+  div#section5 {
+    flex-direction: column;
+}
+div#section5 .img-right {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+div#section5 .img-left {
+  width: 100%;
+}
+  #section4 {
+    padding: 16px;
+}
+.titlefooter {
+    font-size: 49px;
+}
   .section-left {
     display: flex;
     flex-direction: column-reverse;
@@ -427,6 +539,7 @@ li a {
   width: 100%;
   bottom: 0;
   left: 0;
+  padding: 20px;
 }
   .skills {
     grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); /* 1 colonne ou plusieurs, selon l'espace */

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./header.css";
-import imgfront from '../../assets/sliderhome.png';
+import imgfront from '../../assets/sliderhome.jpg';
+import frenchCV from '../../assets/frenchCV.pdf';
+import englishCV from '../../assets/englishCV.pdf';
 import Menu from "../../pages/route";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
@@ -14,7 +16,7 @@ export default function Header({ long, toggleLanguage }) {
   }, [long]);
 
   return (
-    <div className="sectionheader-all">
+    <div className="sectionheader-all" id='sectionfirsts'>
       <div className="sectionheader container">
         <div className="logo">
           <span className="logotext">Benarfa Tarek</span>
@@ -42,7 +44,7 @@ export default function Header({ long, toggleLanguage }) {
         <div className="carousel-inner">
           <div className="carousel-item active">
             <img src={imgfront} className="d-block w-100 img-t" alt="photo du profil" />
-            <div className="discrptionnameall">
+            <div className="discrptionnameall" >
               <div className="discrptionname">
                 {language === "FR" ? <span className="title-top">Développeur front end</span> : <span className="title-top">Front end developer</span>}
                 <h1>Benarfa <br /> Tarek</h1>
@@ -53,9 +55,9 @@ export default function Header({ long, toggleLanguage }) {
                 </p>
               </div>
               <div className="buttons">
-                <button className="btn-hover color-3">
-                  <FontAwesomeIcon icon={faDownload} /> {language === "FR" ? "CV" : "Resume"}
-                </button>
+                <a href={language === "FR" ? frenchCV : englishCV} download className="btn-hover color-3">
+                  <FontAwesomeIcon icon={faDownload} /> <p>{language === "FR" ? "CV" : "Resume"}</p>
+                </a>
               </div>
             </div>
             <Slider long={language} />
