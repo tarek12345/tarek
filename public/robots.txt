@@ -1,3 +1,10 @@
-# https://www.robotstxt.org/robotstxt.html
+# Permet l'accès à toutes les pages
 User-agent: *
-Disallow:
+Allow: /
+
+# Bloquer certaines pages spécifiques
+Disallow: /admin
+Disallow: /private
+
+# Ajouter le lien vers la sitemap (si disponible)
+Sitemap: https://tarek-portfolio.tn/sitemap.xml

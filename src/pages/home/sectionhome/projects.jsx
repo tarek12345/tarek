@@ -73,7 +73,7 @@ export default function Projects(props) {
     <div id="section3">
       <div className="img-right">
       <sup> {props.long === "FR" ? "Voici une sélection de projets " : "Here is a selection of projects "}</sup> <h2>
-          {props.long === "FR" ? " que j'ai réalisés." : " that I have completed"}{" "}
+          {props.long === "FR" ? " Que j'ai réalisés." : " that I have completed"}{" "}
           <FontAwesomeIcon icon={faArrowDown} />
         </h2>
       </div>
