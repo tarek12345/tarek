@@ -16,7 +16,7 @@ export default function Footer(props) {
         <img src={suivez} alt="profil" />
         <div className="titlefooter">
           {" "}
-          {props.long === "FR" ? "Suis-moi" : "Follow me"}
+          {props.long === "FR" ? "Suivez-moi" : "Follow me"}
         </div>
         <div className="social-icons">
           <a

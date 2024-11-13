@@ -79,7 +79,7 @@ export default function Home() {
             />
 
             <h2>
-              {language === "FR" ? "Sur moi" : "About me"}{" "}
+              {language === "FR" ? "Qui je suis" : "About me"}{" "}
               <FontAwesomeIcon icon={faArrowDown} />{" "}
             </h2>
           </div>
