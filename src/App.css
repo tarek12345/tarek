@@ -132,6 +132,9 @@ div#section2 .img-right ,div#section4 .img-right  {
   gap: 16px; /* Adjust the gap as needed */
   padding: 20px; /* Optional: padding around the skills section */
 }
+#section2 .swiper-slide {
+  background: transparent;
+}
 .skills svg {
   color: #fff;
   font-size: 24px;
@@ -159,6 +162,7 @@ div#section2 .img-right ,div#section4 .img-right  {
   display: flex;
   align-items: center;
   margin-bottom: 15px;
+  color: #fff;
 }
 
 .circle-container {
@@ -311,6 +315,9 @@ div#section5 .img-left {
   padding: 50px;
   border-radius: 8px;
 }
+.section2 iframe {
+  max-width: 100%;
+}
 .infos-pratique {
   width: 40%;
   display: flex;
@@ -431,8 +438,11 @@ li a {
 }
   .formaulire-contact {
     width: 100%;
+    padding: 24px;
 }
-
+iframe {
+  max-width: 93%;
+}
 .infos-pratique {
   width: 100%;
   bottom: 0;
@@ -532,9 +542,12 @@ div#section5 .img-left {
 }
   .formaulire-contact {
     width: 100%;
+    padding: 24px;
 
 }
-
+.section2 iframe {
+  max-width: 93%;
+}
 .infos-pratique {
   width: 100%;
   bottom: 0;
