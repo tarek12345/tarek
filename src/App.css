@@ -68,6 +68,55 @@ div#pills-tabContent {
 svg.svg-inline--fa.fa-arrow-down {
   transform: rotate(-45deg);
 }
+.chart-container {
+  position: relative;
+  display: flex
+;
+  justify-content: center;
+  align-items: center;
+}
+
+.entretient ul {
+    list-style: none;
+    column-count: 2;
+}
+
+.entretient ul li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-family: "Righteous", sans-serif;
+}
+.match-percentage {
+  position: absolute;
+  top: 231px;
+}
+.match-percentage h4{
+font-size: 40px;
+font-family: "Righteous", sans-serif;
+}
+.secton-cp {
+  position: relative;
+}
+
+.search-form-plus.infos-pratique {
+  margin: 0 auto;
+  position: static;
+  margin-top: -63px;
+  border: 2px solid #ffffff;
+  border-radius: 8px;
+}
+.search-form-plus.infos-pratique h4{
+  font-family: "Righteous", sans-serif;
+  color: #FFF;
+}
+.search-input-container.mb-3.champs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
 div#section1 {
   display: flex;
   justify-content: space-between;
@@ -383,6 +432,12 @@ li a {
   object-fit: cover; /* Ensures the video covers the entire container */
   z-index: -1; /* Keeps the video behind the content */
 }
+div#section2 .mb-3.champs {
+  display: flex;
+  max-width: 400px;
+  margin: 0 auto;
+  width: 100%;
+}
 @media (max-width: 1360px) {
   .skills {
     grid-template-columns: repeat(auto-fill, minmax(50%, 2fr)); /* 1 colonne ou plusieurs, selon l'espace */
@@ -424,6 +479,14 @@ li a {
   
   }}
 @media (max-width: 767px) {
+  .search-form-plus.infos-pratique {
+    margin: 0 auto;
+    border: none;
+    border-radius: 0;
+}
+  div#section2 .mb-3.champs {
+    max-width: 200px;
+  }
   div#section3 .img-right h2 {
     font-size: 28px;
  }
@@ -492,6 +555,14 @@ div#section5 .img-right {
 }
 }
 @media (max-width: 600px) {
+  .search-form-plus.infos-pratique {
+    margin: 0 auto;
+    border: none;
+    border-radius: 0;
+}
+  div#section2 .mb-3.champs {
+    max-width: 200px;
+  }
   div#section3 {
     padding: 68px 0 30px 0;
 }
@@ -542,7 +613,7 @@ div#section5 .img-left {
 }
   .formaulire-contact {
     width: 100%;
-    padding: 24px;
+    padding: 14px;
 
 }
 .section2 iframe {

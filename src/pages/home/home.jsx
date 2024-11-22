@@ -1,14 +1,35 @@
 import React, { useEffect, useState,useRef } from 'react';
 import programming from "../../assets/programming.jpg";
+import bitbakedimg from "../../assets/bitbakedimg.png";
+import githubimg from "../../assets/githubimg.png";
+import gitlabimg from "../../assets/gitlabimg.png";
+import vscodeimg from "../../assets/vscodeimg.png";
+import dockerdsktop from "../../assets/dockerdsktop.png";
+import ZohoSprintimg from "../../assets/ZohoSprintimg.png";
+import jiraimg from "../../assets/jiraimg.png";
+import zohocc from "../../assets/zohocc.png";
+import XD from "../../assets/XD.png";
 import whatsapp from "../../assets/whatsapp.png"
 import Header from '../../layout/header/header';
 import Footer from '../../layout/footer/footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowDown } from '@fortawesome/free-solid-svg-icons'; // Import the downward arrow icon
+import { faArrowDown,faSearch,faCode,faLayerGroup ,faLeaf,faDatabase } from '@fortawesome/free-solid-svg-icons'; // Icônes solid
+import {
+  faHtml5,
+  faCss3Alt,
+  faJsSquare,
+  faReact,
+  faAngular,
+  faBootstrap,
+  faWordpress ,
+  faVuejs   ,faPhp
+} from '@fortawesome/free-brands-svg-icons'; // Icônes brands
+
 import Competences from './sectionhome/competences';
 import Projects from './sectionhome/projects';
 import Logiciels from './sectionhome/logiciels';
 import Contact from './sectionhome/infos';
+import Searchformplus from '../../componsants/searchformplus';
 
 
 export default function Home() {
@@ -18,7 +39,39 @@ export default function Home() {
     { namfr: "Projet", namen: "Project", value: "400" },
     { namfr: "Expérience", namen: "Experience", value: "6" },
   ]);
-
+  const [skills] = useState([
+    { name: "HTML 5", level: 100, icon: faHtml5 },
+    { name: "CSS 3", level: 100, icon: faCss3Alt },
+    { name: "Tailwind CSS", level: 80, icon: faBootstrap },
+    { name: "Bootstrap", level: 95, icon: faBootstrap },
+    { name: "Matriel ui", level: 95, icon: faLayerGroup  },
+    { name: "MySQL ", level: 70, icon: faDatabase  },
+    { name: "MongoDB ", level: 65, icon: faLeaf   },
+    { name: "Php", level: 80, icon: faPhp  },
+    { name: "JavaScript", level: 80, icon: faJsSquare },
+    { name: "TypeScript", level: 80, icon: faJsSquare },
+    { name: "React JS", level: 90, icon: faReact },
+    { name: "Angular JS", level: 80, icon: faAngular },
+    { name: "Vue JS", level: 70, icon: faVuejs }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée.
+    { name: "REST API", level: 80, icon: faCode },
+    { name: "Next JS", level: 90, icon: faJsSquare }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée.
+    { name: "Wordpress elemntor", level: 100, icon: faWordpress },
+    { name: "Wordpress divi", level: 100, icon: faWordpress }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée.
+    { name: "Wordpress Gutenberg", level: 90, icon: faWordpress }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée.
+    { name: "Seo", level: 80, icon: faSearch }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée
+  ]);
+  const imgsatware = [
+    { caption: "Bitbucket", urlthaimber: bitbakedimg },
+    { caption: "Git hub", urlthaimber: githubimg },
+    { caption: "Git lab", urlthaimber: gitlabimg },
+    { caption: "Vs code", urlthaimber: vscodeimg },
+    { caption: "Docker desktop", urlthaimber: dockerdsktop },
+    { caption: "Zoho Sprint", urlthaimber: ZohoSprintimg },
+    { caption: "Zoho CRM", urlthaimber: zohocc },
+    {caption: "Jira CRM", urlthaimber: jiraimg },
+    {caption: "Adope xd", urlthaimber: XD },
+    
+  ];
   const [count, setCount] = useState(
     compteur.map((item) => ({ ...item, animatedValue: 0 }))
   );
@@ -36,6 +89,12 @@ export default function Home() {
   const toggleLanguage = () => {
     setLanguage((prevLanguage) => (prevLanguage === "FR" ? "EN" : "FR"));
   };
+    // Gérer la recherche
+    const handleSearch = (searchCriteria) => {
+      console.log("Recherche effectuée avec :", searchCriteria);
+      // Ajoutez ici la logique pour traiter les résultats de recherche.
+      alert(`Vous avez recherché : ${searchCriteria}`);
+    };
   useEffect(() => {
 
   }, [activeLink])
@@ -118,10 +177,15 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <Competences  long={language}/>
+      <div className='secton-cp'>
+      <Competences  long={language}  skills={skills} />
+      <Searchformplus  long={language}  skills={skills} imgsatware={imgsatware}/>
+      </div>
+
       <Projects  long={language}/>
       <Contact  long={language}/>
-      <Logiciels  long={language}/>
+      <Logiciels  long={language} saft={imgsatware}/>
+     
       <Footer long={language} />
       <div className="fixed-bottom right-100 p-300 p-3" style={{zIndex:6 , left: "initial"}}>
        <a href="https://wa.me/50269194?text=Bonjour je suis intéressé pour  un autre  oprtunité" target="_blank">
