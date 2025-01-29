@@ -18,6 +18,8 @@ class Pointage extends Model
         'is_active',
         'total_hours',
         'counter',
+        'weekly_hours',
+        'monthly_hours'
     ];
 
     public function user()

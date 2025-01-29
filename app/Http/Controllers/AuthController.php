@@ -116,7 +116,9 @@ class AuthController extends Controller
             $user->location = $lastPointage ? $lastPointage->location : null;
             $user->total_hours = $lastPointage ? $lastPointage->total_hours : 0;
             $user->counter = $lastPointage ? $lastPointage->counter : 0;
-            $user->session_duration = $lastPointage ? gmdate('H:i:s', $lastPointage->counter) : '00:00:00'; // Formater counter en HH:MM:SS
+            $user->weekly_hours = $lastPointage ? $lastPointage->weekly_hours : 0; 
+            $user->monthly_hours = $lastPointage ? $lastPointage->monthly_hours : 0; 
+            $user->session_duration = $lastPointage ? gmdate('H:i:s', $lastPointage->counter) : 0; // Formater counter en HH:MM:SS
         }
     
         return response()->json(['users' => $users], 200);
@@ -187,14 +189,18 @@ class AuthController extends Controller
                 $user->location = $lastPointage->location;
                 $user->total_hours = $lastPointage->total_hours;
                 $user->counter = $lastPointage->counter;
+                $user->weekly_hours = $lastPointage->weekly_hours;
+                $user->monthly_hours = $lastPointage->monthly_hours;
                 $user->session_duration = gmdate('H:i:s', $lastPointage->counter); // Formater le compteur en HH:MM:SS
             } else {
                 $user->status = 'hors ligne'; // Statut inactif par défaut
                 $user->arrival_date = null;
                 $user->location = null;
                 $user->total_hours = 0;
+                $user->monthly_hours = 0;
                 $user->counter = 0;
-                $user->session_duration = '00:00:00';
+                $user->weekly_hours = 0;               
+                $user->session_duration = 0;
             }
     
             return response()->json(['user' => $user], 200);

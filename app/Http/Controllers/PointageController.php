@@ -42,6 +42,8 @@ class PointageController extends Controller
             'status' => $status,
             'is_active' => true,
             'total_hours' => 0,
+            'daily_hours' => 0, // Initialiser les heures quotidiennes
+            'monthly_hours' => 0, // Initialiser les heures mensuelles
             'counter' => $counter, // Utiliser la dernière valeur du compteur
         ]);
     
@@ -76,6 +78,11 @@ class PointageController extends Controller
         // Ajouter les heures travaillées au total existant
         $totalSeconds = $activePointage->counter + $sessionSeconds;
     
+        // Calculer les heures quotidiennes, hebdomadaires et mensuelles
+        $dailyHours = $activePointage->daily_hours + ($sessionSeconds / 3600);
+        $weeklyHours = $activePointage->weekly_hours + ($sessionSeconds / 3600);
+        $monthlyHours = $activePointage->monthly_hours + ($sessionSeconds / 3600);
+    
         // Formater la durée de la session en "HH:MM:SS"
         $formattedDuration = gmdate('H:i:s', $totalSeconds);
     
@@ -83,6 +90,9 @@ class PointageController extends Controller
         $activePointage->update([
             'last_departure' => $departureTime,
             'total_hours' => round($totalSeconds / 3600, 2),
+            'daily_hours' => round($dailyHours, 2),
+            'weekly_hours' => round($weeklyHours, 2),
+            'monthly_hours' => round($monthlyHours, 2),
             'counter' => $totalSeconds, // Stocker la durée totale en secondes
             'is_active' => false, // Marquer comme inactif
         ]);
@@ -93,10 +103,12 @@ class PointageController extends Controller
             'arrival_date' => $arrivalTime->format('Y-m-d H:i:s'),
             'session_duration' => $formattedDuration, // Retourner la durée formatée
             'total_hours' => round($totalSeconds / 3600, 2),
+            'daily_hours' => round($dailyHours, 2),
+            'weekly_hours' => round($weeklyHours, 2),
+            'monthly_hours' => round($monthlyHours, 2),
             'totalTime' => $totalSeconds, // Retourner la durée totale en secondes
         ], 200);
     }
-
 
 
     public function showHistory($userId)

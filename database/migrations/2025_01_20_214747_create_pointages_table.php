@@ -18,6 +18,8 @@ class CreatePointagesTable extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Clé étrangère liée à la table users
             $table->time('arrival_date')->nullable(); // Heure d'arrivée
             $table->time('counter')->nullable(); // Compteur au format HH:MM:SS 
+            $table->decimal('weekly_hours', 8, 2)->default(0); // Ajout de la colonne weekly_hours
+            $table->decimal('monthly_hours', 8, 2)->default(0); // Ajout de la colonne monthly_hours
             $table->bigInteger('counter')->change(); // Remplacez TIME par BIGINT
             $table->datetime('last_departure')->nullable(); // Dernier départ
             $table->decimal('total_hours', 8, 2)->default(0); // Total des heures travaillées
