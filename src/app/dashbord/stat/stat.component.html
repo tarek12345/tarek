@@ -41,6 +41,13 @@
       <h5>Informations de départ :</h5>
       <p>Heure de départ : {{ departureDate | date: 'HH:mm:ss' }}</p>
     </div>
+      <!-- Affichage des totaux -->
+      <div>
+        <h5>Totaux :</h5>
+        <p>Total journalier : <span [ngClass]="{'text-danger': dailyTotal < 8}">{{ dailyTotal }} heures</span></p>
+        <p>Total hebdomadaire : <span [ngClass]="{'text-danger': weeklyTotal < 40}">{{ weeklyTotal }} heures</span></p>
+        <p>Total mensuel : <span [ngClass]="{'text-danger': monthlyTotal < 176}">{{ monthlyTotal }} heures</span></p>
+      </div>
   </div>
 
   <!-- Section de chargement -->

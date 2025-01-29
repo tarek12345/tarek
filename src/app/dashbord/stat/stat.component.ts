@@ -30,7 +30,9 @@ export class StatComponent implements OnInit {
   displayStyle: string = "none"; // Contrôle l'affichage du modal
   allUsers: any[] = [];
   maxDailyHours: number = 8 * 3600; // 8 heures converties en secondes
-
+  dailyTotal: number = 0; // Total des heures travaillées par jour
+  weeklyTotal: number = 0; // Total hebdomadaire
+  monthlyTotal: number = 0; // Total mensuel
   constructor(
     private apiService: ApiService,
     private userService: UserService,
@@ -43,53 +45,57 @@ export class StatComponent implements OnInit {
     this.loadCounterState();
 }
 
-
-
-initializeUser(): void {
+initializeUser (): void {
   const user = this.userService.getUserInfo();
   if (user) {
-      this.userId = user.id;
-      this.apiService.GetUserServiceByid(this.userId).subscribe(
-          (response: any) => {
-              this.userdetaile = response.user;
-              this.status = response.user.status;
-              this.totalTime = response.user.counter || 0;
-              this.updateCounterDisplay(this.totalTime);
+    this.userId = user.id;
+    this.apiService.GetUserServiceByid(this.userId).subscribe(
+      (response: any) => {
+        this.userdetaile = response.user;
+        this.status = response.user.status;
+        this.totalTime = response.user.counter || 0;
+        this.dailyTotal = response.user.daily_hours || 0;
+        this.weeklyTotal = response.user.weekly_hours || 0;
+        this.monthlyTotal = response.user.monthly_hours || 0;
+        this.updateCounterDisplay(this.totalTime);
 
-              if (this.status === 'au bureau') {
-                  this.startCounter(); // Démarrer le compteur si l'utilisateur est "au bureau"
-              }
-          },
-          (error) => {
-              console.error('Erreur lors de la récupération des informations de l\'utilisateur :', error);
-          }
-      );
+        if (this.status === 'au bureau') {
+          this.startCounter(); // Démarrer le compteur si l'utilisateur est "au bureau"
+        }
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des informations de l\'utilisateur :', error);
+      }
+    );
   }
 }
-  loadCounterState(): void {
-    // Récupérer l'état actuel depuis le backend
-    this.apiService.getActiveCounter(this.userId).subscribe(
-        (response: any) => {
-            this.totalTime = response.counter || 0; // Mettre à jour le compteur avec la valeur de l'API
-            this.updateCounterDisplay(this.totalTime);
 
-            // Vérifier si l'utilisateur est "au bureau"
-            if (response.status === 'au bureau') {
-                this.status = 'au bureau';
-                this.startCounter(); // Démarrer le compteur seulement si l'utilisateur est "au bureau"
-            } else {
-                this.status = 'hors ligne'; // Sinon, l'utilisateur est "hors ligne"
-            }
-        },
-        (error) => {
-            console.error('Erreur lors de la récupération du compteur actif :', error);
-            this.status = 'hors ligne'; // Par défaut, l'utilisateur est "hors ligne" en cas d'erreur
-        }
-    );
+loadCounterState(): void {
+  this.apiService.getActiveCounter(this.userId).subscribe(
+    (response: any) => {
+      this.totalTime = response.counter || 0;
+      this.dailyTotal = response.daily_hours || 0;
+      this.weeklyTotal = response.weekly_hours || 0;
+      this.monthlyTotal = response.monthly_hours || 0;
+      this.updateCounterDisplay(this.totalTime);
 
-    this.GetUsers();
-    this.GetUserSByid();
-    this.updateCurrentTime();
+      if (response.status === 'au bureau') {
+        this.status = 'au bureau';
+        this.startCounter();
+      } else {
+        this.status = 'hors ligne';
+      }
+    },
+    (error) => {
+      console.error('Erreur lors de la récupération du compteur actif :', error);
+      this.status = 'hors ligne';
+    }
+  );
+
+
+  this.GetUsers();
+  this.GetUserSByid();
+  this.updateCurrentTime();
 }
 
   updateCurrentTime(): void {
@@ -129,8 +135,10 @@ stopCounter(): void {
         this.interval = null;
     }
 }
-  padZero(value: number): string {
-    return value < 10 ? `0${value}` : `${value}`;
+  calculateWeeklyAndMonthlyHours(): void {
+    // Calculer les heures hebdomadaires et mensuelles
+    this.weeklyTotal = this.dailyTotal * 5; // 5 jours de travail par semaine
+    this.monthlyTotal = this.dailyTotal * 22; // 22 jours de travail par mois
   }
 
   updateCounterDisplay(totalTime: number): void {
@@ -139,7 +147,11 @@ stopCounter(): void {
     const seconds = Math.floor(totalTime % 60);
 
     this.counter = `${this.padZero(hours)}:${this.padZero(minutes)}:${this.padZero(seconds)}`;
-}
+  }
+
+  padZero(value: number): string {
+    return value < 10 ? `0${value}` : `${value}`;
+  }
   GetUsers() {
     this.apiService.GetUsers().subscribe((data) => {
       this.allUsers = data.users.map(user => ({
@@ -179,31 +191,39 @@ stopCounter(): void {
 }
 
 async onDeparture(): Promise<void> {
-    if (this.status === 'hors ligne') {
-        this.toastr.warning('Vous n\'êtes pas au bureau.');
-        return;
-    }
+  if (this.status === 'hors ligne') {
+    this.toastr.warning('Vous n\'êtes pas au bureau.');
+    return;
+  }
 
-    this.departureDate = new Date().toISOString();
-    this.stopCounter(); // Arrêter le compteur immédiatement côté front-end
+  this.departureDate = new Date().toISOString();
+  this.stopCounter();
 
-    try {
-        const response = await this.apiService.registerDeparture(this.userId, {
-            arrival_date: this.arrivalDate,
-            last_departure: this.departureDate,
-            session_duration: this.formatDuration(this.totalTime),
-            total_hours: (this.totalTime / 3600).toFixed(2),
-        }).toPromise();
+  try {
+    const response = await this.apiService.registerDeparture(this.userId, {
+      arrival_date: this.arrivalDate,
+      last_departure: this.departureDate,
+      session_duration: this.formatDuration(this.totalTime),
+      total_hours: (this.totalTime / 3600).toFixed(2),
+      daily_hours: this.dailyTotal / 3600, // Convertir en heures pour l'envoi au backend
+      weekly_hours: this.weeklyTotal / 3600,
+      monthly_hours: this.monthlyTotal / 3600,
+    }).toPromise();
 
-        this.toastr.success('Départ enregistré avec succès.');
-        this.status = 'hors ligne';
+    this.toastr.success('Départ enregistré avec succès.');
+    this.status = 'hors ligne';
 
-        // Mettre à jour les données côté front-end avec la réponse du back-end
-        this.totalTime = response.totalTime; // Assurez-vous que le back-end renvoie la valeur mise à jour
-        this.counter = this.formatDuration(this.totalTime);
-    } catch (error) {
-        this.toastr.error('Erreur lors de l\'enregistrement du départ.');
-    }
+    this.totalTime = response.totalTime;
+    this.dailyTotal = response.daily_hours * 3600; // Convertir en secondes
+
+    // Mettre à jour les totaux hebdomadaires et mensuels
+    this.weeklyTotal += this.dailyTotal; // Ajouter le total journalier au total hebdomadaire
+    this.monthlyTotal += this.dailyTotal; // Ajouter le total journalier au total mensuel
+
+    this.counter = this.formatDuration(this.totalTime);
+  } catch (error) {
+    this.toastr.error('Erreur lors de l\'enregistrement du départ.');
+  }
 }
 
   async getLocation(): Promise<string> {
