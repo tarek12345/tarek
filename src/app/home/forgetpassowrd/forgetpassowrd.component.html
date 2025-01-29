@@ -1,0 +1,36 @@
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStyleChild}">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Forget password</h4>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="modal-body">
+            <p>Enter your email to reset your password
+            </p>
+      <form (ngSubmit)="forgetPassword()" >
+        <div class="form-group">
+            <div class="mb-3">
+          <input
+            type="email"
+            id="email"
+            [(ngModel)]="email"
+            name="email"
+            class="form-control"
+            placeholder="Entrez votre email"
+            required
+          />
+        </div>
+    </div>
+  <!-- Modal Footer -->
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="closePopup()">Fermer</button>
+    <button type="submit" class="btn btn-success">Envoyer</button>
+  </div>      </form>
+
+    </div>
+  
+  </div>
+  

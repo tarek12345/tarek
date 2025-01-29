@@ -1,0 +1,21 @@
+.settings-form-1 {
+    display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: column-reverse;
+        gap: 20px;
+}
+.settings-form-1 .status img.enteimg {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50px;
+}
+.settings-form {
+    text-align: center;
+    color: #fff;
+}
+button.btn.btn-success {
+    background: #d268cc;
+    border: #d268cc;
+}

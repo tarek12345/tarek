@@ -1,0 +1,135 @@
+<div class="content-dashboard d-flex">
+  <!-- Section de pointage pour l'utilisateur actuel -->
+  <div class="pointage">
+    <div class="time-slot">
+      <div class="status">
+        <!-- Affichage de l'image de profil ou d'une icône par défaut -->
+        <ng-container *ngIf="userdetaile.profile_image_url; else defaultImage">
+          <img [src]="userdetaile.profile_image_url" alt="Image de profil" class="enteimg" />
+        </ng-container>
+        <ng-template #defaultImage>
+          <i class="bi bi-person-circle"></i>
+        </ng-template>
+
+        <!-- Nom de l'utilisateur -->
+        <p>{{ userdetaile.name }}</p>
+
+        <!-- Statut (au bureau ou hors ligne) -->
+        <p [ngClass]="status === 'hors ligne' ? 'text-danger' : 'text-success'">{{ status }}</p>
+
+        <!-- Affichage du compteur -->
+        <div>
+          <p>{{ counter }}</p>
+        </div>
+
+        <!-- Boutons d'arrivée et de départ -->
+        <div class="buttons">
+          <button class="btn btn-success" (click)="onArrival()" [disabled]="status === 'au bureau'">Arrivée</button>
+          <button class="btn btn-dark" (click)="onDeparture()" [disabled]="status === 'hors ligne'">Départ</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Informations d'arrivée -->
+    <div *ngIf="arrivalDate">
+      <h5>Informations d'arrivée :</h5>
+      <p>Heure d'arrivée : {{ arrivalDate | date: 'HH:mm:ss' }}</p>
+    </div>
+
+    <!-- Informations de départ -->
+    <div *ngIf="departureDate">
+      <h5>Informations de départ :</h5>
+      <p>Heure de départ : {{ departureDate | date: 'HH:mm:ss' }}</p>
+    </div>
+  </div>
+
+  <!-- Section de chargement -->
+  <div *ngIf="loading" class="loading-spinner">
+    <div class="spinner"></div>
+    <p>Chargement des utilisateurs...</p>
+  </div>
+
+  <!-- Section des autres utilisateurs (visible uniquement pour l'administrateur) -->
+  <div *ngIf="!loading" class="d-flex flex-column rightcontent">
+    <!-- Résumé des statuts -->
+    <div class="status all" *ngIf="userdetaile.role === 'administrator'">
+      <div class="status-summary">
+        <p class="text-success">
+          <i class="bi bi-person-check"></i> {{ getUserCountByStatus('au bureau') }}
+        </p>
+        <p class="text-danger">
+          <i class="bi bi-person-dash"></i> {{ getUserCountByStatus('hors ligne') }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Liste des autres utilisateurs -->
+    <div *ngFor="let item of allUsers" (click)="openPopup(item)">
+      <div class="status all" *ngIf="item.role !== 'administrator' && item.id !== userdetaile.id">
+        <!-- Image de profil ou icône par défaut -->
+        <ng-container *ngIf="item.profile_image_url; else defaultImage">
+          <div class="statprof">
+            <img [src]="item.profile_image_url" alt="Image de profil" class="enteimg" />
+            <sup [class]="item.status === 'au bureau' ? 'text-success' : 'text-danger'">
+              <i class="bi bi-circle-fill"></i>
+            </sup>
+          </div>
+        </ng-container>
+        <ng-template #defaultImage>
+          <div class="statprof">
+            <i class="bi bi-person-circle"></i>
+            <sup [class]="item.status === 'au bureau' ? 'text-success' : 'text-danger'">
+              <i class="bi bi-circle-fill"></i>
+            </sup>
+          </div>
+        </ng-template>
+    
+        <!-- Nom et statut de l'utilisateur -->
+        <div class="conteneuruser">
+          <p>{{ item.name }}</p>
+          <p [class]="item.status === 'au bureau' ? 'text-success' : 'text-danger'">{{ item.status }}</p>
+        </div>
+    
+        <!-- Barre de progression pour le temps travaillé -->
+        <div class="totalehourss">
+          <div class="progress w-75">
+            <div
+              class="progress-bar"
+              [style.width]="getProgressPercentage(item.total_time_seconds || 0) + '%'"
+              [attr.aria-valuenow]="item.total_time_seconds || 0"
+              aria-valuemin="0"
+              [attr.aria-valuemax]="maxDailyHours"
+            >
+              <span class="text">{{ item.session_duration || '00:00:00' }}  / 8h</span>
+            </div>
+          </div>
+        </div>
+    
+  
+    
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal pour afficher les détails de l'utilisateur -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStyle}"  >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Détails de {{ selectedUser?.name }}</h4>
+      </div>
+      <div class="modal-body">
+       
+        <!-- Afficher le compteur -->
+        <p>Temps travaillé : {{ formatDuration(selectedUser?.counter || 0) }}</p>
+
+        <!-- Afficher la localisation -->
+        <p>Localisation : {{ selectedUser?.location || 'Non disponible' }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="closePopup()">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>

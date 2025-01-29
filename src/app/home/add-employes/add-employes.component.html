@@ -1,0 +1,113 @@
+<div class="gromrigth">
+    <!-- Modal -->
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStyleChild}">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Add users</h4>
+          </div>
+  
+          <!-- Modal Body -->
+          <div class="modal-body">
+            <form id="addEmployeForm" (ngSubmit)="AddEmployer()" #loginForm="ngForm">
+              <!-- Nom -->
+              <div class="mb-3">
+                <label for="nom" class="form-label">Nom</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="nom" 
+                  name="nom" 
+                  [(ngModel)]="nom" 
+                  required />
+              </div>
+  
+              <!-- Profile Image -->
+              <div class="mb-3">
+                <label for="image" class="form-label">Profile Image</label>
+                <input 
+                  type="file" 
+                  class="form-control" 
+                  id="image" 
+                  (change)="onFileSelected($event)" />
+              </div>
+  
+              <!-- Email -->
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input 
+                  type="email" 
+                  class="form-control" 
+                  id="email" 
+                  name="email" 
+                  [(ngModel)]="email" 
+                  required />
+              </div>
+  
+              <!-- Sexe -->
+              <div class="mb-3">
+                <label for="sexe" class="form-label">Sex</label>
+                <select 
+                  class="form-select" 
+                  id="sexe" 
+                  name="sexe" 
+                  [(ngModel)]="sexe" 
+                  required>
+                  <option value="" selected disabled>Add sex</option>
+                  <option value="homme">Man</option>
+                  <option value="femme">Women</option>
+                </select>
+              </div>
+                       <!-- Role -->
+                       <div class="mb-3">
+                        <label for="role" class="form-label">Role</label>
+                        <select 
+                          class="form-select" 
+                          id="role" 
+                          name="role" 
+                          [(ngModel)]="role" 
+                          required>
+                          <option value="" selected disabled>Add role </option>
+                          <option value="administrator">Administrator</option>
+                          <option value="employer">Employer</option>
+                          <option value="client">Client</option>
+                        </select>
+                      </div>
+  
+              <!-- Mot de passe -->
+              <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input 
+                  type="password" 
+                  class="form-control" 
+                  id="password" 
+                  name="password" 
+                  [(ngModel)]="password" 
+                  required />
+              </div>
+  
+              <!-- Confirmation du mot de passe -->
+              <div class="mb-3">
+                <label for="passwordConfirmation" class="form-label">Confirm password  </label>
+                <input 
+                  type="password" 
+                  class="form-control" 
+                  id="passwordConfirmation" 
+                  name="passwordConfirmation" 
+                  [(ngModel)]="passwordConfirmation" 
+                  required />
+              </div>
+            </form>
+          </div>
+  
+          <!-- Modal Footer -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="closePopup()">Fermer</button>
+            <button type="submit" class="btn btn-success" [disabled]="!loginForm.valid" form="addEmployeForm">Ajouter</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

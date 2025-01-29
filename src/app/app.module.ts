@@ -1,18 +1,62 @@
 import { NgModule } from '@angular/core';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
-
-import { AppRoutingModule } from './app-routing.module';
+import { FormsModule } from '@angular/forms'; // Import FormsModule
+import { ReactiveFormsModule } from '@angular/forms'; // (Optional, for reactive forms)
 import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module'; // Module de routing
+
+
+import { GetEmployesComponent } from './home/get-employes/get-employes.component'; // Composant Home
+
+import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { ToastrModule } from 'ngx-toastr';
+
+import { ForgetpassowrdComponent } from './home/forgetpassowrd/forgetpassowrd.component';
+import { ResetpasswordComponent } from './home/resetpassword/resetpassword.component';
+import { AuthInterceptor } from './auth.interceptor';
+
+import { StatComponent } from './dashbord/stat/stat.component';
+import { SettingsComponent } from './dashbord/settings/settings.component';
+import { DashbordComponent } from './dashbord/dashbord.component';
+import { HomeComponent } from './home/home.component';
+import { AddEmployesComponent } from './home/add-employes/add-employes.component'; // Import standalone component
+import { HeaderComponent } from './layout/header/header.component';
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent,
+    AddEmployesComponent,
+    GetEmployesComponent,
+    DashbordComponent,
+    StatComponent,
+    SettingsComponent,
+    ForgetpassowrdComponent,
+    ResetpasswordComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    HttpClientModule,
+    AppRoutingModule, // Importez ici le module de routing
+    BrowserModule,
+    FormsModule, // Add FormsModule here
+    ReactiveFormsModule, // Optional, in case you are using reactive forms
+    CommonModule,
+    BrowserAnimationsModule, // required animations module
+    ToastrModule.forRoot(), // ToastrModule ajouté
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+  ],
+  bootstrap: [AppComponent], // Composant principal à lancer
 })
-export class AppModule { }
+export class AppModule {}

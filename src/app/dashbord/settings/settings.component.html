@@ -1,0 +1,100 @@
+<div class="settings-form">
+  <h2>Modifier les informations de l'utilisateur</h2>
+  <div class="settings-form-1">
+    <div class="classleft">
+      <form (ngSubmit)="updateUser()" #loginForm="ngForm">
+        <!-- Champ Nom -->
+        <div class="form-group mb-3">
+          <input
+            type="text"
+            id="name"
+            [(ngModel)]="userdetaile.name"
+            name="name"
+            class="form-control"
+            (input)="markFieldAsModified('name')"
+            placeholder="Nom"
+          />
+        </div>
+
+        <!-- Champ Email -->
+        <div class="form-group mb-3">
+          <input
+            type="email"
+            id="email"
+            [(ngModel)]="userdetaile.email"
+            name="email"
+            class="form-control"
+            (input)="markFieldAsModified('email')"
+            placeholder="Email"
+          />
+        </div>
+
+        <!-- Champ Sexe -->
+        <div class="form-group mb-3">
+          <select
+            id="sexe"
+            [(ngModel)]="userdetaile.sexe"
+            name="sexe"
+            class="form-control"
+            (change)="markFieldAsModified('sexe')"
+          >
+            <option value="homme">Homme</option>
+            <option value="femme">Femme</option>
+          </select>
+        </div>
+
+        <!-- Champ Rôle -->
+        <div class="form-group mb-3">
+          <select
+            id="role"
+            [(ngModel)]="userdetaile.role"
+            name="role"
+            class="form-control"
+            (change)="markFieldAsModified('role')"
+          >
+            <option value="administrator">Administrateur</option>
+            <option value="employer">Employé</option>
+            <option value="client">Client</option>
+          </select>
+        </div>
+
+        <!-- Champ Image de profil -->
+        <div class="form-group mb-3">
+          <input
+            type="file"
+            id="profile_image"
+            class="form-control"
+            (change)="onFileSelected($event)"
+          />
+        </div>
+
+        <!-- Bouton Mettre à jour -->
+        <div class="form-group mt-3 mb-3">
+          <button
+            type="submit"
+            class="btn btn-success"
+            [disabled]="!loginForm.valid || !isAnyFieldModified()"
+          >
+            Mettre à jour
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="classright">
+      <div class="status">
+        <!-- Affichage de l'image de profil -->
+        <ng-container *ngIf="userdetaile.profile_image_url; else defaultImage">
+          <img
+            [src]="userdetaile.profile_image_url"
+            alt="Image de profil"
+            class="enteimg"
+          />
+        </ng-container>
+        <ng-template #defaultImage>
+          <i class="bi bi-person-circle"></i>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,50 @@
+<div class="authHome d-flex" >
+    <div class="imgleft">
+      <img src="assets/autentification.jpg">  
+    </div>
+    <div class="rightsection">
+      <form (ngSubmit)="SignIn()" #loginForm="ngForm">
+        <div class="mb-3">
+        <label for="nom">Email :</label>
+        <input
+          type="text"
+          class="form-control"
+          id="nom"
+          [(ngModel)]="login.email"
+          name="nom"
+          required
+        />
+    </div>
+    <div class="mb-3">
+        <label for="password">Mot de passe :</label>
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          [(ngModel)]="login.password"
+          name="password"
+          required
+        />
+    </div>
+    <div class="btns">
+    <button  type="reset" class="btn btn-danger" (click)="reset()">Annuler  </button>
+    <button type="submit"  class="btn btn-success"  [disabled]="!loginForm.valid">Se connecter</button>
+  </div>
+  <div class="basforget">
+  <button  type="button" class="btn btn-link" (click)="openPopup()">Sign in
+  </button>
+  <button  type="button" class="btn btn-link" (click)="openPopupForgeten()">Rest password 
+  </button>
+</div>
+      </form>
+    </div>
+    <app-add-employes 
+    [displayStyleChild]="displayStyle" 
+    (closeEvent)="closePopup()">
+  </app-add-employes>
+  <app-forgetpassowrd
+  [displayStyleChild]="displayStyleF" 
+  (closeEvent)="closePopupForgeten()">
+</app-forgetpassowrd> 
+    </div>
+

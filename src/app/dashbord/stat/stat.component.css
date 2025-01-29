@@ -1,0 +1,138 @@
+.content-dahserd {
+    justify-content: start;
+    padding: 15px;
+    gap: 10px;
+}
+
+.pointage {
+    background: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    width: 30%;
+    text-align: center;
+}
+.rightcontent {
+    width: 70%;
+    background: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    gap: 11px;
+}
+.content-dashboard {
+    gap: 10px;
+}
+.conteneuruser {
+    text-align: justify;
+}
+.status-summary {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+.red {
+    color: red;
+  }
+  
+  .green {
+    color: green;
+  }
+  .status {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+.status img.enteimg {
+    width: 98px;
+    object-fit: cover;
+    height: 98px;
+    border: 1px solid #eee;
+    border-radius: 10px;
+}
+.buttons {
+    gap: 10px;
+    display: flex;
+    align-items: center;
+}
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 9999;
+  }
+  
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(0, 0, 0, 0.1);
+    border-top: 5px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .status.all {
+    flex-direction: row;
+}
+.status.all img.enteimg{
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+}
+.statprof {
+  position: relative;
+  display: flex;
+  align-items: end;
+}
+.status.all sup {
+  left: -9px;
+}
+.conteneuruser p,.status p {
+  margin: 0px;
+  font-size: 14px;
+  text-transform: capitalize;
+}
+.status i.bi.bi-person-circle {
+  font-size: 51px;
+  line-height: 55px;
+}
+.scroll {
+  overflow-y: scroll;
+  height: 185px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+}
+button.btn.btn-success{
+  background: #d268cc;
+  border: #d268cc;
+}
+.totalehourss{
+  width: 80%;
+}
+span.text {
+  width: 40px;
+  color: #e800ff;
+  position: absolute;
+  font-weight: bold;
+}
+.progress.w-75 {
+  position: relative;
+}

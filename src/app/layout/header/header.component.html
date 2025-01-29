@@ -1,0 +1,86 @@
+<div class="btnsheraders">
+    <button class="btn btn-primary"  [disabled]="!datauser.arrival_date"  (click)="getPointageHistory()" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasLeft" aria-controls="offcanvasLeft">
+      <i class="bi bi-bell"></i><sup>{{history.length}}</sup>
+      
+    </button>
+    <button  class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+        <ng-container *ngIf="datauser.profile_image_url; else defaultImage">
+          <img [src]="datauser.profile_image_url" alt="Image de profil" class="enteimg"/>
+        </ng-container>
+        <ng-template #defaultImage><i class="bi bi-person-circle"></i></ng-template>
+       
+      </button>
+    </div>
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header">
+           
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="profil">
+               
+             <!-- Si profile_image n'est pas défini, utiliser une image par défaut -->
+             <img *ngIf="datauser.profile_image" [src]=" datauser.profile_image_url" alt="Image de profil" />
+             <p *ngIf="!datauser?.profile_image"><i class="bi bi-person-circle"></i></p>
+             <div class="contentprofil">
+             <span>{{datauser.name}}</span>
+             <span>{{datauser.email}}</span>
+             <span>{{datauser.role}}</span>
+             <span>{{ datauser.created_at | date:'dd/MM/yyyy HH:mm' }}</span>
+            </div>
+            
+            </div>
+            <button class="dropdown-item logout" (click)="logout()"> <i class="bi bi-box-arrow-in-left"></i> logout</button>
+    
+    
+             </div>
+             
+            
+            
+        </div>
+    
+        <div
+        class="offcanvas offcanvas-end"
+        tabindex="-1"
+        id="offcanvasLeft"
+        aria-labelledby="offcanvasLeftLabel"
+      >
+        <div class="offcanvas-header">
+          <button
+            type="button"
+            class="btn-close text-reset"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="offcanvas-body">
+          <span>Historique du pointage</span>
+          <div class="container mt-3">
+            <h2>Historique des Pointages</h2>
+        
+            <div *ngIf="history.length > 0; else noHistory">
+              <ul class="list-group">
+                <li class="list-group-item" *ngFor="let entry of history">
+                  <!-- {{entry|json}} -->
+                  <p>
+                    <strong>Heure d'arrivée :</strong> {{ entry.arrival_date }}<br />
+                    <strong>Heure de départ :</strong> {{ entry.last_departure | date: 'HH:mm' }}<br />
+                    <strong>Durée totale :</strong> 
+                    {{ entry.last_departure ? formatTime(entry.total_hours) : 'Non défini' }}
+                  </p>
+                
+                  
+                </li>
+              </ul>
+            </div>
+        
+            <ng-template #noHistory>
+              <p>Aucun historique disponible pour cet utilisateur.</p>
+            </ng-template>
+          </div>
+        </div>
+        
+        
+      </div>
+      
+    

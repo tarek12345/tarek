@@ -1,0 +1,31 @@
+.authHome img {
+    object-fit: cover;
+    height: 669px;
+}
+
+.rightsection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+.rightsection form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.btns {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+button.btn.btn-success {
+    background: #d268cc;
+    border: #d268cc;
+}
+button.btn.btn-danger {
+    background: #2c444e;
+    border-color: #2c444e;
+}
