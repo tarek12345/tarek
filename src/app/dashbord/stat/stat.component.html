@@ -41,15 +41,12 @@
       <h5>Informations de départ :</h5>
       <p>Heure de départ : {{ departureDate | date: 'HH:mm:ss' }}</p>
     </div>
-      <!-- Affichage des totaux -->
-      <div>
-        <h5>Totaux :</h5>
-        <p>Total journalier : <span [ngClass]="{'text-danger': dailyTotal < 8}">{{ dailyTotal }} heures</span></p>
-        <p>Total hebdomadaire : <span [ngClass]="{'text-danger': weeklyTotal < 40}">{{ weeklyTotal }} heures</span></p>
-        <p>Total mensuel : <span [ngClass]="{'text-danger': monthlyTotal < 176}">{{ monthlyTotal }} heures</span></p>
-      </div>
+     
   </div>
-
+<!-- Affichage des totaux -->
+<div>
+ 
+</div>
   <!-- Section de chargement -->
   <div *ngIf="loading" class="loading-spinner">
     <div class="spinner"></div>
@@ -111,11 +108,31 @@
             </div>
           </div>
         </div>
-    
+
   
     
       </div>
     </div>
+         <!-- Affichage des totaux -->
+         <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Total journalier</th>
+              <th scope="col">Total hebdomadaire</th>
+              <th scope="col">Total mensuel</th>
+            </tr>
+          </thead>
+          <tbody>
+    
+            <tr>
+              <td><span [ngClass]="{'text-danger': dailyTotal < 8}">{{ formatDuration(dailyTotal * 3600)  }} (heurs) </span></td>
+              <td><span [ngClass]="{'text-danger': weeklyTotal < 40}">{{ formatDuration(weeklyTotal * 3600) }} </span></td>
+              <td><span [ngClass]="{'text-danger': monthlyTotal < 176}">{{ formatDuration(monthlyTotal * 3600) }} </span></td>
+            </tr>
+           
+          </tbody>
+        </table>
+
   </div>
 </div>
 
