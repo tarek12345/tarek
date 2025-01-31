@@ -15,7 +15,12 @@ class PointageController extends Controller
         if (!$user) {
             return response()->json(['message' => 'Utilisateur non trouvé'], 404);
         }
-    
+      // Réinitialiser les totaux journaliers, hebdomadaires et mensuels
+      $user->update([
+        'daily_hours' => 0,
+        'weekly_hours' => 0,
+        'monthly_hours' => 0,
+    ]);
         $validated = $request->validate([
             'location' => 'nullable|string',
             'status' => 'nullable|string|in:aubureau,horsligne',
@@ -82,6 +87,20 @@ class PointageController extends Controller
         $dailyHours = $activePointage->daily_hours + ($sessionSeconds / 3600);
         $weeklyHours = $activePointage->weekly_hours + ($sessionSeconds / 3600);
         $monthlyHours = $activePointage->monthly_hours + ($sessionSeconds / 3600);
+        // Vérifier si l'utilisateur a dépassé le total des heures travaillées autorisées
+        if ($dailyHours > 8) {
+            // Déconnecter l'utilisateur
+            $user->tokens()->delete();
+            return response()->json([
+                'message' => 'Vous avez dépassé le total des heures travaillées autorisées. Vous avez été déconnecté.',
+            ], 401);
+        }
+        // Mettre à jour les totaux journaliers, hebdomadaires et mensuels dans la base de données
+        $user->update([
+            'daily_hours' => $dailyHours,
+            'weekly_hours' => $weeklyHours,
+            'monthly_hours' => $monthlyHours,
+        ]);
     
         // Formater la durée de la session en "HH:MM:SS"
         $formattedDuration = gmdate('H:i:s', $totalSeconds);
@@ -143,6 +162,9 @@ class PointageController extends Controller
             return response()->json([
                 'counter' => 0,
                 'status' => 'hors ligne',
+                'daily_hours' => 0,
+                'weekly_hours' => 0,
+                'monthly_hours' => 0,
             ], 200);
         }
     
@@ -153,10 +175,17 @@ class PointageController extends Controller
     
         // Ajouter le temps écoulé au compteur existant
         $totalSeconds = $activePointage->counter + $elapsedSeconds;
+        // Calculer les heures quotidiennes, hebdomadaires et mensuelles
+        $dailyHours = $activePointage->daily_hours + ($elapsedSeconds / 3600);
+        $weeklyHours = $activePointage->weekly_hours + ($elapsedSeconds / 3600);
+        $monthlyHours = $activePointage->monthly_hours + ($elapsedSeconds / 3600);
     
         return response()->json([
             'counter' => $totalSeconds,
             'status' => 'au bureau',
+            'daily_hours' => round($dailyHours, 2),
+            'weekly_hours' => round($weeklyHours, 2),
+            'monthly_hours' => round($monthlyHours, 2),
         ], 200);
     }
 }
