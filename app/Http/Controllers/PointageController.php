@@ -87,6 +87,7 @@ class PointageController extends Controller
         $dailyHours = $activePointage->daily_hours + ($sessionSeconds / 3600);
         $weeklyHours = $activePointage->weekly_hours + ($sessionSeconds / 3600);
         $monthlyHours = $activePointage->monthly_hours + ($sessionSeconds / 3600);
+    
         // Vérifier si l'utilisateur a dépassé le total des heures travaillées autorisées
         if ($dailyHours > 8) {
             // Déconnecter l'utilisateur
@@ -95,12 +96,16 @@ class PointageController extends Controller
                 'message' => 'Vous avez dépassé le total des heures travaillées autorisées. Vous avez été déconnecté.',
             ], 401);
         }
+    
         // Mettre à jour les totaux journaliers, hebdomadaires et mensuels dans la base de données
-        $user->update([
-            'daily_hours' => $dailyHours,
-            'weekly_hours' => $weeklyHours,
-            'monthly_hours' => $monthlyHours,
-        ]);
+
+
+    // Mettre à jour les totaux journaliers, hebdomadaires et mensuels dans la base de données
+    $user->update([
+        'daily_hours' => round($dailyHours, 2),
+        'weekly_hours' => round($weeklyHours, 2),
+        'monthly_hours' => round($monthlyHours, 2),
+    ]);
     
         // Formater la durée de la session en "HH:MM:SS"
         $formattedDuration = gmdate('H:i:s', $totalSeconds);
@@ -128,8 +133,6 @@ class PointageController extends Controller
             'totalTime' => $totalSeconds, // Retourner la durée totale en secondes
         ], 200);
     }
-
-
     public function showHistory($userId)
     {
         $user = User::find($userId);
