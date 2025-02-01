@@ -114,28 +114,11 @@
       </div>
     </div>
          <!-- Affichage des totaux -->
-         <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Total journalier</th>
-              <th scope="col">Total hebdomadaire</th>
-              <th scope="col">Total mensuel</th>
-            </tr>
-          </thead>
-          <tbody>
-    
-            <tr>
-              <td><span [ngClass]="{'text-danger': dailyTotal < 8}">{{ formatDuration(dailyTotal * 3600)  }} (heurs) </span></td>
-              <td><span [ngClass]="{'text-danger': weeklyTotal < 40}">{{ formatDuration(weeklyTotal * 3600) }} </span></td>
-              <td><span [ngClass]="{'text-danger': monthlyTotal < 176}">{{ formatDuration(monthlyTotal * 3600) }} </span></td>
-            </tr>
-           
-          </tbody>
-        </table>
-
+         <app-weekview [itemuser]="userdetaile"></app-weekview>
+   
   </div>
 </div>
-
+>
 <!-- Modal pour afficher les détails de l'utilisateur -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStyle}"  >
   <div class="modal-dialog" role="document">

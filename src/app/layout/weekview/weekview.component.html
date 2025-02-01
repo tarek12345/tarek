@@ -1,0 +1,54 @@
+<div class="week-view-container">
+  <!-- Sélection de l'année -->
+  <label for="yearSelect">Sélectionner une année :</label>
+  <select id="yearSelect" (change)="onYearChange($event)">
+    <option *ngFor="let year of getYearsList()" [value]="year" [selected]="year === selectedYear">
+      {{ year }}
+    </option>
+  </select>
+
+  <!-- Affichage des semaines du mois actuel -->
+  <div class="current-month-container">
+    <h2>{{ getCurrentMonthWeeks().month }}</h2>
+
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Semaine</th>
+        <th scope="col">Total journalier</th>
+        <th scope="col">Total hebdomadaire</th>
+        <th scope="col">Total mensuel</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let week of getCurrentMonthWeeks().weeks">
+        <td (click)="openPopup(week)">{{ week.weekRange }}</td>
+        <td>{{ week.totalHours }}</td> <!-- Afficher le total des heures -->
+        <td>{{ week.totalHours }}</td> <!-- Afficher le total hebdomadaire -->
+        <td>{{ week.totalHours }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- Modal pour afficher les détails de l'utilisateur -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStyle}"  >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Détails de </h4>
+      </div>
+      <div class="modal-body">
+        <p>Jours de la semaine :</p>
+        <ul>
+          <li *ngFor="let day of selectedUser ?.days">
+            {{ day }}
+          </li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="closePopup()">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>

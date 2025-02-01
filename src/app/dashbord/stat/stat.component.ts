@@ -106,13 +106,12 @@ loadCounterState(): void {
 
   openPopup(user: any): void {
     this.selectedUser = user; // Stocker l'utilisateur sélectionné
-
-    if(this.userdetaile.role === 'administrator'){
+  
+    if (this.userdetaile.role === 'administrator') {
       this.displayStyle = "block"; // Afficher le modal
+    } else {
+      this.displayStyle = "none"; // Cacher le modal
     }
- else{
-  this.displayStyle = "none"; // Afficher le modal
- }
   }
 
   closePopup() {
@@ -149,9 +148,7 @@ stopCounter(): void {
     this.counter = `${this.padZero(hours)}:${this.padZero(minutes)}:${this.padZero(seconds)}`;
   }
 
-  padZero(value: number): string {
-    return value < 10 ? `0${value}` : `${value}`;
-  }
+
   GetUsers() {
     this.apiService.GetUsers().subscribe((data) => {
       this.allUsers = data.users.map(user => ({
@@ -165,65 +162,65 @@ stopCounter(): void {
   }
   async onArrival(): Promise<void> {
     if (this.status === 'au bureau') {
-        this.toastr.warning('Vous êtes déjà au bureau.');
+      this.toastr.warning('Vous êtes déjà au bureau.');
+      return;
+    }
+  
+    try {
+      const location = await this.getLocation();
+      this.arrivalDate = new Date().toISOString();
+      this.status = 'au bureau';
+  
+      this.apiService.registerArrival(this.userId, {
+        arrival_date: this.arrivalDate,
+        location,
+      }).subscribe(() => {
+        this.toastr.success('Arrivée enregistrée avec succès.');
+        this.userService.setEncryptedItem('arrivalDate', this.arrivalDate);
+        this.userService.setEncryptedItem('status', this.status);
+  
+        // Démarrer le compteur seulement après avoir enregistré l'arrivée
+        this.startCounter();
+      });
+    } catch (error) {
+      this.toastr.error('Erreur lors de l\'arrivée.');
+    }
+  }
+
+  async onDeparture(): Promise<void> {
+    if (this.status === 'hors ligne') {
+        this.toastr.warning('Vous n\'êtes pas au bureau.');
         return;
     }
 
+    this.departureDate = new Date().toISOString();
+    this.stopCounter();
+
     try {
-        const location = await this.getLocation();
-        this.arrivalDate = new Date().toISOString();
-        this.status = 'au bureau';
-
-        this.apiService.registerArrival(this.userId, {
+        const response = await this.apiService.registerDeparture(this.userId, {
             arrival_date: this.arrivalDate,
-            location,
-        }).subscribe(() => {
-            this.toastr.success('Arrivée enregistrée avec succès.');
-            this.userService.setEncryptedItem('arrivalDate', this.arrivalDate);
-            this.userService.setEncryptedItem('status', this.status);
+            last_departure: this.departureDate,
+            session_duration: this.formatDuration(this.totalTime),
+            total_hours: (this.totalTime / 3600).toFixed(2),
+            daily_hours: this.dailyTotal / 3600, // Convertir en heures pour l'envoi au backend
+            weekly_hours: this.weeklyTotal / 3600,
+            monthly_hours: this.monthlyTotal / 3600,
+        }).toPromise();
 
-            // Démarrer le compteur seulement après avoir enregistré l'arrivée
-            this.startCounter();
-        });
+        this.toastr.success('Départ enregistré avec succès.');
+        this.status = 'hors ligne';
+
+        // Mettre à jour les totaux
+        this.totalTime = response.totalTime; // Total en secondes
+        this.dailyTotal = response.daily_hours * 3600; // Convertir en secondes
+        this.weeklyTotal = response.weekly_hours * 3600; // Convertir en secondes
+        this.monthlyTotal = response.monthly_hours * 3600; // Convertir en secondes
+
+        // Mettre à jour l'affichage du compteur
+        this.counter = this.formatDuration(this.totalTime);
     } catch (error) {
-        this.toastr.error('Erreur lors de l\'arrivée.');
+        this.toastr.error('Erreur lors de l\'enregistrement du départ.');
     }
-}
-
-async onDeparture(): Promise<void> {
-  if (this.status === 'hors ligne') {
-    this.toastr.warning('Vous n\'êtes pas au bureau.');
-    return;
-  }
-
-  this.departureDate = new Date().toISOString();
-  this.stopCounter();
-
-  try {
-    const response = await this.apiService.registerDeparture(this.userId, {
-      arrival_date: this.arrivalDate,
-      last_departure: this.departureDate,
-      session_duration: this.formatDuration(this.totalTime),
-      total_hours: (this.totalTime / 3600).toFixed(2),
-      daily_hours: this.dailyTotal / 3600, // Convertir en heures pour l'envoi au backend
-      weekly_hours: this.weeklyTotal / 3600,
-      monthly_hours: this.monthlyTotal / 3600,
-    }).toPromise();
-
-    this.toastr.success('Départ enregistré avec succès.');
-    this.status = 'hors ligne';
-
-    this.totalTime = response.totalTime;
-    this.dailyTotal = response.daily_hours * 3600; // Convertir en secondes
-
-    // Mettre à jour les totaux hebdomadaires et mensuels
-    this.weeklyTotal += this.dailyTotal; // Ajouter le total journalier au total hebdomadaire
-    this.monthlyTotal += this.dailyTotal; // Ajouter le total journalier au total mensuel
-
-    this.counter = this.formatDuration(this.totalTime);
-  } catch (error) {
-    this.toastr.error('Erreur lors de l\'enregistrement du départ.');
-  }
 }
 
   async getLocation(): Promise<string> {
@@ -246,7 +243,9 @@ async onDeparture(): Promise<void> {
     return `${this.padZero(hours)}:${this.padZero(minutes)}:${this.padZero(secs)}`;
   }
   
-
+  padZero(value: number): string {
+    return value < 10 ? `0${value}` : `${value}`;
+  }
  
 
   getProgressPercentage(totalTimeSeconds: number): number {

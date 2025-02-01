@@ -43,7 +43,6 @@ if(this.datauser.arrival_date=="null"){
       (data: any) => {
         
         this.history = data.data; // Adapter selon la structure de l'API
-        console.log('---h',this.history)
       },
       (error) => {
         this.error = 'Erreur lors de la récupération des données.';
