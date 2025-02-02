@@ -21,12 +21,19 @@
         <div>
           <p>{{ counter }}</p>
         </div>
-
+      
         <!-- Boutons d'arrivée et de départ -->
-        <div class="buttons">
-          <button class="btn btn-success" (click)="onArrival()" [disabled]="status === 'au bureau'">Arrivée</button>
-          <button class="btn btn-dark" (click)="onDeparture()" [disabled]="status === 'hors ligne'">Départ</button>
+        <div class="buttons" *ngFor="let day of selectedUserday?.days">{{!isWeekend(day)}}
+          <ng-container *ngIf="!isWeekend(day); else noPointage">
+              <button class="btn btn-success" (click)="onArrival()" [disabled]="status === 'au bureau'">Arrivée</button>
+              <button class="btn btn-dark" (click)="onDeparture()" [disabled]="status === 'hors ligne'">Départ</button>
+          </ng-container>
+        
+          <ng-template #noPointage>
+            <img src="../../../assets/nature.jpg" alt="sleepy" />
+          </ng-template>
         </div>
+        
       </div>
     </div>
 

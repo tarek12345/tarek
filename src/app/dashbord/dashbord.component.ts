@@ -29,6 +29,7 @@ export class DashbordComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log('DashboardComponent chargé !');
     this.user = this.userService.getUserInfo();
    
     if (this.user) {

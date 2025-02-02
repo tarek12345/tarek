@@ -11,13 +11,12 @@ import { StatComponent } from './dashbord/stat/stat.component';
 
 
 const routes: Routes = [
-  { path: '', component: HomeComponent} ,// Ajoutez AuthGuard ici pour protéger la route d'accueil
+  { path: '', component: HomeComponent },  // Suppression de canActivate ici
   { path: 'reset-password', component: ResetpasswordComponent },
-  { path: 'dashboard', component: DashbordComponent, canActivate: [AuthGuard] },  // Protéger cette route avec AuthGuard
-  { path: 'dashboard/stat-employer', component: StatComponent, canActivate: [AuthGuard] },  // Protéger cette route avec AuthGuard
-  { path: '**', redirectTo: '' }  // Redirection pour les routes non trouvées
+  { path: 'dashboard', component: DashbordComponent, canActivate: [AuthGuard] },
+  { path: 'dashboard/stat-employer', component: StatComponent, canActivate: [AuthGuard] },
+  { path: '**', redirectTo: 'dashboard', pathMatch: 'full' } // Rediriger vers le dashboard si l'utilisateur est connecté
 ];
-
 @NgModule({
   imports: [RouterModule.forRoot(routes)],  // Configuration des routes
   exports: [RouterModule]
