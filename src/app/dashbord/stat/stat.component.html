@@ -12,8 +12,8 @@
         </ng-template>
 
         <!-- Nom de l'utilisateur -->
-        <p>{{ userdetaile.name }}</p>
-
+        <p><i class="bi bi-person-gear"></i> {{ userdetaile.name }}</p>
+        <p>{{ userdetaile.role }}</p>
         <!-- Statut (au bureau ou hors ligne) -->
         <p [ngClass]="status === 'hors ligne' ? 'text-danger' : 'text-success'">{{ status }}</p>
 
@@ -21,17 +21,28 @@
         <div>
           <p>{{ counter }}</p>
         </div>
-      
         <!-- Boutons d'arrivée et de départ -->
-        <div class="buttons" *ngFor="let day of selectedUserday?.days">{{!isWeekend(day)}}
-          <ng-container *ngIf="!isWeekend(day); else noPointage">
-              <button class="btn btn-success" (click)="onArrival()" [disabled]="status === 'au bureau'">Arrivée</button>
-              <button class="btn btn-dark" (click)="onDeparture()" [disabled]="status === 'hors ligne'">Départ</button>
+        <div class="buttons">
+         
+          <ng-container *ngIf="selectedUserday; else noPointage">
+            <button 
+              class="btn btn-success" 
+              (click)="onArrival()" 
+              [disabled]="status === 'au bureau'">
+              Arrivée
+            </button>
+            <button 
+              class="btn btn-dark" 
+              (click)="onDeparture()" 
+              [disabled]="status === 'hors ligne'">
+              Départ
+            </button>
           </ng-container>
-        
+          
           <ng-template #noPointage>
-            <img src="../../../assets/nature.jpg" alt="sleepy" />
+            <img src="../../../assets/sleepy.gif" alt="sleepy" />
           </ng-template>
+          
         </div>
         
       </div>

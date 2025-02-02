@@ -1,0 +1,7 @@
+.current-month-container h2 {
+    text-transform: capitalize;
+    font-size: 20px;
+    line-height: 30px;
+    color: #e800ff;
+    font-weight: bold;
+}

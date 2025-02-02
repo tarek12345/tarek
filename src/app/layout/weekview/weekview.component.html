@@ -1,17 +1,18 @@
 <div class="week-view-container">
   <!-- Sélection de l'année -->
-  <label for="yearSelect">Sélectionner une année :</label>
-  <select id="yearSelect" (change)="onYearChange($event)">
+     <!-- Affichage des semaines du mois actuel -->
+  <div class="current-month-container">
+    <h2><i class="bi bi-calendar-check"></i>  Mois actuelle {{ getCurrentMonthWeeks().month }}</h2>
+
+  </div>
+  <label for="yearSelect" class=" mb-3">Sélectionner une année :</label>
+  <select id="yearSelect"  class="form-select" (change)="onYearChange($event)">
     <option *ngFor="let year of getYearsList()" [value]="year" [selected]="year === selectedYear">
-      {{ year }}
+     <p class="text-capitalize">  {{ year }}</p> 
     </option>
   </select>
 
-  <!-- Affichage des semaines du mois actuel -->
-  <div class="current-month-container">
-    <h2>{{ getCurrentMonthWeeks().month }}</h2>
 
-  </div>
   <table class="table">
     <thead>
       <tr>

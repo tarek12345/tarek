@@ -48,7 +48,7 @@ export class StatComponent implements OnInit {
   ngOnInit(): void {
     this.initializeUser();
     this.loadCounterState();
-    this.isWeekend('')
+  
 }
 
 initializeUser (): void {
@@ -306,12 +306,6 @@ stopCounter(): void {
         }
         return weeks;
       }
-      isWeekend(day: string): boolean {
-        const date = new Date(day);
-        return date.getDay() === 6 || date.getDay() === 0; // 6 = Samedi, 0 = Dimanche
-      }
-      
-      
-      
+
       
 }

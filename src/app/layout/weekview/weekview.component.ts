@@ -13,8 +13,8 @@ export class WeekviewComponent {
   currentYear: number = new Date().getFullYear(); 
   selectedYear: number = this.currentYear; 
   currentMonth: number = new Date().getMonth(); 
-  startYear: number = 2020; 
-  endYear: number = 2030; 
+  startYear: number = 2025; 
+  endYear: number = 2040; 
   @Input() itemuser: any;
   displayStyle: string = "none"; // Contrôle l'affichage du modal
   selectedUser:  { weekRange: string, days: string[] } | null = null; // Typage de selectedUser 
