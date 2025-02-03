@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
     use Illuminate\Support\Facades\Http;
     use Illuminate\Support\Facades\Cache;
-
+    use Carbon\Carbon;
+use App\Models\Pointage;
 
 class AuthController extends Controller
 {
@@ -63,49 +64,15 @@ class AuthController extends Controller
             ], 500);
         }
     }
-    
-    
-    // public function getUsers()
-    // {
-    //     // Récupérer tous les utilisateurs
-    //     $users = User::all();
-        
-    //     foreach ($users as $user) {
-    //         // Récupérer le dernier pointage de l'utilisateur
-    //         $lastPointage = $user->pointages()->latest('created_at')->first();
-            
-    //         // Déterminer le statut basé sur le dernier pointage
-    //         $status = 'hors ligne'; // Statut par défaut
-    //         if ($lastPointage) {
-    //             $status = $lastPointage->is_active ? 'au bureau' : 'hors ligne';
-    //         }
-    
-    //         // Ajouter les informations supplémentaires
-    //         $user->profile_image_url = $user->profile_image 
-    //             ? URL::to('/') . '/storage/' . $user->profile_image 
-    //             : null;
-    //         $user->status = $status;
-    
-    //         // Ajouter les éléments supplémentaires du pointage (s'ils existent)
-    //         $user->arrival_date = $lastPointage ? $lastPointage->arrival_date : null;
-    //         $user->location = $lastPointage ? $lastPointage->location : null;
-    //         $user->total_hours = $lastPointage ? $lastPointage->total_hours : 0; // Par défaut 0
-    //     }
-        
-    //     // Retourner la réponse avec les utilisateurs et leurs informations supplémentaires
-    //     return response()->json([
-    //         'users' => $users
-    //     ], 200);
-    // }
-    
-    public function getUsers()
+
+    public function getUsers() 
     {
         $users = User::all();
-    
+        
         foreach ($users as $user) {
             $lastPointage = $user->pointages()->latest('created_at')->first();
             $status = 'hors ligne';
-    
+        
             if ($lastPointage) {
                 $status = $lastPointage->is_active ? 'au bureau' : 'hors ligne';
             }
@@ -118,11 +85,36 @@ class AuthController extends Controller
             $user->counter = $lastPointage ? $lastPointage->counter : 0;
             $user->weekly_hours = $lastPointage ? $lastPointage->weekly_hours : 0; 
             $user->monthly_hours = $lastPointage ? $lastPointage->monthly_hours : 0; 
-            $user->session_duration = $lastPointage ? gmdate('H:i:s', $lastPointage->counter) : 0; // Formater counter en HH:MM:SS
-        }
+            $user->session_duration = $lastPointage ? gmdate('H:i:s', $lastPointage->counter) : '00:00:00'; // Formater counter en HH:MM:SS
     
+            // Ajouter le nom du jour (day_name)
+            $dayName = Carbon::today()->locale('fr')->isoFormat('dddd'); // Exemple: lundi, mardi
+            $user->day_name = ucfirst($dayName);  // Capitalisation du nom du jour
+    
+            // Ajouter le total des heures travaillées aujourd'hui (total_hours_today) au format HH:MM:SS
+            $today = Carbon::today()->format('Y-m-d');
+            $pointagesToday = Pointage::where('user_id', $user->id)
+                ->whereDate('arrival_date', '=', $today)
+                ->get();
+    
+            $totalSecondsToday = 0;
+            foreach ($pointagesToday as $pointage) {
+                $totalSecondsToday += $pointage->counter;
+            }
+    
+            // Convertir les secondes totales en heures, minutes et secondes
+            $hours = floor($totalSecondsToday / 3600);
+            $minutes = floor(($totalSecondsToday % 3600) / 60);
+            $seconds = $totalSecondsToday % 60;
+    
+            // Formater en HH:MM:SS
+            $user->total_hours_today = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+        }
+        
         return response()->json(['users' => $users], 200);
     }
+    
+    
     
     private function getAddressFromCoordinates($latitude, $longitude)
     {
@@ -171,17 +163,17 @@ class AuthController extends Controller
         try {
             // Récupérer l'utilisateur par son ID
             $user = User::findOrFail($id);
-    
+        
             // Ajouter l'URL complète de l'image de profil
             if ($user->profile_image) {
                 $user->profile_image_url = URL::to('/') . '/storage/' . $user->profile_image;
             }
-    
+        
             // Récupérer le dernier pointage de l'utilisateur
             $lastPointage = $user->pointages()
                 ->latest('created_at')
                 ->first();
-    
+        
             // Ajouter les informations du pointage à l'utilisateur
             if ($lastPointage) {
                 $user->status = $lastPointage->is_active ? 'au bureau' : 'hors ligne';
@@ -203,11 +195,34 @@ class AuthController extends Controller
                 $user->session_duration = 0;
             }
     
+            // Ajouter le nom du jour (day_name)
+            $dayName = Carbon::today()->locale('fr')->isoFormat('dddd'); // Exemple: lundi, mardi
+            $user->day_name = ucfirst($dayName);  // Capitalisation du nom du jour
+    
+            // Ajouter le total des heures travaillées aujourd'hui (total_hours_today)
+            $today = Carbon::today()->format('Y-m-d');
+            $pointagesToday = Pointage::where('user_id', $user->id)
+                ->whereDate('arrival_date', '=', $today)
+                ->get();
+    
+            $totalSecondsToday = 0;
+            foreach ($pointagesToday as $pointage) {
+                $totalSecondsToday += $pointage->counter;
+            }
+           // Convertir les secondes totales en heures, minutes et secondes
+           $hours = floor($totalSecondsToday / 3600);
+           $minutes = floor(($totalSecondsToday % 3600) / 60);
+           $seconds = $totalSecondsToday % 60;
+   
+           // Formater en HH:MM:SS
+           $user->total_hours_today = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+    
             return response()->json(['user' => $user], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => 'User not found'], 404);
         }
     }
+    
 
     public function login(Request $request)
     {
