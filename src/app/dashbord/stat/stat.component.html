@@ -23,8 +23,7 @@
         </div>
         <!-- Boutons d'arrivée et de départ -->
         <div class="buttons">
-         
-          <ng-container *ngIf="selectedUserday; else noPointage">
+          <ng-container *ngIf="!isWeekend(); else noPointage">
             <button 
               class="btn btn-success" 
               (click)="onArrival()" 
@@ -42,8 +41,8 @@
           <ng-template #noPointage>
             <img src="../../../assets/sleepy.gif" alt="sleepy" />
           </ng-template>
-          
         </div>
+        
         
       </div>
     </div>
