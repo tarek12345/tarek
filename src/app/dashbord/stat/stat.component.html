@@ -13,7 +13,6 @@
 
         <!-- Nom de l'utilisateur -->
         <p><i class="bi bi-person-gear"></i> {{ userdetaile.name }}</p>
-        <p>{{ userdetaile.role }}</p>
         <!-- Statut (au bureau ou hors ligne) -->
         <p [ngClass]="status === 'hors ligne' ? 'text-danger' : 'text-success'">{{ status }}</p>
 

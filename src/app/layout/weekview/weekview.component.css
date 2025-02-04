@@ -5,3 +5,8 @@
     color: #e800ff;
     font-weight: bold;
 }
+.semaine{
+    cursor: pointer;
+}.text-success {
+    color: green;
+  }
