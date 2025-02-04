@@ -38,9 +38,12 @@ Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
 // Pointage 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('users/{id}', [AuthController::class, 'getUserById']); // Added semicolon here
     Route::get('users/{id}', [AuthController::class, 'getUserById']);
     
     Route::post('/users/{userId}/pointages/arrivee', [PointageController::class, 'onArrival']);
     Route::post('/users/{userId}/pointages/depart', [PointageController::class, 'onDeparture']);
     Route::get('/users/{userId}/pointages/historique', [PointageController::class, 'showHistory']);
-    Route::get('/users/{userId}/pointages/active-counters', [PointageController::class, 'getActiveCounter']);});
+    Route::get('/users/{userId}/pointages/active-counters', [PointageController::class, 'getActiveCounter']);
+    Route::get('/users/{userId}/worked-hours', [PointageController::class, 'getWorkedHours']);
+});
