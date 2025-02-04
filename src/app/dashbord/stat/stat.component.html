@@ -13,7 +13,6 @@
 
         <!-- Nom de l'utilisateur -->
         <p><i class="bi bi-person-gear"></i> {{ userdetaile.name }}</p>
-        <p>{{ userdetaile.role }}</p>
         <!-- Statut (au bureau ou hors ligne) -->
         <p [ngClass]="status === 'hors ligne' ? 'text-danger' : 'text-success'">{{ status }}</p>
 
@@ -23,8 +22,7 @@
         </div>
         <!-- Boutons d'arrivée et de départ -->
         <div class="buttons">
-         
-          <ng-container *ngIf="selectedUserday; else noPointage">
+          <ng-container *ngIf="!isWeekend(); else noPointage">
             <button 
               class="btn btn-success" 
               (click)="onArrival()" 
@@ -42,8 +40,8 @@
           <ng-template #noPointage>
             <img src="../../../assets/sleepy.gif" alt="sleepy" />
           </ng-template>
-          
         </div>
+        
         
       </div>
     </div>

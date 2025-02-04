@@ -224,6 +224,7 @@ stopCounter(): void {
 
         // Mettre à jour l'affichage du compteur
         this.counter = this.formatDuration(this.totalTime);
+        this.GetUserSByid()
     } catch (error) {
         this.toastr.error('Erreur lors de l\'enregistrement du départ.');
     }
@@ -306,6 +307,10 @@ stopCounter(): void {
         }
         return weeks;
       }
-
+      isWeekend(): boolean {
+        const currentDay = new Date().getDay(); // 0 = dimanche, 6 = samedi
+        return currentDay === 0 || currentDay === 6; // Retourne true si samedi ou dimanche
+      }
+      
       
 }
