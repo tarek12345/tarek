@@ -26,7 +26,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.GetUserSByid()
   this.history.length
-if(this.datauser.arrival_date=="null"){
+if(this.datauser.pointages!="null"){
   this.getPointageHistory();
 }
   }
