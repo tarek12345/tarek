@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\URL;
     use Illuminate\Support\Facades\Http;
     use Illuminate\Support\Facades\Cache;
     use Carbon\Carbon;
-use App\Models\Pointage;
+    use App\Models\Pointage;
 
 class AuthController extends Controller
 {
@@ -64,8 +64,42 @@ class AuthController extends Controller
             ], 500);
         }
     }
-
-    public function getUsers() 
+    
+    
+    // public function getUsers()
+    // {
+    //     // Récupérer tous les utilisateurs
+    //     $users = User::all();
+        
+    //     foreach ($users as $user) {
+    //         // Récupérer le dernier pointage de l'utilisateur
+    //         $lastPointage = $user->pointages()->latest('created_at')->first();
+            
+    //         // Déterminer le statut basé sur le dernier pointage
+    //         $status = 'hors ligne'; // Statut par défaut
+    //         if ($lastPointage) {
+    //             $status = $lastPointage->is_active ? 'au bureau' : 'hors ligne';
+    //         }
+    
+    //         // Ajouter les informations supplémentaires
+    //         $user->profile_image_url = $user->profile_image 
+    //             ? URL::to('/') . '/storage/' . $user->profile_image 
+    //             : null;
+    //         $user->status = $status;
+    
+    //         // Ajouter les éléments supplémentaires du pointage (s'ils existent)
+    //         $user->arrival_date = $lastPointage ? $lastPointage->arrival_date : null;
+    //         $user->location = $lastPointage ? $lastPointage->location : null;
+    //         $user->total_hours = $lastPointage ? $lastPointage->total_hours : 0; // Par défaut 0
+    //     }
+        
+    //     // Retourner la réponse avec les utilisateurs et leurs informations supplémentaires
+    //     return response()->json([
+    //         'users' => $users
+    //     ], 200);
+    // }
+    
+    public function getUsers()
     {
         $users = User::all();
         
@@ -154,72 +188,78 @@ class AuthController extends Controller
     
 
 
-
-
-    // user by id 
-
+    
     public function getUserById($id)
     {
         try {
             // Récupérer l'utilisateur par son ID
             $user = User::findOrFail($id);
-        
+    
             // Ajouter l'URL complète de l'image de profil
-            if ($user->profile_image) {
-                $user->profile_image_url = URL::to('/') . '/storage/' . $user->profile_image;
-            }
-        
+            $user->profile_image_url = $user->profile_image ? URL::to('/') . '/storage/' . $user->profile_image : null;
+    
             // Récupérer le dernier pointage de l'utilisateur
-            $lastPointage = $user->pointages()
-                ->latest('created_at')
-                ->first();
-        
-            // Ajouter les informations du pointage à l'utilisateur
+            $lastPointage = $user->pointages()->latest('created_at')->first();
+    
+            // Déterminer le statut de l'utilisateur
+            $status = 'hors ligne';
             if ($lastPointage) {
-                $user->status = $lastPointage->is_active ? 'au bureau' : 'hors ligne';
-                $user->arrival_date = $lastPointage->arrival_date;
-                $user->location = $lastPointage->location;
-                $user->total_hours = $lastPointage->total_hours;
-                $user->counter = $lastPointage->counter;
-                $user->weekly_hours = $lastPointage->weekly_hours;
-                $user->monthly_hours = $lastPointage->monthly_hours;
-                $user->session_duration = gmdate('H:i:s', $lastPointage->counter); // Formater le compteur en HH:MM:SS
-            } else {
-                $user->status = 'hors ligne'; // Statut inactif par défaut
-                $user->arrival_date = null;
-                $user->location = null;
-                $user->total_hours = 0;
-                $user->monthly_hours = 0;
-                $user->counter = 0;
-                $user->weekly_hours = 0;               
-                $user->session_duration = 0;
+                $status = $lastPointage->is_active ? 'au bureau' : 'hors ligne';
             }
     
-            // Ajouter le nom du jour (day_name)
-            $dayName = Carbon::today()->locale('fr')->isoFormat('dddd'); // Exemple: lundi, mardi
-            $user->day_name = ucfirst($dayName);  // Capitalisation du nom du jour
+            // Ajouter les informations supplémentaires à l'utilisateur
+            $user->status = $status;
+            $user->arrival_date = $lastPointage ? $lastPointage->arrival_date : null;
+            $user->location = $lastPointage ? $lastPointage->location : null;
+            $user->total_hours = $lastPointage ? $lastPointage->total_hours : 0;
+            $user->counter = $lastPointage ? $lastPointage->counter : 0;
+            $user->weekly_hours = $lastPointage ? $lastPointage->weekly_hours : 0;
+            $user->monthly_hours = $lastPointage ? $lastPointage->monthly_hours : 0;
+            $user->session_duration = $lastPointage ? gmdate('H:i:s', $lastPointage->counter) : '00:00:00';
     
-            // Ajouter le total des heures travaillées aujourd'hui (total_hours_today)
-            $today = Carbon::today()->format('Y-m-d');
-            $pointagesToday = Pointage::where('user_id', $user->id)
-                ->whereDate('arrival_date', '=', $today)
-                ->get();
+            // Initialiser les jours de la semaine avec le nom des jours
+            $daysOfWeek = [
+                'lundi' => ['name' => 'Lundi', 'status' => false, 'total_seconds' => 0],
+                'mardi' => ['name' => 'Mardi', 'status' => false, 'total_seconds' => 0],
+                'mercredi' => ['name' => 'Mercredi', 'status' => false, 'total_seconds' => 0],
+                'jeudi' => ['name' => 'Jeudi', 'status' => false, 'total_seconds' => 0],
+                'vendredi' => ['name' => 'Vendredi', 'status' => false, 'total_seconds' => 0],
+            ];
     
-            $totalSecondsToday = 0;
-            foreach ($pointagesToday as $pointage) {
-                $totalSecondsToday += $pointage->counter;
+            // Parcourir les pointages et ajouter les durées par jour
+            foreach ($user->pointages as $pointage) {
+                // Récupérer le jour de la semaine (en français)
+                $dayName = Carbon::parse($pointage->created_at)->locale('fr')->dayName;
+    
+                // Si le jour existe dans notre tableau, mettre à jour les informations
+                if (array_key_exists($dayName, $daysOfWeek)) {
+                    // Mettre à jour le statut du jour en fonction du dernier pointage
+                    $daysOfWeek[$dayName]['status'] = true;
+    
+                    // Ajouter les secondes totales pour ce jour
+                    $daysOfWeek[$dayName]['total_seconds'] += $pointage->counter;
+                }
             }
-           // Convertir les secondes totales en heures, minutes et secondes
-           $hours = floor($totalSecondsToday / 3600);
-           $minutes = floor(($totalSecondsToday % 3600) / 60);
-           $seconds = $totalSecondsToday % 60;
-   
-           // Formater en HH:MM:SS
-           $user->total_hours_today = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+    
+            // Formater les durées en "HH:MM:SS"
+            foreach ($daysOfWeek as $day => $data) {
+                $hours = floor($data['total_seconds'] / 3600);
+                $minutes = floor(($data['total_seconds'] % 3600) / 60);
+                $seconds = $data['total_seconds'] % 60;
+    
+                // Ajouter un zéro devant les valeurs inférieures à 10
+                $formattedTime = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+    
+                // Ajouter le temps formaté au tableau
+                $daysOfWeek[$day]['formatted_hours'] = $formattedTime;
+            }
+    
+            // Ajouter le tableau des jours de la semaine dans la réponse
+            $user->work_schedule = $daysOfWeek;
     
             return response()->json(['user' => $user], 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'User not found'], 404);
+            return response()->json(['message' => 'Utilisateur non trouvé'], 404);
         }
     }
     
