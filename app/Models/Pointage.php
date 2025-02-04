@@ -10,16 +10,8 @@ class Pointage extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'arrival_date',
-        'last_departure',
-        'location',
-        'status',
-        'is_active',
-        'total_hours',
-        'counter',
-        'weekly_hours',
-        'monthly_hours'
+        'user_id', 'arrival_date', 'total_hours', 'counter', 'weekly_hours', 'monthly_hours', 'is_active'
+
     ];
 
     public function user()
