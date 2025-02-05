@@ -59,10 +59,7 @@ span.slogon {
     font-size: 40px;
     font-weight: bold;
 }
-.entete  span.slogon {
-    font-size: 15px;
-    color: #fff;
-}
+
 .briefcase {
     display: flex;
     flex-direction: column;
@@ -72,4 +69,8 @@ span.slogon {
 .entete  img.logo {
     width: 50px;
     border-radius: 70px;
+}
+.entete  span.slogon {
+    font-size: 15px;
+    color: #fff;
 }
