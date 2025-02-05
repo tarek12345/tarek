@@ -10,9 +10,9 @@
   background-size: cover;
 }
 .sidebar{
-  /* background: #9c27b0; */
+  background: #4b0677;
   height: 100vh;
-  width: 15%;
+  width: 10%;
   display: flex;
   flex-direction: column;
   gap: 30px;
@@ -21,7 +21,7 @@
 }
 
 div#v-pills-tabContent {
-    width: 85%;
+    width: 90%;
 }
 /* div#v-pills-tabContent {
   background: #80808054;
@@ -57,10 +57,39 @@ div#v-pills-tabContent {
     margin-top: 20px;
     color: #333;
   }
-  .entete {
-    /* background: #9C27B0; */
+app-header {
     display: flex;
-    justify-content: end;
-    padding: 10px;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background: #4b0677;
 }
 
+
+.tiltle {
+  background: #ffffff;
+  padding: 15px;
+  margin: 10px;
+  border-radius: 10px;
+  text-align: center;
+  font-family: "Poppins", serif;
+  font-size: 40px;
+  font-weight: bold;
+}
+.tiltle h1 {
+  color: #4b0677
+}
+.briefcase {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0px 0px 39px;
+}
+.entete  img.logo {
+  width: 50px;
+  border-radius: 70px;
+}
+.entete  span.slogon {
+  font-size: 15px;
+  color: #fff;
+}

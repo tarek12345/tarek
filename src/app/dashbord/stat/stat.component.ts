@@ -21,7 +21,7 @@ export class StatComponent implements OnInit {
   selectedUserday:  { weekRange: string, days: string[] } | null = null; // Typage de selectedUser 
   currentTime: string = '';
   user: any;
-  selectedUser :any
+  selectedUser :any =[]
   userId: number = 0;
   location: string = '';
   arrivalDate: string = '';
@@ -38,6 +38,9 @@ export class StatComponent implements OnInit {
   dailyTotal: number = 0; // Total des heures travaillées par jour
   weeklyTotal: number = 0; // Total hebdomadaire
   monthlyTotal: number = 0; // Total mensuel
+  latitude: number | null = null;
+  longitude: number | null = null;
+  address: string = 'Adresse non disponible';
   constructor(
     private apiService: ApiService,
     private userService: UserService,
@@ -48,7 +51,6 @@ export class StatComponent implements OnInit {
   ngOnInit(): void {
     this.initializeUser();
     this.loadCounterState();
-  
 }
 
 initializeUser (): void {
@@ -112,7 +114,7 @@ loadCounterState(): void {
 
   openPopup(user: any): void {
     this.selectedUser = user; // Stocker l'utilisateur sélectionné
-  
+  this.selectedUserday =user
     if (this.userdetaile.role === 'administrator') {
       this.displayStyle = "block"; // Afficher le modal
     } else {
@@ -230,18 +232,37 @@ stopCounter(): void {
     }
 }
 
-  async getLocation(): Promise<string> {
-    return new Promise((resolve, reject) => {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          resolve(`Latitude: ${position.coords.latitude}, Longitude: ${position.coords.longitude}`);
-        },
-        () => {
-          reject('Impossible de récupérer la localisation.');
+getLocation(): Promise<string> {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        
+        // Use OpenStreetMap Nominatim API to get the address
+        const url = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json&addressdetails=1`;
+        
+        try {
+          const response = await fetch(url);
+          const data = await response.json();
+          if (data && data.address) {
+            // Resolve the address string
+            const address = `${data.address.road || ''}, ${data.address.city || ''}, ${data.address.country || ''}`;
+            resolve(address.trim());
+          } else {
+            reject('Adresse non disponible');
+          }
+        } catch (error) {
+          reject('Impossible de récupérer l\'adresse.');
         }
-      );
-    });
-  }
+      },
+      () => {
+        reject('Impossible de récupérer la localisation.');
+      }
+    );
+  });
+}
+
   formatDuration(seconds: number): string {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
@@ -311,6 +332,10 @@ stopCounter(): void {
         const currentDay = new Date().getDay(); // 0 = dimanche, 6 = samedi
         return currentDay === 0 || currentDay === 6; // Retourne true si samedi ou dimanche
       }
-      
+
+
+ 
+
+ 
       
 }

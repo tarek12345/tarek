@@ -25,6 +25,7 @@ import { HomeComponent } from './home/home.component';
 import { AddEmployesComponent } from './home/add-employes/add-employes.component'; // Import standalone component
 import { HeaderComponent } from './layout/header/header.component';
 import { WeekviewComponent } from './layout/weekview/weekview.component';
+import { GeolocationComponent } from './layout/geolocation/geolocation.component';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { WeekviewComponent } from './layout/weekview/weekview.component';
     ResetpasswordComponent,
     HeaderComponent,
     WeekviewComponent,
+    GeolocationComponent,
   ],
   imports: [
     BrowserModule,

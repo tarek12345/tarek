@@ -8,7 +8,7 @@
   background: #fff;
   border-radius: 10px;
   padding: 10px;
-  width: 30%;
+  width: 15%;
   text-align: center;
   /* display: flex;
   justify-content: center;
@@ -16,17 +16,24 @@
 
 }
 .rightcontent {
-    width: 70%;
+    width: 35%;
     background: #fff;
     border-radius: 10px;
     padding: 10px;
     gap: 11px;
 }
 .content-dashboard {
-    gap: 10px;
+  gap: 10px;
+  padding: 14px;
 }
 .conteneuruser {
     text-align: justify;
+}
+.chats {
+  width: 50%;
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px;
 }
 .status-summary {
     display: flex;
@@ -82,7 +89,18 @@
     border-radius: 50%;
     animation: spin 1s linear infinite;
   }
-  
+  img.icons {
+    width: 44px;
+    object-fit: cover;
+}
+.arrive span {
+  font-weight: bold;
+  color: #d268cc;
+}
+.depart span {
+  font-weight: bold;
+  color: #6e7174;
+}
   @keyframes spin {
     from {
       transform: rotate(0deg);

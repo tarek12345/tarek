@@ -23,26 +23,20 @@
         <!-- Boutons d'arrivée et de départ -->
         <div class="buttons">
           <ng-container *ngIf="!isWeekend(); else noPointage">
-            <button 
-              class="btn btn-success" 
-              (click)="onArrival()" 
-              [disabled]="status === 'au bureau'">
+            <button class="btn btn-success" (click)="onArrival()" [disabled]="status === 'au bureau'">
               Arrivée
             </button>
-            <button 
-              class="btn btn-dark" 
-              (click)="onDeparture()" 
-              [disabled]="status === 'hors ligne'">
+            <button class="btn btn-dark" (click)="onDeparture()" [disabled]="status === 'hors ligne'">
               Départ
             </button>
           </ng-container>
-          
+
           <ng-template #noPointage>
             <img src="../../../assets/sleepy.gif" alt="sleepy" />
           </ng-template>
         </div>
-        
-        
+
+
       </div>
     </div>
 
@@ -57,12 +51,8 @@
       <h5>Informations de départ :</h5>
       <p>Heure de départ : {{ departureDate | date: 'HH:mm:ss' }}</p>
     </div>
-     
+
   </div>
-<!-- Affichage des totaux -->
-<div>
- 
-</div>
   <!-- Section de chargement -->
   <div *ngIf="loading" class="loading-spinner">
     <div class="spinner"></div>
@@ -103,55 +93,76 @@
             </sup>
           </div>
         </ng-template>
-    
+
         <!-- Nom et statut de l'utilisateur -->
         <div class="conteneuruser">
           <p>{{ item.name }}</p>
           <p [class]="item.status === 'au bureau' ? 'text-success' : 'text-danger'">{{ item.status }}</p>
         </div>
-    
+
         <!-- Barre de progression pour le temps travaillé -->
         <div class="totalehourss">
           <div class="progress w-75">
-            <div
-              class="progress-bar"
-              [style.width]="getProgressPercentage(item.total_time_seconds || 0) + '%'"
-              [attr.aria-valuenow]="item.total_time_seconds || 0"
-              aria-valuemin="0"
-              [attr.aria-valuemax]="maxDailyHours"
-            >
-              <span class="text">{{ item.session_duration || '00:00:00' }}  / 8h</span>
+            <div class="progress-bar" [style.width]="getProgressPercentage(item.total_time_seconds || 0) + '%'"
+              [attr.aria-valuenow]="item.total_time_seconds || 0" aria-valuemin="0"
+              [attr.aria-valuemax]="maxDailyHours">
+              <span class="text">{{ item.session_duration || '00:00:00' }} / 8h</span>
             </div>
           </div>
         </div>
 
-  
-    
+
+
       </div>
     </div>
-         <!-- Affichage des totaux -->
-         <app-weekview [itemuser]="userdetaile"></app-weekview>
-   
+    <!-- Affichage des totaux -->
+    <app-weekview [itemuser]="userdetaile"></app-weekview>
+
+  </div>
+  <div class="chats">
+    
   </div>
 </div>
 >
 <!-- Modal pour afficher les détails de l'utilisateur -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStyle}"  >
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStyle}">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">Détails de {{ selectedUser?.name }}</h4>
       </div>
       <div class="modal-body">
-       
+
         <!-- Afficher le compteur -->
         <p>Temps travaillé : {{ formatDuration(selectedUser?.counter || 0) }}</p>
+        <div class="location d-flex">
+          <img src="../../../assets/location.gif" alt="location" class="icons" />
+          <p> {{ selectedUser?.location || 'Non disponible' }}</p>
+        </div>
 
         <!-- Afficher la localisation -->
-        <p>Localisation : {{ selectedUser?.location || 'Non disponible' }}</p>
+
+        <div *ngFor="let heur of  selectedUser.pointages ">
+          <div class="arrive">
+            <img src="../../../assets/busy.gif" alt="busy" class="icons" />
+            <span> Arrivé : </span>{{heur.arrival_date}}
+            <div class="location d-flex">
+              <img src="../../../assets/location.gif" alt="location" class="icons" />
+              <p> {{ selectedUser?.location || 'Non disponible' }}</p>
+            </div>
+          </div>
+          <div class="depart">
+            <img src="../../../assets/career.gif" alt="career" class="icons" />
+            <span> Depart : </span> {{heur.last_departure}}
+            <div class="location d-flex">
+              <img src="../../../assets/location.gif" alt="location" class="icons" />
+              <p> {{ selectedUser?.location || 'Non disponible' }}</p>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" (click)="closePopup()">Fermer</button>
+        <button type="button" class="btn btn-dark" (click)="closePopup()">Fermer</button>
       </div>
     </div>
   </div>

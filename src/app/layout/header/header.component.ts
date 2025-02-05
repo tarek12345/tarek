@@ -24,17 +24,18 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+   
     this.GetUserSByid()
   this.history.length
 if(this.datauser.pointages!="null"){
   this.getPointageHistory();
+
 }
+
   }
   GetUserSByid(){
     this.apiService.GetUserServiceByid(this.datauser.id).subscribe(data=>{
       this.datauser = data.user;
-      console.log('---w',this.datauser.arrival_date
-      )
     })
     }
   getPointageHistory(){

@@ -1,5 +1,10 @@
+<div class="briefcase">
+  <img src="assets/briefcase.gif"  class="logo" alt="logo">
+  <span class="slogon">Pointingworks</span>
+</div>
 <div class="btnsheraders">
-    <button class="btn btn-primary"  [disabled]="datauser.pointages!=null"  (click)="getPointageHistory()" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasLeft" aria-controls="offcanvasLeft">
+
+    <button class="btn btn-primary"  [disabled]="datauser.pointages==null"  (click)="getPointageHistory()" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasLeft" aria-controls="offcanvasLeft">
       <i class="bi bi-bell"></i><sup>{{history.length}}</sup>
       
     </button>
@@ -66,9 +71,10 @@
                     <strong>Heure d'arrivée :</strong> {{ entry.arrival_date }}<br />
                     <strong>Heure de départ :</strong> {{ entry.last_departure | date: 'HH:mm' }}<br />
                     <strong>Durée totale :</strong> 
-                    {{ entry.last_departure ? formatTime(entry.total_hours) : 'Non défini' }}
+                    {{ entry.session_duration  }}
+               
                   </p>
-                
+          
                   
                 </li>
               </ul>

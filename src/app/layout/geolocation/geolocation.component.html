@@ -1,0 +1,17 @@
+<div class="container">
+    <span>📍 Informations de Localisation</span>
+  
+    <p><strong>Nom :</strong> {{ localisation?.name }}</p>
+    <p><strong>Email :</strong> {{ localisation?.email }}</p>
+  
+    <div *ngIf="latitude !== null && longitude !== null">
+      <p><strong>Latitude :</strong> {{ latitude }}</p>
+      <p><strong>Longitude :</strong> {{ longitude }}</p>
+      <p><strong>Adresse :</strong> {{ address }}</p>
+    </div>
+  
+    <div *ngIf="latitude === null || longitude === null">
+      <p><strong>Localisation :</strong> Données non disponibles</p>
+    </div>
+  </div>
+  

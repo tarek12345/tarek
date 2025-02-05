@@ -16,6 +16,9 @@ export class HomeComponent implements OnInit {
   login = { email: '', password: '' };
   displayStyle: string = "none"; // Contrôle l'affichage du modal
   displayStyleF: string = "none"; // Contrôle l'affichage du modal
+  passwordFieldType: string = 'password';
+
+
   constructor(
     private userservice: UserService,
     private authservice :AuthService,
@@ -31,7 +34,9 @@ export class HomeComponent implements OnInit {
     }
   
   }
-
+  togglePasswordVisibility() {
+    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
+  }
   openPopup() { 
     this.displayStyle = "block"; 
   }

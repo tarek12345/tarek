@@ -1,7 +1,7 @@
 <!-- dashboard.component.html -->
 <div class="contentapp">
     <div class="entete">
-    <app-header [datauser]="user"   ></app-header>
+    <app-header [datauser]="user"></app-header>
   </div>
   <div class="dashed">
   <div class="sidebar">
@@ -16,6 +16,9 @@
       </div>
     </div>
     <div class="tab-content right" id="v-pills-tabContent">
+      <div class="tiltle">
+        <h1> Bienvenue au  Pointingworks</h1>
+      </div>
       <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
         <app-stat [userdetaile]=user  ></app-stat>
       </div>

@@ -54,3 +54,22 @@ button.dropdown-item.logout {
 .profil p i {
     font-size: 51px;
 }
+span.slogon {
+    font-family: "Poppins", serif;
+    font-size: 40px;
+    font-weight: bold;
+}
+.entete  span.slogon {
+    font-size: 15px;
+    color: #fff;
+}
+.briefcase {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0px 0px 39px;
+}
+.entete  img.logo {
+    width: 50px;
+    border-radius: 70px;
+}
