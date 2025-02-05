@@ -168,7 +168,6 @@ class AuthController extends Controller
     
         if (!$address) {
             $url = "https://nominatim.openstreetmap.org/reverse?lat={$latitude}&lon={$longitude}&format=json&addressdetails=1";
-    
             try {
                 $response = Http::get($url);
                 $data = $response->json();
