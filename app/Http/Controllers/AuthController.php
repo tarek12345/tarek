@@ -106,7 +106,7 @@ class AuthController extends Controller
         foreach ($users as $user) {
             $lastPointage = $user->pointages()->latest('created_at')->first();
             $status = 'hors ligne';
-        
+    
             if ($lastPointage) {
                 $status = $lastPointage->is_active ? 'au bureau' : 'hors ligne';
             }
@@ -119,7 +119,7 @@ class AuthController extends Controller
             $user->counter = $lastPointage ? $lastPointage->counter : 0;
             $user->weekly_hours = $lastPointage ? $lastPointage->weekly_hours : 0; 
             $user->monthly_hours = $lastPointage ? $lastPointage->monthly_hours : 0; 
-            $user->session_duration = $lastPointage ? gmdate('H:i:s', $lastPointage->counter) : '00:00:00'; // Formater counter en HH:MM:SS
+            $user->session_duration = $lastPointage ? gmdate('H:i:s', $lastPointage->counter) : '00:00:00';
     
             // Ajouter le nom du jour (day_name)
             $dayName = Carbon::today()->locale('fr')->isoFormat('dddd'); // Exemple: lundi, mardi
@@ -143,10 +143,15 @@ class AuthController extends Controller
     
             // Formater en HH:MM:SS
             $user->total_hours_today = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+    
+            // Récupérer les pointages de l'utilisateur
+            $pointages = $user->pointages()->orderBy('created_at', 'desc')->get();
+            $user->pointages = $pointages;
         }
         
         return response()->json(['users' => $users], 200);
     }
+    
     
     
     
