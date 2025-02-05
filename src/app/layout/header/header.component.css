@@ -66,11 +66,22 @@ span.slogon {
     align-items: center;
     padding: 10px 0px 0px 39px;
 }
-.entete  img.logo {
+  img.logo {
     width: 50px;
     border-radius: 70px;
-}
-.entete  span.slogon {
+}  span.slogon {
     font-size: 15px;
     color: #fff;
 }
+.tiltle {
+    padding: 15px;
+    margin: 10px;
+    border-radius: 10px;
+    text-align: center;
+    font-family: "Poppins", serif;
+    font-size: 40px;
+    font-weight: bold;
+  }
+  .tiltle h1 {
+    color: #fff
+  }

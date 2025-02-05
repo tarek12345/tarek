@@ -72,9 +72,9 @@
         </p>
       </div>
     </div>
-
+<div class="listuser">
     <!-- Liste des autres utilisateurs -->
-    <div *ngFor="let item of allUsers" (click)="openPopup(item)">
+    <div   *ngFor="let item of allUsers" (click)="openPopup(item)">
       <div class="status all" *ngIf="item.role !== 'administrator' && item.id !== userdetaile.id">
         <!-- Image de profil ou icône par défaut -->
         <ng-container *ngIf="item.profile_image_url; else defaultImage">
@@ -115,6 +115,7 @@
 
       </div>
     </div>
+  </div>
     <!-- Affichage des totaux -->
     <app-weekview [itemuser]="userdetaile"></app-weekview>
 

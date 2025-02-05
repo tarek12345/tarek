@@ -66,19 +66,7 @@ app-header {
 }
 
 
-.tiltle {
-  background: #ffffff;
-  padding: 15px;
-  margin: 10px;
-  border-radius: 10px;
-  text-align: center;
-  font-family: "Poppins", serif;
-  font-size: 40px;
-  font-weight: bold;
-}
-.tiltle h1 {
-  color: #4b0677
-}
+
 .briefcase {
   display: flex;
   flex-direction: column;
@@ -92,4 +80,8 @@ app-header {
 .entete  span.slogon {
   font-size: 15px;
   color: #fff;
+}
+.tab-content > .active {
+  display: block;
+  padding: 70px 24px;
 }
