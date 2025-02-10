@@ -146,7 +146,47 @@ class AuthController extends Controller
     
             // Récupérer les pointages de l'utilisateur
             $pointages = $user->pointages()->orderBy('created_at', 'desc')->get();
+
             $user->pointages = $pointages;
+              // Initialiser les jours de la semaine avec le nom des jours
+              $daysOfWeek = [
+                'lundi' => ['name' => 'Lundi', 'status' => false, 'total_seconds' => 0],
+                'mardi' => ['name' => 'Mardi', 'status' => false, 'total_seconds' => 0],
+                'mercredi' => ['name' => 'Mercredi', 'status' => false, 'total_seconds' => 0],
+                'jeudi' => ['name' => 'Jeudi', 'status' => false, 'total_seconds' => 0],
+                'vendredi' => ['name' => 'Vendredi', 'status' => false, 'total_seconds' => 0],
+            ];
+    
+            // Parcourir les pointages et ajouter les durées par jour
+            foreach ($user->pointages as $pointage) {
+                // Récupérer le jour de la semaine (en français)
+                $dayName = Carbon::parse($pointage->created_at)->locale('fr')->dayName;
+    
+                // Si le jour existe dans notre tableau, mettre à jour les informations
+                if (array_key_exists($dayName, $daysOfWeek)) {
+                    // Mettre à jour le statut du jour en fonction du dernier pointage
+                    $daysOfWeek[$dayName]['status'] = true;
+    
+                    // Ajouter les secondes totales pour ce jour
+                    $daysOfWeek[$dayName]['total_seconds'] += $pointage->counter;
+                }
+            }
+    
+            // Formater les durées en "HH:MM:SS"
+            foreach ($daysOfWeek as $day => $data) {
+                $hours = floor($data['total_seconds'] / 3600);
+                $minutes = floor(($data['total_seconds'] % 3600) / 60);
+                $seconds = $data['total_seconds'] % 60;
+    
+                // Ajouter un zéro devant les valeurs inférieures à 10
+                $formattedTime = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+    
+                // Ajouter le temps formaté au tableau
+                $daysOfWeek[$day]['formatted_hours'] = $formattedTime;
+            }
+    
+            // Ajouter le tableau des jours de la semaine dans la réponse
+            $user->work_schedule = $daysOfWeek;
         }
         
         return response()->json(['users' => $users], 200);
