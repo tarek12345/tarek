@@ -1,0 +1,48 @@
+#allusers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Espacement entre les items */
+    justify-content: center;
+  }
+  
+  #allusers   .classright {
+    width: calc(50% - 10px); /* 2 éléments par ligne */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #f9f9f9;
+  }
+  div#allusers img.enteimg, div#allusers i.bi.bi-person-circle {
+    width: 88px;
+    object-fit: cover;
+    height: 88px;
+    border-radius: 50%;
+    font-size: 88px;
+    line-height: 88px;
+}
+h1 {
+    text-align: center;
+    color: #fff;
+}
+#allusers  .status sup {
+    left: 71px;
+    top: 69px;
+    position: absolute;
+}
+  /* Responsive pour tablette */
+  @media (max-width: 768px) {
+    .classright {
+      width: calc(50% - 10px); /* Toujours 2 éléments par ligne */
+    }
+  }
+  
+  /* Responsive pour mobile */
+  @media (max-width: 480px) {
+    .classright {
+      width: 100%; /* 1 élément par ligne */
+    }
+  }
+  
