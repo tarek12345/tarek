@@ -175,7 +175,7 @@ public function showHistory($userId)
             'monthly_hours' => $pointage->monthly_hours,
             'location' => $pointage->location,
         ];
-    });
+    }); 
 
     return response()->json([
         'message' => 'Historique des pointages récupéré avec succès.',

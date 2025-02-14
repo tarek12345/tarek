@@ -12,10 +12,12 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
-    use Illuminate\Support\Facades\Http;
-    use Illuminate\Support\Facades\Cache;
-    use Carbon\Carbon;
-    use App\Models\Pointage;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage; // Add this line
+use Carbon\Carbon;
+use App\Models\Pointage;
+use Aws\Rekognition\RekognitionClient; // Make sure to include this at the top of your file
 
 class AuthController extends Controller
 {
@@ -66,38 +68,7 @@ class AuthController extends Controller
     }
     
     
-    // public function getUsers()
-    // {
-    //     // Récupérer tous les utilisateurs
-    //     $users = User::all();
-        
-    //     foreach ($users as $user) {
-    //         // Récupérer le dernier pointage de l'utilisateur
-    //         $lastPointage = $user->pointages()->latest('created_at')->first();
-            
-    //         // Déterminer le statut basé sur le dernier pointage
-    //         $status = 'hors ligne'; // Statut par défaut
-    //         if ($lastPointage) {
-    //             $status = $lastPointage->is_active ? 'au bureau' : 'hors ligne';
-    //         }
-    
-    //         // Ajouter les informations supplémentaires
-    //         $user->profile_image_url = $user->profile_image 
-    //             ? URL::to('/') . '/storage/' . $user->profile_image 
-    //             : null;
-    //         $user->status = $status;
-    
-    //         // Ajouter les éléments supplémentaires du pointage (s'ils existent)
-    //         $user->arrival_date = $lastPointage ? $lastPointage->arrival_date : null;
-    //         $user->location = $lastPointage ? $lastPointage->location : null;
-    //         $user->total_hours = $lastPointage ? $lastPointage->total_hours : 0; // Par défaut 0
-    //     }
-        
-    //     // Retourner la réponse avec les utilisateurs et leurs informations supplémentaires
-    //     return response()->json([
-    //         'users' => $users
-    //     ], 200);
-    // }
+  
     
     public function getUsers()
     {
@@ -485,6 +456,94 @@ public function resetPassword(Request $request)
         'message' => 'Mot de passe réinitialisé avec succès.'
     ]);
 }
+ // reconaissance  face // 
+ public function loginWithFace(Request $request)
+ {
+     // Validation des données
+     $validated = $request->validate([
+         'face_image' => 'required|string', // L'image faciale en base64
+     ]);
 
+     // Récupérer tous les utilisateurs
+     $users = User::all();
+
+     foreach ($users as $user) {
+         // Vérifier si l'image faciale correspond à l'image enregistrée
+         if ($this->isFaceMatch($validated['face_image'], $user->profile_image)) {
+             // Créer un token Sanctum pour l'utilisateur
+             $token = $user->createToken('MyApp')->plainTextToken;
+
+             // Retourner le token et les informations de l'utilisateur
+             return response()->json([
+                 'message' => 'Connexion réussie',
+                 'token' => $token,
+                 'user' => $user
+             ], 200);
+         }
+     }
+
+     return response()->json(['message' => 'Échec de la connexion, visage non reconnu'], 401);
+ }
+
+private function isFaceMatch($capturedFace, $storedImagePath)
+{
+    // Décoder l'image capturée
+    $capturedFaceData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $capturedFace));
+
+    // Vérifier si le chemin de l'image stockée existe
+    if (!Storage::exists('public/' . $storedImagePath)) {
+        \Log::error('Stored image not found at path: public/' . $storedImagePath);
+        return false; // or handle the error as needed
+    }
+
+    // Charger l'image stockée
+    $storedFaceData = Storage::get('public/' . $storedImagePath);
+
+    // Log the sizes of the images
+    \Log::info('Captured face data size: ', ['size' => strlen($capturedFaceData)]);
+    \Log::info('Stored face data size: ', ['size' => strlen($storedFaceData)]);
+
+    // Compare les visages
+    return $this->compareFaces($capturedFaceData, $storedFaceData);
+}
+
+private function compareFaces($capturedFaceData, $storedFaceData)
+{
+    // Initialize the Rekognition client
+    $client = new RekognitionClient([
+        'version' => 'latest',
+        'region' => 'us-west-2', // Change to your region
+        'credentials' => [
+            'key' => 'YOUR_AWS_ACCESS_KEY',
+            'secret' => 'YOUR_AWS_SECRET_KEY',
+        ],
+    ]);
+
+    // Prepare the images for comparison
+    $sourceImage = [
+        'Bytes' => $capturedFaceData,
+    ];
+
+    // The stored image should be loaded from the local storage
+    $targetImage = [
+        'Bytes' => Storage::get('public/' . $storedFaceData), // Load the stored image data
+    ];
+
+    // Call the CompareFaces API
+    $result = $client->compareFaces([
+        'SourceImage' => $sourceImage,
+        'TargetImage' => $targetImage,
+        'SimilarityThreshold' => 90,
+    ]);
+    
+    \Log::info('AWS Rekognition response: ', ['response' => $result]);
+
+    // Check if any faces matched
+    if (count($result['FaceMatches']) > 0) {
+        return true; // Faces match
+    }
+
+    return false; // No match found
+}
 
 }
