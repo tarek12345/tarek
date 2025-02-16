@@ -459,21 +459,18 @@ public function resetPassword(Request $request)
  // reconaissance  face // 
  public function loginWithFace(Request $request)
  {
-     // Validation des données
      $validated = $request->validate([
          'face_image' => 'required|string', // L'image faciale en base64
      ]);
-
-     // Récupérer tous les utilisateurs
+ 
      $users = User::all();
-
+ 
      foreach ($users as $user) {
          // Vérifier si l'image faciale correspond à l'image enregistrée
          if ($this->isFaceMatch($validated['face_image'], $user->profile_image)) {
              // Créer un token Sanctum pour l'utilisateur
              $token = $user->createToken('MyApp')->plainTextToken;
-
-             // Retourner le token et les informations de l'utilisateur
+ 
              return response()->json([
                  'message' => 'Connexion réussie',
                  'token' => $token,
@@ -481,69 +478,108 @@ public function resetPassword(Request $request)
              ], 200);
          }
      }
-
+ 
      return response()->json(['message' => 'Échec de la connexion, visage non reconnu'], 401);
  }
 
-private function isFaceMatch($capturedFace, $storedImagePath)
+ private function isFaceMatch($capturedFace, $storedImagePath)
+ {
+     // Décoder l'image capturée
+     $capturedFaceData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $capturedFace));
+ 
+     // Vérifier si le chemin de l'image stockée existe
+     if (!Storage::exists('public/' . $storedImagePath)) {
+         \Log::error('Stored image not found at path: public/' . $storedImagePath);
+         return false;
+     }
+ 
+     // Charger l'image stockée
+     $storedFaceData = Storage::get('public/' . $storedImagePath);
+ 
+     // Log the sizes of the images
+     \Log::info('Captured face data size: ', ['size' => strlen($capturedFaceData)]);
+     \Log::info('Stored face data size: ', ['size' => strlen($storedFaceData)]);
+ 
+     // Compare les visages
+     return $this->compareFaces($capturedFaceData, $storedFaceData);
+ }
+
+
+public function detectFacialFeatures(Request $request)
 {
-    // Décoder l'image capturée
-    $capturedFaceData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $capturedFace));
+    $validated = $request->validate([
+        'face_image' => 'required|string',
+    ]);
 
-    // Vérifier si le chemin de l'image stockée existe
-    if (!Storage::exists('public/' . $storedImagePath)) {
-        \Log::error('Stored image not found at path: public/' . $storedImagePath);
-        return false; // or handle the error as needed
-    }
-
-    // Charger l'image stockée
-    $storedFaceData = Storage::get('public/' . $storedImagePath);
-
-    // Log the sizes of the images
-    \Log::info('Captured face data size: ', ['size' => strlen($capturedFaceData)]);
-    \Log::info('Stored face data size: ', ['size' => strlen($storedFaceData)]);
-
-    // Compare les visages
-    return $this->compareFaces($capturedFaceData, $storedFaceData);
-}
-
-private function compareFaces($capturedFaceData, $storedFaceData)
-{
-    // Initialize the Rekognition client
-    $client = new RekognitionClient([
+    // Utilisez AWS Rekognition ou une autre bibliothèque pour détecter les traits
+    // Exemple avec AWS Rekognition
+    $rekognition = new RekognitionClient([
+        'region' => env('AWS_DEFAULT_REGION'),
         'version' => 'latest',
-        'region' => 'us-west-2', // Change to your region
         'credentials' => [
-            'key' => 'YOUR_AWS_ACCESS_KEY',
-            'secret' => 'YOUR_AWS_SECRET_KEY',
+            'key' => env('AWS_ACCESS_KEY_ID'),
+            'secret' => env('AWS_SECRET_ACCESS_KEY'),
         ],
     ]);
 
-    // Prepare the images for comparison
-    $sourceImage = [
-        'Bytes' => $capturedFaceData,
-    ];
-
-    // The stored image should be loaded from the local storage
-    $targetImage = [
-        'Bytes' => Storage::get('public/' . $storedFaceData), // Load the stored image data
-    ];
-
-    // Call the CompareFaces API
-    $result = $client->compareFaces([
-        'SourceImage' => $sourceImage,
-        'TargetImage' => $targetImage,
-        'SimilarityThreshold' => 90,
+    $result = $rekognition->detectFaces([
+        'Image' => [
+            'Bytes' => base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $validated['face_image'])),
+        ],
+        'Attributes' => ['ALL'],
     ]);
-    
-    \Log::info('AWS Rekognition response: ', ['response' => $result]);
 
-    // Check if any faces matched
-    if (count($result['FaceMatches']) > 0) {
-        return true; // Faces match
+    return response()->json($result['FaceDetails']);
+}
+public function compareFace(Request $request)
+{
+    try {
+        $user = Auth::user(); // Récupérer l'utilisateur connecté
+
+        if (!$user || !$user->profile_image) {
+            return response()->json(['message' => 'Aucune image de profil trouvée'], 404);
+        }
+
+        // Vérifier si une image a été envoyée
+        if (!$request->hasFile('captured_image')) {
+            return response()->json(['message' => 'Aucune image capturée fournie'], 400);
+        }
+
+        $capturedImage = $request->file('captured_image')->store('temp', 'public'); // Sauvegarde temporaire
+
+        // Initialiser AWS Rekognition
+        $rekognition = new RekognitionClient([
+            'region' => env('AWS_DEFAULT_REGION'),
+            'version' => 'latest',
+            'credentials' => [
+                'key' => env('AWS_ACCESS_KEY_ID'),
+                'secret' => env('AWS_SECRET_ACCESS_KEY'),
+            ],
+        ]);
+
+        // Comparer les visages
+        $result = $rekognition->compareFaces([
+            'SourceImage' => [
+                'S3Object' => [
+                    'Bucket' => env('AWS_BUCKET'),
+                    'Name' => $user->profile_image, // Image de profil
+                ],
+            ],
+            'TargetImage' => [
+                'Bytes' => file_get_contents(storage_path('app/public/' . $capturedImage)), // Image capturée
+            ],
+            'SimilarityThreshold' => 80, // Seuil de similarité
+        ]);
+
+        // Vérifier le résultat
+        if (!empty($result['FaceMatches'])) {
+            return response()->json(['message' => 'Visage reconnu', 'similarity' => $result['FaceMatches'][0]['Similarity']]);
+        } else {
+            return response()->json(['message' => 'Visage non reconnu'], 401);
+        }
+    } catch (\Exception $e) {
+        return response()->json(['message' => 'Erreur : ' . $e->getMessage()], 500);
     }
-
-    return false; // No match found
 }
 
 }

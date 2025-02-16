@@ -28,6 +28,7 @@ Route::post('register', [AuthController::class, 'register']);
 // Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('login', [AuthController::class, 'login']);
 Route::post('/login/face', [AuthController::class, 'loginWithFace']);
+Route::post('/login/detect-facial-features', [AuthController::class, 'detectFacialFeatures']);
 
 Route::get('users', [AuthController::class, 'getUsers']);
 Route::middleware('auth:sanctum')->post('logout', [AuthController::class, 'logout']);
