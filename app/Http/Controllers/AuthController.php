@@ -504,7 +504,18 @@ public function resetPassword(Request $request)
      return $this->compareFaces($capturedFaceData, $storedFaceData);
  }
 
+// Suppression d'un utilisateur
+public function deleteUser($id)
+{
+    $user = User::find($id);
 
+    if (!$user) {
+        return response()->json(['message' => 'Utilisateur non trouvé'], 404);
+    }
+
+    $user->delete();
+    return response()->json(['message' => 'Utilisateur supprimé avec succès'], 200);
+}
 public function detectFacialFeatures(Request $request)
 {
     $validated = $request->validate([
