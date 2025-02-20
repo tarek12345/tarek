@@ -45,6 +45,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/users/{userId}/pointages/arrivee', [PointageController::class, 'onArrival']);
     Route::post('/users/{userId}/pointages/depart', [PointageController::class, 'onDeparture']);
     Route::get('/users/{userId}/pointages/historique', [PointageController::class, 'showHistory']);
+    Route::put('/users/{userId}/pointages/edit', [PointageController::class, 'editPointage']);
     Route::get('/users/{userId}/pointages/active-counters', [PointageController::class, 'getActiveCounter']);
     Route::get('/users/{userId}/worked-hours', [PointageController::class, 'getWorkedHours']);
 });
