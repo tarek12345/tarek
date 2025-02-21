@@ -70,101 +70,193 @@ class AuthController extends Controller
     
   
     
-    public function getUsers()
-    {
-        $users = User::all();
+    // public function getUsers()
+    // {
+    //     $users = User::all();
         
-        foreach ($users as $user) {
-            $lastPointage = $user->pointages()->latest('created_at')->first();
-            $status = 'hors ligne';
+    //     foreach ($users as $user) {
+    //         $lastPointage = $user->pointages()->latest('created_at')->first();
+    //         $status = 'hors ligne';
     
-            if ($lastPointage) {
-                $status = $lastPointage->is_active ? 'au bureau' : 'hors ligne';
-            }
+    //         if ($lastPointage) {
+    //             $status = $lastPointage->is_active ? 'au bureau' : 'hors ligne';
+    //         }
     
-            $user->profile_image_url = $user->profile_image ? URL::to('/') . '/storage/' . $user->profile_image : null;
-            $user->status = $status;
-            $user->arrival_date = $lastPointage ? $lastPointage->arrival_date : null;
-            $user->location = $lastPointage ? $lastPointage->location : null;
-            $user->total_hours = $lastPointage ? $lastPointage->total_hours : 0;
-            $user->counter = $lastPointage ? $lastPointage->counter : 0;
-            $user->weekly_hours = $lastPointage ? $lastPointage->weekly_hours : 0; 
-            $user->monthly_hours = $lastPointage ? $lastPointage->monthly_hours : 0; 
-            $user->session_duration = $lastPointage ? gmdate('H:i:s', $lastPointage->counter) : '00:00:00';
+    //         $user->profile_image_url = $user->profile_image ? URL::to('/') . '/storage/' . $user->profile_image : null;
+    //         $user->status = $status;
+    //         $user->arrival_date = $lastPointage ? $lastPointage->arrival_date : null;
+    //         $user->location = $lastPointage ? $lastPointage->location : null;
+    //         $user->total_hours = $lastPointage ? $lastPointage->total_hours : 0;
+    //         $user->counter = $lastPointage ? $lastPointage->counter : 0;
+    //         $user->weekly_hours = $lastPointage ? $lastPointage->weekly_hours : 0; 
+    //         $user->monthly_hours = $lastPointage ? $lastPointage->monthly_hours : 0; 
+    //         $user->session_duration = $lastPointage ? gmdate('H:i:s', $lastPointage->counter) : '00:00:00';
     
-            // Ajouter le nom du jour (day_name)
-            $dayName = Carbon::today()->locale('fr')->isoFormat('dddd'); // Exemple: lundi, mardi
-            $user->day_name = ucfirst($dayName);  // Capitalisation du nom du jour
+    //         // Ajouter le nom du jour (day_name)
+    //         $dayName = Carbon::today()->locale('fr')->isoFormat('dddd'); // Exemple: lundi, mardi
+    //         $user->day_name = ucfirst($dayName);  // Capitalisation du nom du jour
     
-            // Ajouter le total des heures travaillées aujourd'hui (total_hours_today) au format HH:MM:SS
-            $today = Carbon::today()->format('Y-m-d');
-            $pointagesToday = Pointage::where('user_id', $user->id)
-                ->whereDate('arrival_date', '=', $today)
-                ->get();
+    //         // Ajouter le total des heures travaillées aujourd'hui (total_hours_today) au format HH:MM:SS
+    //         $today = Carbon::today()->format('Y-m-d');
+    //         $pointagesToday = Pointage::where('user_id', $user->id)
+    //             ->whereDate('arrival_date', '=', $today)
+    //             ->get();
     
-            $totalSecondsToday = 0;
-            foreach ($pointagesToday as $pointage) {
-                $totalSecondsToday += $pointage->counter;
-            }
+    //         $totalSecondsToday = 0;
+    //         foreach ($pointagesToday as $pointage) {
+    //             $totalSecondsToday += $pointage->counter;
+    //         }
     
-            // Convertir les secondes totales en heures, minutes et secondes
-            $hours = floor($totalSecondsToday / 3600);
-            $minutes = floor(($totalSecondsToday % 3600) / 60);
-            $seconds = $totalSecondsToday % 60;
+    //         // Convertir les secondes totales en heures, minutes et secondes
+    //         $hours = floor($totalSecondsToday / 3600);
+    //         $minutes = floor(($totalSecondsToday % 3600) / 60);
+    //         $seconds = $totalSecondsToday % 60;
     
-            // Formater en HH:MM:SS
-            $user->total_hours_today = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+    //         // Formater en HH:MM:SS
+    //         $user->total_hours_today = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
     
-            // Récupérer les pointages de l'utilisateur
-            $pointages = $user->pointages()->orderBy('created_at', 'desc')->get();
+    //         // Récupérer les pointages de l'utilisateur
+    //         $pointages = $user->pointages()->orderBy('created_at', 'desc')->get();
 
-            $user->pointages = $pointages;
-              // Initialiser les jours de la semaine avec le nom des jours
-              $daysOfWeek = [
-                'lundi' => ['name' => 'Lundi', 'status' => false, 'total_seconds' => 0],
-                'mardi' => ['name' => 'Mardi', 'status' => false, 'total_seconds' => 0],
-                'mercredi' => ['name' => 'Mercredi', 'status' => false, 'total_seconds' => 0],
-                'jeudi' => ['name' => 'Jeudi', 'status' => false, 'total_seconds' => 0],
-                'vendredi' => ['name' => 'Vendredi', 'status' => false, 'total_seconds' => 0],
-            ];
+    //         $user->pointages = $pointages;
+    //           // Initialiser les jours de la semaine avec le nom des jours
+    //           $daysOfWeek = [
+    //             'lundi' => ['name' => 'Lundi', 'status' => false, 'total_seconds' => 0],
+    //             'mardi' => ['name' => 'Mardi', 'status' => false, 'total_seconds' => 0],
+    //             'mercredi' => ['name' => 'Mercredi', 'status' => false, 'total_seconds' => 0],
+    //             'jeudi' => ['name' => 'Jeudi', 'status' => false, 'total_seconds' => 0],
+    //             'vendredi' => ['name' => 'Vendredi', 'status' => false, 'total_seconds' => 0],
+    //         ];
     
-            // Parcourir les pointages et ajouter les durées par jour
-            foreach ($user->pointages as $pointage) {
-                // Récupérer le jour de la semaine (en français)
-                $dayName = Carbon::parse($pointage->created_at)->locale('fr')->dayName;
+    //         // Parcourir les pointages et ajouter les durées par jour
+    //         foreach ($user->pointages as $pointage) {
+    //             // Récupérer le jour de la semaine (en français)
+    //             $dayName = Carbon::parse($pointage->created_at)->locale('fr')->dayName;
     
-                // Si le jour existe dans notre tableau, mettre à jour les informations
-                if (array_key_exists($dayName, $daysOfWeek)) {
-                    // Mettre à jour le statut du jour en fonction du dernier pointage
-                    $daysOfWeek[$dayName]['status'] = true;
+    //             // Si le jour existe dans notre tableau, mettre à jour les informations
+    //             if (array_key_exists($dayName, $daysOfWeek)) {
+    //                 // Mettre à jour le statut du jour en fonction du dernier pointage
+    //                 $daysOfWeek[$dayName]['status'] = true;
     
-                    // Ajouter les secondes totales pour ce jour
-                    $daysOfWeek[$dayName]['total_seconds'] += $pointage->counter;
-                }
-            }
+    //                 // Ajouter les secondes totales pour ce jour
+    //                 $daysOfWeek[$dayName]['total_seconds'] += $pointage->counter;
+    //             }
+    //         }
     
-            // Formater les durées en "HH:MM:SS"
-            foreach ($daysOfWeek as $day => $data) {
-                $hours = floor($data['total_seconds'] / 3600);
-                $minutes = floor(($data['total_seconds'] % 3600) / 60);
-                $seconds = $data['total_seconds'] % 60;
+    //         // Formater les durées en "HH:MM:SS"
+    //         foreach ($daysOfWeek as $day => $data) {
+    //             $hours = floor($data['total_seconds'] / 3600);
+    //             $minutes = floor(($data['total_seconds'] % 3600) / 60);
+    //             $seconds = $data['total_seconds'] % 60;
     
-                // Ajouter un zéro devant les valeurs inférieures à 10
-                $formattedTime = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+    //             // Ajouter un zéro devant les valeurs inférieures à 10
+    //             $formattedTime = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
     
-                // Ajouter le temps formaté au tableau
-                $daysOfWeek[$day]['formatted_hours'] = $formattedTime;
-            }
+    //             // Ajouter le temps formaté au tableau
+    //             $daysOfWeek[$day]['formatted_hours'] = $formattedTime;
+    //         }
     
-            // Ajouter le tableau des jours de la semaine dans la réponse
-            $user->work_schedule = $daysOfWeek;
-        }
+    //         // Ajouter le tableau des jours de la semaine dans la réponse
+    //         $user->work_schedule = $daysOfWeek;
+    //     }
         
-        return response()->json(['users' => $users], 200);
+    //     return response()->json(['users' => $users], 200);
+    // }
+    
+    
+    public function getUsers()
+{
+    $users = User::all();
+    
+    foreach ($users as $user) {
+        $lastPointage = $user->pointages()->latest('created_at')->first();
+        $status = 'hors ligne';
+
+        if ($lastPointage) {
+            $status = $lastPointage->is_active ? 'au bureau' : 'hors ligne';
+        }
+
+        $user->profile_image_url = $user->profile_image ? URL::to('/') . '/storage/' . $user->profile_image : null;
+        $user->status = $status;
+        $user->arrival_date = $lastPointage ? $lastPointage->arrival_date : null;
+        $user->location = $lastPointage ? $lastPointage->location : null;
+        $user->total_hours = $lastPointage ? $lastPointage->total_hours : 0;
+        $user->counter = $lastPointage ? $lastPointage->counter : 0;
+        $user->weekly_hours = $lastPointage ? $lastPointage->weekly_hours : 0; 
+        $user->monthly_hours = $lastPointage ? $lastPointage->monthly_hours : 0; 
+        $user->session_duration = $lastPointage ? gmdate('H:i:s', $lastPointage->counter) : '00:00:00';
+
+        // Ajouter le total des heures travaillées aujourd'hui (total_hours_today) au format HH:MM:SS
+        $today = Carbon::today()->format('Y-m-d');
+        $pointagesToday = Pointage::where('user_id', $user->id)
+            ->whereDate('arrival_date', '=', $today)
+            ->get();
+
+        $totalSecondsToday = 0;
+        foreach ($pointagesToday as $pointage) {
+            $totalSecondsToday += $pointage->counter;
+        }
+
+        // Convertir les secondes totales en heures, minutes et secondes
+        $hours = floor($totalSecondsToday / 3600);
+        $minutes = floor(($totalSecondsToday % 3600) / 60);
+        $seconds = $totalSecondsToday % 60;
+
+        // Formater en HH:MM:SS
+        $user->total_hours_today = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+
+        // Initialiser les jours de la semaine avec le nom des jours et un tableau pour les pointages
+        $daysOfWeek = [
+            'lundi' => ['name' => 'Lundi', 'status' => false, 'total_seconds' => 0, 'pointages' => []],
+            'mardi' => ['name' => 'Mardi', 'status' => false, 'total_seconds' => 0, 'pointages' => []],
+            'mercredi' => ['name' => 'Mercredi', 'status' => false, 'total_seconds' => 0, 'pointages' => []],
+            'jeudi' => ['name' => 'Jeudi', 'status' => false, 'total_seconds' => 0, 'pointages' => []],
+            'vendredi' => ['name' => 'Vendredi', 'status' => false, 'total_seconds' => 0, 'pointages' => []],
+        ];
+
+        // Parcourir les pointages et ajouter les durées par jour
+        foreach ($user->pointages as $pointage) {
+            // Récupérer le jour de la semaine (en français)
+            $dayName = Carbon::parse($pointage->created_at)->locale('fr')->dayName;
+
+            // Si le jour existe dans notre tableau, mettre à jour les informations
+            if (array_key_exists($dayName, $daysOfWeek)) {
+                // Mettre à jour le statut du jour en fonction du dernier pointage
+                $daysOfWeek[$dayName]['status'] = true;
+
+                // Ajouter les secondes totales pour ce jour
+                $daysOfWeek[$dayName]['total_seconds'] += $pointage->counter;
+
+                // Ajouter le pointage au tableau des pointages pour ce jour
+                $daysOfWeek[$dayName]['pointages'][] = [
+                    'id' => $pointage->id,
+                    'arrival_date' => $pointage->arrival_date,
+                    'counter' => $pointage->counter,
+                    'last_departure' => $pointage->last_departure,
+                    'location' => $pointage->location,
+                ];
+            }
+        }
+
+        // Formater les durées en "HH:MM:SS"
+        foreach ($daysOfWeek as $day => $data) {
+            $hours = floor($data['total_seconds'] / 3600);
+            $minutes = floor(($data['total_seconds'] % 3600) / 60);
+            $seconds = $data['total_seconds'] % 60;
+
+            // Ajouter un zéro devant les valeurs inférieures à 10
+            $formattedTime = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+
+            // Ajouter le temps formaté au tableau
+            $daysOfWeek[$day]['formatted_hours'] = $formattedTime;
+        }
+
+        // Ajouter le tableau des jours de la semaine dans la réponse
+        $user->work_schedule = $daysOfWeek;
     }
     
-    
-    
+    return response()->json(['users' => $users], 200);
+}
     
     private function getAddressFromCoordinates($latitude, $longitude)
     {
@@ -204,6 +296,80 @@ class AuthController extends Controller
 
 
     
+    // public function getUserById($id)
+    // {
+    //     try {
+    //         // Récupérer l'utilisateur par son ID
+    //         $user = User::findOrFail($id);
+    
+    //         // Ajouter l'URL complète de l'image de profil
+    //         $user->profile_image_url = $user->profile_image ? URL::to('/') . '/storage/' . $user->profile_image : null;
+    
+    //         // Récupérer le dernier pointage de l'utilisateur
+    //         $lastPointage = $user->pointages()->latest('created_at')->first();
+    
+    //         // Déterminer le statut de l'utilisateur
+    //         $status = 'hors ligne';
+    //         if ($lastPointage) {
+    //             $status = $lastPointage->is_active ? 'au bureau' : 'hors ligne';
+    //         }
+    
+    //         // Ajouter les informations supplémentaires à l'utilisateur
+    //         $user->status = $status;
+    //         $user->arrival_date = $lastPointage ? $lastPointage->arrival_date : null;
+    //         $user->location = $lastPointage ? $lastPointage->location : null;
+    //         $user->total_hours = $lastPointage ? $lastPointage->total_hours : 0;
+    //         $user->counter = $lastPointage ? $lastPointage->counter : 0;
+    //         $user->weekly_hours = $lastPointage ? $lastPointage->weekly_hours : 0;
+    //         $user->monthly_hours = $lastPointage ? $lastPointage->monthly_hours : 0;
+    //         $user->session_duration = $lastPointage ? gmdate('H:i:s', $lastPointage->counter) : '00:00:00';
+    
+    //         // Initialiser les jours de la semaine avec le nom des jours
+    //         $daysOfWeek = [
+    //             'lundi' => ['name' => 'Lundi', 'status' => false, 'total_seconds' => 0],
+    //             'mardi' => ['name' => 'Mardi', 'status' => false, 'total_seconds' => 0],
+    //             'mercredi' => ['name' => 'Mercredi', 'status' => false, 'total_seconds' => 0],
+    //             'jeudi' => ['name' => 'Jeudi', 'status' => false, 'total_seconds' => 0],
+    //             'vendredi' => ['name' => 'Vendredi', 'status' => false, 'total_seconds' => 0],
+    //         ];
+    
+    //         // Parcourir les pointages et ajouter les durées par jour
+    //         foreach ($user->pointages as $pointage) {
+    //             // Récupérer le jour de la semaine (en français)
+    //             $dayName = Carbon::parse($pointage->created_at)->locale('fr')->dayName;
+    
+    //             // Si le jour existe dans notre tableau, mettre à jour les informations
+    //             if (array_key_exists($dayName, $daysOfWeek)) {
+    //                 // Mettre à jour le statut du jour en fonction du dernier pointage
+    //                 $daysOfWeek[$dayName]['status'] = true;
+    
+    //                 // Ajouter les secondes totales pour ce jour
+    //                 $daysOfWeek[$dayName]['total_seconds'] += $pointage->counter;
+    //             }
+    //         }
+    
+    //         // Formater les durées en "HH:MM:SS"
+    //         foreach ($daysOfWeek as $day => $data) {
+    //             $hours = floor($data['total_seconds'] / 3600);
+    //             $minutes = floor(($data['total_seconds'] % 3600) / 60);
+    //             $seconds = $data['total_seconds'] % 60;
+    
+    //             // Ajouter un zéro devant les valeurs inférieures à 10
+    //             $formattedTime = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+    
+    //             // Ajouter le temps formaté au tableau
+    //             $daysOfWeek[$day]['formatted_hours'] = $formattedTime;
+    //         }
+    
+    //         // Ajouter le tableau des jours de la semaine dans la réponse
+    //         $user->work_schedule = $daysOfWeek;
+    
+    //         return response()->json(['user' => $user], 200);
+    //     } catch (\Exception $e) {
+    //         return response()->json(['message' => 'Utilisateur non trouvé'], 404);
+    //     }
+    // }
+    
     public function getUserById($id)
     {
         try {
@@ -232,13 +398,13 @@ class AuthController extends Controller
             $user->monthly_hours = $lastPointage ? $lastPointage->monthly_hours : 0;
             $user->session_duration = $lastPointage ? gmdate('H:i:s', $lastPointage->counter) : '00:00:00';
     
-            // Initialiser les jours de la semaine avec le nom des jours
+            // Initialiser les jours de la semaine avec le nom des jours et un tableau pour les pointages
             $daysOfWeek = [
-                'lundi' => ['name' => 'Lundi', 'status' => false, 'total_seconds' => 0],
-                'mardi' => ['name' => 'Mardi', 'status' => false, 'total_seconds' => 0],
-                'mercredi' => ['name' => 'Mercredi', 'status' => false, 'total_seconds' => 0],
-                'jeudi' => ['name' => 'Jeudi', 'status' => false, 'total_seconds' => 0],
-                'vendredi' => ['name' => 'Vendredi', 'status' => false, 'total_seconds' => 0],
+                'lundi' => ['name' => 'Lundi', 'status' => false, 'total_seconds' => 0, 'formatted_hours' => '00:00:00', 'pointages' => []],
+                'mardi' => ['name' => 'Mardi', 'status' => false, 'total_seconds' => 0, 'formatted_hours' => '00:00:00', 'pointages' => []],
+                'mercredi' => ['name' => 'Mercredi', 'status' => false, 'total_seconds' => 0, 'formatted_hours' => '00:00:00', 'pointages' => []],
+                'jeudi' => ['name' => 'Jeudi', 'status' => false, 'total_seconds' => 0, 'formatted_hours' => '00:00:00', 'pointages' => []],
+                'vendredi' => ['name' => 'Vendredi', 'status' => false, 'total_seconds' => 0, 'formatted_hours' => '00:00:00', 'pointages' => []],
             ];
     
             // Parcourir les pointages et ajouter les durées par jour
@@ -253,6 +419,15 @@ class AuthController extends Controller
     
                     // Ajouter les secondes totales pour ce jour
                     $daysOfWeek[$dayName]['total_seconds'] += $pointage->counter;
+    
+                    // Ajouter le pointage au tableau des pointages pour ce jour
+                    $daysOfWeek[$dayName]['pointages'][] = [
+                        'id' => $pointage->id,
+                        'arrival_date' => $pointage->arrival_date,
+                        'counter' => $pointage->counter,
+                        'last_departure' => $pointage->last_departure,
+                        'location' => $pointage->location,
+                    ];
                 }
             }
     
@@ -277,8 +452,6 @@ class AuthController extends Controller
             return response()->json(['message' => 'Utilisateur non trouvé'], 404);
         }
     }
-    
-
     public function login(Request $request)
     {
         // Validation des données
