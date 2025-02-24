@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Storage; 
+use Illuminate\Support\Facades\Storage; // Add this line
 use Carbon\Carbon;
 use App\Models\Pointage;
 use Aws\Rekognition\RekognitionClient; // Make sure to include this at the top of your file
