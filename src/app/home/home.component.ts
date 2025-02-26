@@ -14,7 +14,7 @@ import { AddEmployesComponent } from "./add-employes/add-employes.component";
 export class HomeComponent implements OnInit {
   DataMessage: any[] = [];
   login = { email: '', password: '' };
-  displayStyle: string = "none"; // Contrôle l'affichage du modal
+
   displayStyleF: string = "none"; // Contrôle l'affichage du modal
   passwordFieldType: string = 'password';
 
