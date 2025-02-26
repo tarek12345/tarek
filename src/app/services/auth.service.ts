@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-
+import * as WebAuthn from '@passwordless-id/webauthn';
 @Injectable({
   providedIn: 'root',
 })
@@ -67,6 +67,37 @@ export class AuthService {
     });
   }
 
+  async loginWithFace(): Promise<boolean> {
+    try {
+      if (!window.PublicKeyCredential) {
+        console.error('WebAuthn non supporté sur ce navigateur.');
+        return false;
+      }
+  
+      const publicKeyCredentialRequestOptions: PublicKeyCredentialRequestOptions = {
+        challenge: new Uint8Array(32), // Challenge généré par le backend normalement
+        allowCredentials: [],
+        timeout: 60000,
+        userVerification: "required" as UserVerificationRequirement, // ✅ Correction ici
+      };
+  
+      const credential = await navigator.credentials.get({
+        publicKey: publicKeyCredentialRequestOptions
+      });
+  
+      if (credential) {
+        console.log('Authentification réussie avec WebAuthn', credential);
+        localStorage.setItem('token', 'fake-token-webauthn'); // Simuler un token
+        return true;
+      }
+  
+      return false;
+    } catch (error) {
+      console.error('Erreur WebAuthn :', error);
+      return false;
+    }
+  }
+  
   /**
    * Méthode pour réinitialiser le mot de passe.
    * @param data Les données nécessaires pour la réinitialisation (token, email, nouveau mot de passe, etc.).

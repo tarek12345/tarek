@@ -19,6 +19,16 @@ button.btn.btn-primary {
         align-items: start;
         text-transform: capitalize;
 }
+.basforget{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.basforget button {
+    width: 50%;
+    display: flex;
+}
 img.enteimg {
     width: 40px;
     height: 40px;

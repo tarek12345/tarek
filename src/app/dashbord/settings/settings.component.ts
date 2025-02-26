@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from '../../services/api.service';
 import { UserService } from '../../services/user-service.service';
-
+import { ChangeDetectorRef } from '@angular/core';
 @Component({
   selector: 'app-secttings',
   templateUrl: './settings.component.html',
@@ -25,7 +25,8 @@ export class SettingsComponent implements OnInit {
     private apiService: ApiService,
     private userService: UserService,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -35,8 +36,10 @@ export class SettingsComponent implements OnInit {
   GetUserSByid() {
     this.apiService.GetUserServiceByid(this.userdetaile.id).subscribe((data) => {
       this.userdetaile = data.user;
+      this.cdr.detectChanges(); // Forcer la mise à jour de l'interface
     });
   }
+  
 
   // Méthode pour vérifier si un champ a été modifié
   isAnyFieldModified(): boolean {
@@ -73,14 +76,17 @@ export class SettingsComponent implements OnInit {
       (response) => {
         console.log('Employé mis à jour avec succès :', response);
         this.toastr.success('Employé mis à jour avec succès', 'Succès');
-        window.location.reload();
+        this.GetUserSByid(); // Rafraîchir les données après mise à jour
+  //  this.refreshPage();
+
       },
       (error) => {
-        console.error('Erreur lors de la mise à jour de l\'employé :', error);
-        this.toastr.error('Erreur lors de la mise à jour de l\'employé.', 'Erreur');
+        console.error("Erreur lors de la mise à jour de l'employé :", error);
+        this.toastr.error("Erreur lors de la mise à jour de l'employé.", 'Erreur');
       }
     );
   }
+  
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -94,4 +100,9 @@ export class SettingsComponent implements OnInit {
   markFieldAsModified(field: string) {
     this.fieldsToUpdate[field] = true;
   }
-}
+  refreshPage() {
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([this.router.url]);
+    });
+  }
+} 

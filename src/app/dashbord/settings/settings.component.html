@@ -85,11 +85,7 @@
       <div class="status">
         <!-- Affichage de l'image de profil -->
         <ng-container *ngIf="userdetaile.profile_image_url; else defaultImage">
-          <img
-            [src]="userdetaile.profile_image_url"
-            alt="Image de profil"
-            class="enteimg"
-          />
+          <img [src]="userdetaile.profile_image_url" alt="Image de profil" class="enteimg" />
         </ng-container>
         <ng-template #defaultImage>
           <i class="bi bi-person-circle"></i>

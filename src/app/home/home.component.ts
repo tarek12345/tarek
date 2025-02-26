@@ -37,9 +37,7 @@ export class HomeComponent implements OnInit {
   togglePasswordVisibility() {
     this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
   }
-  openPopup() { 
-    this.displayStyle = "block"; 
-  }
+ 
   openPopupForgeten() { 
     this.displayStyleF = "block"; 
   }
@@ -48,9 +46,6 @@ export class HomeComponent implements OnInit {
     this.displayStyleF = "none"; 
   }
 
-  closePopup() { 
-    this.displayStyle = "none"; 
-  }
 
 
 

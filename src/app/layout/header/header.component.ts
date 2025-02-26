@@ -15,7 +15,7 @@ export class HeaderComponent implements OnInit {
   @Input() datauser: any;
   public history: any[] = [];
   public error: string | null = null;
-
+  displayStyle: string = "none"; // Contrôle l'affichage du modal
   constructor(
     private userService: UserService,
     private apiService: ApiService, 
@@ -71,5 +71,11 @@ if(this.datauser.pointages!="null"){
     this.userService.clearUserInfo();
     this.toastr.success('Déconnexion réussie', 'Succès');
     this.router.navigate(['/']);
+  }
+  openPopup() { 
+    this.displayStyle = "block"; 
+  }
+  closePopup() { 
+    this.displayStyle = "none"; 
   }
 }

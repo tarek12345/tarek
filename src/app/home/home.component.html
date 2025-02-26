@@ -49,12 +49,11 @@
       </div>
 
       <div class="basforget">
-        <button type="button" class="btn btn-link" (click)="openPopup()">Crée compte !</button>
+      
         <button type="button" class="btn btn-link" (click)="openPopupForgeten()">Oublier mot de passe !</button>
       </div>
     </form>
   </div>
 
-  <app-add-employes [displayStyleChild]="displayStyle" (closeEvent)="closePopup()"></app-add-employes>
   <app-forgetpassowrd [displayStyleChild]="displayStyleF" (closeEvent)="closePopupForgeten()"></app-forgetpassowrd>
 </div>
