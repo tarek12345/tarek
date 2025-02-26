@@ -19,6 +19,8 @@ class User extends Authenticatable
         'sexe',
         'role',
         'profile_image',
+        'face_image',  // Ajoutez cette ligne pour l'image faciale
+
     ];
 
     protected $hidden = [

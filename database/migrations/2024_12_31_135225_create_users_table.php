@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('role');
             $table->string('sexe');
             $table->string('profile_image')->nullable(); // Ajout du champ profile_image
+            $table->string('face_image')->nullable(); // Ajouter cette ligne
             $table->rememberToken();
             $table->timestamps();
         });

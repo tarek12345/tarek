@@ -27,6 +27,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('register', [AuthController::class, 'register']);
 // Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('login', [AuthController::class, 'login']);
+Route::post('/login/face', [AuthController::class, 'loginWithFace']);
+Route::post('/login/detect-facial-features', [AuthController::class, 'detectFacialFeatures']);
 
 Route::get('users', [AuthController::class, 'getUsers']);
 Route::middleware('auth:sanctum')->post('logout', [AuthController::class, 'logout']);
@@ -39,11 +41,12 @@ Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 // Pointage 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('users/{id}', [AuthController::class, 'getUserById']); // Added semicolon here
-    Route::get('users/{id}', [AuthController::class, 'getUserById']);
-    
+    Route::delete('/users/{id}', [AuthController::class, 'deleteUser']);
     Route::post('/users/{userId}/pointages/arrivee', [PointageController::class, 'onArrival']);
     Route::post('/users/{userId}/pointages/depart', [PointageController::class, 'onDeparture']);
     Route::get('/users/{userId}/pointages/historique', [PointageController::class, 'showHistory']);
+    Route::put('/users/{userId}/pointages/edit', [PointageController::class, 'editPointage']);
     Route::get('/users/{userId}/pointages/active-counters', [PointageController::class, 'getActiveCounter']);
     Route::get('/users/{userId}/worked-hours', [PointageController::class, 'getWorkedHours']);
+    
 });

@@ -312,48 +312,61 @@ class AuthController extends Controller
 public function updateUser(Request $request, $id)
 {
     try {
+        // Trouver l'utilisateur ou lever une exception s'il n'existe pas
         $user = User::findOrFail($id);
 
+        // Valider les données reçues
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
             'sexe' => 'nullable|string|in:homme,femme',
             'role' => 'nullable|string|in:administrator,employer,client',
             'password' => 'nullable|string|min:8|confirmed',
-            'profile_image' => 'nullable|string',
+            'profile_image' => 'nullable|string',  // Gérer les images Base64
         ]);
 
+        // Mettre à jour les champs modifiables
         $user->name = $validated['name'];
         $user->email = $validated['email'];
         $user->sexe = $validated['sexe'] ?? $user->sexe;
         $user->role = $validated['role'] ?? $user->role;
 
+        // Mise à jour du mot de passe si fourni
         if ($request->filled('password')) {
             $user->password = bcrypt($validated['password']);
         }
 
+        // Gestion de l'image de profil
         if ($request->filled('profile_image')) {
+            // Supprimer l'ancienne image si elle existe
             if ($user->profile_image && file_exists(storage_path('app/public/' . $user->profile_image))) {
                 unlink(storage_path('app/public/' . $user->profile_image));
             }
 
+            // Décoder l'image Base64 et enregistrer le fichier
             $imageData = $request->input('profile_image');
             $image = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imageData));
+
+            // Générer un nom de fichier unique
             $imageName = uniqid() . '.jpg';
             $path = storage_path('app/public/profile_images/' . $imageName);
             file_put_contents($path, $image);
 
+            // Enregistrer le chemin relatif de l'image dans la base de données
             $user->profile_image = 'profile_images/' . $imageName;
         }
 
+        // Sauvegarder les modifications dans la base de données
         $user->save();
 
+        // Retourner une réponse JSON en cas de succès
         return response()->json([
             'message' => 'User updated successfully',
             'user' => $user,
             'profile_image_url' => $user->profile_image ? URL::to('/') . '/storage/' . $user->profile_image : null,
         ]);
     } catch (\Exception $e) {
+        // Gestion des erreurs
         \Log::error('Erreur lors de la mise à jour de l\'utilisateur : ' . $e->getMessage());
         return response()->json([
             'message' => 'Une erreur est survenue : ' . $e->getMessage(),
