@@ -1,12 +1,27 @@
+div#update {
+  display: flex;
+  justify-content: start;
+  align-items: start;
+}
 #allusers {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px; /* Espacement entre les items */
-    justify-content: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: start;
+      width: 100%;
   }
-  
+
+#allusers .classright.add {
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+#allusers .classright.add button.dropdown-item {
+  font-size: 54px;
+}
   #allusers   .classright {
-    width: calc(50% - 10px); /* 2 éléments par ligne */
+    width: calc(33% - 0px);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -32,6 +47,12 @@ h1 {
     top: 69px;
     position: absolute;
 }
+#update .content {
+  max-height: 200px;
+  overflow-y: scroll;
+  margin-top: 10px;
+  width: 100%;
+}
   /* Responsive pour tablette */
   @media (max-width: 768px) {
     .classright {
@@ -46,3 +67,10 @@ h1 {
     }
   }
   
+  .headertab {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    margin: 14px auto;
+}

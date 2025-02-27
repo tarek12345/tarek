@@ -12,8 +12,8 @@
         <ng-container *ngIf="datauser.profile_image_url; else defaultImage">
           <img [src]="datauser.profile_image_url" alt="Image de profil" class="enteimg"/>
         </ng-container>
+    
         <ng-template #defaultImage><i class="bi bi-person-circle"></i></ng-template>
-       
       </button>
 
       <app-add-employes [displayStyleChild]="displayStyle" (closeEvent)="closePopup()"></app-add-employes>
@@ -38,7 +38,7 @@
             
             </div>
             <div class="basforget">
-            <button type="button" class="dropdown-item "[ngClass]="{'d-none': datauser.role !== 'administrator'}"(click)="openPopup()">Crée compte ! </button>
+          
             <button class="dropdown-item logout" (click)="logout()"> <i class="bi bi-box-arrow-in-left"></i> logout</button>
      
             </div>

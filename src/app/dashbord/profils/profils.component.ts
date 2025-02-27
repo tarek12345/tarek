@@ -13,6 +13,9 @@ import { ApiService } from '../../services/api.service';
 export class ProfilsComponent {
   loading: boolean = true; // Indicateur de chargement
   allUsers: any[] = [];
+  Historyitem: any[] = [];
+  @Input() userdetaile :any
+  displayStyle: string = "none"; // Contrôle l'affichage du modal
   ngOnInit(): void {
  this.GetUsers()
   
@@ -29,9 +32,22 @@ export class ProfilsComponent {
         ...user,
         total_time_seconds: parseInt(sessionStorage.getItem('totalTime') || '0', 10)
       }));
+      
       this.loading = false;
     }, error => {
       this.toastr.error('Erreur lors de la récupération des utilisateurs.');
     });
+  }
+  getHistoryKeys(history: any): string[] {
+    return history ? Object.keys(history) : [];
+  }
+  
+
+  openPopup() { 
+    this.displayStyle = "block"; 
+
+  }
+  closePopup() { 
+    this.displayStyle = "none"; 
   }
 }

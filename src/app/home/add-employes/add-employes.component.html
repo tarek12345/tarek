@@ -10,7 +10,7 @@
   
           <!-- Modal Body -->
           <div class="modal-body">
-            <form id="addEmployeForm" (ngSubmit)="AddEmployer()" #loginForm="ngForm">
+            <form id="addEmployeForm"  #loginForm="ngForm">
               <!-- Nom -->
               <div class="mb-3">
                 <label for="nom" class="form-label text-black">Nom</label>
@@ -104,7 +104,7 @@
           <!-- Modal Footer -->
           <div class="modal-footer">
             <button type="button" class="btn btn-danger" (click)="closePopup()">Fermer</button>
-            <button type="submit" class="btn btn-success" [disabled]="!loginForm.valid" form="addEmployeForm">Ajouter</button>
+            <button type="submit" class="btn btn-success" [disabled]="!loginForm.valid" (click)="AddEmployer()" >Ajouter</button>
           </div>
         </div>
       </div>

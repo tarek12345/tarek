@@ -7,3 +7,7 @@ button.btn.btn-danger {
     background: #2c444e;
     border-color: #2c444e;
 }
+form#addEmployeForm label.form-label {
+    text-align: justify;
+    display: block;
+}

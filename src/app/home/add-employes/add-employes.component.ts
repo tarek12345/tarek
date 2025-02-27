@@ -43,6 +43,7 @@ export class AddEmployesComponent implements OnInit {
   }
   
 AddEmployer(): void {
+  alert('dgsfsf')
   if (!this.nom.trim() || !this.email.trim() || !this.sexe.trim() || !this.role.trim() || !this.password.trim() || !this.passwordConfirmation.trim()) {
     this.toastr.error('All fields are required.', 'Validation Error');
     return;
