@@ -121,11 +121,11 @@ class AuthController extends Controller
             $user->monthly_hours = $lastPointage ? $lastPointage->monthly_hours : 0; 
             $user->session_duration = $lastPointage ? gmdate('H:i:s', $lastPointage->counter) : '00:00:00';
     
-            // Ajouter le nom du jour (day_name)
-            $dayName = Carbon::today()->locale('fr')->isoFormat('dddd'); // Exemple: lundi, mardi
-            $user->day_name = ucfirst($dayName);  // Capitalisation du nom du jour
+            // Ajouter le nom du jour
+            $dayName = Carbon::today()->locale('fr')->isoFormat('dddd');
+            $user->day_name = ucfirst($dayName);
     
-            // Ajouter le total des heures travaillées aujourd'hui (total_hours_today) au format HH:MM:SS
+            // Ajouter le total des heures travaillées aujourd'hui
             $today = Carbon::today()->format('Y-m-d');
             $pointagesToday = Pointage::where('user_id', $user->id)
                 ->whereDate('arrival_date', '=', $today)
@@ -136,21 +136,31 @@ class AuthController extends Controller
                 $totalSecondsToday += $pointage->counter;
             }
     
-            // Convertir les secondes totales en heures, minutes et secondes
             $hours = floor($totalSecondsToday / 3600);
             $minutes = floor(($totalSecondsToday % 3600) / 60);
             $seconds = $totalSecondsToday % 60;
     
-            // Formater en HH:MM:SS
             $user->total_hours_today = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
     
             // Récupérer les pointages de l'utilisateur
             $pointages = $user->pointages()->orderBy('created_at', 'desc')->get();
             $user->pointages = $pointages;
+    
+            // 🔹 Ajout de l'historique des pointages
+            $pointageController = app()->make(\App\Http\Controllers\PointageController::class);
+            $historyResponse = $pointageController->showHistory($user->id);
+    
+            if ($historyResponse->getStatusCode() === 200) {
+                $historyData = $historyResponse->getData(true);
+                $user->history = $historyData['data'];
+            } else {
+                $user->history = [];
+            }
         }
-        
+    
         return response()->json(['users' => $users], 200);
     }
+    
     
     
     
