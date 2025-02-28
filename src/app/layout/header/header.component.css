@@ -5,6 +5,7 @@ button.btn.btn-primary {
 .profil img {
     width: 100px;
     border-radius: 15px;
+    object-fit: cover;
 }
 
 .profil {
@@ -21,7 +22,7 @@ button.btn.btn-primary {
 }
 .basforget{
     display: flex;
-    justify-content: space-between;
+    justify-content: end;
     align-items: center;
     width: 100%;
 }
@@ -82,6 +83,10 @@ span.slogon {
 }  span.slogon {
     font-size: 15px;
     color: #fff;
+}
+img.imghitorique {
+    object-fit: cover;
+    height: 320px;
 }
 .tiltle {
     padding: 15px;

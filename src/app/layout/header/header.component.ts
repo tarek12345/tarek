@@ -16,6 +16,8 @@ export class HeaderComponent implements OnInit {
   public history: any[] = [];
   public error: string | null = null;
   displayStyle: string = "none"; // Contrôle l'affichage du modal
+  public todaySchedule: any = null; // Horaire du jour actuel
+  public lastPointage: any = null;  // Dernier pointage
   constructor(
     private userService: UserService,
     private apiService: ApiService, 
@@ -24,34 +26,44 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-   
+    console.log("--->datauserdatauserdatauser",this.datauser);
+    
     this.GetUserSByid()
-  this.history.length
-if(this.datauser.pointages!="null"){
-  this.getPointageHistory();
-
-}
-
   }
-  GetUserSByid(){
-    this.apiService.GetUserServiceByid(this.datauser.id).subscribe(data=>{
+  GetUserSByid() {
+    this.apiService.GetUserServiceByid(this.datauser.id).subscribe(data => {
       this.datauser = data.user;
-    })
-    }
-  getPointageHistory(){
-    const userId = this.datauser.id; // ID de l'utilisateur
-    if( this.history!== null){
-    this.apiService.getUserHistory(userId).subscribe(
-      (data: any) => {
-        
-        this.history = data.data; // Adapter selon la structure de l'API
-      },
-      (error) => {
-        this.error = 'Erreur lors de la récupération des données.';
-        console.error(error);
-      }
-    );
+      this.getTodayWorkSchedule(); // Met à jour l'horaire du jour
+      this.getLastPointage(); // Récupère le dernier pointage
+    });
   }
+
+  getTodayWorkSchedule() {
+    if (!this.datauser.work_schedule) return;
+
+    const daysMap: { [key: number]: string } = {
+      1: 'lundi',
+      2: 'mardi',
+      3: 'mercredi',
+      4: 'jeudi',
+      5: 'vendredi',
+      6: 'samedi',
+      0: 'dimanche'
+    };
+
+    const today = new Date().getDay();
+    const todayName = daysMap[today];
+
+    this.todaySchedule = this.datauser.work_schedule[todayName] || null;
+  }
+
+  getLastPointage() {
+    if (this.datauser.pointages && this.datauser.pointages.length > 0) {
+      // Récupérer le dernier pointage (le dernier élément du tableau)
+      this.lastPointage = this.datauser.pointages[this.datauser.pointages.length - 1];
+    } else {
+      this.lastPointage = null;
+    }
   }
 
   // Fonction pour ajouter un zéro devant les nombres inférieurs à 10

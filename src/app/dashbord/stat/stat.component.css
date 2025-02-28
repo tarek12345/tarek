@@ -15,6 +15,11 @@
   align-items: center; */
 
 }
+
+
+.status {
+    position: relative;
+}
 .rightcontent {
     width: 35%;
     background: #fff;

@@ -4,8 +4,8 @@
 </div>
 <div class="btnsheraders">
 
-    <button class="btn btn-primary"  [disabled]="datauser.pointages==null"  (click)="getPointageHistory()" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasLeft" aria-controls="offcanvasLeft">
-      <i class="bi bi-bell"></i><sup>{{history.length}}</sup>
+    <button class="btn btn-primary"  [disabled]="datauser.pointages==null"  (click)="GetUserSByid()" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasLeft" aria-controls="offcanvasLeft">
+      <i class="bi bi-bell"></i><sup>{{datauser.pointages.length}}</sup>
       
     </button>
     <button  class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
@@ -65,30 +65,34 @@
           ></button>
         </div>
         <div class="offcanvas-body">
-          <span>Historique du pointage</span>
           <div class="container mt-3">
-            <h2>Historique des Pointages</h2>
-        
-            <div *ngIf="history.length > 0; else noHistory">
-              <ul class="list-group">
-                <li class="list-group-item" *ngFor="let entry of history">
-                  <!-- {{entry|json}} -->
-                  <p>
-                    <strong>Heure d'arrivée :</strong> {{ entry.arrival_date }}<br />
-                    <strong>Heure de départ :</strong> {{ entry.last_departure | date: 'HH:mm' }}<br />
-                    <strong>Durée totale :</strong> 
-                    {{ entry.session_duration  }}
-               
-                  </p>
-          
-                  
-                </li>
-              </ul>
-            </div>
-        
-            <ng-template #noHistory>
-              <p>Aucun historique disponible pour cet utilisateur.</p>
-            </ng-template>
+            <img src="../../../assets/49.jpg" class="imghitorique"/>
+     <!-- Affichage de l'horaire du jour -->
+        <div class="work-schedule">
+          <h3>Horaire du jour</h3>
+          <ng-container *ngIf="todaySchedule; else noSchedule">
+            <p><strong>Jour :</strong> {{ todaySchedule.name }}</p>
+            <p><strong>Statut :</strong> {{ todaySchedule.status ? 'Ouvert' : 'Fermé' }}</p>
+            <p><strong>Total heures :</strong> {{ todaySchedule.formatted_hours }}</p>
+          </ng-container>
+          <ng-template #noSchedule>
+            <p>Aucun horaire défini pour aujourd'hui.</p>
+          </ng-template>
+        </div>
+
+        <!-- Affichage du dernier pointage -->
+        <div class="last-pointage">
+          <h3>Dernier Pointage</h3>
+          <ng-container *ngIf="lastPointage; else noPointage">
+            <p><strong>Heure d'arrivée :</strong> {{ lastPointage.arrival_date }}</p>
+            <p><strong>Heure de départ :</strong> {{ lastPointage.last_departure || 'Non encore parti' }}</p>
+            <p><strong>Lieu :</strong> {{ lastPointage.location }}</p>
+          </ng-container>
+          <ng-template #noPointage>
+            <p>Aucun pointage disponible.</p>
+          </ng-template>
+        </div>
+
           </div>
         </div>
       </div>

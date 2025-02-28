@@ -29,7 +29,7 @@ export class DashbordComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('DashboardComponent chargé !');
+  
     this.user = this.userService.getUserInfo();
    
     if (this.user) {
@@ -37,12 +37,11 @@ export class DashbordComponent implements OnInit {
     }
     this.GetUserSByid()
     this.updateCurrentTime();
-  
+   
   }
   GetUserSByid(){
     this.apiService.GetUserServiceByid(this.user.id).subscribe(data=>{
      this.user =data
-    
     })
     }
   updateCurrentTime(): void {

@@ -9,6 +9,7 @@ div#update {
       gap: 6px;
       justify-content: start;
       width: 100%;
+      position: relative;
   }
 
 #allusers .classright.add {
@@ -16,6 +17,17 @@ div#update {
   text-align: center;
   align-items: center;
   justify-content: center;
+}
+
+
+.deleteuser {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: #827ed6;
+    color: #fff;
+    padding: 12px;
+    border-radius: 10px 10px 0px 50px;
 }
 #allusers .classright.add button.dropdown-item {
   font-size: 54px;
@@ -29,6 +41,7 @@ div#update {
     border: 1px solid #ddd;
     border-radius: 8px;
     background: #f9f9f9;
+    position: relative;
   }
   div#allusers img.enteimg, div#allusers i.bi.bi-person-circle {
     width: 88px;
@@ -53,6 +66,9 @@ h1 {
   margin-top: 10px;
   width: 100%;
 }
+.headertab b {
+  text-transform: uppercase;
+}
   /* Responsive pour tablette */
   @media (max-width: 768px) {
     .classright {
@@ -66,11 +82,22 @@ h1 {
       width: 100%; /* 1 élément par ligne */
     }
   }
-  
+  .status {
+    position: relative;
+}
   .headertab {
     display: flex;
     flex-direction: column;
     align-items: start;
     justify-content: center;
-    margin: 14px auto;
+
+}
+.content-2 {
+  display: flex;
+  align-items: center;
+  font-size: 22px;
+}
+.content-1 {
+  display: flex;
+  justify-content: space-between;
 }

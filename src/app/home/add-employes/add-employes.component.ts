@@ -12,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 export class AddEmployesComponent implements OnInit {
   @Input() displayStyleChild: string = "none";  // Reçoit la variable du parent
   @Output() closeEvent = new EventEmitter<void>(); // Émet un événement pour fermer le modal
-
+  @Output() employeeAdded = new EventEmitter<void>();
   nom: string = '';
   email: string = '';
   sexe: string = '';
@@ -43,7 +43,7 @@ export class AddEmployesComponent implements OnInit {
   }
   
 AddEmployer(): void {
-  alert('dgsfsf')
+
   if (!this.nom.trim() || !this.email.trim() || !this.sexe.trim() || !this.role.trim() || !this.password.trim() || !this.passwordConfirmation.trim()) {
     this.toastr.error('All fields are required.', 'Validation Error');
     return;
@@ -80,6 +80,7 @@ AddEmployer(): void {
     (response) => {
       console.log('Employee added successfully:', response);
       this.toastr.success('Employee added successfully!', 'Success');
+      this.employeeAdded.emit(); // Notifie le parent qu'un employé a été ajouté
       this.router.navigate(['/dashboard']).then(() => this.closePopup());
     },
     (error) => {

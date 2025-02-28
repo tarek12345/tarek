@@ -18,14 +18,18 @@
   gap: 30px;
   padding: 21px;
   align-items: center;
+  justify-content: space-between;
 }
 
 div#v-pills-tabContent {
     width: 90%;
 }
-/* div#v-pills-tabContent {
-  background: #80808054;
-} */
+.copyright {
+  display: flex
+;
+  flex-direction: column;
+  color: #fff;
+}
 .pointage {
     text-align: center;
     font-family: Arial, sans-serif;
@@ -84,4 +88,25 @@ app-header {
 .tab-content > .active {
   display: block;
   padding: 70px 24px;
+}
+.headersidbr {
+  color: #fff;
+  font-family: "Poppins", serif;
+  font-size: 15px;
+  line-height: 25px;
+  margin-bottom: 28px;
+}
+button.nav-pills .nav-link.active {
+  background-color: #bc9af4;
+  border-bottom: 7px solid #fff;
+}
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  background-color: #5358d9;
+}
+.nav-link {
+  background: #827ed6;
+  color: #fff;
+}
+div#v-pills-tab {
+  gap: 34px;
 }

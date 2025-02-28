@@ -2,6 +2,10 @@
 <div id="update">
     <div id="allusers">
         <div class="classright" *ngFor="let item of allUsers">
+            <div class="deleteuser" (click)="openPopupDelete(item)">
+                <i class="bi bi-trash"></i>
+            </div>
+         
             <div class="status">
                 <!-- Affichage de l'image de profil -->
                 <ng-container *ngIf="item.profile_image_url; else defaultImage">
@@ -16,11 +20,15 @@
             </div>
 
             <div class="content">
+              <div class="content-1 mb-3">
                 <div class="headertab">
                 <span>Nom :<b> {{ item.name }}</b></span>
                 <span>Poste :<b> {{ item.role }}</b></span>
             </div>
-              
+            <div class="content-2">
+            <i class="bi bi-cloud-arrow-down"></i>
+        </div>
+    </div>
                 <ng-container *ngIf="getHistoryKeys(item.history) ; else upddatedate">
                     <table class="table table-bordered">
                         <thead>
@@ -28,7 +36,7 @@
                                 <th>Jour</th>
                                 <th>Heures</th>
                                 <th>Localisation</th>
-                                <th>Modifier</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -36,7 +44,10 @@
                                 <td>{{ item.history[key].day }}</td>
                                 <td>{{ item.history[key].daily_hours || '00:00:00' }}</td>
                                 <td>{{ item.location}}</td>
-                                <td class="text-center"><i class="bi bi-pen"></i></td>
+                                <td class="text-center">
+                                    <i class="bi bi-pen"></i>
+                                    
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -45,6 +56,28 @@
                 <ng-template #upddatedate>
                     <span class="d-block text-center">Pas de pointages</span>
                 </ng-template>
+                <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStyleDelete}">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                          <h4 class="modal-title text-black">Spprimer utilisateur </h4>
+                        </div>
+                
+                        <!-- Modal Body -->
+                        <div class="modal-body">
+                            Êtes-vous sûr de vouloir supprimer l'utilisateur <b>{{selectedUser.name}} ? </b>
+                        </div>
+                
+                        <!-- Modal Footer -->
+                        <div class="modal-footer">
+                          <button type="submit" class="btn btn-success" (click)="confirmDeleteUser(selectedUser)" >Supprimer</button>
+                          <button type="button" class="btn btn-danger" (click)="closePopupDelete()">Fermer</button>
+                        
+                        </div>
+                      </div>
+                    </div>
+                  </div>
             </div>
         </div>
 
@@ -53,7 +86,7 @@
             <button type="button" class="dropdown-item" (click)="openPopup()">
                 <i class="bi bi-plus-circle"></i>
             </button>
-            <app-add-employes [displayStyleChild]="displayStyle" (closeEvent)="closePopup()"></app-add-employes>
+            <app-add-employes [displayStyleChild]="displayStyle"  (employeeAdded)="refreshList()" (closeEvent)="closePopup()"></app-add-employes>
         </div>
     </div>
 </div>
