@@ -310,53 +310,6 @@ public function showHistory($userId)
         ], 200);
     }
 
-    
-    // public function editPointage(Request $request, $id)
-    // {
-    //     // Valider les données reçues
-    //     $request->validate([
-    //         'date' => 'required|date',
-    //         'heure_arrivee' => 'nullable|regex:/^\d{2}:\d{2}(:\d{2})?$/',
-    //         'heure_depart' => 'nullable|regex:/^\d{2}:\d{2}(:\d{2})?$/',
-    //     ]);
-    
-    //     \Log::info("Requête reçue pour editPointage : ", $request->all());
-    
-    //     // Rechercher le pointage spécifique dans l'array `pointages`
-    //     $pointage = Pointage::where('user_id', $id)
-    //     ->where('arrival_date', '=', $request->date . ' ' . $request->heure_arrivee) // Comparaison exacte
-    //     ->first();
-
-    //     if (!$pointage) {
-    //         return response()->json(['message' => 'Pointage non trouvé pour cette date'], 404);
-    //     }
-    
-    //     // Mise à jour de l'heure d'arrivée et de départ
-    //     if ($request->has('heure_arrivee')) {
-    //         $pointage->arrival_date = $request->date . ' ' . $request->heure_arrivee; // Mise à jour de arrival_date
-    //     }
-    //     if ($request->has('heure_depart')) {
-    //         $pointage->last_departure = $request->date . ' ' . $request->heure_depart; // Mise à jour de last_departure
-    //     }
-    
-    //     // Calcul du total des heures du jour
-    //     if ($pointage->arrival_date && $pointage->last_departure) {
-    //         $heureArrivee = strtotime($pointage->arrival_date);
-    //         $heureDepart = strtotime($pointage->last_departure);
-    //         $pointage->total_hours = ($heureDepart - $heureArrivee) / 3600; // Convertir en heures
-    //     }
-    
-    //     // Sauvegarde des changements
-    //     $pointage->save();
-    
-    //     // Récupérer l'utilisateur avec tous ses pointages mis à jour
-    //     $user = User::with('pointages')->find($id);
-    
-    //     return response()->json([
-    //         'message' => 'Pointage mis à jour avec succès',
-    //         'user' => $user, // Retourne toutes les informations mises à jour
-    //     ]);
-    // }
 
     public function editPointage(Request $request, $id)
 {

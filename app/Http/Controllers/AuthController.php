@@ -64,41 +64,7 @@ class AuthController extends Controller
             ], 500);
         }
     }
-    
-    
-    // public function getUsers()
-    // {
-    //     // Récupérer tous les utilisateurs
-    //     $users = User::all();
-        
-    //     foreach ($users as $user) {
-    //         // Récupérer le dernier pointage de l'utilisateur
-    //         $lastPointage = $user->pointages()->latest('created_at')->first();
-            
-    //         // Déterminer le statut basé sur le dernier pointage
-    //         $status = 'hors ligne'; // Statut par défaut
-    //         if ($lastPointage) {
-    //             $status = $lastPointage->is_active ? 'au bureau' : 'hors ligne';
-    //         }
-    
-    //         // Ajouter les informations supplémentaires
-    //         $user->profile_image_url = $user->profile_image 
-    //             ? URL::to('/') . '/storage/' . $user->profile_image 
-    //             : null;
-    //         $user->status = $status;
-    
-    //         // Ajouter les éléments supplémentaires du pointage (s'ils existent)
-    //         $user->arrival_date = $lastPointage ? $lastPointage->arrival_date : null;
-    //         $user->location = $lastPointage ? $lastPointage->location : null;
-    //         $user->total_hours = $lastPointage ? $lastPointage->total_hours : 0; // Par défaut 0
-    //     }
-        
-    //     // Retourner la réponse avec les utilisateurs et leurs informations supplémentaires
-    //     return response()->json([
-    //         'users' => $users
-    //     ], 200);
-    // }
-    
+
     public function getUsers()
     {
         $users = User::all();
@@ -161,9 +127,25 @@ class AuthController extends Controller
         return response()->json(['users' => $users], 200);
     }
     
+    /*Delete user */
     
-    
-    
+    public function deleteUser($id)
+{
+    $user = User::find($id);
+
+    if (!$user) {
+        return response()->json(['message' => 'Utilisateur non trouvé'], 404);
+    }
+
+    // Supprimer les pointages liés à l'utilisateur
+    $user->pointages()->delete();
+
+    // Supprimer l'utilisateur
+    $user->delete();
+
+    return response()->json(['message' => 'Utilisateur supprimé avec succès'], 200);
+}
+/*Adresse  */
     
     private function getAddressFromCoordinates($latitude, $longitude)
     {
