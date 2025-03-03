@@ -95,6 +95,8 @@ app-header {
   font-size: 15px;
   line-height: 25px;
   margin-bottom: 28px;
+  display: flex;
+  flex-direction: column;
 }
 button.nav-pills .nav-link.active {
   background-color: #bc9af4;

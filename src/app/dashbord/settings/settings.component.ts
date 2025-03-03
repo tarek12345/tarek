@@ -11,7 +11,8 @@ import { ChangeDetectorRef } from '@angular/core';
   standalone: false,
 })
 export class SettingsComponent implements OnInit {
-  @Input() userdetaile: any; // Détails de l'utilisateur passés en entrée
+  @Input() userdetaile: any = {}; // Au lieu de [] qui est un tableau
+
   fieldsToUpdate: any = {
     name: false,
     email: false,
@@ -30,8 +31,21 @@ export class SettingsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.GetUserSByid();
+    if (!this.userdetaile) {
+      this.userdetaile = {}; // Assure que l'objet n'est jamais undefined
+    }
+    if (!this.userdetaile.sexe) {
+      this.userdetaile.sexe = ''; // Valeur par défaut pour éviter les erreurs
+    }
+    if (!this.userdetaile.role) {
+      this.userdetaile.role = ''; // Valeur par défaut
+    }
+  
+    if (this.userdetaile.id) {
+      this.GetUserSByid();
+    }
   }
+  
 
   GetUserSByid() {
     this.apiService.GetUserServiceByid(this.userdetaile.id).subscribe((data) => {
@@ -48,27 +62,31 @@ export class SettingsComponent implements OnInit {
 
   // Méthode pour mettre à jour les informations de l'utilisateur
   updateUser() {
-    const updatedData = { ...this.userdetaile };
-
+    const updatedData: any = { ...this.userdetaile };
+  
+    // Vérifier les champs modifiés
     for (const key in this.fieldsToUpdate) {
       if (!this.fieldsToUpdate[key]) {
-        updatedData[key] = this.userdetaile[key]; // Ajouter la valeur actuelle du champ
+        updatedData[key] = this.userdetaile[key];
       }
     }
-
-    if (this.userdetaile.profile_image instanceof File) {
+  
+    // Vérifier si une nouvelle image a été sélectionnée
+    if (this.fieldsToUpdate.profile_image && this.userdetaile.profile_image instanceof File) {
       const file = this.userdetaile.profile_image;
       const reader = new FileReader();
       reader.onloadend = () => {
-        updatedData.profile_image = reader.result as string; // Base64
+        updatedData.profile_image = reader.result as string; // Convertir en Base64
         this.sendUpdateRequest(updatedData);
       };
-
       reader.readAsDataURL(file);
     } else {
+      // Si l'image n'a pas été changée, envoyer seulement l'ancienne URL sans modification
+      delete updatedData.profile_image; // Ne pas inclure le champ dans la requête
       this.sendUpdateRequest(updatedData);
     }
   }
+  
 
   // Méthode pour envoyer la requête de mise à jour
   private sendUpdateRequest(updatedData: any) {
@@ -77,7 +95,7 @@ export class SettingsComponent implements OnInit {
         console.log('Employé mis à jour avec succès :', response);
         this.toastr.success('Employé mis à jour avec succès', 'Succès');
         this.GetUserSByid(); // Rafraîchir les données après mise à jour
-  //  this.refreshPage();
+       this.refreshPage();
 
       },
       (error) => {
@@ -91,10 +109,12 @@ export class SettingsComponent implements OnInit {
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      this.userdetaile.profile_image = input.files[0];
+      this.userdetaile.profile_image = input.files[0]; // Stocker le fichier
       this.markFieldAsModified('profile_image');
     }
   }
+  
+  
 
   // Méthode pour marquer un champ comme modifié
   markFieldAsModified(field: string) {

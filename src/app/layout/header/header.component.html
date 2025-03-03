@@ -5,7 +5,7 @@
 <div class="btnsheraders">
 
     <button class="btn btn-primary"  [disabled]="datauser.pointages==null"  (click)="GetUserSByid()" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasLeft" aria-controls="offcanvasLeft">
-      <i class="bi bi-bell"></i><sup>{{datauser.pointages.length}}</sup>
+      <i class="bi bi-bell"></i><sup>{{datauser.pointages?.length}}</sup>
       
     </button>
     <button  class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
