@@ -13,10 +13,10 @@ import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ToastrModule } from 'ngx-toastr';
-
 import { ForgetpassowrdComponent } from './home/forgetpassowrd/forgetpassowrd.component';
 import { ResetpasswordComponent } from './home/resetpassword/resetpassword.component';
 import { AuthInterceptor } from './auth.interceptor';
+import { NgChartsModule } from 'ng2-charts'; // Correct import
 
 import { SettingsComponent } from './dashbord/settings/settings.component';
 import { DashbordComponent } from './dashbord/dashbord.component';
@@ -54,6 +54,7 @@ import { StatistiqueComponent } from './dashbord/statistique/statistique.compone
     FormsModule, // Add FormsModule here
     ReactiveFormsModule, // Optional, in case you are using reactive forms
     CommonModule,
+    NgChartsModule,
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot(), // ToastrModule ajouté
   ],
