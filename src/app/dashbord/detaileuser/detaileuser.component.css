@@ -33,6 +33,7 @@
 }
 .conteneuruser {
     text-align: justify;
+    width: 40%;
 }
 .chats {
   width: 50%;
@@ -126,6 +127,7 @@
   position: relative;
   display: flex;
   align-items: end;
+  width: 10%;
 }
 .status.all sup {
   left: -9px;
@@ -152,7 +154,7 @@ button.btn.btn-success{
   border: #d268cc;
 }
 .totalehourss{
-  width: 80%;
+  width: 70%;
 }
 span.text {
   width: 40px;
@@ -174,4 +176,10 @@ span.text {
 .modal-body {
   overflow-y: scroll;
   height: 300px;
+}
+
+.chart-container {
+  position: relative;
+  height: 300px; /* Définir une hauteur spécifique pour le graphique */
+  width: 100%; /* La largeur sera automatiquement ajustée */
 }

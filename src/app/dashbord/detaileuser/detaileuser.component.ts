@@ -1,17 +1,18 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ElementRef  } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from '../../services/api.service';
 import { UserService } from '../../services/user-service.service';
 import { format, startOfWeek, endOfWeek, getMonth, getYear, addDays } from 'date-fns';
 import { fr } from 'date-fns/locale';
+
 @Component({
-  selector: 'app-stat',
-  templateUrl: './stat.component.html',
-  styleUrls: ['./stat.component.css'],
+  selector: 'app-detaileuser',
+  templateUrl: './detaileuser.component.html',
+  styleUrls: ['./detaileuser.component.css'],
   standalone: false
 })
-export class StatComponent implements OnInit {
+export class Detaileuser implements OnInit {
   @Input() datauser: any;
   @Input() userdetaile: any;
   @Input() historyAll: any;
@@ -41,7 +42,8 @@ export class StatComponent implements OnInit {
   latitude: number | null = null;
   longitude: number | null = null;
   address: string = 'Adresse non disponible';
-  constructor(
+    // Déclaration du graphique
+constructor(
     private apiService: ApiService,
     private userService: UserService,
     private toastr: ToastrService,
@@ -51,8 +53,33 @@ export class StatComponent implements OnInit {
   ngOnInit(): void {
     this.initializeUser();
     this.loadCounterState();
+    this.checkCounterReset();
+ 
 }
 
+checkCounterReset(): void {
+  setInterval(() => {
+      const now = new Date();
+      const lastActionDate = new Date(this.arrivalDate || this.departureDate);
+      const timeDifference = now.getTime() - lastActionDate.getTime();
+
+      // Si 24 heures (86400000 ms) se sont écoulées depuis la dernière action
+      if (timeDifference >= 86400000) {
+          this.resetCounter();
+      }
+  }, 60000); // Vérifie chaque minute
+}
+resetCounter(): void {
+  this.stopCounter(); // Arrêter le compteur actuel
+  this.totalTime = 0; // Réinitialiser le compteur à zéro
+  this.dailyTotal = 0; // Réinitialiser le total des heures journalières
+  this.weeklyTotal = 0; // Réinitialiser le total des heures hebdomadaires
+  this.monthlyTotal = 0; // Réinitialiser le total des heures mensuelles
+  this.updateCounterDisplay(this.totalTime); // Mettre à jour l'affichage du compteur
+  this.userService.setEncryptedItem('totalTime', '0'); // Sauvegarder la valeur réinitialisée dans le stockage
+  this.status = 'hors ligne'; // Réinitialiser le statut de l'utilisateur
+  this.toastr.info('Le compteur a été réinitialisé automatiquement après 24 heures sans activité.');
+}
 initializeUser (): void {
   const user = this.userService.getUserInfo();
   if (user) {
@@ -76,6 +103,7 @@ initializeUser (): void {
       }
     );
   }
+
 }
 
 loadCounterState(): void {

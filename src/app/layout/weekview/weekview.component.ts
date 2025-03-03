@@ -15,19 +15,33 @@ export class WeekviewComponent {
   startYear: number = 2025;
   endYear: number = 2040;
   @Input() itemuser: any;
+
   getWorkDays(): { day: string, hours: string }[] {
-    const workSchedule = this.itemuser?.work_schedule;
-    if (!workSchedule) {
+    const history = this.itemuser?.history;
+    if (!history) {
       return [];
     }
-  
-    return [
-      { day: workSchedule.lundi.name, hours: workSchedule.lundi.formatted_hours },
-      { day: workSchedule.mardi.name, hours: workSchedule.mardi.formatted_hours },
-      { day: workSchedule.mercredi.name, hours: workSchedule.mercredi.formatted_hours },
-      { day: workSchedule.jeudi.name, hours: workSchedule.jeudi.formatted_hours },
-      { day: workSchedule.vendredi.name, hours: workSchedule.vendredi.formatted_hours }
-    ];
-  }
 
+    // Récupérer la date actuelle
+    const today = new Date();
+    const startOfCurrentWeek = startOfWeek(today, { weekStartsOn: 1 }); // Lundi comme premier jour de la semaine
+    const endOfCurrentWeek = endOfWeek(today, { weekStartsOn: 1 }); // Dimanche comme dernier jour de la semaine
+
+    // Filtrer l'historique pour ne garder que les jours de la semaine actuelle
+    return Object.keys(history)
+      .map(date => {
+        const dayData = history[date];
+        const currentDate = new Date(dayData.date);
+
+        // Vérifier si la date fait partie de la semaine actuelle
+        if (currentDate >= startOfCurrentWeek && currentDate <= endOfCurrentWeek) {
+          return {
+            day: dayData.day,
+            hours: dayData.arrival_date // Supposons que arrival_date représente l'heure de travail formatée
+          };
+        }
+        return null;
+      })
+      .filter(day => day !== null); // Supprimer les jours qui ne correspondent pas à la semaine actuelle
+  }
 }

@@ -18,7 +18,6 @@ import { ForgetpassowrdComponent } from './home/forgetpassowrd/forgetpassowrd.co
 import { ResetpasswordComponent } from './home/resetpassword/resetpassword.component';
 import { AuthInterceptor } from './auth.interceptor';
 
-import { StatComponent } from './dashbord/stat/stat.component';
 import { SettingsComponent } from './dashbord/settings/settings.component';
 import { DashbordComponent } from './dashbord/dashbord.component';
 import { HomeComponent } from './home/home.component';
@@ -26,6 +25,8 @@ import { AddEmployesComponent } from './home/add-employes/add-employes.component
 import { HeaderComponent } from './layout/header/header.component';
 import { WeekviewComponent } from './layout/weekview/weekview.component';
 import { ProfilsComponent } from './dashbord/profils/profils.component';
+import { Detaileuser } from './dashbord/detaileuser/detaileuser.component';
+import { StatistiqueComponent } from './dashbord/statistique/statistique.component';
 
 
 
@@ -36,13 +37,14 @@ import { ProfilsComponent } from './dashbord/profils/profils.component';
     AddEmployesComponent,
     GetEmployesComponent,
     DashbordComponent,
-    StatComponent,
+    Detaileuser,
     SettingsComponent,
     ForgetpassowrdComponent,
     ResetpasswordComponent,
     HeaderComponent,
     WeekviewComponent,
     ProfilsComponent,
+    StatistiqueComponent,
   ],
   imports: [
     BrowserModule,
