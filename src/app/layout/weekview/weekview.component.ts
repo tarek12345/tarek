@@ -16,7 +16,7 @@ export class WeekviewComponent {
   endYear: number = 2040;
   @Input() itemuser: any;
 
-  getWorkDays(): { day: string, hours: string }[] {
+  getWorkDays(): { day: string, hours: string , hourszero:string}[] {
     const history = this.itemuser?.history;
     if (!history) {
       return [];
@@ -37,11 +37,17 @@ export class WeekviewComponent {
         if (currentDate >= startOfCurrentWeek && currentDate <= endOfCurrentWeek) {
           return {
             day: dayData.day,
-            hours: dayData.arrival_date // Supposons que arrival_date représente l'heure de travail formatée
-          };
+            hours: dayData.total_hours,
+            hourszero: dayData.arrival_date,
+
+           };
         }
         return null;
       })
       .filter(day => day !== null); // Supprimer les jours qui ne correspondent pas à la semaine actuelle
+  }
+  isCurrentDay(day: string): boolean {
+    const today = format(new Date(), 'EEEE', { locale: fr }); // Récupère le jour actuel en français
+    return today === day;
   }
 }

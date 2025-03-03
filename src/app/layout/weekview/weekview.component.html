@@ -15,8 +15,16 @@
     <tbody>
       <tr *ngFor="let day of getWorkDays()">
         <td>{{ day.day }}</td>
-        <td>{{ day.hours }}</td>
+        <td>  
+          <ng-container *ngIf="day.hours!=null; else showHoursZero">
+            {{ day.hours }}
+          </ng-container>
+          <ng-template #showHoursZero>
+           00:00:00
+          </ng-template>
+        </td>
       </tr>
     </tbody>
+    
   </table>
 </div>
