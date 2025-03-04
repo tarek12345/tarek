@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../services/user-service.service';
 import { ApiService } from '../../services/api.service';
-
+import { format, startOfWeek, endOfWeek, getWeek, addDays, getMonth } from 'date-fns';
 
 @Component({
   selector: 'app-header',
@@ -39,8 +39,11 @@ export class HeaderComponent implements OnInit {
   }
 
   getTodayWorkSchedule() {
-    if (!this.datauser.work_schedule) return;
-
+    if (!this.datauser.work_schedule) {
+      this.todaySchedule = null;
+      return;
+    }
+  
     const daysMap: { [key: number]: string } = {
       1: 'lundi',
       2: 'mardi',
@@ -50,21 +53,25 @@ export class HeaderComponent implements OnInit {
       6: 'samedi',
       0: 'dimanche'
     };
-
+  
     const today = new Date().getDay();
     const todayName = daysMap[today];
-
+  
+    // Vérifier si le jour actuel existe dans le work_schedule
     this.todaySchedule = this.datauser.work_schedule[todayName] || null;
   }
+  
 
   getLastPointage() {
     if (this.datauser.pointages && this.datauser.pointages.length > 0) {
       // Récupérer le dernier pointage (le dernier élément du tableau)
       this.lastPointage = this.datauser.pointages[this.datauser.pointages.length - 1];
     } else {
+      // Si aucun pointage n'est disponible
       this.lastPointage = null;
     }
   }
+  
 
   // Fonction pour ajouter un zéro devant les nombres inférieurs à 10
   pad(num: number): string {
@@ -90,4 +97,42 @@ export class HeaderComponent implements OnInit {
   closePopup() { 
     this.displayStyle = "none"; 
   }
+  getTotalPointages(): number {
+    // Appel de la méthode getWorkDays pour obtenir les jours de travail
+    const workDays = this.getWorkDays();
+    
+    // Compter le total des pointages sur tous les jours de travail
+    return workDays.reduce((total, workDay) => total + (workDay.pointages?.length || 0), 0);
+  }
+  
+    getWorkDays(): { day: string, hours: string , hourszero:string, pointages:any}[] {
+      const history = this.datauser?.history;
+      if (!history) {
+        return [];
+      }
+  
+      // Récupérer la date actuelle
+      const today = new Date();
+      const startOfCurrentWeek = startOfWeek(today, { weekStartsOn: 1 }); // Lundi comme premier jour de la semaine
+      const endOfCurrentWeek = endOfWeek(today, { weekStartsOn: 1 }); // Dimanche comme dernier jour de la semaine
+  
+      // Filtrer l'historique pour ne garder que les jours de la semaine actuelle
+      return Object.keys(history)
+        .map(date => {
+          const dayData = history[date];
+          const currentDate = new Date(dayData.date);
+  
+          // Vérifier si la date fait partie de la semaine actuelle
+          if (currentDate >= startOfCurrentWeek && currentDate <= endOfCurrentWeek) {
+            return {
+              day: dayData.day,
+              hours: dayData.total_hours,
+              hourszero: dayData.arrival_date,
+              pointages:dayData.pointages
+             };
+          }
+          return null;
+        })
+        .filter(day => day !== null); // Supprimer les jours qui ne correspondent pas à la semaine actuelle
+    }
 }

@@ -42,10 +42,10 @@
                         <tbody>
                             <tr *ngFor="let key of getHistoryKeys(item.history)">
                                 <td>{{ item.history[key].day }}</td>
-                                <td>{{ item.history[key].daily_hours || '00:00:00' }}</td>
+                                <td>{{ item.history[key].total_hours|| '00:00:00' }}</td>
                                 <td>{{ item.location}}</td>
                                 <td class="text-center">
-                                    <i class="bi bi-pen"></i>
+                                    <i class="bi bi-pen" (click)="openPopupEdit(item.history[key])"></i>
                                     
                                 </td>
                             </tr>
@@ -76,6 +76,29 @@
                         
                         </div>
                       </div>
+                    </div>
+                  </div>
+
+
+                  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStylePointage }">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <h2>Modifier le Pointage</h2>
+                        
+                            <form [formGroup]="pointageForm" (ngSubmit)="submitPointage()">
+                              <label>Date :</label>
+                              <input type="date" formControlName="date" required />
+                        
+                              <label>Heure d'Arrivée :</label>
+                              <input type="time" formControlName="heure_arrivee" />
+                        
+                              <label>Heure de Départ :</label>
+                              <input type="time" formControlName="heure_depart" />
+                        
+                              <button type="submit" [disabled]="pointageForm.invalid">Modifier Pointage</button>
+                              <button type="button" (click)="closePopupEdit()">Annuler</button>
+                            </form>
+                          </div>
                     </div>
                   </div>
             </div>

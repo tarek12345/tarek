@@ -105,4 +105,9 @@ export class ApiService {
     return this.http.delete(`${this.apiUrl}users/${userId}`);
   }
   
+  // Mettre à jour un pointage
+  updatePointage(data: any, userId: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}users/${userId}`, data);
+  }
+
 }

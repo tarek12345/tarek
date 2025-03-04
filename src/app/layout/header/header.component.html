@@ -1,100 +1,92 @@
 <div class="briefcase">
-  <img src="assets/briefcase.gif"  class="logo" alt="logo">
+  <img src="assets/briefcase.gif" class="logo" alt="logo">
   <span class="slogon">Pointingworks</span>
 </div>
 <div class="btnsheraders">
 
-    <button class="btn btn-primary"  [disabled]="datauser.pointages==null"  (click)="GetUserSByid()" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasLeft" aria-controls="offcanvasLeft">
-      <i class="bi bi-bell"></i><sup>{{datauser.pointages?.length}}</sup>
-      
-    </button>
-    <button  class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-        <ng-container *ngIf="datauser.profile_image_url; else defaultImage">
-          <img [src]="datauser.profile_image_url" alt="Image de profil" class="enteimg"/>
-        </ng-container>
-    
-        <ng-template #defaultImage><i class="bi bi-person-circle"></i></ng-template>
-      </button>
+  <button class="btn btn-primary" [disabled]="!datauser.history" (click)="GetUserSByid()" type="button"
+    data-bs-toggle="offcanvas" data-bs-target="#offcanvasLeft" aria-controls="offcanvasLeft">
+    <i class="bi bi-bell"></i>
+    <sup>{{ getTotalPointages() }}</sup>
+  </button>
 
-      <app-add-employes [displayStyleChild]="displayStyle" (closeEvent)="closePopup()"></app-add-employes>
+  <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+    aria-controls="offcanvasRight">
+    <ng-container *ngIf="datauser.profile_image_url; else defaultImage">
+      <img [src]="datauser.profile_image_url" alt="Image de profil" class="enteimg" />
+    </ng-container>
+
+    <ng-template #defaultImage><i class="bi bi-person-circle"></i></ng-template>
+  </button>
+
+  <app-add-employes [displayStyleChild]="displayStyle" (closeEvent)="closePopup()"></app-add-employes>
+</div>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas-header">
+
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div class="profil">
+
+      <!-- Si profile_image n'est pas défini, utiliser une image par défaut -->
+      <img *ngIf="datauser.profile_image" [src]=" datauser.profile_image_url" alt="Image de profil" />
+      <p *ngIf="!datauser?.profile_image"><i class="bi bi-person-circle"></i></p>
+      <div class="contentprofil">
+        <span>{{datauser.name}}</span>
+        <span>{{datauser.email}}</span>
+        <span>{{datauser.role}}</span>
+        <span>{{ datauser.created_at | date:'dd/MM/yyyy HH:mm' }}</span>
+      </div>
+
     </div>
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-        <div class="offcanvas-header">
-           
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-            <div class="profil">
-               
-             <!-- Si profile_image n'est pas défini, utiliser une image par défaut -->
-             <img *ngIf="datauser.profile_image" [src]=" datauser.profile_image_url" alt="Image de profil" />
-             <p *ngIf="!datauser?.profile_image"><i class="bi bi-person-circle"></i></p>
-             <div class="contentprofil">
-             <span>{{datauser.name}}</span>
-             <span>{{datauser.email}}</span>
-             <span>{{datauser.role}}</span>
-             <span>{{ datauser.created_at | date:'dd/MM/yyyy HH:mm' }}</span>
-            </div>
-            
-            </div>
-            <div class="basforget">
-          
-            <button class="dropdown-item logout" (click)="logout()"> <i class="bi bi-box-arrow-in-left"></i> logout</button>
-     
-            </div>
-    
-             </div>
-             
-            
-            
-        </div>
-    
-  
-        <div
-        class="offcanvas offcanvas-end"
-        tabindex="-1"
-        id="offcanvasLeft"
-        aria-labelledby="offcanvasLeftLabel"
-      >
-        <div class="offcanvas-header">
-          <button
-            type="button"
-            class="btn-close text-reset"
-            data-bs-dismiss="offcanvas"
-            aria-label="Close"
-          ></button>
-        </div>
-        <div class="offcanvas-body">
-          <div class="container mt-3">
-            <img src="../../../assets/49.jpg" class="imghitorique"/>
-     <!-- Affichage de l'horaire du jour -->
-        <div class="work-schedule">
-          <h3>Horaire du jour</h3>
-          <ng-container *ngIf="todaySchedule; else noSchedule">
-            <p><strong>Jour :</strong> {{ todaySchedule.name }}</p>
-            <p><strong>Statut :</strong> {{ todaySchedule.status ? 'Ouvert' : 'Fermé' }}</p>
-            <p><strong>Total heures :</strong> {{ todaySchedule.formatted_hours }}</p>
-          </ng-container>
-          <ng-template #noSchedule>
-            <p>Aucun horaire défini pour aujourd'hui.</p>
-          </ng-template>
-        </div>
+    <div class="basforget">
 
-        <!-- Affichage du dernier pointage -->
-        <div class="last-pointage">
-          <h3>Dernier Pointage</h3>
-          <ng-container *ngIf="lastPointage; else noPointage">
-            <p><strong>Heure d'arrivée :</strong> {{ lastPointage.arrival_date }}</p>
-            <p><strong>Heure de départ :</strong> {{ lastPointage.last_departure || 'Non encore parti' }}</p>
-            <p><strong>Lieu :</strong> {{ lastPointage.location }}</p>
-          </ng-container>
-          <ng-template #noPointage>
-            <p>Aucun pointage disponible.</p>
-          </ng-template>
-        </div>
+      <button class="dropdown-item logout" (click)="logout()"> <i class="bi bi-box-arrow-in-left"></i> logout</button>
 
+    </div>
+
+  </div>
+
+
+
+</div>
+
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasLeft" aria-labelledby="offcanvasLeftLabel">
+  <div class="offcanvas-header">
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div class="container mt-3">
+      <img src="../../../assets/49.jpg" class="imghitorique" />
+
+
+      <!-- Affichage du dernier pointage -->
+      <div class="last-pointage">
+        <h3>Dernier Pointage</h3>
+
+
+        <!-- Itération sur les jours de travail -->
+        <div *ngFor="let workDay of getWorkDays()">
+
+          <p><strong>Jour :</strong> {{ workDay.day }}</p>
+          <!-- Itération sur les pointages pour chaque jour -->
+          <div *ngFor="let pointage of workDay.pointages">
+            <p><strong>Heure d'arrivée :</strong> {{ pointage.arrival_date }}</p>
+            <p><strong>Heure de départ :</strong> {{ pointage.last_departure ? (pointage.last_departure | date:
+              'HH:mm:ss') : 'Non encore parti' }}</p>
+            <p><strong>Localisation</strong> {{ pointage.location || 'Non encore parti' }}</p>
           </div>
         </div>
+
+        <!-- Affichage lorsque aucun pointage n'est disponible -->
+        <ng-template #noPointage>
+          <p>Aucun pointage disponible.</p>
+        </ng-template>
       </div>
-      
-      
+
+
+    </div>
+  </div>
+</div>

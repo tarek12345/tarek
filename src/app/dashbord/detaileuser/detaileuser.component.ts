@@ -86,9 +86,12 @@ initializeUser (): void {
     this.userId = user.id;
     this.apiService.GetUserServiceByid(this.userId).subscribe(
       (response: any) => {
+        console.log("responseresponseresponseresponse",response.user
+        );
+        
         this.userdetaile = response.user;
         this.status = response.user.status;
-        this.totalTime = response.user.counter || 0;
+        this.totalTime = response.user.total_counter|| 0;
         this.dailyTotal = response.user.daily_hours || 0;
         this.weeklyTotal = response.user.weekly_hours || 0;
         this.monthlyTotal = response.user.monthly_hours || 0;
@@ -109,7 +112,7 @@ initializeUser (): void {
 loadCounterState(): void {
   this.apiService.getActiveCounter(this.userId).subscribe(
     (response: any) => {
-      this.totalTime = response.counter || 0;
+      this.totalTime = response.total_counter || 0;
       this.dailyTotal = response.daily_hours || 0;
       this.weeklyTotal = response.weekly_hours || 0;
       this.monthlyTotal = response.monthly_hours || 0;
@@ -129,8 +132,9 @@ loadCounterState(): void {
   );
 
 
-  this.GetUsers();
+
   this.GetUserSByid();
+  this.GetUsers();
   this.updateCurrentTime();
 }
 
@@ -252,9 +256,12 @@ stopCounter(): void {
         this.weeklyTotal = response.weekly_hours * 3600; // Convertir en secondes
         this.monthlyTotal = response.monthly_hours * 3600; // Convertir en secondes
 
-        // Mettre à jour l'affichage du compteur
-        this.counter = this.formatDuration(this.totalTime);
+       
+        // this.counter = this.formatDuration(this.totalTime);
+        // console.log("------------->>>>>>>>>", this.counter);
+         // Mettre à jour l'affichage du compteur
         this.GetUserSByid()
+        // this.initializeUser()
     } catch (error) {
         this.toastr.error('Erreur lors de l\'enregistrement du départ.');
     }
