@@ -63,14 +63,21 @@ export class HeaderComponent implements OnInit {
   
 
   getLastPointage() {
-    if (this.datauser.pointages && this.datauser.pointages.length > 0) {
-      // Récupérer le dernier pointage (le dernier élément du tableau)
-      this.lastPointage = this.datauser.pointages[this.datauser.pointages.length - 1];
-    } else {
-      // Si aucun pointage n'est disponible
+    const history = this.datauser?.history;
+    if (!history) {
       this.lastPointage = null;
+      return;
     }
+  
+    // Récupérer tous les pointages en les triant par date décroissante
+    let allPointages = Object.values(history)
+      .flatMap((day: any) => day.pointages)
+      .sort((a: any, b: any) => new Date(b.last_departure).getTime() - new Date(a.last_departure).getTime());
+  
+    // Prendre le dernier pointage
+    this.lastPointage = allPointages.length > 0 ? allPointages[0] : null;
   }
+  
   
 
   // Fonction pour ajouter un zéro devant les nombres inférieurs à 10

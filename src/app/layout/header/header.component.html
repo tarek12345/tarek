@@ -63,28 +63,19 @@
 
 
       <!-- Affichage du dernier pointage -->
-      <div class="last-pointage">
-        <h3>Dernier Pointage</h3>
+<!-- Affichage du dernier pointage uniquement -->
+<div *ngIf="lastPointage">
+  <h3>Dernier Pointage</h3>
+  <p><strong>Heure d'arrivée :</strong> {{ lastPointage.arrival_date }}</p>
+  <p><strong>Heure de départ :</strong> {{ lastPointage.last_departure ? (lastPointage.last_departure | date:'HH:mm:ss') : 'Non encore parti' }}</p>
+  <p><strong>Localisation :</strong> {{ lastPointage.location || 'Non précisée' }}</p>
+</div>
 
+<!-- Si aucun pointage n'est trouvé -->
+<ng-template #noPointage>
+  <p>Aucun pointage disponible.</p>
+</ng-template>
 
-        <!-- Itération sur les jours de travail -->
-        <div *ngFor="let workDay of getWorkDays()">
-
-          <p><strong>Jour :</strong> {{ workDay.day }}</p>
-          <!-- Itération sur les pointages pour chaque jour -->
-          <div *ngFor="let pointage of workDay.pointages">
-            <p><strong>Heure d'arrivée :</strong> {{ pointage.arrival_date }}</p>
-            <p><strong>Heure de départ :</strong> {{ pointage.last_departure ? (pointage.last_departure | date:
-              'HH:mm:ss') : 'Non encore parti' }}</p>
-            <p><strong>Localisation</strong> {{ pointage.location || 'Non encore parti' }}</p>
-          </div>
-        </div>
-
-        <!-- Affichage lorsque aucun pointage n'est disponible -->
-        <ng-template #noPointage>
-          <p>Aucun pointage disponible.</p>
-        </ng-template>
-      </div>
 
 
     </div>

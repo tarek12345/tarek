@@ -41,6 +41,8 @@ export class WeekviewComponent {
             hourszero: dayData.arrival_date,
 
            };
+       
+           
         }
         return null;
       })

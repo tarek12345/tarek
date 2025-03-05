@@ -53,22 +53,23 @@ constructor(
   ngOnInit(): void {
     this.initializeUser();
     this.loadCounterState();
-    this.checkCounterReset();
+    this.checkCounterReset(); // Lancer la vérification quotidienne
  
 }
 
 checkCounterReset(): void {
   setInterval(() => {
-      const now = new Date();
-      const lastActionDate = new Date(this.arrivalDate || this.departureDate);
-      const timeDifference = now.getTime() - lastActionDate.getTime();
-
-      // Si 24 heures (86400000 ms) se sont écoulées depuis la dernière action
-      if (timeDifference >= 86400000) {
-          this.resetCounter();
-      }
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    
+    // Vérifier si l'heure actuelle est minuit (00:00) et si les minutes sont 0
+    if (hours === 0 && minutes === 0) {
+      this.resetCounter();
+    }
   }, 60000); // Vérifie chaque minute
 }
+
 resetCounter(): void {
   this.stopCounter(); // Arrêter le compteur actuel
   this.totalTime = 0; // Réinitialiser le compteur à zéro

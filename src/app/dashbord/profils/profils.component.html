@@ -41,10 +41,23 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let key of getHistoryKeys(item.history)">
-                                <td>{{ item.history[key].day }}</td>
-                                <td>{{ item.history[key].total_hours|| '00:00:00' }}</td>
-                                <td>{{ item.location}}</td>
-                                <td class="text-center">
+                                <td [ngClass]="{'d-none': item.history[key].day === 'Samedi' || item.history[key].day === 'Dimanche'}">
+                                    <span >
+                                        {{ item.history[key].day }}
+                                      </span>
+                                  <td [ngClass]="{'d-none': item.history[key].day === 'Samedi' || item.history[key].day === 'Dimanche'}">
+                                    
+                                    {{ item.history[key].total_hours|| '00:00:00' }}</td>
+                                <td [ngClass]="{'d-none': item.history[key].day === 'Samedi' || item.history[key].day === 'Dimanche'}">
+                                <ng-container  *ngIf="item.history[key].location !==null; else  defaullocation" >
+                                    
+                                    <span class="text-success" >{{ item.history[key].location}}</span>
+                                </ng-container>
+                                <ng-template #defaullocation >
+                                <span class="text-danger"> Pas de  pointage</span>
+                                </ng-template>
+                                </td>
+                                <td class="text-center" [ngClass]="{'d-none': item.history[key].day === 'Samedi' || item.history[key].day === 'Dimanche'}">
                                     <i class="bi bi-pen" (click)="openPopupEdit(item.history[key])"></i>
                                     
                                 </td>
