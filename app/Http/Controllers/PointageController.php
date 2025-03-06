@@ -443,122 +443,62 @@ public function showHistory($userId)
             ->whereDate('arrival_date', $request->date)
             ->first();
     
+        // Si le pointage n'existe pas, on le crée
         if (!$pointage) {
-            return response()->json(['message' => 'Pointage non trouvé pour cette date'], 404);
-        }
-    
-        // Mise à jour de l'heure d'arrivée et de départ
-        if ($request->filled('heure_arrivee')) {
+            $pointage = new Pointage();
+            $pointage->user_id = $id;
             $pointage->arrival_date = $request->date . ' ' . $request->heure_arrivee;
-        }
-        if ($request->filled('heure_depart')) {
             $pointage->last_departure = $request->date . ' ' . $request->heure_depart;
-        }
     
-        // Calcul du total des heures du jour
-        if ($pointage->arrival_date && $pointage->last_departure) {
-            $heureArrivee = Carbon::parse($pointage->arrival_date);
-            $heureDepart = Carbon::parse($pointage->last_departure);
-            $pointage->total_hours = $heureArrivee->diffInHours($heureDepart);
-        }
-    
-        // Sauvegarde des changements
-        $pointage->save();
-    
-        // Recalculer les heures mensuelles et hebdomadaires après modification
-        $user = User::find($id);
-        $pointages = Pointage::where('user_id', $id)
-            ->orderBy('arrival_date', 'asc')
-            ->get();
-    
-        if ($pointages->isEmpty()) {
-            return response()->json(['message' => 'Aucun pointage trouvé pour cet utilisateur'], 404);
-        }
-    
-        // Déterminer la plage de dates du mois
-        $firstDate = Carbon::parse($pointages->first()->arrival_date)->startOfMonth();
-        $lastDate = Carbon::parse($pointages->last()->arrival_date)->endOfMonth();
-    
-        // Variables pour le cumul des heures
-        $totalMonthlyHours = 0;
-        $totalWeeklyHours = 0;
-        $joursTravail = [];
-        $currentDate = $firstDate->copy();
-        $weekNumber = 1;
-    
-        while ($currentDate <= $lastDate) {
-            if ($currentDate->isWeekday()) {
-                $joursTravail[$currentDate->format('Y-m-d')] = [
-                    'week' => $weekNumber,
-                    'month' => $currentDate->translatedFormat('F'),
-                    'date' => $currentDate->format('Y-m-d'),
-                    'day' => ucfirst($currentDate->translatedFormat('l')),
-                    'arrival_date' => null,
-                    'last_departure' => null,
-                    'session_duration' => null,
-                    'total_hours' => null,
-                    'daily_hours' => null,
-                    'weekly_hours' => $totalWeeklyHours,
-                    'monthly_hours' => $totalMonthlyHours,
-                    'location' => null,
-                    'status' => null,
-                ];
+            // Calcul du total des heures
+            if ($pointage->arrival_date && $pointage->last_departure) {
+                $heureArrivee = Carbon::parse($pointage->arrival_date);
+                $heureDepart = Carbon::parse($pointage->last_departure);
+                $pointage->total_hours = $heureArrivee->diffInHours($heureDepart);
             }
-            $currentDate->addDay();
     
-            if ($currentDate->format('l') == 'Saturday') {
-                $weekNumber++;
-                $totalWeeklyHours = 0;
-            }
+            $pointage->counter = $pointage->total_hours * 3600;  // Stocke le total en secondes
+            $pointage->save();
+    
+            return response()->json([
+                'message' => 'Nouveau pointage créé avec succès',
+                'data' => $pointage,
+            ]);
         }
     
-        // Mise à jour avec les données des pointages existants
-        foreach ($pointages as $pointage) {
-            $dateKey = Carbon::parse($pointage->arrival_date)->format('Y-m-d');
-    
-            if (isset($joursTravail[$dateKey])) {
-                $arrivalTime = Carbon::parse($pointage->arrival_date);
-                $departureTime = $pointage->last_departure ? Carbon::parse($pointage->last_departure) : null;
-    
-                // Calcul de la durée de la session
-                $sessionDuration = $departureTime ? $arrivalTime->diffInSeconds($departureTime) : 0;
-                $formattedSessionDuration = $sessionDuration ? gmdate('H:i:s', $sessionDuration) : null;
-    
-                // Calcul des heures totales
-                $dailyHours = $sessionDuration / 3600;
-                $totalMonthlyHours += $dailyHours;
-                $totalWeeklyHours += $dailyHours;
-    
-                // Formater total_hours au format H:i:s
-                $formattedTotalHours = gmdate('H:i:s', $totalMonthlyHours * 3600);
-    
-                $joursTravail[$dateKey] = [
-                    'week' => $weekNumber,
-                    'month' => $arrivalTime->translatedFormat('F'),
-                    'date' => $arrivalTime->format('Y-m-d'),
-                    'day' => ucfirst(Carbon::parse($dateKey)->translatedFormat('l')),
-                    'arrival_date' => $pointage->arrival_date,
-                    'last_departure' => $pointage->last_departure,
-                    'session_duration' => $formattedSessionDuration,
-                    'total_hours' => $formattedTotalHours,
-                    'daily_hours' => $formattedSessionDuration,
-                    'weekly_hours' => $totalWeeklyHours,
-                    'monthly_hours' => $totalMonthlyHours,
-                    'location' => $pointage->location,
-                    'status' => $pointage->status,
-                ];
+        // Si le pointage existe, on le met à jour
+        try {
+            if ($request->filled('heure_arrivee')) {
+                $pointage->arrival_date = $request->date . ' ' . $request->heure_arrivee;
             }
+            if ($request->filled('heure_depart')) {
+                $pointage->last_departure = $request->date . ' ' . $request->heure_depart;
+            }
+    
+            // Calcul du total des heures
+            if ($pointage->arrival_date && $pointage->last_departure) {
+                $heureArrivee = Carbon::parse($pointage->arrival_date);
+                $heureDepart = Carbon::parse($pointage->last_departure);
+                $pointage->total_hours = $heureArrivee->diffInHours($heureDepart);
+            }
+    
+            // Calcul du total en secondes
+            $pointage->counter = $pointage->total_hours * 3600;
+            $pointage->save();
+    
+            return response()->json([
+                'message' => 'Pointage mis à jour avec succès',
+                'data' => $pointage,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error("Erreur lors de la mise à jour du pointage: " . $e->getMessage());
+            return response()->json(['message' => 'Erreur serveur'], 500);
         }
-    
-        // Préparation de la réponse
-        $result = array_values($joursTravail);
-    
-        return response()->json([
-            'message' => 'Pointage mis à jour avec succès',
-            'data' => $result,
-            'weekly_hours' => $totalWeeklyHours,
-        ]);
     }
+    
+    
+    
+
     
 
     private function recalculerTotaux($userId, $date)
