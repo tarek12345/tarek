@@ -106,8 +106,8 @@ export class ApiService {
   }
   
   // Mettre à jour un pointage
-  updatePointage(data: any, userId: number): Observable<any> {
-    return this.http.put(`${this.apiUrl}users/${userId}`, data);
+  updatePointage(userId: number, data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}users/${userId}/pointages/edit`, data);
   }
 
 }

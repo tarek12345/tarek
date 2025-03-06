@@ -76,7 +76,18 @@
   <p>Aucun pointage disponible.</p>
 </ng-template>
 
-
+<!-- Ajout du pointage du jour actuel -->
+<div class="today-pointage">
+  <h3>Pointage du Jour</h3>
+  <div *ngFor="let item of todaySchedule?.pointages">
+    <p><strong>Heure d'arrivée :</strong> {{ item.arrival_date || 'Non pointé' }}</p>
+    <p><strong>Heure de départ :</strong> {{ item.last_departure ? (item.last_departure  | date:'HH:mm:ss') : 'Non encore parti' }}</p>
+    <p><strong>Localisation :</strong> {{ item.location || 'Non précisée' }}</p>
+  </div>
+  <div *ngIf="!todaySchedule">
+    <p>Aucun pointage pour aujourd'hui.</p>
+  </div>
+</div>
 
     </div>
   </div>

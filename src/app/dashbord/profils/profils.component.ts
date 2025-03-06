@@ -91,33 +91,70 @@ export class ProfilsComponent {
     this.GetUsers(); // Recharge les employés
   }
 
-
+ selectedUserpointage :any ;
   // 🔴 **NOUVEAU : Gestion du Pointage**
-  openPopupEdit(user: any) {
-    this.displayStylePointage = "block"; 
-    this.selectedUser = user
-    console.log("selectedUserselectedUser",this.selectedUser);
-    
+// Quand l'utilisateur clique pour modifier un pointage
+openPopupEdit(user: any, key: string) {
+  this.displayStylePointage = "block"; 
+  this.selectedUser = user;
+  this.selectedUserpointage = user.history[key];
+
+  this.pointageForm.patchValue({
+    date: this.selectedUserpointage.date,
+    heure_arrivee: this.selectedUserpointage.arrival_date,
+    heure_depart: this.selectedUserpointage.last_departure,
+  });
+}
+
+  itemdate(user: any){
+    this.selectedUserpointage =   user.history
+    console.log(" this.selectedUserpointage:",  this.selectedUserpointage); // Vérification des données
   }
   closePopupEdit() {
     this.displayStylePointage = "none"; 
   }
   submitPointage() {
     if (this.pointageForm.valid) {
-      const formData = this.pointageForm.value;
-      const userId = this.selectedUser.id;
+        const formData = this.pointageForm.value;
+        const userId = this.selectedUser.id;
 
-      this.apiService.updatePointage(userId, formData).subscribe(
-        response => {
-          this.toastr.success('Pointage mis à jour avec succès !');
-          console.log(response);
-          this.closePopupEdit();
-        },
-        error => {
-          this.toastr.error('Erreur lors de la mise à jour du pointage.');
-          console.error(error);
-        }
-      );
+        // Vérification du calcul du compteur (en secondes)
+        const arrival = formData.heure_arrivee ? new Date('1970-01-01 ' + formData.heure_arrivee).getTime() : 0;
+        const departure = formData.heure_depart ? new Date('1970-01-01 ' + formData.heure_depart).getTime() : 0;
+        const counter = departure - arrival;
+
+        // Envoi des données à l'API pour la mise à jour du pointage
+        const updatedPointage = {
+            date: formData.date,
+            heure_arrivee: formData.heure_arrivee,
+            heure_depart: formData.heure_depart,
+            total_time_seconds: counter
+        };
+
+        // Appel API
+        this.apiService.updatePointage(userId, updatedPointage).subscribe(
+            response => {
+                this.toastr.success('Pointage mis à jour avec succès !');
+                console.log(response);
+                this.closePopupEdit();
+                this.refreshList();  // Met à jour la liste des utilisateurs après la modification
+            },
+            error => {
+                this.toastr.error('Erreur lors de la mise à jour du pointage.');
+                console.error(error);
+            }
+        );
     }
-  }
+}
+
+// Fonction pour calculer le counter (total des heures en secondes)
+calculateCounter(): number {
+  const formValue = this.pointageForm.value;
+  const heureArrivee = formValue.heure_arrivee ? new Date('1970-01-01 ' + formValue.heure_arrivee).getTime() : 0;
+  const heureDepart = formValue.heure_depart ? new Date('1970-01-01 ' + formValue.heure_depart).getTime() : 0;
+
+  // Calcul du total en secondes
+  return heureDepart - heureArrivee;
+}
+
 }

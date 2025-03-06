@@ -39,27 +39,38 @@ export class HeaderComponent implements OnInit {
   }
 
   getTodayWorkSchedule() {
-    if (!this.datauser.work_schedule) {
+    if (!this.datauser.history) {
       this.todaySchedule = null;
       return;
     }
   
-    const daysMap: { [key: number]: string } = {
-      1: 'lundi',
-      2: 'mardi',
-      3: 'mercredi',
-      4: 'jeudi',
-      5: 'vendredi',
-      6: 'samedi',
-      0: 'dimanche'
-    };
+    const today = new Date();
+    const todayDate = today.toISOString().split('T')[0]; // Format YYYY-MM-DD
   
-    const today = new Date().getDay();
-    const todayName = daysMap[today];
+    // Rechercher le pointage pour aujourd'hui dans l'historique
+    let todayPointageFound = false;
+    
+    for (const date in this.datauser.history) {
+      const dayData = this.datauser.history[date];
+      
+      if (date.startsWith(todayDate)) {  // Si la date commence par la date d'aujourd'hui (format YYYY-MM-DD)
+        todayPointageFound = true;
+        this.todaySchedule = {
+          arrival_date: dayData.arrival_date,
+          last_departure: dayData.last_departure,
+          location: dayData.location,
+          pointages: dayData.pointages,
+        };
+        break;
+      }
+    }
   
-    // Vérifier si le jour actuel existe dans le work_schedule
-    this.todaySchedule = this.datauser.work_schedule[todayName] || null;
+    if (!todayPointageFound) {
+      this.todaySchedule = null;  // Aucun pointage pour aujourd'hui
+    }
   }
+  
+  
   
 
   getLastPointage() {

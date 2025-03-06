@@ -1,11 +1,11 @@
-<h1> Modifier heure de chaque employé</h1>
+<h1>Modifier heure de chaque employé</h1>
 <div id="update">
     <div id="allusers">
         <div class="classright" *ngFor="let item of allUsers">
             <div class="deleteuser" (click)="openPopupDelete(item)">
                 <i class="bi bi-trash"></i>
             </div>
-         
+
             <div class="status">
                 <!-- Affichage de l'image de profil -->
                 <ng-container *ngIf="item.profile_image_url; else defaultImage">
@@ -20,16 +20,17 @@
             </div>
 
             <div class="content">
-              <div class="content-1 mb-3">
-                <div class="headertab">
-                <span>Nom :<b> {{ item.name }}</b></span>
-                <span>Poste :<b> {{ item.role }}</b></span>
-            </div>
-            <div class="content-2">
-            <i class="bi bi-cloud-arrow-down"></i>
-        </div>
-    </div>
-                <ng-container *ngIf="getHistoryKeys(item.history) ; else upddatedate">
+                <div class="content-1 mb-3">
+                    <div class="headertab">
+                        <span>Nom :<b> {{ item.name }}</b></span>
+                        <span>Poste :<b> {{ item.role }}</b></span>
+                    </div>
+                    <div class="content-2">
+                        <i class="bi bi-cloud-arrow-down"></i>
+                    </div>
+                </div>
+
+                <ng-container *ngIf="getHistoryKeys(item.history); else upddatedate">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -42,24 +43,21 @@
                         <tbody>
                             <tr *ngFor="let key of getHistoryKeys(item.history)">
                                 <td [ngClass]="{'d-none': item.history[key].day === 'Samedi' || item.history[key].day === 'Dimanche'}">
-                                    <span >
-                                        {{ item.history[key].day }}
-                                      </span>
-                                  <td [ngClass]="{'d-none': item.history[key].day === 'Samedi' || item.history[key].day === 'Dimanche'}">
-                                    
-                                    {{ item.history[key].total_hours|| '00:00:00' }}</td>
+                                    <span>{{ item.history[key].day }}</span>
+                                </td>
                                 <td [ngClass]="{'d-none': item.history[key].day === 'Samedi' || item.history[key].day === 'Dimanche'}">
-                                <ng-container  *ngIf="item.history[key].location !==null; else  defaullocation" >
-                                    
-                                    <span class="text-success" >{{ item.history[key].location}}</span>
-                                </ng-container>
-                                <ng-template #defaullocation >
-                                <span class="text-danger"> Pas de  pointage</span>
-                                </ng-template>
+                                    {{ item.history[key].total_hours || '00:00:00' }}
+                                </td>
+                                <td [ngClass]="{'d-none': item.history[key].day === 'Samedi' || item.history[key].day === 'Dimanche'}">
+                                    <ng-container *ngIf="item.history[key].location !== null; else defaullocation">
+                                        <span class="text-success">{{ item.history[key].location }}</span>
+                                    </ng-container>
+                                    <ng-template #defaullocation>
+                                        <span class="text-danger">Pas de pointage</span>
+                                    </ng-template>
                                 </td>
                                 <td class="text-center" [ngClass]="{'d-none': item.history[key].day === 'Samedi' || item.history[key].day === 'Dimanche'}">
-                                    <i class="bi bi-pen" (click)="openPopupEdit(item.history[key])"></i>
-                                    
+                                    <i class="bi bi-pen" (click)="openPopupEdit(item, key)"></i>
                                 </td>
                             </tr>
                         </tbody>
@@ -69,51 +67,57 @@
                 <ng-template #upddatedate>
                     <span class="d-block text-center">Pas de pointages</span>
                 </ng-template>
+
+                <!-- Modal de suppression -->
                 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStyleDelete}">
                     <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                        <!-- Modal Header -->
-                        <div class="modal-header">
-                          <h4 class="modal-title text-black">Spprimer utilisateur </h4>
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title text-black">Supprimer utilisateur</h4>
+                            </div>
+                            <div class="modal-body">
+                                Êtes-vous sûr de vouloir supprimer l'utilisateur <b>{{ selectedUser.name }} ?</b>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success" (click)="confirmDeleteUser(selectedUser)">Supprimer</button>
+                                <button type="button" class="btn btn-danger" (click)="closePopupDelete()">Fermer</button>
+                            </div>
                         </div>
-                
-                        <!-- Modal Body -->
-                        <div class="modal-body">
-                            Êtes-vous sûr de vouloir supprimer l'utilisateur <b>{{selectedUser.name}} ? </b>
-                        </div>
-                
-                        <!-- Modal Footer -->
-                        <div class="modal-footer">
-                          <button type="submit" class="btn btn-success" (click)="confirmDeleteUser(selectedUser)" >Supprimer</button>
-                          <button type="button" class="btn btn-danger" (click)="closePopupDelete()">Fermer</button>
-                        
-                        </div>
-                      </div>
                     </div>
-                  </div>
+                </div>
 
-
-                  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStylePointage }">
+                <!-- Modal de modification du pointage -->
+                <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStylePointage}">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
-                            <h2>Modifier le Pointage</h2>
-                        
-                            <form [formGroup]="pointageForm" (ngSubmit)="submitPointage()">
-                              <label>Date :</label>
-                              <input type="date" formControlName="date" required />
-                        
-                              <label>Heure d'Arrivée :</label>
-                              <input type="time" formControlName="heure_arrivee" />
-                        
-                              <label>Heure de Départ :</label>
-                              <input type="time" formControlName="heure_depart" />
-                        
-                              <button type="submit" [disabled]="pointageForm.invalid">Modifier Pointage</button>
-                              <button type="button" (click)="closePopupEdit()">Annuler</button>
-                            </form>
-                          </div>
+                            <div class="modal-header">
+                                <h4 class="modal-title text-black">Modifier le Pointage</h4>
+                            </div>
+                            <div class="modal-body">
+                                {{selectedUserpointage|json}}
+                                <form [formGroup]="pointageForm" (ngSubmit)="submitPointage()">
+                                    <!-- Affichage de la date -->
+                                    <label>Date : </label>
+                                    <input type="date" formControlName="date" class="form-control" [value]="selectedUser.date" required />
+
+                                    <!-- Affichage de l'heure d'arrivée -->
+                                    <label>Heure d'Arrivée : </label>
+                                    <input type="time" formControlName="heure_arrivee" class="form-control" [value]="selectedUser.arrival_date" required />
+
+                                    <!-- Affichage de l'heure de départ -->
+                                    <label>Heure de Départ :</label>
+                                    <input type="time" formControlName="heure_depart" class="form-control" [value]="selectedUser.last_departure" required />
+
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success" [disabled]="pointageForm.invalid">Modifier Pointage</button>
+                                        <button type="button" class="btn btn-danger" (click)="closePopupEdit()">Annuler</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                  </div>
+                </div>
+
             </div>
         </div>
 
@@ -122,7 +126,7 @@
             <button type="button" class="dropdown-item" (click)="openPopup()">
                 <i class="bi bi-plus-circle"></i>
             </button>
-            <app-add-employes [displayStyleChild]="displayStyle"  (employeeAdded)="refreshList()" (closeEvent)="closePopup()"></app-add-employes>
+            <app-add-employes [displayStyleChild]="displayStyle" (employeeAdded)="refreshList()" (closeEvent)="closePopup()"></app-add-employes>
         </div>
     </div>
 </div>
