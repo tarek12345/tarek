@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from '../../services/api.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ngxCsv } from 'ngx-csv';
 @Component({
   selector: 'app-profils',
   standalone: false,
@@ -156,5 +157,44 @@ calculateCounter(): number {
   // Calcul du total en secondes
   return heureDepart - heureArrivee;
 }
+
+downloadCsvFile(user: any) { 
+  if (!user || !user.history) {
+    this.toastr.error('Aucun pointage disponible pour cet utilisateur.');
+    return;
+  }
+
+  // Préparation des données pour l'exportation CSV
+  const document = Object.keys(user.history).map(key => ({
+    Id : user.id|| '',
+    Jour: user.history[key].day || '',
+    Date: user.history[key].date || '',
+    Heure_Arrivee: user.history[key].arrival_date || '',
+    Heure_Depart: user.history[key].last_departure || '',
+    Total_Heures: user.history[key].total_hours || '00:00:00',
+    Localisation: user.history[key].location || 'Non renseigné',
+    Statut :user.history[key].statut || "Hors ligne"
+  }));
+
+  const options = {  
+    fieldSeparator: ';',  
+    quoteStrings: '"',  
+    decimalseparator: '.', 
+    showLabels: true,  
+    showTitle: false, 
+    useBom: true, 
+    noDownload: false, 
+    headers: ["Id", "Jour","Date", "Heure Arrivée", "Heure Départ", "Total Heures", "Localisation","Statut"]
+  }; 
+
+  // Générer et télécharger le fichier CSV
+  new ngxCsv(document, `Pointage_${user.name}`, options);  
+}
+
+  
+   
+  
+  
+
 
 }

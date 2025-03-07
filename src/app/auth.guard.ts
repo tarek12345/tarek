@@ -26,12 +26,12 @@ export class AuthGuard implements CanActivate {
     const token = localStorage.getItem('token');
 
     if (token) {
-      console.log('Utilisateur authentifié. Accès autorisé.');
-      console.log(token)
+    //  console.log('Utilisateur authentifié. Accès autorisé.');
+     // console.log(token)
       return true; // L'utilisateur est authentifié, autorisation d'accès
     }
     else{
-      console.log(token)
+     // console.log(token)
     // Si le token n'existe pas ou est invalide
     console.log('Accès refusé. Redirection vers la page de connexion.');
     this.router.navigate(['/']); // Rediriger vers la page de connexion

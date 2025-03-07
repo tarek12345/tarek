@@ -87,8 +87,8 @@ initializeUser (): void {
     this.userId = user.id;
     this.apiService.GetUserServiceByid(this.userId).subscribe(
       (response: any) => {
-        console.log("responseresponseresponseresponse",response.user
-        );
+        // console.log("responseresponseresponseresponse",response.user
+        // );
         
         this.userdetaile = response.user;
         this.status = response.user.status;

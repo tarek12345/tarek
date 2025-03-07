@@ -13,15 +13,15 @@
            Bienvenue <br> {{ user.user?.name }}
           </span>
         
-          <ng-container *ngIf="user.user?.name === 'administrator'; else poste">
+          <ng-container *ngIf="user.user?.role === 'administrator'; else poste">
             <span class="titles">
-              Poste : Admin
+              Role : Admin
             </span>
           </ng-container>
         
           <ng-template #poste>
             <span class="titles">
-              Poste : Employer
+              Role : Employer
             </span>
           </ng-template>
         </div>
