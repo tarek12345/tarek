@@ -14,7 +14,7 @@
         <!-- Nom de l'utilisateur -->
         <p><i class="bi bi-person-gear"></i> {{ userdetaile.name }}</p>
         <!-- Statut (au bureau ou hors ligne) -->
-        <p [ngClass]="status === 'Hors ligne' ? 'text-danger' : 'text-success'">{{ status }}</p>
+        <p [ngClass]="userdetaile.status === 'hors ligne' ? 'text-danger' : 'text-success'">{{userdetaile.status}}</p>
 
         <!-- Affichage du compteur -->
         <div>
