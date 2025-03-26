@@ -48,5 +48,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/users/{userId}/pointages/edit', [PointageController::class, 'editPointage']);
     Route::get('/users/{userId}/pointages/active-counters', [PointageController::class, 'getActiveCounter']);
     Route::get('/users/{userId}/worked-hours', [PointageController::class, 'getWorkedHours']);
-    
+    Route::get('/historique/{userId}/{date}', [PointageController::class, 'getHistoryByDate']);
+
 });
