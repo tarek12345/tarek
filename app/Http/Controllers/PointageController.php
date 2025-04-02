@@ -10,58 +10,101 @@ use Illuminate\Support\Facades\DB;
 class PointageController extends Controller
 {
 
-public function onArrival(Request $request, $userId)
-{
-    // Trouver l'utilisateur
-    $user = User::find($userId);
-    if (!$user) {
-        return response()->json(['message' => 'Utilisateur non trouvé'], 404);
+    public function onArrival(Request $request, $userId)
+    {
+        // Trouver l'utilisateur
+        $user = User::find($userId);
+        if (!$user) {
+            return response()->json(['message' => 'Utilisateur non trouvé'], 404);
+        }
+    
+        $now = Carbon::now();
+        $today = $now->toDateString();
+    
+        // Vérifier s'il y a un pointage actif
+        $lastPointage = $user->pointages()->latest('created_at')->first();
+    
+        if ($lastPointage) {
+            $lastPointageDate = Carbon::parse($lastPointage->arrival_date)->toDateString();
+    
+            // Si le dernier pointage n'est pas d'aujourd'hui, enregistrer un départ automatique
+            if ($lastPointageDate < $today) {
+                $departureTime = Carbon::parse($lastPointageDate . ' 23:59:59'); // Fin de journée
+    
+                // Calcul du temps écoulé
+                $sessionSeconds = $departureTime->diffInSeconds(Carbon::parse($lastPointage->arrival_date));
+                $totalSeconds = $lastPointage->counter + $sessionSeconds;
+    
+                // Mettre à jour le pointage précédent avec une heure de départ automatique
+                $lastPointage->update([
+                    'last_departure' => $departureTime->format('Y-m-d H:i:s'),
+                    'total_hours' => round($totalSeconds / 3600, 2),
+                    'counter' => $totalSeconds,
+                    'is_active' => false, // Marquer comme inactif
+                ]);
+    
+                // Ajouter à l'historique
+                DB::table('historique_pointages')->insert([
+                    'user_id' => $userId,
+                    'nom' => $user->name,
+                    'arrival_date' => $lastPointage->arrival_date,
+                    'last_departure' => $departureTime,
+                    'day' => $departureTime->translatedFormat('l'),
+                    'week' => 'Semaine ' . $departureTime->weekOfMonth,
+                    'month' => $departureTime->translatedFormat('F'),
+                    'total_hours' => round($totalSeconds / 3600, 2),
+                    'session_duration' => gmdate('H:i:s', $totalSeconds),
+                    'updated_at' => now(),
+                    'created_at' => now(),
+                ]);
+            }
+        }
+    
+        // Réinitialiser les totaux journaliers, hebdomadaires et mensuels
+        $user->update([
+            'daily_hours' => 0,
+            'weekly_hours' => 0,
+            'monthly_hours' => 0,
+        ]);
+    
+        // Validation de la requête
+        $validated = $request->validate([
+            'location' => 'nullable|string',
+            'status' => 'nullable|string|in:aubureau,horsligne',
+        ]);
+    
+        $status = $validated['status'] ?? 'aubureau';
+    
+        // Fermer toutes les sessions actives existantes
+        Pointage::where('user_id', $userId)->where('is_active', true)->update(['is_active' => false]);
+    
+        // Initialisation du compteur à zéro
+        $counter = 0;
+    
+        // Enregistrer l'heure réelle de l'arrivée
+        $arrivalTime = Carbon::now()->format('H:i:s');
+    
+        // Enregistrer le pointage
+        $pointage = $user->pointages()->create([
+            'arrival_date' => $arrivalTime,
+            'location' => $validated['location'] ?? 'inconnue',
+            'status' => $status,
+            'is_active' => true,
+            'total_hours' => 0,
+            'daily_hours' => 0,
+            'weekly_hours' => 0,
+            'monthly_hours' => 0,
+            'counter' => $counter, // Compteur réinitialisé
+        ]);
+    
+        return response()->json([
+            'message' => 'Arrivée enregistrée avec succès.',
+            'arrival_date' => $pointage->arrival_date,
+            'location' => $pointage->location,
+            'counter' => $pointage->counter,
+        ], 201);
     }
-
-    // Réinitialiser les totaux journaliers, hebdomadaires et mensuels
-    $user->update([
-        'daily_hours' => 0,
-        'weekly_hours' => 0,
-        'monthly_hours' => 0,
-    ]);
-
-    // Validation de la requête
-    $validated = $request->validate([
-        'location' => 'nullable|string',
-        'status' => 'nullable|string|in:aubureau,horsligne',
-    ]);
-
-    $status = $validated['status'] ?? 'aubureau';
-
-    // Fermer toutes les sessions actives existantes
-    Pointage::where('user_id', $userId)->where('is_active', true)->update(['is_active' => false]);
-
-    // Initialisation du compteur à zéro
-    $counter = 0;
-
-    // Enregistrer l'heure réelle de l'arrivée
-    $arrivalTime = Carbon::now()->format('H:i:s');
-
-    // Enregistrer le pointage
-    $pointage = $user->pointages()->create([
-        'arrival_date' => $arrivalTime,
-        'location' => $validated['location'] ?? 'inconnue',
-        'status' => $status,
-        'is_active' => true,
-        'total_hours' => 0,
-        'daily_hours' => 0,
-        'weekly_hours' => 0,
-        'monthly_hours' => 0,
-        'counter' => $counter, // Compteur réinitialisé
-    ]);
-
-    return response()->json([
-        'message' => 'Arrivée enregistrée avec succès.',
-        'arrival_date' => $pointage->arrival_date,
-        'location' => $pointage->location,
-        'counter' => $pointage->counter,
-    ], 201);
-}
+    
 
 public function onDeparture(Request $request, $userId)
 {
