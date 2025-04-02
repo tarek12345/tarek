@@ -27,8 +27,9 @@ import { WeekviewComponent } from './layout/weekview/weekview.component';
 import { ProfilsComponent } from './dashbord/profils/profils.component';
 import { Detaileuser } from './dashbord/detaileuser/detaileuser.component';
 import { StatistiqueComponent } from './dashbord/statistique/statistique.component';
+import { ChartComponent } from './layout/chart/chart.component';
 
-
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { StatistiqueComponent } from './dashbord/statistique/statistique.compone
     WeekviewComponent,
     ProfilsComponent,
     StatistiqueComponent,
+    ChartComponent,
   ],
   imports: [
     BrowserModule,
@@ -57,6 +59,7 @@ import { StatistiqueComponent } from './dashbord/statistique/statistique.compone
     NgChartsModule,
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot(), // ToastrModule ajouté
+    NgxChartsModule,
   ],
   providers: [
     {

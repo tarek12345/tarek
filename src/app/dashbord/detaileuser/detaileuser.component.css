@@ -183,3 +183,7 @@ span.text {
   height: 300px; /* Définir une hauteur spécifique pour le graphique */
   width: 100%; /* La largeur sera automatiquement ajustée */
 }
+#pointageChart {
+  width: 100%;  /* ou une taille fixe comme 600px */
+  height: 400px; /* ou toute autre taille souhaitée */
+}

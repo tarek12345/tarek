@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, ElementRef  } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ElementRef,AfterViewInit   } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from '../../services/api.service';
@@ -42,20 +42,29 @@ export class Detaileuser implements OnInit {
   latitude: number | null = null;
   longitude: number | null = null;
   address: string = 'Adresse non disponible';
+
+
     // Déclaration du graphique
 constructor(
     private apiService: ApiService,
     private userService: UserService,
     private toastr: ToastrService,
     private router: Router
-  ) {}
-
+  ) {
+    
+  }
+  
+  
   ngOnInit(): void {
+   
+  
     this.initializeUser();
     this.loadCounterState();
     this.checkCounterReset(); // Lancer la vérification quotidienne
+    this.GetUserSByid();
   }
-
+  
+ 
   checkCounterReset(): void {
     setInterval(() => {
       const now = new Date();
@@ -150,6 +159,7 @@ loadCounterState(): void {
   this.GetUsers();
   this.updateCurrentTime();
 }
+
 
 updateCurrentTime(): void {
   setInterval(() => {
@@ -306,7 +316,7 @@ getLocation(): Promise<string> {
 
   
   
- 
+userdetaileid :any
 
   getProgressPercentage(totalTimeSeconds: number): number {
     const percentage = (totalTimeSeconds / this.maxDailyHours) * 100;
@@ -314,9 +324,11 @@ getLocation(): Promise<string> {
   }
   GetUserSByid(): void {
     this.apiService.GetUserServiceByid(this.userId).subscribe((data) => {
-      this.userdetaile = data.user;
+      this.userdetaileid = data.user;
     });
   }
+
+
 
   getUserCountByStatus(status: string): number {
     return this.allUsers.filter(user => user.role !== 'administrator' && user.status === status).length;
@@ -366,7 +378,6 @@ getLocation(): Promise<string> {
       }
 
 
- 
 
  
       
