@@ -19,8 +19,8 @@ export class AuthService {
     if (!token) return true; // Si le token est absent, il est considéré comme expiré
 
     try {
-      const payload = JSON.parse(atob(token.split('.')[1])); // Décoder le payload du token
-      const expirationDate = new Date(payload.exp * 1000); // Convertir la date d'expiration en millisecondes
+      const payload = JSON.parse(atob(token.split('.')[1]));
+const expirationDate = new Date(payload.exp * 1000);
       return expirationDate < new Date(); // Vérifier si la date d'expiration est passée
     } catch (error) {
       console.error('Erreur lors de la vérification du token :', error);

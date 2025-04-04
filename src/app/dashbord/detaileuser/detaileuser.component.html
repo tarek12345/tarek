@@ -13,8 +13,9 @@
 
         <!-- Nom de l'utilisateur -->
         <p><i class="bi bi-person-gear"></i> {{ userdetaile.name }}</p>
+
         <!-- Statut (au bureau ou hors ligne) -->
-        <p [ngClass]="userdetaile.status === 'hors ligne' ? 'text-danger' : 'text-success'">{{userdetaile.status}}</p>
+        <p [ngClass]="status === 'hors ligne' ? 'text-danger' : 'text-success'">{{status}}</p>
 
         <!-- Affichage du compteur -->
         <div>
@@ -40,17 +41,17 @@
       </div>
     </div>
 
-    <!-- Informations d'arrivée -->
+    <!-- Informations d'arrivée 
     <div *ngIf="arrivalDate">
       <h5>Informations d'arrivée :</h5>
       <p>Heure d'arrivée : {{ arrivalDate | date: 'HH:mm:ss' }}</p>
     </div>
 
-    <!-- Informations de départ -->
+    Informations de départ 
     <div *ngIf="departureDate">
       <h5>Informations de départ :</h5>
       <p>Heure de départ : {{ departureDate | date: 'HH:mm:ss' }}</p>
-    </div>
+    </div>-->
 
   </div>
   <!-- Section de chargement -->

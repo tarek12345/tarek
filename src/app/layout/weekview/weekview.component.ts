@@ -17,7 +17,7 @@ export class WeekviewComponent {
   @Input() itemuser: any;
 
   getWorkDays(): { day: string, hours: string , hourszero:string}[] {
-    const history = this.itemuser?.history;
+    const history = this.itemuser?.history?.jours;
     if (!history) {
       return [];
     }

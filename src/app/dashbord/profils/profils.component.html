@@ -30,7 +30,7 @@
                     </div>
                 </div>
 
-                <ng-container *ngIf="getHistoryKeys(item.history); else upddatedate">
+                <ng-container *ngIf="getHistoryKeys(item.history.jours); else upddatedate">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -41,8 +41,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let key of getHistoryKeys(item.history)">
-                                <td [ngClass]="{'d-none': item.history[key].day === 'Samedi' || item.history[key].day === 'Dimanche'}">
+                            <tr *ngFor="let key of getHistoryKeys(item.history); trackBy: trackByKey">
+                              <td [ngClass]="{'d-none': item.history[key].day === 'Samedi' || item.history[key].day === 'Dimanche'}">
                                     <span>{{ item.history[key].day }}</span>
                                 </td>
                                 <td [ngClass]="{'d-none': item.history[key].day === 'Samedi' || item.history[key].day === 'Dimanche'}">

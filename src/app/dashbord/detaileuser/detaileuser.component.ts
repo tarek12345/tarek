@@ -95,18 +95,27 @@ constructor(
       this.userId = user.id;
       this.apiService.GetUserServiceByid(this.userId).subscribe(
         (response: any) => {
-          console.log("response.user.total_hours", response.user.total_hours);
+          console.log("response.user.counter", response.user.counter);
           
           this.userdetaile = response.user;
           this.status = response.user.status;
   
-          // Convertir la chaîne "00:00:12" en secondes
-          const totalHoursString = response.user.total_hours || '00:00:00';
-          this.totalTime = this.convertTimeToSeconds(totalHoursString);
+          // Utiliser "counter" au lieu de "total_hours"
+          const totalHoursSeconds: number = response.user.counter || 0;
+          this.totalTime = totalHoursSeconds;
   
-          this.dailyTotal = response.user.daily_hours || 0;
-          this.weeklyTotal = response.user.weekly_hours || 0;
-          this.monthlyTotal = response.user.monthly_hours || 0;
+          // Assurer que response.user.history existe avant de l'utiliser
+          if (response.user.history && response.user.history.jours) {
+            this.dailyTotal = response.user.history.jours.reduce(
+              (acc: number, jour: any) => acc + (jour.counter || 0),
+              0
+            );
+          } else {
+            this.dailyTotal = 0;
+          }
+  
+          this.weeklyTotal = this.dailyTotal; // À adapter si besoin
+          this.monthlyTotal = response.user.counter || 0;
           
           this.updateCounterDisplay(this.totalTime);
   
@@ -121,6 +130,8 @@ constructor(
     }
   }
   
+  
+  
   // Fonction de conversion de l'heure au format "hh:mm:ss" en secondes
   convertTimeToSeconds(timeString: string): number {
     const timeParts = timeString.split(':'); // Divise la chaîne en heures, minutes et secondes
@@ -131,7 +142,9 @@ constructor(
     // Convertir en secondes
     return hours * 3600 + minutes * 60 + seconds;
   }
-  
+  updateUserData() {
+    this.GetUserSByid() 
+  }
 
 loadCounterState(): void {
   this.apiService.getActiveCounter(this.userId).subscribe(
@@ -271,6 +284,8 @@ async onDeparture(): Promise<void> {
     this.userService.setEncryptedItem('departureDate', this.departureDate);
     this.status = 'hors ligne'; // Mise à jour du statut
     this.userService.setEncryptedItem('status', this.status);
+    window.location.reload();
+
   } catch (error) {
     this.toastr.error('Erreur lors de l\'enregistrement du départ.');
   }

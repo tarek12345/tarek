@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit,Output  } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit,Output  } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from '../../services/api.service';
@@ -23,15 +23,18 @@ export class ProfilsComponent {
   displayStyleDelete: string = "none"; // Contrôle l'affichage du modal
   displayStylePointage: string = "none";
   ngOnInit(): void {
- this.GetUsers()
-  
+    this.GetUsers();
+    this.allUsers.forEach(user => {
+      user.historyKeys = this.getHistoryKeys(user.history);
+    });
   }
   
     constructor(
       private apiService: ApiService,
       private toastr: ToastrService,
       private router: Router,
-      private fb: FormBuilder
+      private fb: FormBuilder,
+      private cdr: ChangeDetectorRef // Ajout
     ) {  // Initialisation du formulaire de pointage
       this.pointageForm = this.fb.group({
         date: ['', Validators.required],
@@ -51,7 +54,6 @@ export class ProfilsComponent {
     });
   }
   getHistoryKeys(history: any): string[] {
-    
     return history ? Object.keys(history) : [];
   }
   confirmDeleteUser(user: any) {
@@ -59,7 +61,9 @@ export class ProfilsComponent {
       this.DeleteUser(user);
     }
   }
-  
+  trackByKey(index: number, key: string): string {
+    return key;
+  }
   DeleteUser(user: any) {
     this.apiService.DeleteService(user.id).subscribe(
       response => {
@@ -98,13 +102,15 @@ export class ProfilsComponent {
 openPopupEdit(user: any, key: string) {
   this.displayStylePointage = "block"; 
   this.selectedUser = user;
-  this.selectedUserpointage = user.history[key];
+  this.selectedUserpointage = { ...user.history[key] }; // Copie des données pour éviter les références
 
   this.pointageForm.patchValue({
     date: this.selectedUserpointage.date,
     heure_arrivee: this.selectedUserpointage.arrival_date,
     heure_depart: this.selectedUserpointage.last_departure,
   });
+
+  this.cdr.detectChanges(); // Force la mise à jour d'Angular
 }
 
   itemdate(user: any){

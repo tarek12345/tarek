@@ -46,19 +46,18 @@ export class HeaderComponent implements OnInit {
     const today = new Date();
     const todayDate = today.toISOString().split('T')[0]; // Format YYYY-MM-DD
   
-    // Rechercher le pointage pour aujourd'hui dans l'historique
     let todayPointageFound = false;
-    
-    for (const date in this.datauser.history) {
-      const dayData = this.datauser.history[date];
-      
-      if (date.startsWith(todayDate)) {  // Si la date commence par la date d'aujourd'hui (format YYYY-MM-DD)
+  
+    // Vérifier si un pointage existe pour aujourd'hui
+    for (const dayData of this.datauser?.history?.jours) {
+      const date = dayData.date; // Utilisez la date complète pour la comparaison
+      if (date.startsWith(todayDate)) {
         todayPointageFound = true;
         this.todaySchedule = {
-          arrival_date: dayData.arrival_date,
-          last_departure: dayData.last_departure,
-          location: dayData.location,
-          pointages: dayData.pointages,
+          arrival_date: dayData.arrival_date || 'Non pointé',
+          last_departure: dayData.last_departure || 'Non encore parti',
+          location: dayData.location || 'Non précisée',
+          pointages: dayData.pointages || []
         };
         break;
       }
@@ -71,7 +70,8 @@ export class HeaderComponent implements OnInit {
   
   
   
-
+  
+  
   getLastPointage() {
     const history = this.datauser?.history;
     if (!history) {
@@ -79,14 +79,15 @@ export class HeaderComponent implements OnInit {
       return;
     }
   
-    // Récupérer tous les pointages en les triant par date décroissante
-    let allPointages = Object.values(history)
+    // Récupérer tous les pointages
+    let allPointages = Object.values(history.jours)
       .flatMap((day: any) => day.pointages)
       .sort((a: any, b: any) => new Date(b.last_departure).getTime() - new Date(a.last_departure).getTime());
   
     // Prendre le dernier pointage
     this.lastPointage = allPointages.length > 0 ? allPointages[0] : null;
   }
+  
   
   
 
@@ -115,11 +116,8 @@ export class HeaderComponent implements OnInit {
     this.displayStyle = "none"; 
   }
   getTotalPointages(): number {
-    // Appel de la méthode getWorkDays pour obtenir les jours de travail
-    const workDays = this.getWorkDays();
-    
-    // Compter le total des pointages sur tous les jours de travail
-    return workDays.reduce((total, workDay) => total + (workDay.pointages?.length || 0), 0);
+    return this.todaySchedule?.pointages?.length || 0;
+
   }
   
     getWorkDays(): { day: string, hours: string , hourszero:string, pointages:any}[] {
