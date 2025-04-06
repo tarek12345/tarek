@@ -49,5 +49,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users/{userId}/pointages/active-counters', [PointageController::class, 'getActiveCounter']);
     Route::get('/users/{userId}/worked-hours', [PointageController::class, 'getWorkedHours']);
     Route::get('/historique/{userId}/{date}', [PointageController::class, 'getHistoryByDate']);
+    Route::get('/export-csv', [AuthController::class, 'exportUserWorkDays']);
 
 });
