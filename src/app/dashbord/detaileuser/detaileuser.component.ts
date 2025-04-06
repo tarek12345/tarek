@@ -61,7 +61,9 @@ constructor(
     this.initializeUser();
     this.loadCounterState();
     this.checkCounterReset(); // Lancer la vérification quotidienne
+    setTimeout(() => {
     this.GetUserSByid();
+  }, 2000); // Simule l'attente de données
   }
   
  

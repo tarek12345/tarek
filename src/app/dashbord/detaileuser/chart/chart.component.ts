@@ -1,0 +1,114 @@
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChartOptions, ChartData, ChartType } from 'chart.js';
+
+interface Jour {
+  date: string;
+  day: string;
+  month: string;
+  week: number;
+  arrival_date: string | null;
+  last_departure?: string | null;
+  location?: string | null;
+  status?: string;
+  pointages?: any[];
+  total_hours: string;
+  counter?: number;
+}
+
+@Component({
+  selector: 'app-chart',
+  templateUrl: './chart.component.html',
+  styleUrls: ['./chart.component.css'],
+  standalone: false
+})
+export class ChartComponent implements OnChanges {
+  @Input() chartusers: any;
+
+  public barChartLabels: string[] = [];
+  public totalHoursRaw: string[] = [];
+
+  public barChartData: ChartData = {
+    labels: [],
+    datasets: [
+      {
+        data: [],
+        label: 'Heures travaillées',
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+      }
+    ]
+  };
+
+  public barChartOptions: ChartOptions = {
+    responsive: true,
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Jour & Date'
+        }
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Nombre d\'heures'
+        },
+        beginAtZero: true
+      }
+    },
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: (tooltipItem: any) => {
+            const index = tooltipItem.dataIndex;
+            const rawTime = this.totalHoursRaw[index] || '00:00:00';
+            return `Total: ${rawTime}`;
+          }
+        }
+      }
+    }
+  };
+
+  public barChartType: ChartType = 'bar';
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['chartusers'] && this.chartusers?.history?.jours) {
+      const jours: Jour[] = this.chartusers.history.jours;
+
+      this.barChartLabels = jours.map(
+        (j: Jour) => `${j.day} ${this.formatDate(j.date)}`
+      );
+
+      this.totalHoursRaw = jours.map((j: Jour) => j.total_hours || '00:00:00');
+
+      const data = this.totalHoursRaw.map(h => this.convertToDecimal(h));
+
+      this.barChartData = {
+        labels: this.barChartLabels,
+        datasets: [
+          {
+            data: data,
+            label: 'Heures travaillées',
+            backgroundColor: 'rgba(83 , 88 , 217, 0.5)',
+            borderColor: 'rgba(83, 88, 217, 1)',
+            borderWidth: 1
+          }
+        ]
+      };
+    }
+  }
+
+  private convertToDecimal(timeStr: string): number {
+    if (!timeStr || timeStr === '00:00:00') return 0;
+  const [h, m, s] = timeStr.split(':').map(Number);
+  return h * 60 + m + Math.floor(s / 60);
+  }
+
+  private formatDate(dateStr: string): string {
+    const date = new Date(dateStr);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    return `${day}-${month}`;
+  }
+}

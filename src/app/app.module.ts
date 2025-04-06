@@ -27,7 +27,7 @@ import { WeekviewComponent } from './layout/weekview/weekview.component';
 import { ProfilsComponent } from './dashbord/profils/profils.component';
 import { Detaileuser } from './dashbord/detaileuser/detaileuser.component';
 import { StatistiqueComponent } from './dashbord/statistique/statistique.component';
-import { ChartComponent } from './layout/chart/chart.component';
+import { ChartComponent } from './dashbord/detaileuser/chart/chart.component';
 
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 

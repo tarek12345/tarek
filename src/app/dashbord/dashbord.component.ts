@@ -14,6 +14,7 @@ export class DashbordComponent implements OnInit {
   currentTime: string = '';
   user: any;
   userId: number = 0;
+  allUsers: any
   location: string = '';
   arrivalDate: string = '';
   departureDate: string = '';
@@ -35,15 +36,41 @@ export class DashbordComponent implements OnInit {
     if (this.user) {
       this.userId = this.user.id;
     }
+    const token = localStorage.getItem('token');
+    console.log("this.user",token);
+    
+    if (this.user.status === 401) {
+      this.router.navigate(['/']);
+    }
     this.GetUserSByid()
     this.updateCurrentTime();
-   
+   this.GetUsers
   }
-  GetUserSByid(){
-    this.apiService.GetUserServiceByid(this.user.id).subscribe(data=>{
-     this.user =data
-    })
-    }
+  GetUserSByid() {
+    this.apiService.GetUserServiceByid(this.user.id).subscribe({
+      next: (data) => {
+        console.log("ssssssssss", data);
+        this.user = data;
+      },
+      error: (error) => {
+        console.error("Erreur lors de la récupération des infos utilisateur :", error);
+        if (error.status === 401) {
+          this.logout();  // méthode de déconnexion
+          this.router.navigate(['/']); // redirection
+        }
+      }
+    });
+  }
+  GetUsers() {
+    this.apiService.GetUsers().subscribe((data) => {
+      this.allUsers = data.users.map(user => ({
+        ...user,
+        total_time_seconds: parseInt(sessionStorage.getItem('totalTime') || '0', 10)
+      }));
+    }, error => {
+      this.toastr.error('Erreur lors de la récupération des utilisateurs.');
+    });
+  }
   updateCurrentTime(): void {
     setInterval(() => {
       this.currentTime = new Date().toLocaleTimeString();
@@ -51,5 +78,9 @@ export class DashbordComponent implements OnInit {
   }
 
 
-
+  logout() {
+    this.userService.clearUserInfo();
+    this.toastr.success('Déconnexion réussie', 'Succès');
+    this.router.navigate(['/']);
+  }
 }

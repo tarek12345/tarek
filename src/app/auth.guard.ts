@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate {
     const token = localStorage.getItem('token');
     if (token && this.authService.isTokenExpired(token)) {
       localStorage.removeItem('token'); // Supprimer le token expiré
-      this.router.navigate(['/home']); // Rediriger vers la page de connexion
+      this.router.navigate(['/']); // Rediriger vers la page de connexion
     }
   }
 
@@ -34,7 +34,7 @@ export class AuthGuard implements CanActivate {
      // console.log(token)
     // Si le token n'existe pas ou est invalide
     console.log('Accès refusé. Redirection vers la page de connexion.');
-    this.router.navigate(['/home']); // Rediriger vers la page de connexion
+    this.router.navigate(['/']); // Rediriger vers la page de connexion
     return false; // Bloquer l'accè
     }
 

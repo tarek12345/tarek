@@ -122,8 +122,9 @@
 
   </div>
   <div class="chats">
-    <app-chart [itemuser]="userdetaileid"></app-chart>
-</div>
+    <app-chart *ngIf="userdetaile?.history?.jours?.length > 0" [chartusers]="userdetaile"></app-chart>
+  </div>
+  
 
 <!-- Modal pour afficher les détails de l'utilisateur -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStyle}">

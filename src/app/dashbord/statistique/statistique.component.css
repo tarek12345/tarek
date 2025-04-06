@@ -1,0 +1,111 @@
+div#update {
+    display: flex;
+    justify-content: start;
+    align-items: start;
+  }
+  #allusers {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        justify-content: start;
+        width: 100%;
+        position: relative;
+    }
+  
+  #allusers .classright.add {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  
+  .deleteuser {
+      position: absolute;
+      right: 0;
+      top: 0;
+      background: #827ed6;
+      color: #fff;
+      padding: 12px;
+      border-radius: 10px 10px 0px 50px;
+  }
+  #allusers .classright.add button.dropdown-item {
+    font-size: 54px;
+  }
+    #allusers   .classright {
+      width: calc(33% - 0px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: #f9f9f9;
+      position: relative;
+    }
+    div#allusers img.enteimg, div#allusers i.bi.bi-person-circle {
+      width: 88px;
+      object-fit: cover;
+      height: 88px;
+      border-radius: 50%;
+      font-size: 88px;
+      line-height: 88px;
+  }
+  h1 {
+      text-align: center;
+      color: #fff;
+  }
+  #allusers  .status sup {
+      left: 71px;
+      top: 69px;
+      position: absolute;
+  }
+  #update .content {
+    max-height: 200px;
+    overflow-y: scroll;
+    margin-top: 10px;
+    width: 100%;
+  }
+  .headertab b {
+    text-transform: uppercase;
+  }
+    /* Responsive pour tablette */
+    @media (max-width: 768px) {
+      .classright {
+        width: calc(50% - 10px); /* Toujours 2 éléments par ligne */
+      }
+    }
+    
+    /* Responsive pour mobile */
+    @media (max-width: 480px) {
+      .classright {
+        width: 100%; /* 1 élément par ligne */
+      }
+    }
+    @media(max-width: 1599px) {
+    #allusers .classright {
+      width: calc(40% - 0px);
+  
+  }
+    }
+    .status {
+      position: relative;
+  }
+    .headertab {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      justify-content: center;
+  
+  }
+  .content-2 {
+    display: flex;
+    align-items: center;
+    font-size: 22px;
+  }
+  .content-1 {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  

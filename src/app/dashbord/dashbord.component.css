@@ -112,3 +112,21 @@ button.nav-pills .nav-link.active {
 div#v-pills-tab {
   gap: 34px;
 }
+@media(min-width: 1600px) {
+.sidebar{
+  width: 10%;
+}
+
+div#v-pills-tabContent {
+    width: 90%;
+}
+}
+@media(max-width: 1599px) {
+  .sidebar{
+    width: 15%;
+
+}
+div#v-pills-tabContent {
+  width: 85%;
+}
+}

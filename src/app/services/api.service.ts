@@ -12,6 +12,19 @@ interface Employe {
   password_confirmation?: string;
   profile_image?: File; // Utiliser File pour les images
   total_time_seconds?: number;
+  history?: {
+    semaine?: number;
+    jours?: {
+      date: string;
+      day: string;
+      month: string;
+      week: number;
+      arrival_date: string | null;
+      last_departure: string | null;
+      [key: string]: any;
+    }[];
+    [key: string]: any;
+  };
 }
 
 @Injectable({
@@ -109,5 +122,14 @@ export class ApiService {
   updatePointage(userId: number, data: any): Observable<any> {
     return this.http.put(`${this.apiUrl}users/${userId}/pointages/edit`, data);
   }
+  downloadMonthlyReport(month?: string) {
+    let url = `${this.apiUrl}export-csv`;
+    if (month) {
+      url += `?month=${month}`; // Format: YYYY-MM
+    }
 
+    return this.http.get(url, {
+      responseType: 'blob' // Très important pour les fichiers
+    });
+  }
 }

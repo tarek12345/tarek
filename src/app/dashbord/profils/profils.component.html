@@ -1,132 +1,106 @@
 <h1>Modifier heure de chaque employé</h1>
-<div id="update">
-    <div id="allusers">
-        <div class="classright" *ngFor="let item of allUsers">
-            <div class="deleteuser" (click)="openPopupDelete(item)">
-                <i class="bi bi-trash"></i>
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">
+    <i class="bi bi-search"></i>
+  </span>
+  <input
+    type="search"
+    class="form-control"
+    placeholder="Recherche par  utilisateur"
+    aria-label="Search"
+    aria-describedby="basic-addon1"
+    (input)="onSearch($event)"  
+  />
+</div>
+
+
+<div id="update" *ngIf="!loading">
+  <div id="allusers">
+    <div class="classright" *ngFor="let item of filteredUsers">
+      <div class="deleteuser" (click)="openPopupDelete(item)">
+        <i class="bi bi-trash"></i>
+      </div>
+
+      <div class="status">
+        <!-- Affichage de l'image de profil -->
+        <ng-container *ngIf="item.profile_image_url; else defaultImage">
+          <img [src]="item.profile_image_url" alt="Image de profil" class="enteimg" />
+        </ng-container>
+        <ng-template #defaultImage>
+          <i class="bi bi-person-circle"></i>
+        </ng-template>
+        <sup [class]="item.status === 'au bureau' ? 'text-success' : 'text-danger'">
+          <i class="bi bi-circle-fill"></i>
+        </sup>
+      </div>
+
+      <div class="content">
+        <div class="content-1 mb-3">
+          <div class="headertab">
+            <span>Nom :<b> {{ item.name }}</b></span>
+            <span>Poste :<b> {{ item.role }}</b></span>
+          </div>
+          <div class="content-2 d-flex">
+            <div class="input-group date">
+              <input type="month" class="form-control" (change)="downloadReportForMonth($event)" />
             </div>
-
-            <div class="status">
-                <!-- Affichage de l'image de profil -->
-                <ng-container *ngIf="item.profile_image_url; else defaultImage">
-                    <img [src]="item.profile_image_url" alt="Image de profil" class="enteimg" />
-                </ng-container>
-                <ng-template #defaultImage>
-                    <i class="bi bi-person-circle"></i>
-                </ng-template>
-                <sup [class]="item.status === 'au bureau' ? 'text-success' : 'text-danger'">
-                    <i class="bi bi-circle-fill"></i>
-                </sup>
-            </div>
-
-            <div class="content">
-                <div class="content-1 mb-3">
-                    <div class="headertab">
-                        <span>Nom :<b> {{ item.name }}</b></span>
-                        <span>Poste :<b> {{ item.role }}</b></span>
-                    </div>
-                    <div class="content-2">
-                        <i class="bi bi-cloud-arrow-down" (click)="downloadCsvFile(item)"></i>
-                    </div>
-                </div>
-
-                <ng-container *ngIf="getHistoryKeys(item.history.jours); else upddatedate">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Jour</th>
-                                <th>Heures</th>
-                                <th>Localisation</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let key of getHistoryKeys(item.history); trackBy: trackByKey">
-                              <td [ngClass]="{'d-none': item.history[key].day === 'Samedi' || item.history[key].day === 'Dimanche'}">
-                                    <span>{{ item.history[key].day }}</span>
-                                </td>
-                                <td [ngClass]="{'d-none': item.history[key].day === 'Samedi' || item.history[key].day === 'Dimanche'}">
-                                    {{ item.history[key].total_hours || '00:00:00' }}
-                                </td>
-                                <td [ngClass]="{'d-none': item.history[key].day === 'Samedi' || item.history[key].day === 'Dimanche'}">
-                                    <ng-container *ngIf="item.history[key].location !== null; else defaullocation">
-                                        <span class="text-success">{{ item.history[key].location }}</span>
-                                    </ng-container>
-                                    <ng-template #defaullocation>
-                                        <span class="text-danger">Pas de pointage</span>
-                                    </ng-template>
-                                </td>
-                                <td class="text-center" [ngClass]="{'d-none': item.history[key].day === 'Samedi' || item.history[key].day === 'Dimanche'}">
-                                    <i class="bi bi-pen" (click)="openPopupEdit(item, key)"></i>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </ng-container>
-
-                <ng-template #upddatedate>
-                    <span class="d-block text-center">Pas de pointages</span>
-                </ng-template>
-
-                <!-- Modal de suppression -->
-                <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStyleDelete}">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title text-black">Supprimer utilisateur</h4>
-                            </div>
-                            <div class="modal-body">
-                                Êtes-vous sûr de vouloir supprimer l'utilisateur <b>{{ selectedUser.name }} ?</b>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-success" (click)="confirmDeleteUser(selectedUser)">Supprimer</button>
-                                <button type="button" class="btn btn-danger" (click)="closePopupDelete()">Fermer</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Modal de modification du pointage -->
-                <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStylePointage}">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title text-black">Modifier le Pointage</h4>
-                            </div>
-                            <div class="modal-body">
-                              
-                                <form [formGroup]="pointageForm" (ngSubmit)="submitPointage()">
-                                    <!-- Affichage de la date -->
-                                    <label>Date : </label>
-                                    <input type="date" formControlName="date" class="form-control" [value]="selectedUser.date" required />
-
-                                    <!-- Affichage de l'heure d'arrivée -->
-                                    <label>Heure d'Arrivée : </label>
-                                    <input type="time" formControlName="heure_arrivee" class="form-control" [value]="selectedUser.arrival_date" required />
-
-                                    <!-- Affichage de l'heure de départ -->
-                                    <label>Heure de Départ :</label>
-                                    <input type="time" formControlName="heure_depart" class="form-control" [value]="selectedUser.last_departure" required />
-
-                                    <div class="modal-footer">
-                                        <button type="submit" class="btn btn-success" [disabled]="pointageForm.invalid">Modifier Pointage</button>
-                                        <button type="button" class="btn btn-danger" (click)="closePopupEdit()">Annuler</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
+            <i class="bi bi-cloud-arrow-down" (click)="downloadReport()" data-bs-toggle="tooltip" title="Télécharger le rapport du mois en cours"></i>
+          </div>
         </div>
 
-        <div class="classright add">
-            <span>Créer un compte !</span>
-            <button type="button" class="dropdown-item" (click)="openPopup()">
-                <i class="bi bi-plus-circle"></i>
-            </button>
-            <app-add-employes [displayStyleChild]="displayStyle" (employeeAdded)="refreshList()" (closeEvent)="closePopup()"></app-add-employes>
-        </div>
+        <ng-container *ngIf="item.history?.length; else upddatedate">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Jour</th>
+                <th>Heures</th>
+                <th>Localisation</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let semaine of item.history">
+                <tr *ngFor="let jour of semaine.jours">
+                  <ng-container *ngIf="jour.day !== 'Samedi' && jour.day !== 'Dimanche'">
+                    <td>{{ jour.day || 'Jour inconnu' }}</td>
+                    <td>
+                      <ng-container *ngIf="jour.total_hours; else noHours">
+                        {{ jour.total_hours }}
+                      </ng-container>
+                      <ng-template #noHours>
+                        <span class="text-danger">Pas de pointage</span>
+                      </ng-template>
+                    </td>
+                    <td>
+                      <ng-container *ngIf="jour.location; else noLocation">
+                        <span class="text-success">{{ jour.location }}</span>
+                      </ng-container>
+                      <ng-template #noLocation>
+                        <span class="text-danger">Pas de pointage</span>
+                      </ng-template>
+                    </td>
+                    <td class="text-center">
+                      <i class="bi bi-pen" (click)="openPopupEdit(jour)"></i>
+                    </td>
+                  </ng-container>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </ng-container>
+
+        <ng-template #upddatedate>
+          <span class="d-block text-center">Pas de pointages</span>
+        </ng-template>
+      </div>
     </div>
+
+    <div class="classright add">
+      <span>Créer un compte !</span>
+      <button type="button" class="dropdown-item" (click)="openPopup()">
+        <i class="bi bi-plus-circle"></i>
+      </button>
+      <app-add-employes [displayStyleChild]="displayStyle" (employeeAdded)="refreshList()" (closeEvent)="closePopup()"></app-add-employes>
+    </div>
+  </div>
 </div>

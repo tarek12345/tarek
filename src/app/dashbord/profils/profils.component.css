@@ -82,6 +82,12 @@ h1 {
       width: 100%; /* 1 élément par ligne */
     }
   }
+  @media(max-width: 1599px) {
+  #allusers .classright {
+    width: calc(40% - 0px);
+
+}
+  }
   .status {
     position: relative;
 }
@@ -101,3 +107,4 @@ h1 {
   display: flex;
   justify-content: space-between;
 }
+

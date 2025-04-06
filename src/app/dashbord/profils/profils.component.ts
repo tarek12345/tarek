@@ -14,6 +14,8 @@ import { ngxCsv } from 'ngx-csv';
 export class ProfilsComponent {
   loading: boolean = true; // Indicateur de chargement
   allUsers: any[] = [];
+  filteredUsers: any[] = [];  // Cette liste contiendra les utilisateurs filtrés
+  searchQuery: string = '';  // La variable pour stocker la requête de recherche
   Historyitem: any[] = [];
   selectedUser :any =[]
   pointageForm: FormGroup;
@@ -40,22 +42,52 @@ export class ProfilsComponent {
         date: ['', Validators.required],
         heure_arrivee: [''],
         heure_depart: [''],
-      });}
-  GetUsers() {
-    this.apiService.GetUsers().subscribe((data) => {
-      this.allUsers = data.users.map(user => ({
-        ...user,
-        total_time_seconds: parseInt(sessionStorage.getItem('totalTime') || '0', 10)
-      }));
+      });
+      this.filteredUsers = [];  // Initialisation de la liste des utilisateurs filtrés
+
+    }
+    GetUsers() {
+      this.apiService.GetUsers().subscribe((data) => {
+        this.allUsers = data.users.map(user => ({
+          ...user,
+          total_time_seconds: parseInt(sessionStorage.getItem('totalTime') || '0', 10),
+          historyKeys: this.getHistoryKeys(user.history)
+        }));
+        this.filteredUsers = [...this.allUsers];  // Initialiser filteredUsers avec tous les utilisateurs
+        this.loading = false;
+      }, error => {
+        this.toastr.error('Erreur lors de la récupération des utilisateurs.');
+      });
+    }
+  
+    onSearch(event: any): void {
+      // Récupérer la valeur de la recherche
+      const query = event.target.value;
+      this.searchQuery = query ? query.toLowerCase() : '';  // Appliquer toLowerCase() uniquement si la valeur est non vide
+  
+      // Si la recherche est vide, réinitialisez filteredUsers à tous les utilisateurs
+      if (this.searchQuery === '') {
+        this.filteredUsers = this.allUsers;
+      } else {
+        // Filtrer les utilisateurs par nom ou email
+        this.filteredUsers = this.allUsers.filter(user => {
+          const fullName = (user.name && typeof user.name === 'string' ? user.name.toLowerCase() : '') || '';
+          const email = (user.email && typeof user.email === 'string' ? user.email.toLowerCase() : '') || '';
+          return (
+            fullName.includes(this.searchQuery) ||
+            email.includes(this.searchQuery)
+          );
+        });
+      }
+    }
       
-      this.loading = false;
-    }, error => {
-      this.toastr.error('Erreur lors de la récupération des utilisateurs.');
-    });
-  }
   getHistoryKeys(history: any): string[] {
-    return history ? Object.keys(history) : [];
+    if (!history || typeof history !== 'object') {
+      return [];
+    }
+    return Object.keys(history);
   }
+  
   confirmDeleteUser(user: any) {
     if (confirm(`Êtes-vous sûr de vouloir supprimer ${user.name} ?`)) {
       this.DeleteUser(user);
@@ -99,15 +131,15 @@ export class ProfilsComponent {
  selectedUserpointage :any ;
   // 🔴 **NOUVEAU : Gestion du Pointage**
 // Quand l'utilisateur clique pour modifier un pointage
-openPopupEdit(user: any, key: string) {
+openPopupEdit(user: any) {
   this.displayStylePointage = "block"; 
   this.selectedUser = user;
-  this.selectedUserpointage = { ...user.history[key] }; // Copie des données pour éviter les références
-
+  console.log(this.selectedUser)
   this.pointageForm.patchValue({
     date: this.selectedUserpointage.date,
-    heure_arrivee: this.selectedUserpointage.arrival_date,
-    heure_depart: this.selectedUserpointage.last_departure,
+    heure_arrivee: this.selectedUser.arrival_date,
+    heure_depart: this.selectedUser.last_departure,
+    week : this.selectedUser.week
   });
 
   this.cdr.detectChanges(); // Force la mise à jour d'Angular
@@ -165,23 +197,42 @@ calculateCounter(): number {
 }
 
 downloadCsvFile(user: any) { 
-  if (!user || !user.history) {
+  const csvdata = user.history;
+  console.log("csvdatacsvdatacsvdata", csvdata);
+
+  // Vérifier que l'historique existe
+  if (!csvdata || csvdata.length === 0) {
     this.toastr.error('Aucun pointage disponible pour cet utilisateur.');
     return;
   }
 
   // Préparation des données pour l'exportation CSV
-  const document = Object.keys(user.history).map(key => ({
-    Id : user.id|| '',
-    Jour: user.history[key].day || '',
-    Date: user.history[key].date || '',
-    Heure_Arrivee: user.history[key].arrival_date || '',
-    Heure_Depart: user.history[key].last_departure || '',
-    Total_Heures: user.history[key].total_hours || '00:00:00',
-    Localisation: user.history[key].location || 'Non renseigné',
-    Statut :user.history[key].statut || "Hors ligne"
-  }));
+  const document :any =[];
 
+  // Itérer sur chaque semaine dans l'historique
+  csvdata.forEach((semaine: any) => {
+    // Vérifier que la semaine contient des jours
+    if (semaine.jours && semaine.jours.length > 0) {
+      // Itérer sur chaque jour de la semaine
+      semaine.jours.forEach((jour: any) => {
+        document.push({
+          Id: user.id || '',
+          Jour: jour.day || '',
+          Date: jour.date || '',
+          Heure_Arrivee: jour.arrival_date || 'Pas de  pointage',
+          Heure_Depart: jour.last_departure || 'Pas de  pointage',
+          Total_Heures: jour.total_hours || '00:00:00',
+          Localisation: jour.location || 'Non renseigné',  // Utilisation de "jour.location"
+          Statut: jour.statut || "Hors ligne"  // Utilisation de "jour.statut"
+        });
+      });
+    }
+  });
+
+  // Vérification du contenu du tableau avant de tenter de le générer
+  console.log("Données pour CSV:", document);
+
+  // Options de génération CSV
   const options = {  
     fieldSeparator: ';',  
     quoteStrings: '"',  
@@ -190,17 +241,46 @@ downloadCsvFile(user: any) {
     showTitle: false, 
     useBom: true, 
     noDownload: false, 
-    headers: ["Id", "Jour","Date", "Heure Arrivée", "Heure Départ", "Total Heures", "Localisation","Statut"]
+    headers: ["Id", "Jour", "Date", "Heure Arrivée", "Heure Départ", "Total Heures", "Localisation", "Statut"]
   }; 
 
   // Générer et télécharger le fichier CSV
   new ngxCsv(document, `Pointage_${user.name}`, options);  
 }
 
+
+downloadReport() {
+  this.apiService.downloadMonthlyReport().subscribe(blob => {
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'rapport_mensuel_utilisateurs.csv';
+    a.click();
+    window.URL.revokeObjectURL(url);
+  });
+}
+
+downloadReportForMonth(event: Event) {
+  const input = event.target as HTMLInputElement;
+  const selectedMonth = input.value; // Ex: '2025-04'
+  if (selectedMonth) {
+    this.apiService.downloadMonthlyReport(selectedMonth).subscribe(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `rapport_${selectedMonth}.csv`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    });
+  }
   
-   
+}
+
   
-  
+
+
+
+
 
 
 }

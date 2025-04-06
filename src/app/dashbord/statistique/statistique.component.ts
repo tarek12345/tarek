@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-statistique',
@@ -8,5 +8,22 @@ import { Component } from '@angular/core';
   styleUrl: './statistique.component.css'
 })
 export class StatistiqueComponent {
+  @Input() userdetaile: any;
+      // Déclaration du graphique
+  constructor(
+    ) {
+      
+    }
 
+      ngOnChanges(changes: SimpleChanges): void {
+        if (changes['userdetaile'] && this.userdetaile) {
+          console.log("chatuserschatusers",changes);
+          
+        }
+      }
+  ngOnInit(): void {
+
+  
+  }
+  
 }
