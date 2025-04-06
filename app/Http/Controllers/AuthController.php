@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Response;
+
     use Illuminate\Support\Facades\Http;
     use Illuminate\Support\Facades\Cache;
     use Carbon\Carbon;
@@ -65,92 +67,6 @@ class AuthController extends Controller
         }
     }
 
-    // public function getUsers()
-    // {
-    //     $users = User::all();
-    //     $today = Carbon::today();
-    //     $firstDayOfMonth = $today->copy()->startOfMonth();
-    //     $lastDayOfMonth = $today->copy()->endOfMonth();
-    
-    //     // Fonction pour formater les données de pointage par jour
-    //     $formatDayData = function ($date, $pointages) {
-    //         $dayName = ucfirst(Carbon::parse($date)->locale('fr')->isoFormat('dddd'));
-    //         $monthName = ucfirst(Carbon::parse($date)->locale('fr')->isoFormat('MMMM'));
-    //         $weekNumber = Carbon::parse($date)->weekOfMonth;
-    
-    //         if ($pointages->isEmpty()) {
-    //             return [
-    //                 "date" => $date,
-    //                 "day" => $dayName,
-    //                 "month" => $monthName,
-    //                 "week" => $weekNumber,
-    //                 "arrival_date" => null,
-    //                 "last_departure" => null,
-    //                 "location" => null,
-    //                 "status" => "horsligne",
-    //                 "total_hours" => "00:00:00",
-    //                 "pointages" => [],
-    //             ];
-    //         }
-    
-    //         $firstPointage = $pointages->first();
-    //         $lastPointage = $pointages->last();
-    //         $totalSeconds = $pointages->sum('counter');
-    
-    //         // Convertir les secondes en "H:i:s"
-    //         $formattedTotalHours = gmdate('H:i:s', $totalSeconds);
-    
-    //         return [
-    //             "date" => $date,
-    //             "day" => $dayName,
-    //             "month" => $monthName,
-    //             "week" => $weekNumber,
-    //             "arrival_date" => Carbon::parse($firstPointage->arrival_date)->format('H:i:s'),
-    //             "last_departure" => Carbon::parse($lastPointage->last_departure)->format('H:i:s'),
-    //             "location" => $lastPointage->location ?? null,
-    //             "status" => $lastPointage && $lastPointage->is_active ? "aubureau" : "horsligne",
-    //             "total_hours" => $formattedTotalHours,
-    //             "pointages" => $pointages->map(function ($pointage) {
-    //                 return [
-    //                     "id" => $pointage->id,
-    //                     "user_id" => $pointage->user_id,
-    //                     "arrival_date" => Carbon::parse($pointage->arrival_date)->format('H:i:s'),
-    //                     "counter" => $pointage->counter,
-    //                     "last_departure" => Carbon::parse($pointage->last_departure)->format('Y-m-d H:i:s'),
-    //                     "location" => $pointage->location ?? null,
-    //                 ];
-    //             }),
-    //         ];
-    //     };
-    
-    //     // Traiter les utilisateurs
-    //     foreach ($users as $user) {
-    //         $lastPointage = $user->pointages()->latest('created_at')->first();
-    //         $status = $lastPointage && $lastPointage->is_active ? 'au bureau' : 'hors ligne';
-    
-    //         $user->profile_image_url = $user->profile_image ? URL::to('/') . '/storage/' . $user->profile_image : null;
-    //         $user->status = $status;
-    //         $user->arrival_date = $lastPointage ? $lastPointage->arrival_date : null;
-    //         $user->location = $lastPointage ? $lastPointage->location : null;
-    //         $user->total_hours = $lastPointage ? gmdate('H:i:s', $lastPointage->counter) : "00:00:00";
-    //         $user->counter = $lastPointage ? $lastPointage->counter : 0;
-    //         $user->weekly_hours = $lastPointage ? $lastPointage->weekly_hours : 0; 
-    //         $user->monthly_hours = $lastPointage ? $lastPointage->monthly_hours : 0; 
-    //         $user->session_duration = $lastPointage ? gmdate('H:i:s', $lastPointage->counter) : '00:00:00';
-    
-    //         // 🔹 Ajouter l'historique pour tous les jours du mois pour cet utilisateur uniquement
-    //         $history = [];
-    //         foreach (new \DatePeriod($firstDayOfMonth, \DateInterval::createFromDateString('1 day'), $lastDayOfMonth) as $date) {
-    //             $dateString = $date->toDateString();
-    //             $pointages = $user->pointages()->whereDate('arrival_date', $dateString)->get(); // Filtrer les pointages par utilisateur
-    //             $history[$dateString] = $formatDayData($dateString, $pointages);
-    //         }
-    
-    //         $user->history = $history;
-    //     }
-    
-    //     return response()->json(['users' => $users], 200);
-    // }
     
     public function getUsers()
 {
@@ -221,9 +137,9 @@ class AuthController extends Controller
         $totalCounter = 0;
 
         foreach (new \DatePeriod($firstDayOfMonth, \DateInterval::createFromDateString('1 day'), $lastDayOfMonth) as $date) {
-            $dateString = $date->toDateString();
-            $weekNumber = Carbon::parse($dateString)->weekOfMonth;
-
+            $dateString = Carbon::instance($date)->toDateString(); // Ensure you are using Carbon
+            $weekNumber = Carbon::parse($dateString)->weekOfMonth; // Define $weekNumber here
+        
             $pointages = $user->pointages()->whereDate('last_departure', $dateString)
                                             ->orWhereDate('arrival_date', $dateString)
                                             ->get();
@@ -302,96 +218,12 @@ class AuthController extends Controller
     }
     
 
-    // public function getUserById($id)
-    // {
-    //     $user = User::find($id);
-    //     if (!$user) {
-    //         return response()->json(['message' => 'Utilisateur non trouvé'], 404);
-    //     }
-    
-    //     $today = Carbon::today();
-    //     $firstDayOfMonth = $today->copy()->startOfMonth();
-    //     $lastDayOfMonth = $today->copy()->endOfMonth();
-    
-    //     // Fonction pour formater les données de pointage par jour
-    //     $formatDayData = function ($date, $pointages) {
-    //         $dayName = ucfirst(Carbon::parse($date)->locale('fr')->isoFormat('dddd'));
-    //         $monthName = ucfirst(Carbon::parse($date)->locale('fr')->isoFormat('MMMM'));
-    //         $weekNumber = Carbon::parse($date)->weekOfMonth;
-    
-    //         if ($pointages->isEmpty()) {
-    //             return [
-    //                 "date" => $date,
-    //                 "day" => $dayName,
-    //                 "month" => $monthName,
-    //                 "week" => $weekNumber,
-    //                 "arrival_date" => null,
-    //                 "last_departure" => null,
-    //                 "location" => null,
-    //                 "status" => "horsligne",
-    //                 "total_hours" => "00:00:00",
-    //                 "pointages" => [],
-    //             ];
-    //         }
-    
-    //         $firstPointage = $pointages->first();
-    //         $lastPointage = $pointages->last();
-            
-    //         $totalSeconds = $pointages->sum('counter');
-    //         $formattedTotalHours = gmdate('H:i:s', $totalSeconds);
-    
-    //         return [
-    //             "date" => $date,
-    //             "day" => $dayName,
-    //             "month" => $monthName,
-    //             "week" => $weekNumber,
-    //             "arrival_date" => $firstPointage->arrival_date ? Carbon::parse($firstPointage->arrival_date)->format('H:i:s') : null,
-    //             "last_departure" => $lastPointage->last_departure ? Carbon::parse($lastPointage->last_departure)->format('H:i:s') : null,
-    //             "location" => $lastPointage->location ?? null,
-    //             "status" => $lastPointage && $lastPointage->is_active ? "aubureau" : "horsligne",
-    //             "total_hours" => $formattedTotalHours,
-    //             "pointages" => $pointages->map(function ($pointage) {
-    //                 return [
-    //                     "id" => $pointage->id,
-    //                     "user_id" => $pointage->user_id,
-    //                     "arrival_date" => Carbon::parse($pointage->arrival_date)->format('H:i:s'),
-    //                     "counter" => $pointage->counter,
-    //                     "last_departure" => Carbon::parse($pointage->last_departure)->format('Y-m-d H:i:s'),
-    //                     "location" => $pointage->location ?? null,
-    //                 ];
-    //             }),
-    //         ];
-    //     };
-    
-    //     // 🔹 Dernier pointage et statut
-    //     $lastPointage = $user->pointages()->latest('created_at')->first();
-    //     $status = $lastPointage && $lastPointage->is_active ? 'au bureau' : 'hors ligne';
-    //     $user->profile_image_url = $user->profile_image ? URL::to('/') . '/storage/' . $user->profile_image : null;
-    //     $user->status = $status;
-    //     $user->arrival_date = $lastPointage ? Carbon::parse($lastPointage->arrival_date)->format('H:i:s') : null;
-    //     $user->location = $lastPointage ? $lastPointage->location : null;
-    
-    //     // 🔹 Récupération et formattage de l'historique des jours
-    //     $history = [];
-    //     foreach (new \DatePeriod($firstDayOfMonth, \DateInterval::createFromDateString('1 day'), $lastDayOfMonth) as $date) {
-    //         $dateString = $date->toDateString();
-    //         $pointages = $user->pointages()->whereDate('arrival_date', $dateString)->get();
-    //         $history[] = $formatDayData($dateString, $pointages);
-    //     }
-    
-    //     $user->history = [
-    //         "semaine" => 1,
-    //         "jours" => $history,
-    //     ];
-    
-    //     return response()->json(['user' => $user], 200);
-    // }
     
     
     
 
     
-        public function getUserById($id)
+    public function getUserById($id)
         {
             $user = User::find($id);
             if (!$user) {
@@ -468,7 +300,7 @@ class AuthController extends Controller
     
             // Itération sur chaque jour du mois
             foreach (new \DatePeriod($firstDayOfMonth, \DateInterval::createFromDateString('1 day'), $lastDayOfMonth) as $date) {
-                $dateString = $date->toDateString();
+                $dateString = Carbon::instance($date)->toDateString(); // Use Carbon instance
                 $pointages = $user->pointages()->whereDate('last_departure', $dateString)
                                                 ->orWhereDate('arrival_date', $dateString)
                                                 ->get();
@@ -761,6 +593,86 @@ public function resetPassword(Request $request)
         'message' => 'Mot de passe réinitialisé avec succès.'
     ]);
 }
+
+
+
+
+
+
+public function exportUserWorkDays(Request $request)
+{
+    // Nombre total de jours ouvrables dans le mois (ex: 22 jours)
+    $totalWorkingDays = 22;
+
+    // Récupérer tous les utilisateurs avec leurs pointages
+    $users = User::with('pointages')->get();
+
+    // Définir la plage de dates du mois en cours
+    $today = Carbon::today();
+    $firstDay = $today->copy()->startOfMonth();
+    $lastDay = $today->copy()->endOfMonth();
+
+    // En-têtes du fichier CSV
+    $headers = ['Nom', 'Email', 'Jours de travail', 'Jours d\'absence', 'Total heures'];
+
+    return Response::stream(function () use ($headers, $users, $firstDay, $lastDay, $totalWorkingDays) {
+        // Ouvrir le fichier en mode écriture
+        $handle = fopen('php://output', 'w');
+
+        // Ajouter un BOM (Byte Order Mark) pour garantir que Excel l'ouvre en UTF-8
+        fprintf($handle, chr(0xEF).chr(0xBB).chr(0xBF));
+
+        // Ajouter les en-têtes dans le fichier CSV (séparées par des virgules)
+        fputcsv($handle, $headers, ';');  // Utilisation du point-virgule comme séparateur
+
+        // Parcourir chaque utilisateur
+        foreach ($users as $user) {
+            // Calcul des jours travaillés et des secondes totales pour chaque utilisateur
+            $workDays = 0;
+            $totalSeconds = 0;
+
+            // Vérification des jours de travail pour chaque jour du mois
+            foreach (new \DatePeriod($firstDay, \DateInterval::createFromDateString('1 day'), $lastDay->copy()->addDay()) as $date) {
+                $dateStr = Carbon::instance($date)->toDateString();
+
+                // Récupérer les pointages pour chaque jour spécifique
+                $pointages = $user->pointages
+                    ->filter(function ($p) use ($dateStr) {
+                        return Carbon::parse($p->arrival_date)->toDateString() === $dateStr ||
+                               Carbon::parse($p->last_departure)->toDateString() === $dateStr;
+                    });
+
+                // Si l'utilisateur a pointé ce jour-là, on incrémente les jours de travail
+                if ($pointages->isNotEmpty()) {
+                    $workDays++;
+                    $totalSeconds += $pointages->sum('counter');
+                }
+            }
+
+            // Calculer les jours d'absence
+            $absenceDays = $totalWorkingDays - $workDays;
+
+            // Ajouter une ligne pour chaque utilisateur dans le fichier CSV
+            fputcsv($handle, [
+                $user->name,
+                $user->email,
+                $workDays,
+                max($absenceDays, 0),  // Jours d'absence ne peut pas être négatif
+                gmdate('H:i:s', $totalSeconds)  // Format d'heure : H:i:s
+            ], ';');  // Utiliser un point-virgule pour séparer les valeurs dans Excel
+        }
+
+        fclose($handle);  // Fermer le fichier
+    }, 200, [
+        "Content-Type" => "text/csv; charset=UTF-8",  // Le type MIME du fichier CSV
+        "Content-Disposition" => "attachment; filename=rapport_utilisateurs.csv",  // Nom du fichier téléchargé
+        "Pragma" => "no-cache",
+        "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+        "Expires" => "0",
+    ]);
+}
+
+
 
 
 }
