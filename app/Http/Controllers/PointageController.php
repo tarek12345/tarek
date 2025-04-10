@@ -9,128 +9,183 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 class PointageController extends Controller
 {
-    public function onArrival(Request $request, $userId)
-    {
-        $user = User::find($userId);
-        if (!$user) {
-            return response()->json(['message' => 'Utilisateur non trouvé'], 404);
+        /* api  arrive */
+        public function onArrival(Request $request, $userId)
+        {
+            // Trouver l'utilisateur
+            $user = User::find($userId);
+            if (!$user) {
+                return response()->json(['message' => 'Utilisateur non trouvé'], 404);
+            }
+        
+            $now = Carbon::now();
+            $today = $now->toDateString();
+        
+            // Vérifier s'il y a un pointage actif
+            $lastPointage = $user->pointages()->latest('created_at')->first();
+        
+            if ($lastPointage) {
+                $lastPointageDate = Carbon::parse($lastPointage->arrival_date)->toDateString();
+        
+                // Si le dernier pointage n'est pas d'aujourd'hui, enregistrer un départ automatique
+                if ($lastPointageDate < $today) {
+                    $departureTime = Carbon::parse($lastPointageDate . ' 23:59:59'); // Fin de journée
+        
+                    // Calcul du temps écoulé
+                    $sessionSeconds = $departureTime->diffInSeconds(Carbon::parse($lastPointage->arrival_date));
+                    $totalSeconds = $lastPointage->counter + $sessionSeconds;
+        
+                    // Mettre à jour le pointage précédent avec une heure de départ automatique
+                    $lastPointage->update([
+                        'last_departure' => $departureTime->format('Y-m-d H:i:s'),
+                        'total_hours' => round($totalSeconds / 3600, 2),
+                        'counter' => $totalSeconds,
+                        'is_active' => false, // Marquer comme inactif
+                    ]);
+        
+                    // Ajouter à l'historique
+                    DB::table('historique_pointages')->insert([
+                        'user_id' => $userId,
+                        'nom' => $user->name,
+                        'arrival_date' => $lastPointage->arrival_date,
+                        'last_departure' => $departureTime,
+                        'day' => $departureTime->translatedFormat('l'),
+                        'week' => 'Semaine ' . $departureTime->weekOfMonth,
+                        'month' => $departureTime->translatedFormat('F'),
+                        'total_hours' => round($totalSeconds / 3600, 2),
+                        'session_duration' => gmdate('H:i:s', $totalSeconds),
+                        'updated_at' => now(),
+                        'created_at' => now(),
+                    ]);
+                }
+            }
+        
+            // Réinitialiser les totaux journaliers, hebdomadaires et mensuels
+            $user->update([
+                'daily_hours' => 0,
+                'weekly_hours' => 0,
+                'monthly_hours' => 0,
+            ]);
+        
+            // Validation de la requête
+            $validated = $request->validate([
+                'location' => 'nullable|string',
+                'status' => 'nullable|string|in:aubureau,horsligne',
+            ]);
+        
+            $status = $validated['status'] ?? 'aubureau';
+        
+            // Fermer toutes les sessions actives existantes
+            Pointage::where('user_id', $userId)->where('is_active', true)->update(['is_active' => false]);
+        
+            // Initialisation du compteur à zéro
+            $counter = 0;
+        
+            // Enregistrer l'heure réelle de l'arrivée
+            $arrivalTime = Carbon::now()->format('H:i:s');
+        
+            // Enregistrer le pointage
+            $pointage = $user->pointages()->create([
+                'arrival_date' => $arrivalTime,
+                'location' => $validated['location'] ?? 'inconnue',
+                'status' => $status,
+                'is_active' => true,
+                'total_hours' => 0,
+                'daily_hours' => 0,
+                'weekly_hours' => 0,
+                'monthly_hours' => 0,
+                'counter' => $counter, // Compteur réinitialisé
+            ]);
+        
+            return response()->json([
+                'message' => 'Arrivée enregistrée avec succès.',
+                'arrival_date' => $pointage->arrival_date,
+                'location' => $pointage->location,
+                'counter' => $pointage->counter,
+            ], 201);
         }
-      // Réinitialiser les totaux journaliers, hebdomadaires et mensuels
-      $user->update([
-        'daily_hours' => 0,
-        'weekly_hours' => 0,
-        'monthly_hours' => 0,
-    ]);
-        $validated = $request->validate([
-            'location' => 'nullable|string',
-            'status' => 'nullable|string|in:aubureau,horsligne',
-        ]);
     
-        $status = $validated['status'] ?? 'aubureau';
-    
-        // Fermer toutes les sessions actives existantes
-        Pointage::where('user_id', $userId)->where('is_active', true)->update(['is_active' => false]);
-    
-        // Récupérer la dernière valeur du compteur
-        $lastPointage = Pointage::where('user_id', $userId)
-            ->orderBy('created_at', 'desc')
-            ->first();
-    
-        $counter = $lastPointage ? $lastPointage->counter : 0; // Démarrer à partir de la dernière valeur
-    
-        // Enregistrez l'heure réelle de l'arrivée
-        $arrivalTime = Carbon::now()->format('H:i:s');
-    
-        $pointage = $user->pointages()->create([
-            'arrival_date' => $arrivalTime,
-            'location' => $validated['location'] ?? 'inconnue',
-            'status' => $status,
-            'is_active' => true,
-            'total_hours' => 0,
-            'daily_hours' => 0, // Initialiser les heures quotidiennes
-            'monthly_hours' => 0, // Initialiser les heures mensuelles
-            'counter' => $counter, // Utiliser la dernière valeur du compteur
-        ]);
-    
-        return response()->json([
-            'message' => 'Arrivée enregistrée avec succès.',
-            'arrival_date' => $pointage->arrival_date,
-            'location' => $pointage->location,
-            'total_hours' => $pointage->total_hours,
-            'counter' => $pointage->counter,
-        ], 201);
-    }
-    public function onDeparture(Request $request, $userId)
-{
-    $user = User::find($userId);
-    if (!$user) {
-        return response()->json(['message' => 'Utilisateur non trouvé'], 404);
-    }
+        /* api  depart */
+        public function onDeparture(Request $request, $userId)
+        {
+            // Trouver l'utilisateur
+            $user = User::find($userId);
+            if (!$user) {
+                return response()->json(['message' => 'Utilisateur non trouvé'], 404);
+            }
 
-    $activePointage = Pointage::where('user_id', $userId)->where('is_active', true)->first();
+            // Trouver la session active de l'utilisateur
+            $activePointage = Pointage::where('user_id', $userId)->where('is_active', true)->first();
 
-    if (!$activePointage) {
-        return response()->json(['message' => 'Aucune session active trouvée'], 400);
-    }
+            if (!$activePointage) {
+                return response()->json(['message' => 'Aucune session active trouvée'], 400);
+            }
 
-    $departureTime = Carbon::now();
-    $arrivalTime = Carbon::parse($activePointage->arrival_date);
+            // Enregistrer l'heure de départ
+            $departureTime = Carbon::now();
+            $arrivalTime = Carbon::parse($activePointage->arrival_date);
 
-    // Calculer le temps écoulé durant cette session
-    $sessionSeconds = $departureTime->diffInSeconds($arrivalTime);
+            // Calculer le temps écoulé durant cette session
+            $sessionSeconds = $departureTime->diffInSeconds($arrivalTime);
 
-    // Ajouter les heures travaillées au total existant
-    $totalSeconds = $activePointage->counter + $sessionSeconds;
+            // Calculer les heures totales, journalières, hebdomadaires et mensuelles
+            $totalSeconds = $activePointage->counter + $sessionSeconds;
+            $dailyHours = $activePointage->daily_hours + ($sessionSeconds / 3600);
+            $weeklyHours = $activePointage->weekly_hours + ($sessionSeconds / 3600);
+            $monthlyHours = $activePointage->monthly_hours + ($sessionSeconds / 3600);
 
-    // Calculer les heures quotidiennes, hebdomadaires et mensuelles
-    $dailyHours = $activePointage->daily_hours + ($sessionSeconds / 3600);
-    $weeklyHours = $activePointage->weekly_hours + ($sessionSeconds / 3600);
-    $monthlyHours = $activePointage->monthly_hours + ($sessionSeconds / 3600);
+            // Mise à jour des heures dans l'utilisateur
+            $user->update([
+                'daily_hours' => round($dailyHours, 2),
+                'weekly_hours' => round($weeklyHours, 2),
+                'monthly_hours' => round($monthlyHours, 2),
+            ]);
 
-    // Vérifier si l'utilisateur a dépassé le total des heures travaillées autorisées
-    if ($dailyHours > 8) {
-        // Déconnecter l'utilisateur
-        $user->tokens()->delete();
-        return response()->json([
-            'message' => 'Vous avez dépassé le total des heures travaillées autorisées. Vous avez été déconnecté.',
-        ], 401);
-    }
+            // Mise à jour du pointage avec le temps calculé
+            $activePointage->update([
+                'last_departure' => $departureTime->format('Y-m-d H:i:s'),
+                'total_hours' => round($totalSeconds / 3600, 2),
+                'daily_hours' => round($dailyHours, 2),
+                'weekly_hours' => round($weeklyHours, 2),
+                'monthly_hours' => round($monthlyHours, 2),
+                'counter' => $totalSeconds, // Mise à jour du compteur
+                'is_active' => false, // Marquer comme inactif
+                'location' => $request->input('location', $activePointage->location), // Mise à jour de la localisation
+            ]);
 
-    // Mise à jour des totaux journaliers, hebdomadaires et mensuels
-    $user->update([
-        'daily_hours' => round($dailyHours, 2),
-        'weekly_hours' => round($weeklyHours, 2),
-        'monthly_hours' => round($monthlyHours, 2),
-    ]);
+            // Enregistrement dans l'historique
+            // Format de la durée de la session (HH:MM:SS)
+                $formattedDuration = gmdate('H:i:s', $totalSeconds);
+                // Insérer dans l'historique
+                DB::table('historique_pointages')->insert([
+                    'user_id' => $userId,
+                    'nom' => $user->name,
+                    'arrival_date' => $arrivalTime,
+                    'last_departure' => $departureTime,
+                    'day' => $departureTime->translatedFormat('l'), // Ex: Mardi
+                    'week' => 'Semaine ' . $departureTime->weekOfMonth,
+                    'month' => $departureTime->translatedFormat('F'), // Ex: Mars
+                    'total_hours' => round($totalSeconds / 3600, 2),
+                    'session_duration' => $formattedDuration, // Durée de la session ajoutée ici
+                    'updated_at' => now(),
+                    'created_at' => now(),
+                ]);
 
-    // Formater la durée de la session en "HH:MM:SS"
-    $formattedDuration = gmdate('H:i:s', $totalSeconds);
-
-    // Mettre à jour le pointage, avec la localisation
-    $activePointage->update([
-        'last_departure' => $departureTime->format('Y-m-d H:i:s'), // 🔥 Assurez-vous qu'il est bien enregistré !
-        'total_hours' => round($totalSeconds / 3600, 2),
-        'daily_hours' => round($dailyHours, 2),
-        'weekly_hours' => round($weeklyHours, 2),
-        'monthly_hours' => round($monthlyHours, 2),
-        'counter' => $totalSeconds, // Stocker la durée totale en secondes
-        'is_active' => false, // Marquer comme inactif
-        'location' => $request->input('location', $activePointage->location), // Mettre à jour la localisation si fournie
-    ]);
-
-    return response()->json([
-        'message' => 'Départ enregistré avec succès',
-        'last_departure' => $departureTime->format('Y-m-d H:i:s'),
-        'arrival_date' => $arrivalTime->format('Y-m-d H:i:s'),
-        'session_duration' => $formattedDuration, // Retourner la durée formatée
-        'total_hours' => round($totalSeconds / 3600, 2),
-        'daily_hours' => round($dailyHours, 2),
-        'weekly_hours' => round($weeklyHours, 2),
-        'monthly_hours' => round($monthlyHours, 2),
-        'totalTime' => $totalSeconds, // Retourner la durée totale en secondes
-        'location' => $activePointage->location, // Retourner la localisation mise à jour
-    ], 200);
-}
+            return response()->json([
+                'message' => 'Départ enregistré avec succès',
+                'last_departure' => $departureTime->format('Y-m-d H:i:s'),
+                'arrival_date' => $arrivalTime->format('Y-m-d H:i:s'),
+                'session_duration' => $formattedDuration,
+                'total_hours' => round($totalSeconds / 3600, 2),
+                'daily_hours' => round($dailyHours, 2),
+                'weekly_hours' => round($weeklyHours, 2),
+                'monthly_hours' => round($monthlyHours, 2),
+                'counter' => $totalSeconds, // Durée totale en secondes
+                'location' => $activePointage->location,
+            ], 200);
+        }
+     
+        
 
 public function showHistory($userId)
 {
@@ -310,202 +365,77 @@ public function showHistory($userId)
         ], 200);
     }
 
-    
-    // public function editPointage(Request $request, $id)
-    // {
-    //     // Valider les données reçues
-    //     $request->validate([
-    //         'date' => 'required|date',
-    //         'heure_arrivee' => 'nullable|regex:/^\d{2}:\d{2}(:\d{2})?$/',
-    //         'heure_depart' => 'nullable|regex:/^\d{2}:\d{2}(:\d{2})?$/',
-    //     ]);
-    
-    //     \Log::info("Requête reçue pour editPointage : ", $request->all());
-    
-    //     // Rechercher le pointage spécifique dans l'array `pointages`
-    //     $pointage = Pointage::where('user_id', $id)
-    //     ->where('arrival_date', '=', $request->date . ' ' . $request->heure_arrivee) // Comparaison exacte
-    //     ->first();
 
-    //     if (!$pointage) {
-    //         return response()->json(['message' => 'Pointage non trouvé pour cette date'], 404);
-    //     }
     
-    //     // Mise à jour de l'heure d'arrivée et de départ
-    //     if ($request->has('heure_arrivee')) {
-    //         $pointage->arrival_date = $request->date . ' ' . $request->heure_arrivee; // Mise à jour de arrival_date
-    //     }
-    //     if ($request->has('heure_depart')) {
-    //         $pointage->last_departure = $request->date . ' ' . $request->heure_depart; // Mise à jour de last_departure
-    //     }
-    
-    //     // Calcul du total des heures du jour
-    //     if ($pointage->arrival_date && $pointage->last_departure) {
-    //         $heureArrivee = strtotime($pointage->arrival_date);
-    //         $heureDepart = strtotime($pointage->last_departure);
-    //         $pointage->total_hours = ($heureDepart - $heureArrivee) / 3600; // Convertir en heures
-    //     }
-    
-    //     // Sauvegarde des changements
-    //     $pointage->save();
-    
-    //     // Récupérer l'utilisateur avec tous ses pointages mis à jour
-    //     $user = User::with('pointages')->find($id);
-    
-    //     return response()->json([
-    //         'message' => 'Pointage mis à jour avec succès',
-    //         'user' => $user, // Retourne toutes les informations mises à jour
-    //     ]);
-    // }
-
     public function editPointage(Request $request, $id)
-{
-    // Valider les données reçues
-    $request->validate([
-        'date' => 'required|date',
-        'heure_arrivee' => 'nullable|regex:/^\d{2}:\d{2}(:\d{2})?$/',
-        'heure_depart' => 'nullable|regex:/^\d{2}:\d{2}(:\d{2})?$/',
-    ]);
-
-    \Log::info("Requête reçue pour editPointage : ", $request->all());
-
-    // Rechercher le pointage spécifique pour l'utilisateur et la date
-    $pointage = Pointage::where('user_id', $id)
-        ->where('arrival_date', '=', $request->date . ' ' . $request->heure_arrivee)
-        ->first();
-
-    if (!$pointage) {
-        return response()->json(['message' => 'Pointage non trouvé pour cette date'], 404);
-    }
-
-    // Mise à jour de l'heure d'arrivée et de départ
-    if ($request->has('heure_arrivee')) {
-        $pointage->arrival_date = $request->date . ' ' . $request->heure_arrivee; // Mise à jour de arrival_date
-    }
-    if ($request->has('heure_depart')) {
-        $pointage->last_departure = $request->date . ' ' . $request->heure_depart; // Mise à jour de last_departure
-    }
-
-    // Calcul du total des heures du jour
-    if ($pointage->arrival_date && $pointage->last_departure) {
-        $heureArrivee = strtotime($pointage->arrival_date);
-        $heureDepart = strtotime($pointage->last_departure);
-        $pointage->total_hours = ($heureDepart - $heureArrivee) / 3600; // Convertir en heures
-    }
-
-    // Sauvegarde des changements
-    $pointage->save();
-
-    // Recalculer les heures mensuelles et hebdomadaires après modification
-    $user = User::find($id);
-    $pointages = Pointage::where('user_id', $id)
-        ->orderBy('arrival_date', 'asc')
-        ->get();
-
-    // Déterminer la plage de dates du mois (premier et dernier jour)
-    $firstDate = Carbon::parse($pointages->first()->arrival_date)->startOfMonth();
-    $lastDate = Carbon::parse($pointages->last()->arrival_date)->endOfMonth();
-
-    // Variables pour calculer les heures mensuelles et hebdomadaires
-    $totalMonthlyHours = 0;
-    $totalWeeklyHours = 0;
-    $joursTravail = [];
-    $currentDate = $firstDate->copy();
-    $weekNumber = 1;
-
-    // Remplir les jours de travail
-    while ($currentDate <= $lastDate) {
-        if ($currentDate->isWeekday()) {
-            $joursTravail[$currentDate->format('Y-m-d')] = [
-                'week' => $weekNumber,
-                'month' => $currentDate->translatedFormat('F'),
-                'date' => $currentDate->format('Y-m-d'),
-                'day' => ucfirst($currentDate->translatedFormat('l')),
-                'arrival_date' => "00:00:00",
-                'last_departure' => null,
-                'session_duration' => null,
-                'total_hours' => null,
-                'daily_hours' => null,
-                'weekly_hours' => $totalWeeklyHours,
-                'monthly_hours' => $totalMonthlyHours,
-                'location' => null,
-                'status' => null,
-            ];
+    {
+        // Valider les données reçues
+        $request->validate([
+            'date' => 'required|date',
+            'heure_arrivee' => 'nullable|regex:/^\d{2}:\d{2}(:\d{2})?$/',
+            'heure_depart' => 'nullable|regex:/^\d{2}:\d{2}(:\d{2})?$/',
+        ]);
+    
+        \Log::info("Requête reçue pour editPointage : ", $request->all());
+    
+        // Rechercher le pointage spécifique pour l'utilisateur et la date
+        $pointage = Pointage::where('user_id', $id)
+            ->whereDate('arrival_date', $request->date)
+            ->first();
+    
+        // Si le pointage n'existe pas, on le crée
+        if (!$pointage) {
+            $pointage = new Pointage();
+            $pointage->user_id = $id;
+            $pointage->arrival_date = $request->date . ' ' . $request->heure_arrivee;
+            $pointage->last_departure = $request->date . ' ' . $request->heure_depart;
+    
+            // Calcul du total des heures
+            if ($pointage->arrival_date && $pointage->last_departure) {
+                $heureArrivee = Carbon::parse($pointage->arrival_date);
+                $heureDepart = Carbon::parse($pointage->last_departure);
+                $pointage->total_hours = $heureArrivee->diffInHours($heureDepart);
+            }
+    
+            $pointage->counter = $pointage->total_hours * 3600;  // Stocke le total en secondes
+            $pointage->save();
+    
+            return response()->json([
+                'message' => 'Nouveau pointage créé avec succès',
+                'data' => $pointage,
+            ]);
         }
-        $currentDate->addDay();
-
-        // Vérifiez si la semaine est terminée et mettez à jour le numéro de la semaine
-        if ($currentDate->format('l') == 'Saturday') {
-            $weekNumber++;
-            $totalWeeklyHours = 0; // Réinitialiser les heures de la semaine
+    
+        // Si le pointage existe, on le met à jour
+        try {
+            if ($request->filled('heure_arrivee')) {
+                $pointage->arrival_date = $request->date . ' ' . $request->heure_arrivee;
+            }
+            if ($request->filled('heure_depart')) {
+                $pointage->last_departure = $request->date . ' ' . $request->heure_depart;
+            }
+    
+            // Calcul du total des heures
+            if ($pointage->arrival_date && $pointage->last_departure) {
+                $heureArrivee = Carbon::parse($pointage->arrival_date);
+                $heureDepart = Carbon::parse($pointage->last_departure);
+                $pointage->total_hours = $heureArrivee->diffInHours($heureDepart);
+            }
+    
+            // Calcul du total en secondes
+            $pointage->counter = $pointage->total_hours * 3600;
+            $pointage->save();
+    
+            return response()->json([
+                'message' => 'Pointage mis à jour avec succès',
+                'data' => $pointage,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error("Erreur lors de la mise à jour du pointage: " . $e->getMessage());
+            return response()->json(['message' => 'Erreur serveur'], 500);
         }
     }
-
-    // Remplir les jours avec les données existantes
-    foreach ($pointages as $pointage) {
-        $dateKey = Carbon::parse($pointage->arrival_date)->format('Y-m-d');
-
-        if (isset($joursTravail[$dateKey])) {
-            $arrivalTime = Carbon::parse($pointage->arrival_date);
-            $departureTime = $pointage->last_departure ? Carbon::parse($pointage->last_departure) : null;
-
-            // Calcul de la durée de la session
-            $sessionDuration = $departureTime ? $arrivalTime->diffInSeconds($departureTime) : null;
-            $formattedSessionDuration = $sessionDuration ? gmdate('H:i:s', $sessionDuration) : null;
-
-            // Calcul des heures totales mensuelles et hebdomadaires
-            $dailyHours = $sessionDuration ? $sessionDuration / 3600 : 0;
-            $totalMonthlyHours += $dailyHours;
-            $totalWeeklyHours += $dailyHours;
-
-            // Formater total_hours pour avoir le format H:i:s
-            $totalHoursInSeconds = $totalMonthlyHours * 3600;  // Convertir en secondes
-            $formattedTotalHours = gmdate('H:i:s', $totalHoursInSeconds);
-
-            $joursTravail[$dateKey] = [
-                'week' => $weekNumber,
-                'month' => $arrivalTime->translatedFormat('F'),
-                'date' => $arrivalTime->format('Y-m-d'),
-                'day' => ucfirst(Carbon::parse($dateKey)->translatedFormat('l')),
-                'arrival_date' => $pointage->arrival_date,
-                'last_departure' => $pointage->last_departure,
-                'session_duration' => $formattedSessionDuration,
-                'total_hours' => $formattedTotalHours,
-                'daily_hours' => $formattedSessionDuration,
-                'weekly_hours' => $totalWeeklyHours,
-                'monthly_hours' => $totalMonthlyHours,
-                'location' => $pointage->location,
-                'status' => $pointage->status,
-            ];
-        }
-    }
-
-    // Formater la réponse
-    $result = array_map(function ($jour) {
-        return [
-            'week' => $jour['week'],
-            'month' => $jour['month'],
-            'date' => $jour['date'],
-            'day' => $jour['day'],
-            'arrival_date' => $jour['arrival_date'],
-            'last_departure' => $jour['last_departure'],
-            'session_duration' => $jour['session_duration'],
-            'total_hours' => $jour['total_hours'],
-            'daily_hours' => $jour['daily_hours'],
-            'weekly_hours' => $jour['weekly_hours'],
-            'monthly_hours' => $jour['monthly_hours'],
-            'location' => $jour['location'],
-            'status' => $jour['status'],
-        ];
-    }, $joursTravail);
-
-    return response()->json([
-        'message' => 'Pointage mis à jour avec succès',
-        'data' => $result,
-        'weekly_hours' => $totalWeeklyHours, // Inclure les heures hebdomadaires dans la réponse
-    ]);
-}
-
+    
     private function recalculerTotaux($userId, $date)
     {
         // Recalcul du total de la semaine
