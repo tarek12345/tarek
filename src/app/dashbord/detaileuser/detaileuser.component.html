@@ -3,6 +3,7 @@
   <div class="pointage">
     <div class="time-slot">
       <div class="status">
+     
         <!-- Affichage de l'image de profil ou d'une icône par défaut -->
         <ng-container *ngIf="userdetaile.profile_image_url; else defaultImage">
           <img [src]="userdetaile.profile_image_url" alt="Image de profil" class="enteimg" />
@@ -100,17 +101,22 @@
           <p>{{ item.name }}</p>
           <p [class]="item.status === 'au bureau' ? 'text-success' : 'text-danger'">{{ item.status }}</p>
         </div>
-
+       
         <!-- Barre de progression pour le temps travaillé -->
-        <div class="totalehourss">
+        <div class="totalehourss" *ngIf="getCurrentWorkDay() as today">
           <div class="progress w-75">
-            <div class="progress-bar" [style.width]="getProgressPercentage(item.total_time_seconds || 0) + '%'"
-              [attr.aria-valuenow]="item.total_time_seconds || 0" aria-valuemin="0"
-              [attr.aria-valuemax]="maxDailyHours">
-              <span class="text">{{ item.session_duration || '00:00:00' }} / 8h</span>
+            <div class="progress-bar"
+                 [style.width]="getProgressPercentage(item?.counter || 0) + '%'"
+                 [attr.aria-valuenow]="item?.counter || 0"
+                 aria-valuemin="0"
+                 [attr.aria-valuemax]="maxDailyHours">
+              <span class="text">{{ formatDuration(item?.counter || 0) }} / 8h</span>
             </div>
           </div>
         </div>
+        
+        
+        
 
 
 
@@ -122,7 +128,7 @@
 
   </div>
   <div class="chats">
-    <app-chart *ngIf="userdetaile?.history?.jours?.length > 0" [chartusers]="userdetaile"></app-chart>
+    <app-chart *ngIf="userdetaile?.history?.length > 0" [chartusers]="userdetaile"></app-chart>
   </div>
   
 

@@ -12,8 +12,12 @@ import { ngxCsv } from 'ngx-csv';
   styleUrl: './profils.component.css'
 })
 export class ProfilsComponent {
-  loading: boolean = true; // Indicateur de chargement
-  allUsers: any[] = [];
+    loading: boolean = true; // Indicateur de chargement
+    allUsers: any[] = [];
+    currentPage: number = 1;
+    lastPage: number = 1;
+    perPage: number = 4;
+    total: number = 0;
   filteredUsers: any[] = [];  // Cette liste contiendra les utilisateurs filtrés
   searchQuery: string = '';  // La variable pour stocker la requête de recherche
   Historyitem: any[] = [];
@@ -46,20 +50,47 @@ export class ProfilsComponent {
       this.filteredUsers = [];  // Initialisation de la liste des utilisateurs filtrés
 
     }
-    GetUsers() {
-      this.apiService.GetUsers().subscribe((data) => {
-        this.allUsers = data.users.map(user => ({
-          ...user,
-          total_time_seconds: parseInt(sessionStorage.getItem('totalTime') || '0', 10),
-          historyKeys: this.getHistoryKeys(user.history)
-        }));
-        this.filteredUsers = [...this.allUsers];  // Initialiser filteredUsers avec tous les utilisateurs
+
+    GetUsers(page: number = 1) {
+      this.apiService.GetUsers(page).subscribe((data) => {
+        console.log('API Response:', data);
+    
+        // Vérification de la présence des utilisateurs avant de les traiter
+        if (data?.users && Array.isArray(data.users)) {
+          this.allUsers = data.users.map(user => ({
+            ...user,
+            total_time_seconds: parseInt(sessionStorage.getItem('totalTime') || '0', 10),
+            historyKeys: this.getHistoryKeys(user.history)
+          }));
+    
+          // Initialiser filteredUsers avec les utilisateurs traités
+          this.filteredUsers = [...this.allUsers];
+    
+          console.log('Filtered Users:', this.filteredUsers);  // Affiche le tableau des utilisateurs filtrés
+        } else {
+          console.warn('Aucun utilisateur trouvé dans la réponse de l\'API.');
+          this.filteredUsers = [];  // Si aucun utilisateur trouvé, initialise filteredUsers comme un tableau vide
+        }
+    
+        // Mise à jour des autres données de pagination
+        this.currentPage = data.current_page;
+        this.lastPage = data.last_page;
+        this.total = data.total;
         this.loading = false;
+    
       }, error => {
+        console.log('Error:', error);  // Affiche l'erreur dans la console
         this.toastr.error('Erreur lors de la récupération des utilisateurs.');
+        this.loading = false;
       });
     }
-  
+    
+    
+    onPageChange(page: number): void {
+      if (page >= 1 && page <= this.lastPage) {
+        this.GetUsers(page);
+      }
+    }
     onSearch(event: any): void {
       // Récupérer la valeur de la recherche
       const query = event.target.value;
@@ -91,6 +122,7 @@ export class ProfilsComponent {
   confirmDeleteUser(user: any) {
     if (confirm(`Êtes-vous sûr de vouloir supprimer ${user.name} ?`)) {
       this.DeleteUser(user);
+     
     }
   }
   trackByKey(index: number, key: string): string {
@@ -103,6 +135,8 @@ export class ProfilsComponent {
         // Supprime l'utilisateur de la liste affichée
         this.allUsers = this.allUsers.filter(u => u.id !== user.id);
         this.closePopupDelete()
+        this.refreshList();  // Met à jour la liste des utilisateurs après la modification
+
       },
       error => {
         console.error('Erreur lors de la suppression de l\'utilisateur', error);
@@ -131,12 +165,15 @@ export class ProfilsComponent {
  selectedUserpointage :any ;
   // 🔴 **NOUVEAU : Gestion du Pointage**
 // Quand l'utilisateur clique pour modifier un pointage
-openPopupEdit(user: any) {
+openPopupEdit(user: any , useralldata:any ) {
   this.displayStylePointage = "block"; 
   this.selectedUser = user;
-  console.log(this.selectedUser)
+  this.selectedUserpointage = useralldata.id
+
+
+
   this.pointageForm.patchValue({
-    date: this.selectedUserpointage.date,
+    date: this.selectedUser.date,
     heure_arrivee: this.selectedUser.arrival_date,
     heure_depart: this.selectedUser.last_departure,
     week : this.selectedUser.week
@@ -145,18 +182,17 @@ openPopupEdit(user: any) {
   this.cdr.detectChanges(); // Force la mise à jour d'Angular
 }
 
-  itemdate(user: any){
-    this.selectedUserpointage =   user.history
-    console.log(" this.selectedUserpointage:",  this.selectedUserpointage); // Vérification des données
-  }
+  // itemdate(user: any){
+  //   this.selectedUserpointage =   user.history
+  // }
   closePopupEdit() {
     this.displayStylePointage = "none"; 
   }
   submitPointage() {
     if (this.pointageForm.valid) {
         const formData = this.pointageForm.value;
-        const userId = this.selectedUser.id;
-
+        const userId =  this.selectedUserpointage
+        console.log(" this.selectedUserpointage:",  this.selectedUserpointage); // Vérification des données
         // Vérification du calcul du compteur (en secondes)
         const arrival = formData.heure_arrivee ? new Date('1970-01-01 ' + formData.heure_arrivee).getTime() : 0;
         const departure = formData.heure_depart ? new Date('1970-01-01 ' + formData.heure_depart).getTime() : 0;
@@ -212,9 +248,9 @@ downloadCsvFile(user: any) {
   // Itérer sur chaque semaine dans l'historique
   csvdata.forEach((semaine: any) => {
     // Vérifier que la semaine contient des jours
-    if (semaine.jours && semaine.jours.length > 0) {
+    if (semaine && semaine.length > 0) {
       // Itérer sur chaque jour de la semaine
-      semaine.jours.forEach((jour: any) => {
+      semaine.forEach((jour: any) => {
         document.push({
           Id: user.id || '',
           Jour: jour.day || '',

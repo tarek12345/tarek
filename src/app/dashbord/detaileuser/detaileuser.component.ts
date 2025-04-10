@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild, ElementRef,AfterViewInit   } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { ApiService } from '../../services/api.service';
+import { ApiService, PaginatedUsers } from '../../services/api.service';
 import { UserService } from '../../services/user-service.service';
 import { format, startOfWeek, endOfWeek, getMonth, getYear, addDays } from 'date-fns';
 import { fr } from 'date-fns/locale';
@@ -21,7 +21,7 @@ export class Detaileuser implements OnInit {
   currentMonth: number = new Date().getMonth(); 
   selectedUserday:  { weekRange: string, days: string[] } | null = null; // Typage de selectedUser 
   currentTime: string = '';
-  user: any;
+  user: any ;
   selectedUser :any =[]
   userId: number = 0;
   location: string = '';
@@ -34,8 +34,7 @@ export class Detaileuser implements OnInit {
   loading: boolean = true; // Indicateur de chargement
   error: string | null = null; // Pour gérer les erreurs
   displayStyle: string = "none"; // Contrôle l'affichage du modal
-  allUsers: any[] = [];
-  maxDailyHours: number = 8 * 3600; // 8 heures converties en secondes
+  allUsers: any;
   dailyTotal: number = 0; // Total des heures travaillées par jour
   weeklyTotal: number = 0; // Total hebdomadaire
   monthlyTotal: number = 0; // Total mensuel
@@ -55,30 +54,27 @@ constructor(
   }
   
   
-  ngOnInit(): void {
-   
-  
-    this.initializeUser();
+
+  async ngOnInit(): Promise<void> {
+    await this.initializeUser();
     this.loadCounterState();
-    this.checkCounterReset(); // Lancer la vérification quotidienne
-    setTimeout(() => {
-    this.GetUserSByid();
-  }, 2000); // Simule l'attente de données
+    this.checkCounterReset(); 
+    await this.GetUserSByid(); // Ensure this happens after loading user data
   }
-  
  
   checkCounterReset(): void {
-    setInterval(() => {
+    const interval = setInterval(() => {
       const now = new Date();
       const hours = now.getHours();
       const minutes = now.getMinutes();
       
-      // Vérifier si l'heure actuelle est minuit (00:00) et si les minutes sont 0
       if (hours === 0 && minutes === 0) {
         this.resetCounter();
+        clearInterval(interval); // Stop checking after reset
       }
-    }, 60000); // Vérifie chaque minute
+    }, 60000); // Check every minute
   }
+  
 
   resetCounter(): void {
     this.stopCounter(); // Arrêter le compteur actuel
@@ -93,44 +89,49 @@ constructor(
   }
   initializeUser(): void {
     const user = this.userService.getUserInfo();
+  
     if (user) {
       this.userId = user.id;
+  
       this.apiService.GetUserServiceByid(this.userId).subscribe(
         (response: any) => {
-          console.log("response.user.counter", response.user.counter);
-          
           this.userdetaile = response.user;
-          this.status = response.user.status;
-  
-          // Utiliser "counter" au lieu de "total_hours"
-          const totalHoursSeconds: number = response.user.counter || 0;
-          this.totalTime = totalHoursSeconds;
-  
-          // Assurer que response.user.history existe avant de l'utiliser
-          if (response.user.history && response.user.history.jours) {
-            this.dailyTotal = response.user.history.jours.reduce(
-              (acc: number, jour: any) => acc + (jour.counter || 0),
-              0
-            );
-          } else {
-            this.dailyTotal = 0;
-          }
-  
-          this.weeklyTotal = this.dailyTotal; // À adapter si besoin
-          this.monthlyTotal = response.user.counter || 0;
+          const history = response.user.history
           
-          this.updateCounterDisplay(this.totalTime);
-  
-          if (this.status === 'au bureau') {
-            this.startCounter(); // Démarrer le compteur si l'utilisateur est "au bureau"
+          const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+          const todayPointage = history.find((p: any) => p.date === today);
+
+         
+   
+          if (todayPointage) {
+            this.totalTime = todayPointage.counter || 0;
+            this.dailyTotal = todayPointage.counter || 0;
+            this.status = todayPointage.status || 'hors ligne';
+            this.updateCounterDisplay(this.totalTime);
+          
+            if (this.status === 'au bureau') {
+              this.startCounter(); // Only start the counter if the user is 'au bureau'
+            }
           }
+           else {
+            this.totalTime = 0;
+            this.dailyTotal = 0;
+            this.status = 'hors ligne';
+            this.updateCounterDisplay(0);
+          }
+  
+          // Stocker le total mensuel global si nécessaire
+          const totalHoursSeconds: number = response.user.counter || 0;
+          this.monthlyTotal = totalHoursSeconds;
+  
         },
         (error) => {
-          console.error('Erreur lors de la récupération des informations de l\'utilisateur :', error);
+          console.error('Erreur lors de la récupération des infos utilisateur:', error);
         }
       );
     }
   }
+  
   
   
   
@@ -228,18 +229,41 @@ updateCurrentTime(): void {
   padZero(value: number): string {
     return value < 10 ? `0${value}` : `${value}`;
   }
+  GetUsers(page: number = 1) {
+    this.apiService.GetUsers(page).subscribe((data: PaginatedUsers) => {
+      console.log('API Response:', data);
+  
+      if (data?.users && Array.isArray(data.users)) {
+        this.allUsers = data.users.map(user => ({
+          ...user,
+          total_time_seconds: parseInt(sessionStorage.getItem('totalTime') || '0', 10),
+        }));
 
-  GetUsers() {
-    this.apiService.GetUsers().subscribe((data) => {
-      this.allUsers = data.users.map(user => ({
-        ...user,
-        total_time_seconds: parseInt(sessionStorage.getItem('totalTime') || '0', 10)
-      }));
+      } else {
+        console.warn('Aucun utilisateur trouvé dans la réponse de l\'API.');
+ 
+      }
+  
+
       this.loading = false;
     }, error => {
+      console.log('Error:', error);
       this.toastr.error('Erreur lors de la récupération des utilisateurs.');
+      this.loading = false;
     });
   }
+  
+  // GetUsers() {
+  //   this.apiService.GetUsers().subscribe((data) => {
+  //     this.allUsers = data?.data?.map(user => ({
+  //       ...user,
+  //       total_time_seconds: parseInt(sessionStorage.getItem('totalTime') || '0', 10)
+  //     }));
+  //     this.loading = false;
+  //   }, error => {
+  //     this.toastr.error('Erreur lors de la récupération des utilisateurs.');
+  //   });
+  // }
  // Logique d'affichage du profil de l'utilisateur, et gestion de l'arrivée/départ
  async onArrival(): Promise<void> {
   if (this.status === 'au bureau') {
@@ -335,21 +359,47 @@ getLocation(): Promise<string> {
   
 userdetaileid :any
 
-  getProgressPercentage(totalTimeSeconds: number): number {
-    const percentage = (totalTimeSeconds / this.maxDailyHours) * 100;
-    return Math.min(percentage, 100); // Ne pas dépasser 100%
-  }
+
   GetUserSByid(): void {
     this.apiService.GetUserServiceByid(this.userId).subscribe((data) => {
       this.userdetaileid = data.user;
     });
   }
 
-
-
-  getUserCountByStatus(status: string): number {
-    return this.allUsers.filter(user => user.role !== 'administrator' && user.status === status).length;
+  getCurrentWorkDay(): { day: string, hours: string, hourszero: string } | null {
+    const history = this.userdetaileid?.history?.pointages;
+    if (!history) return null;
+  
+    const todayStr = format(new Date(), 'yyyy-MM-dd');
+    const currentDay = history.find((j: any) => j.date === todayStr);
+  
+    if (currentDay) {
+      return {
+        day: currentDay.day,
+        hours: currentDay.total_hours,
+        hourszero: currentDay.arrival_date
+      };
+    }
+  
+    return null;
   }
+  
+  
+  isCurrentDay(day: string): boolean {
+    const today = format(new Date(), 'EEEE', { locale: fr }); // ex: 'lundi'
+    return today.toLowerCase() === day.toLowerCase(); // comparaison insensible à la casse
+  }
+  maxDailyHours: number = 8 * 60 * 60; // 8h en secondes
+
+  getProgressPercentage(totalTimeSeconds: number): number {
+    const percentage = (totalTimeSeconds / this.maxDailyHours) * 100;
+    return Math.min(percentage, 100);
+  }
+  getUserCountByStatus(status: string): number {
+    if (!this.allUsers || this.allUsers.length === 0) return 0; // Avoid error if no users are loaded
+    return this.allUsers.filter((user: any) => user.role !== 'administrator' && user.status === status).length;
+  }
+  
     // Récupérer les semaines du mois actuel sans samedi et dimanche
     getCurrentMonthWeeks(): { month: string, weeks: { weekRange: string, days: string[], totalHours: number }[] } {
       return {

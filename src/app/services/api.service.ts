@@ -26,6 +26,13 @@ interface Employe {
     [key: string]: any;
   };
 }
+export interface PaginatedUsers {
+  current_page: number;
+  last_page: number;
+  per_page: number;
+  total: number;
+  users: Employe[];  // Cette ligne assure que la propriété 'users' est bien un tableau d'Employe
+}
 
 @Injectable({
   providedIn: 'root'
@@ -35,10 +42,12 @@ export class ApiService {
 
   constructor(private http: HttpClient) {}
 
-  // Récupérer la liste des utilisateurs
-  GetUsers(): Observable<{ users: Employe[] }> {
-    return this.http.get<{ users: Employe[] }>(`${this.apiUrl}users`);
-  }
+  // Récupérer la liste des utilisateurs Observable<PaginatedUsers> {
+    GetUsers(page: number = 1): Observable<PaginatedUsers> {
+      return this.http.get<PaginatedUsers>(`${this.apiUrl}users?page=${page}`);
+    }
+    
+
 
   // Récupérer un utilisateur par ID
   GetUserServiceByid(id: number): Observable<any> {

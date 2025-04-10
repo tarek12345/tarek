@@ -92,7 +92,6 @@ export class SettingsComponent implements OnInit {
   private sendUpdateRequest(updatedData: any) {
     this.apiService.updateUser(updatedData, this.userdetaile.id).subscribe(
       (response) => {
-        console.log('Employé mis à jour avec succès :', response);
         this.toastr.success('Employé mis à jour avec succès', 'Succès');
         this.GetUserSByid(); // Rafraîchir les données après mise à jour
        this.refreshPage();

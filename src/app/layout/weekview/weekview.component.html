@@ -8,15 +8,29 @@
   <table class="table">
     <thead>
       <tr>
+        <th scope="col">Mois</th>
+        <th scope="col">Semaine</th>
         <th scope="col">Jour</th>
         <th scope="col">Heures</th>
+        
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let day of getWorkDays()">
+        <td>
+          <span>
+            {{ day.month }}
+          </span>
+        </td>
+        <td>
+          <span>
+            {{ day.week }}
+          </span>
+        </td>
         <td [ngClass]="{'d-none': day.day === 'Samedi' || day.day === 'Dimanche'}">
           {{ day.day }}
         </td>
+        
         <td [ngClass]="{'d-none': day.day === 'Samedi' || day.day === 'Dimanche'}">
           <span [ngClass]="{'text-danger': day.hours !== '08:00:00' && day.hours === '00:00:00'}">
             {{ day.hours }}

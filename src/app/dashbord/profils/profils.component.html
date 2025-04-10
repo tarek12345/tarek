@@ -12,8 +12,6 @@
     (input)="onSearch($event)"  
   />
 </div>
-
-
 <div id="update" *ngIf="!loading">
   <div id="allusers">
     <div class="classright" *ngFor="let item of filteredUsers">
@@ -60,27 +58,28 @@
             </thead>
             <tbody>
               <ng-container *ngFor="let semaine of item.history">
-                <tr *ngFor="let jour of semaine.jours">
-                  <ng-container *ngIf="jour.day !== 'Samedi' && jour.day !== 'Dimanche'">
-                    <td>{{ jour.day || 'Jour inconnu' }}</td>
+                <!-- {{semaine|json}} -->
+                <tr>
+                  <ng-container *ngIf="semaine.day !== 'Samedi' && semaine.day !== 'Dimanche'">
+                    <td>{{ semaine.day || 'Jour inconnu' }}</td>
                     <td>
-                      <ng-container *ngIf="jour.total_hours; else noHours">
-                        {{ jour.total_hours }}
+                      <ng-container *ngIf="semaine.total_hours; else noHours">
+                        {{ semaine.total_hours }}
                       </ng-container>
                       <ng-template #noHours>
                         <span class="text-danger">Pas de pointage</span>
                       </ng-template>
                     </td>
                     <td>
-                      <ng-container *ngIf="jour.location; else noLocation">
-                        <span class="text-success">{{ jour.location }}</span>
+                      <ng-container *ngIf="semaine.location; else noLocation">
+                        <span class="text-success">{{ semaine.location }}</span>
                       </ng-container>
                       <ng-template #noLocation>
                         <span class="text-danger">Pas de pointage</span>
                       </ng-template>
                     </td>
                     <td class="text-center">
-                      <i class="bi bi-pen" (click)="openPopupEdit(jour)"></i>
+                      <i class="bi bi-pen" (click)="openPopupEdit(semaine,item)"></i>
                     </td>
                   </ng-container>
                 </tr>
@@ -93,6 +92,57 @@
           <span class="d-block text-center">Pas de pointages</span>
         </ng-template>
       </div>
+                      <!-- Modal de suppression -->
+                      <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStyleDelete}">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title text-black">Supprimer utilisateur</h4>
+                                </div>
+                                <div class="modal-body">
+                                    Êtes-vous sûr de vouloir supprimer l'utilisateur <b>{{ selectedUser.name }} ?</b>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-success" (click)="confirmDeleteUser(selectedUser)">Supprimer</button>
+                                    <button type="button" class="btn btn-danger" (click)="closePopupDelete()">Fermer</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!-- Modal de modification du pointage -->
+                    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStylePointage}">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title text-black">Modifier le Pointage</h4>
+                                </div>
+                                <div class="modal-body">
+    
+                                    <form [formGroup]="pointageForm" (ngSubmit)="submitPointage()">
+                                        <!-- Affichage de la date -->
+                                        <label>Date : </label>
+                                        <input type="date" formControlName="date" class="form-control" [value]="selectedUser.date" required />
+    
+                                        <!-- Affichage de l'heure d'arrivée -->
+                                        <label>Heure d'Arrivée : </label>
+                                        <input type="time" formControlName="heure_arrivee" class="form-control" [value]="selectedUser.arrival_date" required />
+    
+                                        <!-- Affichage de l'heure de départ -->
+                                        <label>Heure de Départ :</label>
+                                        <input type="time" formControlName="heure_depart" class="form-control" [value]="selectedUser.last_departure" required />
+    
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-success" >Modifier Pointage</button>
+                                            <button type="button" class="btn btn-danger" (click)="closePopupEdit()">Annuler</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                     
+                        
+                    </div>
     </div>
 
     <div class="classright add">
@@ -103,4 +153,21 @@
       <app-add-employes [displayStyleChild]="displayStyle" (employeeAdded)="refreshList()" (closeEvent)="closePopup()"></app-add-employes>
     </div>
   </div>
+  
 </div>
+<nav *ngIf="lastPage > 1" class="mt-4">
+  <ul class="pagination">
+    <li class="page-item" [class.disabled]="currentPage === 1">
+      <a class="page-link" (click)="onPageChange(currentPage - 1)">Précédent</a>
+    </li>
+
+    <li class="page-item" *ngFor="let page of [].constructor(lastPage); let i = index"
+        [class.active]="currentPage === (i + 1)">
+      <a class="page-link" (click)="onPageChange(i + 1)">{{ i + 1 }}</a>
+    </li>
+
+    <li class="page-item" [class.disabled]="currentPage === lastPage">
+      <a class="page-link" (click)="onPageChange(currentPage + 1)">Suivant</a>
+    </li>
+  </ul>
+</nav>

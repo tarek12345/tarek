@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../services/api.service';
+import { ApiService, PaginatedUsers } from '../services/api.service';
 import { UserService } from '../services/user-service.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router'; // Pour la redirection
@@ -11,10 +11,17 @@ import { Router } from '@angular/router'; // Pour la redirection
   standalone : false
 })
 export class DashbordComponent implements OnInit {
+  loading: boolean = true; // Indicateur de chargement
+
   currentTime: string = '';
   user: any;
+  filteredUsers: any[] = [];  // Cette liste contiendra les utilisateurs filtrés
+  currentPage: number = 1;
+    lastPage: number = 1;
+    perPage: number = 4;
+    total: number = 0;
   userId: number = 0;
-  allUsers: any
+  allUsers: any[] = [];
   location: string = '';
   arrivalDate: string = '';
   departureDate: string = '';
@@ -37,19 +44,20 @@ export class DashbordComponent implements OnInit {
       this.userId = this.user.id;
     }
     const token = localStorage.getItem('token');
-    console.log("this.user",token);
     
     if (this.user.status === 401) {
       this.router.navigate(['/']);
     }
     this.GetUserSByid()
     this.updateCurrentTime();
-   this.GetUsers
+    this.GetUsers();
+    this.allUsers.forEach(user => {
+      user.historyKeys = this.getHistoryKeys(user.history);
+    });
   }
   GetUserSByid() {
     this.apiService.GetUserServiceByid(this.user.id).subscribe({
       next: (data) => {
-        console.log("ssssssssss", data);
         this.user = data;
       },
       error: (error) => {
@@ -61,16 +69,68 @@ export class DashbordComponent implements OnInit {
       }
     });
   }
-  GetUsers() {
-    this.apiService.GetUsers().subscribe((data) => {
-      this.allUsers = data.users.map(user => ({
-        ...user,
-        total_time_seconds: parseInt(sessionStorage.getItem('totalTime') || '0', 10)
-      }));
+
+  // GetUsers(page: number = 1) {
+  //   this.apiService.GetUsers(page).subscribe((data: PaginatedUsers) => {
+  //     console.log('API Response:', data);
+  
+  //     if (data?.users && Array.isArray(data.users)) {
+  //       this.allUsers = data.users.map(user => ({
+  //         ...user,
+  //         total_time_seconds: parseInt(sessionStorage.getItem('totalTime') || '0', 10),
+  //       }));
+  
+  
+  //     } else {
+  //       console.warn('Aucun utilisateur trouvé dans la réponse de l\'API.');
+  //     }
+
+  //   }, error => {
+  //     console.log('Error:', error);
+  //     this.toastr.error('Erreur lors de la récupération des utilisateurs.');
+   
+  //   });
+  // }
+  getHistoryKeys(history: any): string[] {
+    if (!history || typeof history !== 'object') {
+      return [];
+    }
+    return Object.keys(history);
+  }
+  GetUsers(page: number = 1) {
+    this.apiService.GetUsers(page).subscribe((data) => {
+      console.log('API Response:', data);
+  
+      // Vérification de la présence des utilisateurs avant de les traiter
+      if (data?.users && Array.isArray(data.users)) {
+        this.allUsers = data.users.map(user => ({
+          ...user,
+          total_time_seconds: parseInt(sessionStorage.getItem('totalTime') || '0', 10),
+          historyKeys: this.getHistoryKeys(user.history)
+        }));
+  
+        // Initialiser filteredUsers avec les utilisateurs traités
+        this.filteredUsers = [...this.allUsers];
+  
+        console.log('Filtered Users:', this.filteredUsers);  // Affiche le tableau des utilisateurs filtrés
+      } else {
+        console.warn('Aucun utilisateur trouvé dans la réponse de l\'API.');
+        this.filteredUsers = [];  // Si aucun utilisateur trouvé, initialise filteredUsers comme un tableau vide
+      }
+  
+      // Mise à jour des autres données de pagination
+      this.currentPage = data.current_page;
+      this.lastPage = data.last_page;
+      this.total = data.total;
+      this.loading = false;
+  
     }, error => {
+      console.log('Error:', error);  // Affiche l'erreur dans la console
       this.toastr.error('Erreur lors de la récupération des utilisateurs.');
+      this.loading = false;
     });
   }
+
   updateCurrentTime(): void {
     setInterval(() => {
       this.currentTime = new Date().toLocaleTimeString();

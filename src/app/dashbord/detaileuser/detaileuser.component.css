@@ -16,7 +16,10 @@
 
 }
 
+.progress, .progress-stacked {
 
+  --bs-progress-bar-bg: #7afa71;
+}
 .status {
     position: relative;
 }
@@ -186,4 +189,10 @@ span.text {
 #pointageChart {
   width: 100%;  /* ou une taille fixe comme 600px */
   height: 400px; /* ou toute autre taille souhaitée */
+}
+
+@media(max-width:1599px){
+  .status {
+    gap: 19px;
+}
 }

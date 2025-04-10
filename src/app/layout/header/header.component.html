@@ -30,8 +30,8 @@
     <div class="profil">
 
       <!-- Si profile_image n'est pas défini, utiliser une image par défaut -->
-      <img *ngIf="datauser.profile_image" [src]=" datauser.profile_image_url" alt="Image de profil" />
-      <p *ngIf="!datauser?.profile_image"><i class="bi bi-person-circle"></i></p>
+      <img *ngIf="datauser.profile_image_url" [src]=" datauser.profile_image_url" alt="Image de profil" />
+      <p *ngIf="!datauser?.profile_image_url"><i class="bi bi-person-circle"></i></p>
       <div class="contentprofil">
         <span>{{datauser.name}}</span>
         <span>{{datauser.email}}</span>

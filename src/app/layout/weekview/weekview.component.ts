@@ -16,8 +16,8 @@ export class WeekviewComponent {
   endYear: number = 2040;
   @Input() itemuser: any;
 
-  getWorkDays(): { day: string, hours: string , hourszero:string}[] {
-    const history = this.itemuser?.history?.jours;
+  getWorkDays(): { month:string, week:string, day: string, hours: string , hourszero:string}[] {
+    const history = this.itemuser?.history;
     if (!history) {
       return [];
     }
@@ -36,6 +36,8 @@ export class WeekviewComponent {
         // Vérifier si la date fait partie de la semaine actuelle
         if (currentDate >= startOfCurrentWeek && currentDate <= endOfCurrentWeek) {
           return {
+            month : dayData.month,
+            week : dayData.week,
             day: dayData.day,
             hours: dayData.total_hours,
             hourszero: dayData.arrival_date,

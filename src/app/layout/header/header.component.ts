@@ -32,6 +32,7 @@ export class HeaderComponent implements OnInit {
   GetUserSByid() {
     this.apiService.GetUserServiceByid(this.datauser.id).subscribe(data => {
       this.datauser = data.user;
+      
       this.getTodayWorkSchedule(); // Met à jour l'horaire du jour
       this.getLastPointage(); // Récupère le dernier pointage
     });
@@ -49,7 +50,7 @@ export class HeaderComponent implements OnInit {
     let todayPointageFound = false;
   
     // Vérifier si un pointage existe pour aujourd'hui
-    for (const dayData of this.datauser?.history?.jours) {
+    for (const dayData of this.datauser?.history) {
       const date = dayData.date; // Utilisez la date complète pour la comparaison
       if (date.startsWith(todayDate)) {
         todayPointageFound = true;
@@ -80,7 +81,7 @@ export class HeaderComponent implements OnInit {
     }
   
     // Récupérer tous les pointages
-    let allPointages = Object.values(history.jours)
+    let allPointages = Object.values(history)
       .flatMap((day: any) => day.pointages)
       .sort((a: any, b: any) => new Date(b.last_departure).getTime() - new Date(a.last_departure).getTime());
   

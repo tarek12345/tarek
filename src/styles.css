@@ -1,1 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
+a.page-link {
+    cursor: pointer!important;
+    
+}
+.active > .page-link, .page-link.active {
+    background-color: #827ed6!important;
+    border-color: #827ed6!important;
+}
