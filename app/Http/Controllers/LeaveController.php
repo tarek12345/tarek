@@ -8,6 +8,7 @@ use App\Models\Leave;
 
 class LeaveController extends Controller
 {
+    /*store*/
     public function store(Request $request)
     {
         $request->validate([
