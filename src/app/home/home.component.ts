@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user-service.service';
-import { AddEmployesComponent } from "./add-employes/add-employes.component";
+import * as faceapi from 'face-api.js';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -12,6 +12,7 @@ import { AddEmployesComponent } from "./add-employes/add-employes.component";
   standalone : false
 })
 export class HomeComponent implements OnInit {
+
   DataMessage: any[] = [];
   login = { email: '', password: '' };
 
@@ -25,15 +26,20 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService
   ) {}
-
+  // ngAfterViewInit() {
+  //   this.startCamera();
+  // }
   ngOnInit(): void {
     const token = localStorage.getItem('token');
     if (token) {
-      // Rediriger vers le dashboard si l'utilisateur est déjà connecté
       this.router.navigate(['/dashboard']);
     }
   
   }
+
+  
+  
+  
   togglePasswordVisibility() {
     this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
   }
@@ -76,5 +82,8 @@ export class HomeComponent implements OnInit {
       }
     );
   }
+
+
+
   
 }

@@ -15,30 +15,24 @@
         
       </tr>
     </thead>
-    <tbody>
-      <tr *ngFor="let day of getWorkDays()">
+    <tbody *ngIf="workDays.length > 0; else noData">
+      <tr *ngFor="let day of workDays" [ngClass]="{'d-none': day.day === 'Samedi' || day.day === 'Dimanche'}">
+        <td>{{ day.month }}</td>
+        <td>{{ day.week }}</td>
+        <td>{{ day.day }}</td>
         <td>
-          <span>
-            {{ day.month }}
-          </span>
-        </td>
-        <td>
-          <span>
-            {{ day.week }}
-          </span>
-        </td>
-        <td [ngClass]="{'d-none': day.day === 'Samedi' || day.day === 'Dimanche'}">
-          {{ day.day }}
-        </td>
-        
-        <td [ngClass]="{'d-none': day.day === 'Samedi' || day.day === 'Dimanche'}">
           <span [ngClass]="{'text-danger': day.hours !== '08:00:00' && day.hours === '00:00:00'}">
             {{ day.hours }}
           </span>
         </td>
-
       </tr>
     </tbody>
+    <ng-template #noData>
+      <tr>
+        <td colspan="4" class="text-center">Aucune donnée pour cette semaine.</td>
+      </tr>
+    </ng-template>
+    
 
   </table>
 

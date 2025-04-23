@@ -5,7 +5,7 @@ import { ApiService, PaginatedUsers } from '../../services/api.service';
 import { UserService } from '../../services/user-service.service';
 import { format, startOfWeek, endOfWeek, getMonth, getYear, addDays } from 'date-fns';
 import { fr } from 'date-fns/locale';
-
+declare var bootstrap: any;
 @Component({
   selector: 'app-detaileuser',
   templateUrl: './detaileuser.component.html',
@@ -16,6 +16,8 @@ export class Detaileuser implements OnInit {
   @Input() datauser: any;
   @Input() userdetaile: any;
   @Input() historyAll: any;
+  filteredUsers: any[] = [];  // Cette liste contiendra les utilisateurs filtrés
+
   currentYear: number = new Date().getFullYear(); 
   selectedYear: number = this.currentYear; 
   currentMonth: number = new Date().getMonth(); 
@@ -41,7 +43,10 @@ export class Detaileuser implements OnInit {
   latitude: number | null = null;
   longitude: number | null = null;
   address: string = 'Adresse non disponible';
-
+  currentPage: number = 1;
+  lastPage: number = 1;
+  perPage: number = 4;
+  total: number = 0;
 
     // Déclaration du graphique
 constructor(
@@ -53,7 +58,10 @@ constructor(
     
   }
   
-  
+  ngAfterViewInit() {
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    tooltipTriggerList.map((tooltipTriggerEl: any) => new bootstrap.Tooltip(tooltipTriggerEl))
+  }
 
   async ngOnInit(): Promise<void> {
     await this.initializeUser();
@@ -97,10 +105,12 @@ constructor(
         (response: any) => {
           this.userdetaile = response.user;
           const history = response.user.history
+          console.log("sqdqsdqsd",response);
           
           const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
           const todayPointage = history.find((p: any) => p.date === today);
-
+          history.find((p: any) => p.date === today);
+     
          
    
           if (todayPointage) {
@@ -149,32 +159,40 @@ constructor(
     this.GetUserSByid() 
   }
 
-loadCounterState(): void {
-  this.apiService.getActiveCounter(this.userId).subscribe(
-    (response: any) => {
-      this.totalTime = response.hours_counter || 0;
-      this.dailyTotal = response.daily_hours || 0;
-      this.weeklyTotal = response.weekly_hours || 0;
-      this.monthlyTotal = response.monthly_hours || 0;
-      this.updateCounterDisplay(this.totalTime);
-
-      if (response.status === 'au bureau') {
-        this.status = 'au bureau';
-        this.startCounter();
-      } else {
+  loadCounterState(): void {
+    this.apiService.getActiveCounter(this.userId).subscribe(
+      (response: any) => {
+        this.totalTime = response.hours_counter || 0;
+        this.dailyTotal = response.daily_hours || 0;
+        this.weeklyTotal = response.weekly_hours || 0;
+        this.monthlyTotal = response.monthly_hours || 0;
+  
+        // S'assurer que le status est bien mis à jour
+        this.status = response.status || 'hors ligne';
+  
+        if (this.status === 'au bureau') {
+          this.startCounter();
+        } else {
+          // Si l'utilisateur est hors ligne → afficher 00:00:00
+          this.totalTime = 0;
+          this.updateCounterDisplay(0);
+          this.stopCounter();
+        }
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération du compteur actif :', error);
         this.status = 'hors ligne';
+        this.totalTime = 0;
+        this.updateCounterDisplay(0);
+        this.stopCounter();
       }
-    },
-    (error) => {
-      console.error('Erreur lors de la récupération du compteur actif :', error);
-      this.status = 'hors ligne';
-    }
-  );
-
-  this.GetUserSByid();
-  this.GetUsers();
-  this.updateCurrentTime();
-}
+    );
+  
+    this.GetUserSByid();
+    this.GetUsers();
+    this.updateCurrentTime();
+  }
+  
 
 
 updateCurrentTime(): void {
@@ -229,31 +247,31 @@ updateCurrentTime(): void {
   padZero(value: number): string {
     return value < 10 ? `0${value}` : `${value}`;
   }
-  GetUsers(page: number = 1) {
-    this.apiService.GetUsers(page).subscribe((data: PaginatedUsers) => {
-      console.log('API Response:', data);
+  // GetUsers(page: number = 1) {
+  //   this.apiService.GetUsers(page).subscribe((data: PaginatedUsers) => {
+  //     console.log('API Response:', data);
   
-      if (data?.users && Array.isArray(data.users)) {
-        this.allUsers = data.users.map(user => ({
-          ...user,
-          total_time_seconds: parseInt(sessionStorage.getItem('totalTime') || '0', 10),
-        }));
+  //     if (data?.users && Array.isArray(data.users)) {
+  //       this.allUsers = data.users.map(user => ({
+  //         ...user,
+  //         total_time_seconds: parseInt(sessionStorage.getItem('totalTime') || '0', 10),
+  //       }));
 
-      } else {
-        console.warn('Aucun utilisateur trouvé dans la réponse de l\'API.');
+  //     } else {
+  //       console.warn('Aucun utilisateur trouvé dans la réponse de l\'API.');
  
-      }
+  //     }
   
 
-      this.loading = false;
-    }, error => {
-      console.log('Error:', error);
-      this.toastr.error('Erreur lors de la récupération des utilisateurs.');
-      this.loading = false;
-    });
-  }
+  //     this.loading = false;
+  //   }, error => {
+  //     console.log('Error:', error);
+  //     this.toastr.error('Erreur lors de la récupération des utilisateurs.');
+  //     this.loading = false;
+  //   });
+  // }
   
-  // GetUsers() {
+ 
   //   this.apiService.GetUsers().subscribe((data) => {
   //     this.allUsers = data?.data?.map(user => ({
   //       ...user,
@@ -265,6 +283,45 @@ updateCurrentTime(): void {
   //   });
   // }
  // Logique d'affichage du profil de l'utilisateur, et gestion de l'arrivée/départ
+ GetAllusers : any
+ GetUsers(page: number = 1) {
+  this.apiService.GetUsers(page).subscribe((data) => {
+ this.GetAllusers  =  data
+    // Vérification de la présence des utilisateurs avant de les traiter
+    if (data?.users && Array.isArray(data.users)) {
+      this.allUsers = data.users.map(user => ({
+        ...user,
+        total_time_seconds: parseInt(sessionStorage.getItem('totalTime') || '0', 10),
+        historyKeys: this.getHistoryKeys(user.history)
+      }));
+
+      // Initialiser filteredUsers avec les utilisateurs traités
+      this.filteredUsers = [...this.allUsers];
+
+      console.log('Filtered Users:', this.filteredUsers);  // Affiche le tableau des utilisateurs filtrés
+    } else {
+      console.warn('Aucun utilisateur trouvé dans la réponse de l\'API.');
+      this.filteredUsers = [];  // Si aucun utilisateur trouvé, initialise filteredUsers comme un tableau vide
+    }
+
+    // Mise à jour des autres données de pagination
+    this.currentPage = data.current_page;
+    this.lastPage = data.last_page;
+    this.total = data.total;
+    this.loading = false;
+
+  }, error => {
+    console.log('Error:', error);  // Affiche l'erreur dans la console
+    this.toastr.error('Erreur lors de la récupération des utilisateurs.');
+    this.loading = false;
+  });
+}
+getHistoryKeys(history: any): string[] {
+  if (!history || typeof history !== 'object') {
+    return [];
+  }
+  return Object.keys(history);
+}
  async onArrival(): Promise<void> {
   if (this.status === 'au bureau') {
     this.toastr.warning('Vous êtes déjà au bureau.');
@@ -396,10 +453,15 @@ userdetaileid :any
     return Math.min(percentage, 100);
   }
   getUserCountByStatus(status: string): number {
-    if (!this.allUsers || this.allUsers.length === 0) return 0; // Avoid error if no users are loaded
-    return this.allUsers.filter((user: any) => user.role !== 'administrator' && user.status === status).length;
+    if (!this.allUsers) return 0;
+    return this.allUsers.filter((user : any) => user.status === status).length;
   }
   
+  onPageChange(page: number): void {
+    if (page >= 1 && page <= this.lastPage) {
+      this.GetUsers(page);
+    }
+  }
     // Récupérer les semaines du mois actuel sans samedi et dimanche
     getCurrentMonthWeeks(): { month: string, weeks: { weekRange: string, days: string[], totalHours: number }[] } {
       return {

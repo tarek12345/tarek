@@ -1,0 +1,12 @@
+:host {
+    display: block;
+    width: 300px!important;
+    margin: auto;
+  }
+  
+  canvas {
+    width: 100% !important;
+    height: auto !important;
+    display: block;
+  }
+  

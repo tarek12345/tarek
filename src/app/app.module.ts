@@ -28,8 +28,16 @@ import { ProfilsComponent } from './dashbord/profils/profils.component';
 import { Detaileuser } from './dashbord/detaileuser/detaileuser.component';
 import { StatistiqueComponent } from './dashbord/statistique/statistique.component';
 import { ChartComponent } from './dashbord/detaileuser/chart/chart.component';
-
+import { LeavesComponent } from './dashbord/leaves/leaves.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { ChartCircleComponent } from './dashbord/detaileuser/chart-circle/chart-circle.component';
+
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+
+
+
+
+
 
 @NgModule({
   declarations: [
@@ -47,6 +55,9 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     ProfilsComponent,
     StatistiqueComponent,
     ChartComponent,
+    ChartCircleComponent,
+    LeavesComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -60,7 +71,9 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot(), // ToastrModule ajouté
     NgxChartsModule,
-  ],
+    NgxDaterangepickerMd.forRoot(),
+    
+],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

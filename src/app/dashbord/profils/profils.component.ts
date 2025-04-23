@@ -91,27 +91,39 @@ export class ProfilsComponent {
         this.GetUsers(page);
       }
     }
-    onSearch(event: any): void {
-      // Récupérer la valeur de la recherche
-      const query = event.target.value;
-      this.searchQuery = query ? query.toLowerCase() : '';  // Appliquer toLowerCase() uniquement si la valeur est non vide
+    // onSearch(event: any): void {
+    //   // Récupérer la valeur de la recherche
+    //   const query = event.target.value;
+    //   this.searchQuery = query ? query.toLowerCase() : '';  // Appliquer toLowerCase() uniquement si la valeur est non vide
   
-      // Si la recherche est vide, réinitialisez filteredUsers à tous les utilisateurs
-      if (this.searchQuery === '') {
-        this.filteredUsers = this.allUsers;
-      } else {
-        // Filtrer les utilisateurs par nom ou email
-        this.filteredUsers = this.allUsers.filter(user => {
-          const fullName = (user.name && typeof user.name === 'string' ? user.name.toLowerCase() : '') || '';
-          const email = (user.email && typeof user.email === 'string' ? user.email.toLowerCase() : '') || '';
-          return (
-            fullName.includes(this.searchQuery) ||
-            email.includes(this.searchQuery)
-          );
-        });
-      }
+    //   // Si la recherche est vide, réinitialisez filteredUsers à tous les utilisateurs
+    //   if (this.searchQuery === '') {
+    //     this.filteredUsers = this.allUsers;
+    //   } else {
+    //     // Filtrer les utilisateurs par nom ou email
+    //     this.filteredUsers = this.allUsers.filter(user => {
+    //       const fullName = (user.name && typeof user.name === 'string' ? user.name.toLowerCase() : '') || '';
+    //       const email = (user.email && typeof user.email === 'string' ? user.email.toLowerCase() : '') || '';
+    //       return (
+    //         fullName.includes(this.searchQuery) ||
+    //         email.includes(this.searchQuery)
+    //       );
+    //     });
+    //   }
+    // }
+    statusCounts :any
+    onSearch(event: any): void {
+      const query = event.target.value;
+      this.searchQuery = query;
+    
+      this.apiService.searchUsers(this.searchQuery, this.perPage, 1).subscribe(response => {
+        this.filteredUsers = response.users;
+        this.currentPage = response.current_page;
+        this.lastPage = response.last_page;
+        this.statusCounts = response.status_counts;
+      });
     }
-      
+    
   getHistoryKeys(history: any): string[] {
     if (!history || typeof history !== 'object') {
       return [];
@@ -163,24 +175,25 @@ export class ProfilsComponent {
   }
 
  selectedUserpointage :any ;
+ selectedDay: string = '';
+
   // 🔴 **NOUVEAU : Gestion du Pointage**
 // Quand l'utilisateur clique pour modifier un pointage
-openPopupEdit(user: any , useralldata:any ) {
-  this.displayStylePointage = "block"; 
-  this.selectedUser = user;
-  this.selectedUserpointage = useralldata.id
-
-
+openPopupEdit(day: any, user: any) {
+  this.displayStylePointage = "block";
+  this.selectedDay = day;
+  this.selectedUserpointage = user.id;
 
   this.pointageForm.patchValue({
-    date: this.selectedUser.date,
-    heure_arrivee: this.selectedUser.arrival_date,
-    heure_depart: this.selectedUser.last_departure,
-    week : this.selectedUser.week
+    date: day.date,
+    heure_arrivee: day.arrival_date,
+    heure_depart: day.last_departure
   });
 
-  this.cdr.detectChanges(); // Force la mise à jour d'Angular
+  this.cdr.detectChanges();
 }
+
+
 
   // itemdate(user: any){
   //   this.selectedUserpointage =   user.history
@@ -190,37 +203,35 @@ openPopupEdit(user: any , useralldata:any ) {
   }
   submitPointage() {
     if (this.pointageForm.valid) {
-        const formData = this.pointageForm.value;
-        const userId =  this.selectedUserpointage
-        console.log(" this.selectedUserpointage:",  this.selectedUserpointage); // Vérification des données
-        // Vérification du calcul du compteur (en secondes)
-        const arrival = formData.heure_arrivee ? new Date('1970-01-01 ' + formData.heure_arrivee).getTime() : 0;
-        const departure = formData.heure_depart ? new Date('1970-01-01 ' + formData.heure_depart).getTime() : 0;
-        const counter = departure - arrival;
-
-        // Envoi des données à l'API pour la mise à jour du pointage
-        const updatedPointage = {
-            date: formData.date,
-            heure_arrivee: formData.heure_arrivee,
-            heure_depart: formData.heure_depart,
-            total_time_seconds: counter
-        };
-
-        // Appel API
-        this.apiService.updatePointage(userId, updatedPointage).subscribe(
-            response => {
-                this.toastr.success('Pointage mis à jour avec succès !');
-                console.log(response);
-                this.closePopupEdit();
-                this.refreshList();  // Met à jour la liste des utilisateurs après la modification
-            },
-            error => {
-                this.toastr.error('Erreur lors de la mise à jour du pointage.');
-                console.error(error);
-            }
-        );
+      const formData = this.pointageForm.value;
+      const userId = this.selectedUserpointage;
+  
+      const arrival = formData.heure_arrivee ? new Date('1970-01-01T' + formData.heure_arrivee).getTime() : 0;
+      const departure = formData.heure_depart ? new Date('1970-01-01T' + formData.heure_depart).getTime() : 0;
+      const counter = departure - arrival;
+  
+      const updatedPointage = {
+        date: formData.date,
+        heure_arrivee: formData.heure_arrivee,
+        heure_depart: formData.heure_depart,
+        total_time_seconds: counter
+      };
+  
+      this.apiService.updatePointage(userId, updatedPointage).subscribe(
+        response => {
+          this.toastr.success('Pointage mis à jour avec succès !');
+          this.refreshList();
+          this.closePopupEdit();
+          
+        },
+        error => {
+          this.toastr.error('Erreur lors de la mise à jour du pointage.');
+          console.error(error);
+        }
+      );
     }
-}
+  }
+  
 
 // Fonction pour calculer le counter (total des heures en secondes)
 calculateCounter(): number {
@@ -232,65 +243,13 @@ calculateCounter(): number {
   return heureDepart - heureArrivee;
 }
 
-downloadCsvFile(user: any) { 
-  const csvdata = user.history;
-  console.log("csvdatacsvdatacsvdata", csvdata);
-
-  // Vérifier que l'historique existe
-  if (!csvdata || csvdata.length === 0) {
-    this.toastr.error('Aucun pointage disponible pour cet utilisateur.');
-    return;
-  }
-
-  // Préparation des données pour l'exportation CSV
-  const document :any =[];
-
-  // Itérer sur chaque semaine dans l'historique
-  csvdata.forEach((semaine: any) => {
-    // Vérifier que la semaine contient des jours
-    if (semaine && semaine.length > 0) {
-      // Itérer sur chaque jour de la semaine
-      semaine.forEach((jour: any) => {
-        document.push({
-          Id: user.id || '',
-          Jour: jour.day || '',
-          Date: jour.date || '',
-          Heure_Arrivee: jour.arrival_date || 'Pas de  pointage',
-          Heure_Depart: jour.last_departure || 'Pas de  pointage',
-          Total_Heures: jour.total_hours || '00:00:00',
-          Localisation: jour.location || 'Non renseigné',  // Utilisation de "jour.location"
-          Statut: jour.statut || "Hors ligne"  // Utilisation de "jour.statut"
-        });
-      });
-    }
-  });
-
-  // Vérification du contenu du tableau avant de tenter de le générer
-  console.log("Données pour CSV:", document);
-
-  // Options de génération CSV
-  const options = {  
-    fieldSeparator: ';',  
-    quoteStrings: '"',  
-    decimalseparator: '.', 
-    showLabels: true,  
-    showTitle: false, 
-    useBom: true, 
-    noDownload: false, 
-    headers: ["Id", "Jour", "Date", "Heure Arrivée", "Heure Départ", "Total Heures", "Localisation", "Statut"]
-  }; 
-
-  // Générer et télécharger le fichier CSV
-  new ngxCsv(document, `Pointage_${user.name}`, options);  
-}
-
-
 downloadReport() {
-  this.apiService.downloadMonthlyReport().subscribe(blob => {
+  const currentMonth = new Date().toISOString().slice(0, 7); // ex: '2025-04'
+  this.apiService.downloadMonthlyReport(currentMonth).subscribe(blob => {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'rapport_mensuel_utilisateurs.csv';
+    a.download = `rapport_${currentMonth}.csv`;
     a.click();
     window.URL.revokeObjectURL(url);
   });
@@ -298,7 +257,8 @@ downloadReport() {
 
 downloadReportForMonth(event: Event) {
   const input = event.target as HTMLInputElement;
-  const selectedMonth = input.value; // Ex: '2025-04'
+  const selectedMonth = input.value;
+
   if (selectedMonth) {
     this.apiService.downloadMonthlyReport(selectedMonth).subscribe(blob => {
       const url = window.URL.createObjectURL(blob);
@@ -309,14 +269,5 @@ downloadReportForMonth(event: Event) {
       window.URL.revokeObjectURL(url);
     });
   }
-  
 }
-
-  
-
-
-
-
-
-
 }

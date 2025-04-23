@@ -13,6 +13,7 @@ import { format, startOfWeek, endOfWeek, getWeek, addDays, getMonth } from 'date
 })
 export class HeaderComponent implements OnInit {
   @Input() datauser: any;
+  
   public history: any[] = [];
   public error: string | null = null;
   displayStyle: string = "none"; // Contrôle l'affichage du modal

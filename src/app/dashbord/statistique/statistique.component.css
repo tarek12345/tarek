@@ -61,10 +61,10 @@ div#update {
       position: absolute;
   }
   #update .content {
-    max-height: 200px;
+    /* max-height: 200px;
     overflow-y: scroll;
     margin-top: 10px;
-    width: 100%;
+    width: 100%; */
   }
   .headertab b {
     text-transform: uppercase;
@@ -98,6 +98,7 @@ div#update {
       justify-content: center;
   
   }
+  
   .content-2 {
     display: flex;
     align-items: center;

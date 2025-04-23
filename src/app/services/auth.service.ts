@@ -1,12 +1,13 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { lastValueFrom, Observable } from 'rxjs';
 import * as WebAuthn from '@passwordless-id/webauthn';
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  public apiUrl = 'http://127.0.0.1:8000/api'; // URL de l'API
+  public apiUrl = environment.apiUrl; // URL de l'API
 
   constructor(private http: HttpClient) {}
 
@@ -67,42 +68,23 @@ const expirationDate = new Date(payload.exp * 1000);
     });
   }
 
-  async loginWithFace(): Promise<boolean> {
+  
+
+  async loginWithFaceImage(imageBase64: string): Promise<boolean> {
     try {
-      if (!window.PublicKeyCredential) {
-        console.error('WebAuthn non supporté sur ce navigateur.');
-        return false;
-      }
-  
-      const publicKeyCredentialRequestOptions: PublicKeyCredentialRequestOptions = {
-        challenge: new Uint8Array(32), // Challenge généré par le backend normalement
-        allowCredentials: [],
-        timeout: 60000,
-        userVerification: "required" as UserVerificationRequirement, // ✅ Correction ici
-      };
-  
-      const credential = await navigator.credentials.get({
-        publicKey: publicKeyCredentialRequestOptions
-      });
-  
-      if (credential) {
-        console.log('Authentification réussie avec WebAuthn', credential);
-        localStorage.setItem('token', 'fake-token-webauthn'); // Simuler un token
+      const response: any = await lastValueFrom(
+        this.http.post(`${this.apiUrl}/login/detect-facial-features`, { image: imageBase64 })
+      );
+      if (response.success) {
+        localStorage.setItem('token', response.token);
         return true;
       }
-  
       return false;
     } catch (error) {
-      console.error('Erreur WebAuthn :', error);
+      console.error('Erreur lors de la communication avec l\'API :', error);
       return false;
     }
   }
-  
-  /**
-   * Méthode pour réinitialiser le mot de passe.
-   * @param data Les données nécessaires pour la réinitialisation (token, email, nouveau mot de passe, etc.).
-   * @returns Un Observable avec la réponse du serveur.
-   */
   resetPassword(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/reset-password`, data);
   }

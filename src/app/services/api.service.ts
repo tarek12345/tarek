@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 // Interface pour les données d'un utilisateur
 interface Employe {
@@ -38,25 +39,24 @@ export interface PaginatedUsers {
   providedIn: 'root'
 })
 export class ApiService {
-  public apiUrl = "http://127.0.0.1:8000/api/"; // Base URL de l'API
+  public apiUrl = environment.apiUrl; // Base URL de l'API
 
   constructor(private http: HttpClient) {}
 
-  // Récupérer la liste des utilisateurs Observable<PaginatedUsers> {
-    GetUsers(page: number = 1): Observable<PaginatedUsers> {
-      return this.http.get<PaginatedUsers>(`${this.apiUrl}users?page=${page}`);
-    }
-    
+  GetUsers(page: number = 1, perPage: number | string = 3): Observable<PaginatedUsers> {
+    return this.http.get<PaginatedUsers>(`${this.apiUrl}/users?page=${page}&per_page=${perPage}`);
+  }
+  
 
 
   // Récupérer un utilisateur par ID
   GetUserServiceByid(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}users/${id}`);
+    return this.http.get<any>(`${this.apiUrl}/users/${id}`);
   }
 
   // Ajouter un nouvel utilisateur
   AddUser(formData: FormData): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}register`, formData);
+    return this.http.post<any>(`${this.apiUrl}/register`, formData);
   }
 
   // Mettre à jour un utilisateur
@@ -64,7 +64,7 @@ export class ApiService {
     const token = localStorage.getItem('token'); // Récupérer le token depuis localStorage
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    return this.http.put(`${this.apiUrl}users/${userId}`, data, { headers });
+    return this.http.put(`${this.apiUrl}/users/${userId}`, data, { headers });
   }
 
  
@@ -76,7 +76,7 @@ export class ApiService {
     });
 
     return this.http.post(
-      `${this.apiUrl}users/${userId}/pointages/arrivee`,
+      `${this.apiUrl}/users/${userId}/pointages/arrivee`,
       arrivalData,
       { headers }
     );
@@ -90,7 +90,7 @@ export class ApiService {
     });
 
     return this.http.post(
-      `${this.apiUrl}users/${userId}/pointages/depart`,
+      `${this.apiUrl}/users/${userId}/pointages/depart`,
       departureData,
       { headers }
     );
@@ -102,7 +102,7 @@ export class ApiService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
     return this.http.get(
-      `${this.apiUrl}users/${userId}/pointages/historique`,
+      `${this.apiUrl}/users/${userId}/pointages/historique`,
       { headers }
     );
   }
@@ -113,7 +113,7 @@ export class ApiService {
   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
   return this.http.get(
-    `${this.apiUrl}users/${userId}/pointages/active-counters`,
+    `${this.apiUrl}/users/${userId}/pointages/active-counters`,
     { headers }
   );
 }
@@ -121,7 +121,7 @@ export class ApiService {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
   
-    return this.http.get(`${this.apiUrl}users/${userId}/total-hours`, { headers });
+    return this.http.get(`${this.apiUrl}/users/${userId}/total-hours`, { headers });
   }
   DeleteService(userId: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}users/${userId}`);
@@ -129,16 +129,41 @@ export class ApiService {
   
   // Mettre à jour un pointage
   updatePointage(userId: number, data: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}users/${userId}/pointages/edit`, data);
+    return this.http.put(`${this.apiUrl}/users/${userId}/pointages/edit`, data);
   }
-  downloadMonthlyReport(month?: string) {
-    let url = `${this.apiUrl}export-csv`;
-    if (month) {
-      url += `?month=${month}`; // Format: YYYY-MM
-    }
 
-    return this.http.get(url, {
-      responseType: 'blob' // Très important pour les fichiers
+  downloadMonthlyReport(selectedMonth: string): Observable<Blob> {
+    const url = `${this.apiUrl}export-csv?month=${selectedMonth}`;
+    return this.http.get(url, { responseType: 'blob' });
+  }
+  
+  searchUsers(searchQuery: string, perPage: number, page: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/search-users`, {
+      params: {
+        search: searchQuery,
+        per_page: perPage.toString(),
+        page: page.toString()
+      }
     });
   }
+  
+  /* leaves*/
+
+  get(endpoint: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}${endpoint}`);
+  }
+
+  post(endpoint: string, data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}${endpoint}`, data);
+  }
+
+  put(endpoint: string, data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}${endpoint}`, data);
+  }
+
+  delete(endpoint: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}${endpoint}`);
+  }
+  
+  
 }

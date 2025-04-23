@@ -12,11 +12,13 @@
 
   <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
     aria-controls="offcanvasRight">
-    <ng-container *ngIf="datauser.profile_image_url; else defaultImage">
+    <ng-container *ngIf="datauser.profile_image_url; else checkProfileImage">
       <img [src]="datauser.profile_image_url" alt="Image de profil" class="enteimg" />
     </ng-container>
-
-    <ng-template #defaultImage><i class="bi bi-person-circle"></i></ng-template>
+    
+    <ng-template #checkProfileImage>
+      <i class="bi bi-person-circle"></i>
+    </ng-template>
   </button>
 
   <app-add-employes [displayStyleChild]="displayStyle" (closeEvent)="closePopup()"></app-add-employes>
@@ -31,7 +33,7 @@
 
       <!-- Si profile_image n'est pas défini, utiliser une image par défaut -->
       <img *ngIf="datauser.profile_image_url" [src]=" datauser.profile_image_url" alt="Image de profil" />
-      <p *ngIf="!datauser?.profile_image_url"><i class="bi bi-person-circle"></i></p>
+      <p *ngIf="!datauser.profile_image_url"><i class="bi bi-person-circle"></i></p>
       <div class="contentprofil">
         <span>{{datauser.name}}</span>
         <span>{{datauser.email}}</span>

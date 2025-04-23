@@ -172,10 +172,7 @@ span.text {
   width: 140px;
   object-fit: cover;
 }
-.listuser {
-  overflow-y: scroll;
-  height: 135px;
-}
+
 .modal-body {
   overflow-y: scroll;
   height: 300px;

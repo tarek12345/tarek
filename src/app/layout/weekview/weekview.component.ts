@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { format, startOfWeek, endOfWeek, getWeek, addDays, getMonth } from 'date-fns';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { format, startOfWeek, endOfWeek } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
 @Component({
@@ -8,7 +8,7 @@ import { fr } from 'date-fns/locale';
   styleUrls: ['./weekview.component.css'],
   standalone: false
 })
-export class WeekviewComponent {
+export class WeekviewComponent implements OnChanges {
   currentYear: number = new Date().getFullYear();
   currentMonth: number = new Date().getMonth();
   selectedYear: number = this.currentYear;
@@ -16,42 +16,50 @@ export class WeekviewComponent {
   endYear: number = 2040;
   @Input() itemuser: any;
 
-  getWorkDays(): { month:string, week:string, day: string, hours: string , hourszero:string}[] {
+  workDays: { month: string, week: string, day: string, hours: string, hourszero: string }[] = [];
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['itemuser']) {
+      this.calculateWorkDays();
+    }
+  }
+
+  calculateWorkDays(): void {
     const history = this.itemuser?.history;
+  
+    
     if (!history) {
-      return [];
+      this.workDays = [];
+      return;
     }
 
-    // Récupérer la date actuelle
     const today = new Date();
-    const startOfCurrentWeek = startOfWeek(today, { weekStartsOn: 1 }); // Lundi comme premier jour de la semaine
-    const endOfCurrentWeek = endOfWeek(today, { weekStartsOn: 1 }); // Dimanche comme dernier jour de la semaine
+    const startOfCurrentWeek = startOfWeek(today, { weekStartsOn: 1 });
+    const endOfCurrentWeek = endOfWeek(today, { weekStartsOn: 1 });
 
-    // Filtrer l'historique pour ne garder que les jours de la semaine actuelle
-    return Object.keys(history)
+    this.workDays = Object.keys(history)
       .map(date => {
+      
         const dayData = history[date];
         const currentDate = new Date(dayData.date);
+        console.log("===================",currentDate);
 
-        // Vérifier si la date fait partie de la semaine actuelle
         if (currentDate >= startOfCurrentWeek && currentDate <= endOfCurrentWeek) {
           return {
-            month : dayData.month,
-            week : dayData.week,
+            month: dayData.month,
+            week: dayData.week,
             day: dayData.day,
             hours: dayData.total_hours,
             hourszero: dayData.arrival_date,
-
-           };
-       
-           
+          };
         }
         return null;
       })
-      .filter(day => day !== null); // Supprimer les jours qui ne correspondent pas à la semaine actuelle
+      .filter(day => day !== null) as any[];
   }
+
   isCurrentDay(day: string): boolean {
-    const today = format(new Date(), 'EEEE', { locale: fr }); // Récupère le jour actuel en français
+    const today = format(new Date(), 'EEEE', { locale: fr });
     return today === day;
   }
 }

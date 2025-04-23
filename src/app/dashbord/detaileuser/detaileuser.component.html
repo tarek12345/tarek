@@ -3,21 +3,24 @@
   <div class="pointage">
     <div class="time-slot">
       <div class="status">
-     
-        <!-- Affichage de l'image de profil ou d'une icône par défaut -->
-        <ng-container *ngIf="userdetaile.profile_image_url; else defaultImage">
+      
+        <!-- Affichage de l'image de profil ou d'une icône par défaut --> 
+        <ng-container *ngIf="userdetaile.profile_image_url; else checkProfileImage">
           <img [src]="userdetaile.profile_image_url" alt="Image de profil" class="enteimg" />
         </ng-container>
-        <ng-template #defaultImage>
+
+        <ng-template #checkProfileImage>
           <i class="bi bi-person-circle"></i>
         </ng-template>
 
+
         <!-- Nom de l'utilisateur -->
         <p><i class="bi bi-person-gear"></i> {{ userdetaile.name }}</p>
-
+       
         <!-- Statut (au bureau ou hors ligne) -->
-        <p [ngClass]="status === 'hors ligne' ? 'text-danger' : 'text-success'">{{status}}</p>
+        <p class="text-success"[ngClass]="status === 'hors ligne' ? 'text-danger' : 'text-success'">{{status}}</p>
 
+          
         <!-- Affichage du compteur -->
         <div>
           <p>{{ counter }}</p>
@@ -60,23 +63,33 @@
     <div class="spinner"></div>
     <p>Chargement des utilisateurs...</p>
   </div>
-
   <!-- Section des autres utilisateurs (visible uniquement pour l'administrateur) -->
   <div *ngIf="!loading" class="d-flex flex-column rightcontent">
     <!-- Résumé des statuts -->
     <div class="status all" *ngIf="userdetaile.role === 'administrator'">
       <div class="status-summary">
-        <p class="text-success">
-          <i class="bi bi-person-check"></i> {{ getUserCountByStatus('au bureau') }}
+        <p class="text-success" 
+           data-bs-toggle="tooltip" 
+           data-bs-placement="top" 
+           title="Employés actuellement au bureau">
+          <i class="bi bi-person-check"></i> 
+          {{ GetAllusers.status_counts['au_bureau'] }}
         </p>
-        <p class="text-danger">
-          <i class="bi bi-person-dash"></i> {{ getUserCountByStatus('hors ligne') }}
+      
+        <p class="text-danger"
+           data-bs-toggle="tooltip" 
+           data-bs-placement="top" 
+           title="Employés actuellement hors ligne">
+          <i class="bi bi-person-dash"></i> 
+          {{ GetAllusers.status_counts['hors_ligne'] }} 
         </p>
       </div>
+      
+      
     </div>
 <div class="listuser">
     <!-- Liste des autres utilisateurs -->
-    <div   *ngFor="let item of allUsers" (click)="openPopup(item)">
+    <div   *ngFor="let item of filteredUsers" (click)="openPopup(item)">
       <div class="status all" *ngIf="item.role !== 'administrator' && item.id !== userdetaile.id">
         <!-- Image de profil ou icône par défaut -->
         <ng-container *ngIf="item.profile_image_url; else defaultImage">
@@ -99,7 +112,7 @@
         <!-- Nom et statut de l'utilisateur -->
         <div class="conteneuruser">
           <p>{{ item.name }}</p>
-          <p [class]="item.status === 'au bureau' ? 'text-success' : 'text-danger'">{{ item.status }}</p>
+          <p [class]="item.status === 'au_bureau' ? 'text-success' : 'text-danger'">{{ item.status.replace('_', ' ') }}</p>
         </div>
        
         <!-- Barre de progression pour le temps travaillé -->
@@ -115,22 +128,44 @@
           </div>
         </div>
         
-        
-        
-
-
 
       </div>
     </div>
+
   </div>
+      <nav *ngIf="lastPage > 1" class="mt-4">
+      <ul class="pagination">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" (click)="onPageChange(currentPage - 1)"><i class="bi bi-caret-left"></i></a>
+        </li>
+    
+        <li class="page-item" *ngFor="let page of [].constructor(lastPage); let i = index"
+            [class.active]="currentPage === (i + 1)">
+          <a class="page-link" (click)="onPageChange(i + 1)">{{ i + 1 }}</a>
+        </li>
+    
+        <li class="page-item" [class.disabled]="currentPage === lastPage">
+          <a class="page-link" (click)="onPageChange(currentPage + 1)"><i class="bi bi-caret-right"></i></a>
+        </li>
+      </ul>
+    </nav>
     <!-- Affichage des totaux -->
     <app-weekview [itemuser]="userdetaile"></app-weekview>
 
   </div>
-  <div class="chats">
-    <app-chart *ngIf="userdetaile?.history?.length > 0" [chartusers]="userdetaile"></app-chart>
+  <ng-container *ngIf="userdetaile?.history?.length > 0; else chats">
+    <div class="chats">
+      <h1 class="text-center">Statistiques par jours </h1>
+      <app-chart *ngIf="userdetaile?.history?.length > 0" [chartusers]="userdetaile"></app-chart>
+    </div>
+  </ng-container>
+
+  <ng-template #chats>
+  <div class="chats d-flex justify-content-center align-items-center flex-column">
+   <p><b>Pas de  statistique</b></p>
+   <img src="../../../assets/credit-score.gif" alt="location" class="icons w-25" />
   </div>
-  
+  </ng-template>
 
 <!-- Modal pour afficher les détails de l'utilisateur -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStyle}">

@@ -97,10 +97,10 @@ export class DashbordComponent implements OnInit {
     }
     return Object.keys(history);
   }
+  GetAllusers : any
   GetUsers(page: number = 1) {
     this.apiService.GetUsers(page).subscribe((data) => {
-      console.log('API Response:', data);
-  
+   this.GetAllusers  =  data
       // Vérification de la présence des utilisateurs avant de les traiter
       if (data?.users && Array.isArray(data.users)) {
         this.allUsers = data.users.map(user => ({
