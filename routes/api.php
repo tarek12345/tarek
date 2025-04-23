@@ -5,8 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PointageController;
 use App\Http\Controllers\WorkDayController;
-use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\PublicHolidayController;
+use App\Http\Controllers\LeaveController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -27,8 +28,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('register', [AuthController::class, 'register']);
 // Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('login', [AuthController::class, 'login']);
-Route::post('/login/face', [AuthController::class, 'loginWithFace']);
-Route::post('/login/detect-facial-features', [AuthController::class, 'detectFacialFeatures']);
+
 
 Route::get('users', [AuthController::class, 'getUsers']);
 Route::middleware('auth:sanctum')->post('logout', [AuthController::class, 'logout']);
@@ -50,5 +50,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users/{userId}/worked-hours', [PointageController::class, 'getWorkedHours']);
     Route::get('/historique/{userId}/{date}', [PointageController::class, 'getHistoryByDate']);
     Route::get('/export-csv', [AuthController::class, 'exportUserWorkDays']);
-
+    Route::get('/search-users', [AuthController::class, 'searchUsers']);
+        // web.php (routes)
+        Route::get('/leaves', [LeaveController::class, 'index']);
+        Route::post('/leaves', [LeaveController::class, 'store']);
+        Route::put('/leaves/{id}', [LeaveController::class, 'update']);
+        Route::delete('/leaves/{id}', [LeaveController::class, 'destroy']);
+        Route::post('/leaves/{id}/approve', [LeaveController::class, 'approve']);
+        Route::get('/leavesuser/{userId}', [LeaveController::class, 'leavesUser']);
 });

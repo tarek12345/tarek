@@ -19,9 +19,11 @@ class CreateLeavesTable extends Migration
             $table->date('start_date');
             $table->date('end_date');
             $table->string('reason'); // Exemple : "vacances", "maladie"
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending'); // Statut du congé
             $table->timestamps();
         });
     }
+    
     
 
     /**
