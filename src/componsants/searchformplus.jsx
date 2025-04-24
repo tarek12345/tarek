@@ -16,6 +16,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const SearchFormPlus = (props) => {
 const [skills] = useState(props.skills || []);
 const [software] = useState(props.imgsatware || []);
+
 const [experiences] = useState([
 { name: "1 an d'expérience", value: 1 },
 { name: "2 ans d'expérience", value: 2 },
@@ -49,6 +50,7 @@ setFilteredSoftware(filteredSoftware);
 const filteredExperiences = experiences.filter((experience) =>
 searchTerms.some((term) => experience.name.toLowerCase().includes(term))
 );
+
 setFilteredExperiences(filteredExperiences);
 
 const totalItems = skills.length + software.length + experiences.length;
@@ -83,7 +85,12 @@ hoverBackgroundColor: ["#812fab", "#170122", "#f1c40f", "#ef5350"],
 
 return (
 <div className="search-form-plus infos-pratique">
+   {props.long === "FR" ?
   <h4>Recherche Avancée par Offre</h4>
+  : 
+  <h4>Advanced Search by Offer</h4>
+  }
+
   <div className="search-input-container mb-3 champs">
     <textarea className="form-control"
      placeholder={props.long==="FR"?"Saissir decription du votre offre d'emploi..."

@@ -22,7 +22,7 @@ import {
   faAngular,
   faBootstrap,
   faWordpress ,
-  faVuejs   ,faPhp
+  faVuejs   ,faPhp,faLaravel
 } from '@fortawesome/free-brands-svg-icons'; // Icônes brands
 
 import Competences from './sectionhome/competences';
@@ -59,6 +59,8 @@ export default function Home() {
     { name: "Wordpress divi", level: 100, icon: faWordpress }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée.
     { name: "Wordpress Gutenberg", level: 90, icon: faWordpress }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée.
     { name: "Seo", level: 80, icon: faSearch }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée
+    { name: "Laravel", level: 60, icon: faLaravel }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée
+
   ]);
   const imgsatware = [
     { caption: "Bitbucket", urlthaimber: bitbakedimg },

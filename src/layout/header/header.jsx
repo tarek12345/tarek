@@ -46,12 +46,12 @@ export default function Header({ long, toggleLanguage }) {
             <img src={imgfront} className="d-block w-100 img-t" alt="photo du profil" />
             <div className="discrptionnameall" >
               <div className="discrptionname">
-                {language === "FR" ? <span className="title-top">Développeur front end</span> : <span className="title-top">Front end developer</span>}
+                {language === "FR" ? <span className="title-top">Développeur full stack</span> : <span className="title-top">Full stack developer</span>}
                 <h1>Benarfa <br /> Tarek</h1>
                 <p>
                   {language === "FR"
-                    ? "Je suis développeur front-end avec 6 ans d'expérience."
-                    : "I am a front-end developer with 6 years of experience."}
+                    ? "Je suis développeur full stack  avec 7 ans d'expérience."
+                    : "I am a full stack developer with 7 years of experience."}
                 </p>
               </div>
               <div className="buttons">
