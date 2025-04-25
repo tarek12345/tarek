@@ -91,26 +91,7 @@ export class ProfilsComponent {
         this.GetUsers(page);
       }
     }
-    // onSearch(event: any): void {
-    //   // Récupérer la valeur de la recherche
-    //   const query = event.target.value;
-    //   this.searchQuery = query ? query.toLowerCase() : '';  // Appliquer toLowerCase() uniquement si la valeur est non vide
-  
-    //   // Si la recherche est vide, réinitialisez filteredUsers à tous les utilisateurs
-    //   if (this.searchQuery === '') {
-    //     this.filteredUsers = this.allUsers;
-    //   } else {
-    //     // Filtrer les utilisateurs par nom ou email
-    //     this.filteredUsers = this.allUsers.filter(user => {
-    //       const fullName = (user.name && typeof user.name === 'string' ? user.name.toLowerCase() : '') || '';
-    //       const email = (user.email && typeof user.email === 'string' ? user.email.toLowerCase() : '') || '';
-    //       return (
-    //         fullName.includes(this.searchQuery) ||
-    //         email.includes(this.searchQuery)
-    //       );
-    //     });
-    //   }
-    // }
+
     statusCounts :any
     onSearch(event: any): void {
       const query = event.target.value;

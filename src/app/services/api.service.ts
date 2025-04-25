@@ -149,20 +149,34 @@ export class ApiService {
   
   /* leaves*/
 
-  get(endpoint: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}${endpoint}`);
+  // Récupérer les congés d'un utilisateur
+  getLeavesForUser(userId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/leavesuser/${userId}`);
   }
 
-  post(endpoint: string, data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}${endpoint}`, data);
+  // Ajouter un congé
+  addLeave(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/leaves`, data);
   }
 
-  put(endpoint: string, data: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}${endpoint}`, data);
+  // Mettre à jour un congé
+  updateLeave(id: number, data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/leaves/${id}`, data);
   }
 
-  delete(endpoint: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}${endpoint}`);
+  // Supprimer un congé
+  deleteLeave(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/leaves/${id}`);
+  }
+
+  // Approuver un congé (réservé à l'administrateur)
+  approveLeave(id: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/leaves/${id}/approve`, {});
+  }
+
+  // Rejeter un congé
+  rejectLeave(id: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/leaves/${id}/reject`, {});
   }
   
   
