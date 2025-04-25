@@ -40,16 +40,16 @@ export class LeavesComponent implements OnInit {
   }
 
   fetchLeaves(): void {
-    this.api.get(`/leavesuser/${this.currentUserId}`).subscribe((data) => {
-      
+    const role = this.currentUserRole;
+    this.api.get(`/leavesuser/${this.currentUserId}?role=${role}`).subscribe((data) => {
       this.leaves = data;
     });
   }
+  
 
   fetchUsers(): void {
     this.api.get('/users').subscribe((data) => {
-      this.users = data.users
-      ;
+      this.users = data.users;
       console.log('Users:', this.users); // pour debug
     });
   }
@@ -57,20 +57,22 @@ export class LeavesComponent implements OnInit {
 
   addLeave(): void {
     if (!this.selected || !this.reason) return;
-
+  
     const payload = {
       pointage_id: this.pointageId,
       start_date: this.selected.startDate.format('YYYY-MM-DD'),
       end_date: this.selected.endDate.format('YYYY-MM-DD'),
-      reason: this.reason
+      reason: this.reason,
+      created_by: this.user.id // 👈 Ajouter l'utilisateur courant ici
     };
-
+  
     this.api.post('/leaves', payload).subscribe(() => {
       this.fetchLeaves();
       this.selected = null;
       this.reason = '';
     });
   }
+  
 
   deleteLeave(id: number): void {
     this.api.delete(`/leaves/${id}`).subscribe(() => {
