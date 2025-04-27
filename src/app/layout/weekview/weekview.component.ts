@@ -42,7 +42,6 @@ export class WeekviewComponent implements OnChanges {
       
         const dayData = history[date];
         const currentDate = new Date(dayData.date);
-        console.log("===================",currentDate);
 
         if (currentDate >= startOfCurrentWeek && currentDate <= endOfCurrentWeek) {
           return {

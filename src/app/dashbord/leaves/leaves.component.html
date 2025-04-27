@@ -1,70 +1,114 @@
 <div class="container mt-4">
-    <h1 class="text-white">Ajouter un congé</h1>
-  
-    <input
-      type="text"
-      class="form-control mb-3"
-      ngxDaterangepickerMd
-      [(ngModel)]="selected"
-      [autoApply]="true"
-      placeholder="Sélectionner une période"
-    />
-  
-    <div *ngIf="selected">
-      <div class="mb-3">
-        <label for="reason" class="form-label text-white">Raison</label>
-        <textarea
-          id="reason"
-          class="form-control"
-          rows="3"
-          [(ngModel)]="reason"
-          placeholder="Écrire la raison du congé"
-        ></textarea>
-      </div>
-  
-      <div class="btns d-flex gap-3">
-        <button type="button" class="btn btn-dark" (click)="selected = null; reason = ''">Annuler</button>
-        <button type="button" class="btn btn-success" (click)="addLeave()">Ajouter</button>
-      </div>
+  <h1 class="text-white">Ajouter un congé</h1>
+
+  <!-- Sélection de la période de congé -->
+  <input
+    type="text"
+    class="form-control mb-3"
+    ngxDaterangepickerMd
+    [(ngModel)]="selected"
+    [autoApply]="true"
+    placeholder="Sélectionner une période"
+  />
+
+  <div *ngIf="selected">
+    <!-- Raison du congé -->
+    <div class="mb-3">
+      <label for="reason" class="form-label text-white">Raison</label>
+      <textarea
+        id="reason"
+        class="form-control"
+        rows="3"
+        [(ngModel)]="reason"
+        placeholder="Écrire la raison du congé"
+      ></textarea>
+    </div>
+
+    <!-- Sélection du remplaçant -->
+    <div class="mb-3">
+      <label for="replacant" class="form-label text-white">Remplaçant</label>
+      <select class="form-select" [(ngModel)]="replacant" id="replacant">
+        <option *ngFor="let user of users" [value]="user.id">
+          {{ user.name }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Boutons d'action -->
+    <div class="btns d-flex gap-3">
+      <button type="button" class="btn btn-dark" (click)="resetForm()">Annuler</button>
+      <button type="button" class="btn btn-success" (click)="addLeave()">Ajouter</button>
+      <button 
+      *ngIf="editingLeaveId" 
+      type="button" 
+      class="btn btn-warning" 
+      (click)="updateLeave()"
+    >
+      Mettre à jour
+    </button>
     </div>
   </div>
-  
+</div>
+
+<!-- Liste des demandes de congé -->
+<div class="container mt-4">
+  <h1 class="text-white">Liste des congés</h1>
+
   <table class="table table-hover mt-4">
     <thead>
       <tr>
-        <th>Nom utilisateur</th>
+        <th  *ngIf="currentUserRole === 'administrator' ">Nom utilisateur</th>
         <th>Date début</th>
         <th>Date fin</th>
         <th>Remplaçant</th>
         <th>Raison</th>
-        <th>Action</th>
+        <th>Statut</th>
+        <th>Actions</th>
       </tr>
     </thead>
+
     <tbody>
       <tr *ngFor="let leave of leaves">
-        <td>{{ leave.pointage?.user?.name || '—' }}</td>
+        <td   *ngIf="currentUserRole === 'administrator' ">{{ leave?.creator?.name || '—' }}</td>
         <td>{{ leave.start_date }}</td>
         <td>{{ leave.end_date }}</td>
-        <td>
-         
-          <select class="form-select" [(ngModel)]="replacant">
-            <option *ngFor="let user of users" [value]="user.id">
-              {{ user.name }}
-            </option>
-          </select>
-        </td>
+        <td>{{ leave.replacant?.name || '—' }}</td>
         <td>{{ leave.reason }}</td>
         <td>
+          <span class="badge" [ngClass]="{
+            'bg-success': leave.status === 'approved',
+            'bg-warning': leave.status === 'pending',
+            'bg-danger': leave.status === 'rejected'
+          }">{{ leave.status }}</span>
+        </td>
+        <td>
+          <!-- Actions pour supprimer ou approuver un congé -->
           <button class="btn btn-danger btn-sm me-2" (click)="deleteLeave(leave.id)">Supprimer</button>
+          
           <button
             *ngIf="currentUserRole === 'administrator' && leave.status === 'pending'"
-            class="btn btn-primary btn-sm"
+            class="btn btn-primary btn-sm me-2"
             (click)="approveLeave(leave.id)"
           >
             Approuver
           </button>
+          
+          <button
+          *ngIf="user.role === 'employer'"
+            class="btn btn-warning btn-sm"
+            (click)="editLeave(leave)"
+          >
+            Modifier
+          </button>
+          <button
+          *ngIf="currentUserRole === 'administrator' && leave.status === 'pending'"
+          class="btn btn-secondary btn-sm me-2"
+          (click)="rejectLeave(leave)"
+        >
+          Annuler
+        </button>
         </td>
       </tr>
     </tbody>
   </table>
-  
+</div>

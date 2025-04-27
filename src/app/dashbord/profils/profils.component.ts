@@ -53,7 +53,6 @@ export class ProfilsComponent {
 
     GetUsers(page: number = 1) {
       this.apiService.GetUsers(page).subscribe((data) => {
-        console.log('API Response:', data);
     
         // Vérification de la présence des utilisateurs avant de les traiter
         if (data?.users && Array.isArray(data.users)) {
@@ -65,9 +64,7 @@ export class ProfilsComponent {
     
           // Initialiser filteredUsers avec les utilisateurs traités
           this.filteredUsers = [...this.allUsers];
-    
-          console.log('Filtered Users:', this.filteredUsers);  // Affiche le tableau des utilisateurs filtrés
-        } else {
+            } else {
           console.warn('Aucun utilisateur trouvé dans la réponse de l\'API.');
           this.filteredUsers = [];  // Si aucun utilisateur trouvé, initialise filteredUsers comme un tableau vide
         }
@@ -91,26 +88,7 @@ export class ProfilsComponent {
         this.GetUsers(page);
       }
     }
-    // onSearch(event: any): void {
-    //   // Récupérer la valeur de la recherche
-    //   const query = event.target.value;
-    //   this.searchQuery = query ? query.toLowerCase() : '';  // Appliquer toLowerCase() uniquement si la valeur est non vide
-  
-    //   // Si la recherche est vide, réinitialisez filteredUsers à tous les utilisateurs
-    //   if (this.searchQuery === '') {
-    //     this.filteredUsers = this.allUsers;
-    //   } else {
-    //     // Filtrer les utilisateurs par nom ou email
-    //     this.filteredUsers = this.allUsers.filter(user => {
-    //       const fullName = (user.name && typeof user.name === 'string' ? user.name.toLowerCase() : '') || '';
-    //       const email = (user.email && typeof user.email === 'string' ? user.email.toLowerCase() : '') || '';
-    //       return (
-    //         fullName.includes(this.searchQuery) ||
-    //         email.includes(this.searchQuery)
-    //       );
-    //     });
-    //   }
-    // }
+
     statusCounts :any
     onSearch(event: any): void {
       const query = event.target.value;

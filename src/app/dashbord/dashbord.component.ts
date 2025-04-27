@@ -54,6 +54,7 @@ export class DashbordComponent implements OnInit {
     this.allUsers.forEach(user => {
       user.historyKeys = this.getHistoryKeys(user.history);
     });
+    
   }
   GetUserSByid() {
     this.apiService.GetUserServiceByid(this.user.id).subscribe({
@@ -70,27 +71,6 @@ export class DashbordComponent implements OnInit {
     });
   }
 
-  // GetUsers(page: number = 1) {
-  //   this.apiService.GetUsers(page).subscribe((data: PaginatedUsers) => {
-  //     console.log('API Response:', data);
-  
-  //     if (data?.users && Array.isArray(data.users)) {
-  //       this.allUsers = data.users.map(user => ({
-  //         ...user,
-  //         total_time_seconds: parseInt(sessionStorage.getItem('totalTime') || '0', 10),
-  //       }));
-  
-  
-  //     } else {
-  //       console.warn('Aucun utilisateur trouvé dans la réponse de l\'API.');
-  //     }
-
-  //   }, error => {
-  //     console.log('Error:', error);
-  //     this.toastr.error('Erreur lors de la récupération des utilisateurs.');
-   
-  //   });
-  // }
   getHistoryKeys(history: any): string[] {
     if (!history || typeof history !== 'object') {
       return [];
@@ -112,7 +92,6 @@ export class DashbordComponent implements OnInit {
         // Initialiser filteredUsers avec les utilisateurs traités
         this.filteredUsers = [...this.allUsers];
   
-        console.log('Filtered Users:', this.filteredUsers);  // Affiche le tableau des utilisateurs filtrés
       } else {
         console.warn('Aucun utilisateur trouvé dans la réponse de l\'API.');
         this.filteredUsers = [];  // Si aucun utilisateur trouvé, initialise filteredUsers comme un tableau vide

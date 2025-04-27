@@ -104,9 +104,7 @@ constructor(
       this.apiService.GetUserServiceByid(this.userId).subscribe(
         (response: any) => {
           this.userdetaile = response.user;
-          const history = response.user.history
-          console.log("sqdqsdqsd",response);
-          
+          const history = response.user.history          
           const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
           const todayPointage = history.find((p: any) => p.date === today);
           history.find((p: any) => p.date === today);
@@ -247,42 +245,7 @@ updateCurrentTime(): void {
   padZero(value: number): string {
     return value < 10 ? `0${value}` : `${value}`;
   }
-  // GetUsers(page: number = 1) {
-  //   this.apiService.GetUsers(page).subscribe((data: PaginatedUsers) => {
-  //     console.log('API Response:', data);
   
-  //     if (data?.users && Array.isArray(data.users)) {
-  //       this.allUsers = data.users.map(user => ({
-  //         ...user,
-  //         total_time_seconds: parseInt(sessionStorage.getItem('totalTime') || '0', 10),
-  //       }));
-
-  //     } else {
-  //       console.warn('Aucun utilisateur trouvé dans la réponse de l\'API.');
- 
-  //     }
-  
-
-  //     this.loading = false;
-  //   }, error => {
-  //     console.log('Error:', error);
-  //     this.toastr.error('Erreur lors de la récupération des utilisateurs.');
-  //     this.loading = false;
-  //   });
-  // }
-  
- 
-  //   this.apiService.GetUsers().subscribe((data) => {
-  //     this.allUsers = data?.data?.map(user => ({
-  //       ...user,
-  //       total_time_seconds: parseInt(sessionStorage.getItem('totalTime') || '0', 10)
-  //     }));
-  //     this.loading = false;
-  //   }, error => {
-  //     this.toastr.error('Erreur lors de la récupération des utilisateurs.');
-  //   });
-  // }
- // Logique d'affichage du profil de l'utilisateur, et gestion de l'arrivée/départ
  GetAllusers : any
  GetUsers(page: number = 1) {
   this.apiService.GetUsers(page).subscribe((data) => {
@@ -297,8 +260,6 @@ updateCurrentTime(): void {
 
       // Initialiser filteredUsers avec les utilisateurs traités
       this.filteredUsers = [...this.allUsers];
-
-      console.log('Filtered Users:', this.filteredUsers);  // Affiche le tableau des utilisateurs filtrés
     } else {
       console.warn('Aucun utilisateur trouvé dans la réponse de l\'API.');
       this.filteredUsers = [];  // Si aucun utilisateur trouvé, initialise filteredUsers comme un tableau vide
