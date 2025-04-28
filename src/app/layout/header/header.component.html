@@ -3,18 +3,25 @@
   <span class="slogon">Pointingworks</span>
 </div>
 <div class="btnsheraders">
+<div class="congee d-flex align-items-center">
+<!-- Affichage du bouton pour les congés approuvés -->
+<div *ngIf="conge.length > 0 && datauser.role === 'employer'" class="d-flex align-items-center">
+  <button *ngIf="approvedCount > 0" class="btn btn-primary" (click)="getleavesbystatus('approved')" type="button"
+  data-bs-toggle="offcanvas" data-bs-target="#offcanvasLeft1" aria-controls="offcanvasLeft1">
+    <i class="bi bi-calendar"></i>
+    <sup class="text-success">{{ approvedCount }}</sup>
+  </button>
+</div>
 
-  <div *ngIf="conge.length > 0 && datauser.role === 'employer'" class="d-flex align-items-center">
-    <div *ngFor="let leave of conge" class="congee">
-      <button class="btn btn-primary" (click)="getleavesbystatus(leave.status)" type="button"
-        data-bs-toggle="offcanvas" data-bs-target="#offcanvasLeft1" aria-controls="offcanvasLeft1">
-        <i class="bi bi-calendar"></i>
-        <sup [class]="leave.status === 'pending' ? 'text-success wobble-hor-bottom' : 'text-danger'">
-          {{ approvedCount }}
-        </sup>
-      </button>
-    </div>
-  </div>
+<!-- Affichage du bouton pour les congés en attente -->
+<div *ngIf="conge.length > 0 && datauser.role === 'employer'" class="d-flex align-items-center">
+  <button *ngIf="pendingCount > 0" class="btn btn-primary" (click)="getleavesbystatus('pending')" type="button"
+  data-bs-toggle="offcanvas" data-bs-target="#offcanvasLeft1" aria-controls="offcanvasLeft1">
+    <i class="bi bi-calendar"></i>
+    <sup class="text-warning">{{ pendingCount }}</sup>
+  </button>
+</div>
+</div>
   <button class="btn btn-primary" [disabled]="!datauser.history" (click)="GetUserSByid()" type="button"
     data-bs-toggle="offcanvas" data-bs-target="#offcanvasLeft" aria-controls="offcanvasLeft">
     <i class="bi bi-bell"></i>

@@ -17,6 +17,8 @@ export class HeaderComponent implements OnInit {
   congeuser : any[] = [];
   approvedCount: number = 0;  // Nombre de congés approuvés
   pendingCount: number = 0;   // Nombre de congés en attente
+  approvedLeaves :any[] = [];
+  pendingLeaves : any[] = [];
   public history: any[] = [];
   public error: string | null = null;
   displayStyle: string = "none"; // Contrôle l'affichage du modal
@@ -40,10 +42,17 @@ export class HeaderComponent implements OnInit {
     }
   }
   countStatuses(): void {
+    // Filtrer les congés approuvés
     this.approvedCount = this.conge.filter(leave => leave.status === 'approved').length;
-    this.pendingCount = this.conge.filter(leave => leave.status === 'pending').length;
     
+    // Filtrer les congés en attente
+    this.pendingCount = this.conge.filter(leave => leave.status === 'pending').length;
+  
+    // Mettre à jour les listes filtrées pour chaque statut
+    this.approvedLeaves = this.conge.filter(leave => leave.status === 'approved');
+    this.pendingLeaves = this.conge.filter(leave => leave.status === 'pending');
   }
+  
   getleavesbystatus(status: string) {
     // Filtrer les congés selon le statut
     this.congeuser = this.conge.filter(leave => leave.status === status);
