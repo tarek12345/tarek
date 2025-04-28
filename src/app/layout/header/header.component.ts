@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../services/user-service.service';
@@ -13,7 +13,10 @@ import { format, startOfWeek, endOfWeek, getWeek, addDays, getMonth } from 'date
 })
 export class HeaderComponent implements OnInit {
   @Input() datauser: any;
-  
+  @Input() conge: any[] = [];
+  congeuser : any[] = [];
+  approvedCount: number = 0;  // Nombre de congés approuvés
+  pendingCount: number = 0;   // Nombre de congés en attente
   public history: any[] = [];
   public error: string | null = null;
   displayStyle: string = "none"; // Contrôle l'affichage du modal
@@ -29,6 +32,22 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     
     this.GetUserSByid()
+  }
+   // Cette méthode est appelée à chaque fois que 'conge' change
+   ngOnChanges(changes: SimpleChanges): void {
+    if (changes['conge']) {
+      this.countStatuses();  // Recompte les statuts dès que la liste de congés change
+    }
+  }
+  countStatuses(): void {
+    this.approvedCount = this.conge.filter(leave => leave.status === 'approved').length;
+    this.pendingCount = this.conge.filter(leave => leave.status === 'pending').length;
+    
+  }
+  getleavesbystatus(status: string) {
+    // Filtrer les congés selon le statut
+    this.congeuser = this.conge.filter(leave => leave.status === status);
+    console.log("Filtered leaves by status:", this.congeuser);
   }
   GetUserSByid() {
     this.apiService.GetUserServiceByid(this.datauser.id).subscribe(data => {

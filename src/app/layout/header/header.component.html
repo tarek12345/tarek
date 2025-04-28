@@ -4,6 +4,17 @@
 </div>
 <div class="btnsheraders">
 
+  <div *ngIf="conge.length > 0 && datauser.role === 'employer'" class="d-flex align-items-center">
+    <div *ngFor="let leave of conge" class="congee">
+      <button class="btn btn-primary" (click)="getleavesbystatus(leave.status)" type="button"
+        data-bs-toggle="offcanvas" data-bs-target="#offcanvasLeft1" aria-controls="offcanvasLeft1">
+        <i class="bi bi-calendar"></i>
+        <sup [class]="leave.status === 'pending' ? 'text-success wobble-hor-bottom' : 'text-danger'">
+          {{ approvedCount }}
+        </sup>
+      </button>
+    </div>
+  </div>
   <button class="btn btn-primary" [disabled]="!datauser.history" (click)="GetUserSByid()" type="button"
     data-bs-toggle="offcanvas" data-bs-target="#offcanvasLeft" aria-controls="offcanvasLeft">
     <i class="bi bi-bell"></i>
@@ -94,3 +105,27 @@
     </div>
   </div>
 </div>
+
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasLeft1" aria-labelledby="offcanvasLeftLabel1">
+  <div class="offcanvas-header">
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <!-- Affichage de la liste des congés filtrés selon le statut -->
+    <div *ngIf="congeuser.length > 0; else noLeavesMessage">
+      <div *ngFor="let leave of congeuser">
+        <div class="leave-item">
+          <p><strong>Nom :</strong> {{ leave.reason }}</p>
+          <p><strong>Statut :</strong> {{ leave.status }}</p>
+          <p><strong>Date de début :</strong> {{ leave.start_date | date:'dd/MM/yyyy' }}</p>
+          <p><strong>Date de fin :</strong> {{ leave.end_date | date:'dd/MM/yyyy' }}</p>
+        </div>
+      </div>
+    </div>
+    <ng-template #noLeavesMessage>
+      <p>Aucun congé trouvé pour ce statut.</p>
+    </ng-template>
+  </div>
+</div>
+    

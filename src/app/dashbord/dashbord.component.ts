@@ -54,8 +54,16 @@ export class DashbordComponent implements OnInit {
     this.allUsers.forEach(user => {
       user.historyKeys = this.getHistoryKeys(user.history);
     });
-    
+    if (this.user && this.user.id) {
+      // Appel de l'API pour récupérer les congés pour l'utilisateur
+      this.apiService.getLeavesForUser(this.user.id).subscribe((data: any) => {
+        this.leavesuser = data;  // Sauvegarde les congés récupérés dans leavesuser
+      });
+    }
   }
+  leavesuser: any[] = [];  // Liste des congés
+
+
   GetUserSByid() {
     this.apiService.GetUserServiceByid(this.user.id).subscribe({
       next: (data) => {

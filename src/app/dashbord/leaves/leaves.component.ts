@@ -11,7 +11,7 @@ import { UserService } from '../../services/user-service.service';
 })
 export class LeavesComponent implements OnInit {
   @Input() userdetaile: any[] = [];
-  @Output() leaveApproved = new EventEmitter<any>();
+  @Output() leavesLoaded = new EventEmitter<any>();
   selected: { startDate: moment.Moment, endDate: moment.Moment } | null = null;
   reason: string = '';
   leaves: any[] = [];
@@ -38,7 +38,7 @@ export class LeavesComponent implements OnInit {
   fetchLeaves(): void {
     this.api.getLeavesForUser(this.currentUserId).subscribe((data: any) => {
       this.leaves = data;
-      
+      this.leavesLoaded.emit(this.leaves);  // Émettre les congés au parent
     });
   }
 
