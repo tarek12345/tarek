@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../services/user-service.service';
@@ -28,18 +28,24 @@ export class HeaderComponent implements OnInit {
     private userService: UserService,
     private apiService: ApiService, 
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     
     this.GetUserSByid()
+    this.refreshComponent()
   }
    // Cette méthode est appelée à chaque fois que 'conge' change
    ngOnChanges(changes: SimpleChanges): void {
     if (changes['conge']) {
       this.countStatuses();  // Recompte les statuts dès que la liste de congés change
     }
+  }
+  refreshComponent() {
+    // Forcer Angular à vérifier les changements
+    this.cdr.detectChanges();
   }
   countStatuses(): void {
     // Filtrer les congés approuvés

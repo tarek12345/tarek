@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import * as moment from 'moment';
 import { UserService } from '../../services/user-service.service';
@@ -22,7 +22,7 @@ export class LeavesComponent implements OnInit {
   currentUserId: number = 1;
   user: any;
 
-  constructor(private api: ApiService, private userService: UserService) {}
+  constructor(private api: ApiService, private userService: UserService,private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.user = this.userService.getUserInfo();
@@ -39,6 +39,7 @@ export class LeavesComponent implements OnInit {
     this.api.getLeavesForUser(this.currentUserId).subscribe((data: any) => {
       this.leaves = data;
       this.leavesLoaded.emit(this.leaves);  // Émettre les congés au parent
+  
     });
   }
 
@@ -63,13 +64,18 @@ export class LeavesComponent implements OnInit {
         this.reason = '';
         this.replacant = null;
       });
+      this.refreshComponent() 
     }
   }
   
-
+  refreshComponent() {
+   // Rafraîchit la page entière
+   window.location.reload();
+  }
   deleteLeave(id: number): void {
     this.api.deleteLeave(id).subscribe(() => {
       this.fetchLeaves(); // Reload leaves after deleting
+      this.refreshComponent()
     });
   }
   
@@ -100,6 +106,7 @@ export class LeavesComponent implements OnInit {
         }
       });
     }
+    this.refreshComponent()
   }
   editLeave(leave: any): void {
     this.selected = {
@@ -109,6 +116,7 @@ export class LeavesComponent implements OnInit {
     this.reason = leave.reason;
     this.replacant = leave.replacant?.id ?? null;
     this.editingLeaveId = leave.id;
+    this.refreshComponent()
   }
   resetForm(): void {
     this.selected = null;
@@ -120,6 +128,7 @@ export class LeavesComponent implements OnInit {
   rejectLeave(id: number): void {
     this.api.rejectLeave(id).subscribe(() => {
       this.fetchLeaves(); // Reload leaves after deleting
+      this.refreshComponent()
     });
   }
 }

@@ -53,62 +53,71 @@
 <!-- Liste des demandes de congé -->
 <div class="container mt-4">
   <h1 class="text-white">Liste des congés</h1>
-
-  <table class="table table-hover mt-4">
-    <thead>
-      <tr>
-        <th  *ngIf="currentUserRole === 'administrator' ">Nom utilisateur</th>
-        <th>Date début</th>
-        <th>Date fin</th>
-        <th>Remplaçant</th>
-        <th>Raison</th>
-        <th>Statut</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr *ngFor="let leave of leaves">
-        <td   *ngIf="currentUserRole === 'administrator' ">{{ leave?.creator?.name || '—' }}</td>
-        <td>{{ leave.start_date }}</td>
-        <td>{{ leave.end_date }}</td>
-        <td>{{ leave.replacant?.name || '—' }}</td>
-        <td>{{ leave.reason }}</td>
-        <td>
-          <span class="badge" [ngClass]="{
-            'bg-success': leave.status === 'approved',
-            'bg-warning': leave.status === 'pending',
-            'bg-danger': leave.status === 'rejected'
-          }">{{ leave.status }}</span>
-        </td>
-        <td>
-          <!-- Actions pour supprimer ou approuver un congé -->
-          <button class="btn btn-danger btn-sm me-2" (click)="deleteLeave(leave.id)">Supprimer</button>
-          
-          <button
+  <ng-container *ngIf="leaves.length !== 0; else leavesitem">
+    <table class="table table-hover mt-4">
+      <thead>
+        <tr>
+          <th  *ngIf="currentUserRole === 'administrator' ">Nom utilisateur</th>
+          <th>Date début</th>
+          <th>Date fin</th>
+          <th>Remplaçant</th>
+          <th>Raison</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+  
+      <tbody>
+        <tr *ngFor="let leave of leaves">
+          <td   *ngIf="currentUserRole === 'administrator' ">{{ leave?.creator?.name || '—' }}</td>
+          <td>{{ leave.start_date }}</td>
+          <td>{{ leave.end_date }}</td>
+          <td>{{ leave.replacant?.name || '—' }}</td>
+          <td>{{ leave.reason }}</td>
+          <td>
+            <span class="badge" [ngClass]="{
+              'bg-success': leave.status === 'approved',
+              'bg-warning': leave.status === 'pending',
+              'bg-danger': leave.status === 'rejected'
+            }">{{ leave.status }}</span>
+          </td>
+          <td>
+            <!-- Actions pour supprimer ou approuver un congé -->
+            <button class="btn btn-danger btn-sm me-2" (click)="deleteLeave(leave.id)">Supprimer</button>
+            
+            <button
+              *ngIf="currentUserRole === 'administrator' && leave.status === 'pending'"
+              class="btn btn-primary btn-sm me-2"
+              (click)="approveLeave(leave.id)"
+            >
+              Approuver
+            </button>
+            
+            <button
+            *ngIf="user.role === 'employer'"
+              class="btn btn-warning btn-sm"
+              (click)="editLeave(leave)"
+            >
+              Modifier
+            </button>
+            <button
             *ngIf="currentUserRole === 'administrator' && leave.status === 'pending'"
-            class="btn btn-primary btn-sm me-2"
-            (click)="approveLeave(leave.id)"
+            class="btn btn-secondary btn-sm me-2"
+            (click)="rejectLeave(leave)"
           >
-            Approuver
+            Annuler
           </button>
-          
-          <button
-          *ngIf="user.role === 'employer'"
-            class="btn btn-warning btn-sm"
-            (click)="editLeave(leave)"
-          >
-            Modifier
-          </button>
-          <button
-          *ngIf="currentUserRole === 'administrator' && leave.status === 'pending'"
-          class="btn btn-secondary btn-sm me-2"
-          (click)="rejectLeave(leave)"
-        >
-          Annuler
-        </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+  <ng-template #leavesitem>
+   <div class="aucun  d-flex flex-column align-items-center bg-white p-3 mb-2 rounded">
+    <img src="../../../assets/calendar.gif" alt="calendar"  class="icons "/>
+    <span>Pas  congé</span>
+   </div> 
+  </ng-template>
+
+ 
 </div>
