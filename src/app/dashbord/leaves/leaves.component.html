@@ -53,8 +53,14 @@
 <!-- Liste des demandes de congé -->
 <div class="container mt-4">
   <h1 class="text-white">Liste des congés</h1>
-  <ng-container *ngIf="leaves.length !== 0; else leavesitem">
-    <table class="table table-hover mt-4">
+  <input
+  type="text"
+  [(ngModel)]="searchTerm"
+  (ngModelChange)="currentPage = 1"
+  class="form-control"
+  placeholder="Recherche par utilisateur"
+/> <ng-container *ngIf="leaves.length !== 0; else leavesitem">
+    <table class="table table-hover mt-4 table-custom-radius">
       <thead>
         <tr>
           <th  *ngIf="currentUserRole === 'administrator' ">Nom utilisateur</th>
@@ -68,7 +74,7 @@
       </thead>
   
       <tbody>
-        <tr *ngFor="let leave of leaves">
+        <tr *ngFor="let leave of filteredLeaves">
           <td   *ngIf="currentUserRole === 'administrator' ">{{ leave?.creator?.name || '—' }}</td>
           <td>{{ leave.start_date }}</td>
           <td>{{ leave.end_date }}</td>
@@ -83,34 +89,68 @@
           </td>
           <td>
             <!-- Actions pour supprimer ou approuver un congé -->
-            <button class="btn btn-danger btn-sm me-2" (click)="deleteLeave(leave.id)">Supprimer</button>
+            <button class="btn btn-danger btn-sm me-2" 
+            (click)="deleteLeave(leave.id)" 
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            title="Supprimer">
+              <i class="bi bi-trash"></i>  
+            </button>
             
             <button
-              *ngIf="currentUserRole === 'administrator' && leave.status === 'pending'"
+              *ngIf="currentUserRole === 'administrator' && leave.status === 'pending' ||  leave.status === 'rejected'"
               class="btn btn-primary btn-sm me-2"
               (click)="approveLeave(leave.id)"
-            >
-              Approuver
+              data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            title="Approuver"
+              >
+            <i class="bi bi-calendar-check"></i> 
             </button>
             
             <button
             *ngIf="user.role === 'employer'"
               class="btn btn-warning btn-sm"
               (click)="editLeave(leave)"
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              title="Modifier"
             >
-              Modifier
+            <i class="bi bi-pencil-square"></i> 
             </button>
             <button
             *ngIf="currentUserRole === 'administrator' && leave.status === 'pending'"
             class="btn btn-secondary btn-sm me-2"
-            (click)="rejectLeave(leave)"
-          >
-            Annuler
+            (click)="rejectLeave(leave.id)"
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            title="Annuler"
+            >
+          <i class="bi bi-x-circle"></i> 
           </button>
           </td>
         </tr>
       </tbody>
     </table>
+    <nav *ngIf="totalPages.length > 1" class="mt-3">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <button class="page-link" (click)="currentPage = currentPage - 1">Précédent</button>
+        </li>
+    
+        <li
+          class="page-item"
+          *ngFor="let page of totalPages"
+          [class.active]="page === currentPage"
+        >
+          <button class="page-link" (click)="currentPage = page">{{ page }}</button>
+        </li>
+    
+        <li class="page-item" [class.disabled]="currentPage === totalPages.length">
+          <button class="page-link" (click)="currentPage = currentPage + 1">Suivant</button>
+        </li>
+      </ul>
+    </nav>
   </ng-container>
   <ng-template #leavesitem>
    <div class="aucun  d-flex flex-column align-items-center bg-white p-3 mb-2 rounded">

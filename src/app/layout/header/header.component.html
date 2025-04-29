@@ -3,25 +3,25 @@
   <span class="slogon">Pointingworks</span>
 </div>
 <div class="btnsheraders">
-<div class="congee d-flex align-items-center">
-<!-- Affichage du bouton pour les congés approuvés -->
-<div *ngIf="conge.length > 0 && datauser.role === 'employer'" class="d-flex align-items-center">
-  <button *ngIf="approvedCount > 0" class="btn btn-primary" (click)="getleavesbystatus('approved')" type="button"
-  data-bs-toggle="offcanvas" data-bs-target="#offcanvasLeft1" aria-controls="offcanvasLeft1">
-    <i class="bi bi-calendar"></i>
-    <sup class="text-success">{{ approvedCount }}</sup>
-  </button>
-</div>
+  <div class="congee d-flex align-items-center">
+    <!-- Affichage du bouton pour les congés approuvés -->
+    <div *ngIf="conge.length > 0 && datauser.role === 'employer'" class="d-flex align-items-center">
+      <button *ngIf="approvedCount > 0" class="btn btn-primary" (click)="getleavesbystatus('approved')" type="button"
+        data-bs-toggle="offcanvas" data-bs-target="#offcanvasLeft1" aria-controls="offcanvasLeft1">
+        <i class="bi bi-calendar"></i>
+        <sup class="text-success">{{ approvedCount }}</sup>
+      </button>
+    </div>
 
-<!-- Affichage du bouton pour les congés en attente -->
-<div *ngIf="conge.length > 0 && datauser.role === 'employer'" class="d-flex align-items-center">
-  <button *ngIf="pendingCount > 0" class="btn btn-primary" (click)="getleavesbystatus('pending')" type="button"
-  data-bs-toggle="offcanvas" data-bs-target="#offcanvasLeft1" aria-controls="offcanvasLeft1">
-    <i class="bi bi-calendar"></i>
-    <sup class="text-warning">{{ pendingCount }}</sup>
-  </button>
-</div>
-</div>
+    <!-- Affichage du bouton pour les congés en attente -->
+    <div *ngIf="conge.length > 0 && datauser.role === 'employer'" class="d-flex align-items-center">
+      <button *ngIf="pendingCount > 0" class="btn btn-primary" (click)="getleavesbystatus('pending')" type="button"
+        data-bs-toggle="offcanvas" data-bs-target="#offcanvasLeft1" aria-controls="offcanvasLeft1">
+        <i class="bi bi-calendar"></i>
+        <sup class="text-warning">{{ pendingCount }}</sup>
+      </button>
+    </div>
+  </div>
   <button class="btn btn-primary" [disabled]="!datauser.history" (click)="GetUserSByid()" type="button"
     data-bs-toggle="offcanvas" data-bs-target="#offcanvasLeft" aria-controls="offcanvasLeft">
     <i class="bi bi-bell"></i>
@@ -33,7 +33,7 @@
     <ng-container *ngIf="datauser.profile_image_url; else checkProfileImage">
       <img [src]="datauser.profile_image_url" alt="Image de profil" class="enteimg" />
     </ng-container>
-    
+
     <ng-template #checkProfileImage>
       <i class="bi bi-person-circle"></i>
     </ng-template>
@@ -83,31 +83,33 @@
 
 
       <!-- Affichage du dernier pointage -->
-<!-- Affichage du dernier pointage uniquement -->
-<div *ngIf="lastPointage">
-  <h3>Dernier Pointage</h3>
-  <p><strong>Heure d'arrivée :</strong> {{ lastPointage.arrival_date }}</p>
-  <p><strong>Heure de départ :</strong> {{ lastPointage.last_departure ? (lastPointage.last_departure | date:'HH:mm:ss') : 'Non encore parti' }}</p>
-  <p><strong>Localisation :</strong> {{ lastPointage.location || 'Non précisée' }}</p>
-</div>
+      <!-- Affichage du dernier pointage uniquement -->
+      <div *ngIf="lastPointage">
+        <h3>Dernier Pointage</h3>
+        <p><strong>Heure d'arrivée :</strong> {{ lastPointage.arrival_date }}</p>
+        <p><strong>Heure de départ :</strong> {{ lastPointage.last_departure ? (lastPointage.last_departure |
+          date:'HH:mm:ss') : 'Non encore parti' }}</p>
+        <p><strong>Localisation :</strong> {{ lastPointage.location || 'Non précisée' }}</p>
+      </div>
 
-<!-- Si aucun pointage n'est trouvé -->
-<ng-template #noPointage>
-  <p>Aucun pointage disponible.</p>
-</ng-template>
+      <!-- Si aucun pointage n'est trouvé -->
+      <ng-template #noPointage>
+        <p>Aucun pointage disponible.</p>
+      </ng-template>
 
-<!-- Ajout du pointage du jour actuel -->
-<div class="today-pointage">
-  <h3>Pointage du Jour</h3>
-  <div *ngFor="let item of todaySchedule?.pointages">
-    <p><strong>Heure d'arrivée :</strong> {{ item.arrival_date || 'Non pointé' }}</p>
-    <p><strong>Heure de départ :</strong> {{ item.last_departure ? (item.last_departure  | date:'HH:mm:ss') : 'Non encore parti' }}</p>
-    <p><strong>Localisation :</strong> {{ item.location || 'Non précisée' }}</p>
-  </div>
-  <div *ngIf="!todaySchedule">
-    <p>Aucun pointage pour aujourd'hui.</p>
-  </div>
-</div>
+      <!-- Ajout du pointage du jour actuel -->
+      <div class="today-pointage">
+        <h3>Pointage du Jour</h3>
+        <div *ngFor="let item of todaySchedule?.pointages">
+          <p><strong>Heure d'arrivée :</strong> {{ item.arrival_date || 'Non pointé' }}</p>
+          <p><strong>Heure de départ :</strong> {{ item.last_departure ? (item.last_departure | date:'HH:mm:ss') : 'Non
+            encore parti' }}</p>
+          <p><strong>Localisation :</strong> {{ item.location || 'Non précisée' }}</p>
+        </div>
+        <div *ngIf="!todaySchedule">
+          <p>Aucun pointage pour aujourd'hui.</p>
+        </div>
+      </div>
 
     </div>
   </div>
@@ -122,55 +124,53 @@
     <!-- Affichage de la liste des congés filtrés selon le statut -->
     <div *ngIf="congeuser.length > 0; else noLeavesMessage">
       <div *ngFor="let leave of congeuser; let i = index">
-  
+
         <div class="accordion" id="accordionExample">
           <div class="accordion-item">
             <h2 class="accordion-header" id="heading{{i}}">
-              <button class="accordion-button" 
-                [ngClass]="{
+              <button class="accordion-button" [ngClass]="{
                   'bg-success': leave.status === 'approved',
                   'bg-warning': leave.status === 'pending',
                   'bg-danger': leave.status === 'rejected'
-                }"
-                type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="false" [attr.aria-controls]="'collapse' + i">
-                <span class="text-white text-capitalize	">{{ i }}  -  {{ leave.status }}</span> 
+                }" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i"
+                aria-expanded="false" [attr.aria-controls]="'collapse' + i">
+                <span class="text-white text-capitalize	">{{ i }} - {{ leave.status }}</span>
               </button>
             </h2>
             <!-- Ajout de la classe 'show' pour le premier élément -->
-            <div [id]="'collapse' + i" class="accordion-collapse collapse" 
-                 [class.show]="i === 0" 
-                 [attr.data-bs-parent]="'#accordionExample'">
+            <div [id]="'collapse' + i" class="accordion-collapse collapse" [class.show]="i === 0"
+              [attr.data-bs-parent]="'#accordionExample'">
               <div class="accordion-body">
                 <div class="leave-item">
                   <h3>Demande de congé en état {{ leave.status }}</h3>
-                  <p>Madame/Monsieur <b>{{ datauser.name }}</b>,<br>
-                     Je me permets de vous adresser cette demande de congé pour la période allant du <b>{{ leave.start_date | date:'dd/MM/yyyy' }} au {{ leave.end_date | date:'dd/MM/yyyy' }}.</b>
-                     Durant cette période, je souhaiterais m'absenter pour des raisons <b>{{ leave.reason }}.</b>
-                     <br>
-                     Je reste à votre disposition pour toute information complémentaire et pour organiser la reprise de mes tâches en votre absence.
-                     <br>
-                     Dans l’attente de votre retour, je vous remercie par avance pour votre compréhension.
-                     <br>
-                     Cordialement,<br>
-                     [Votre prénom et nom]<br>
-                     [Votre poste]
+                  <div *ngFor="let item of useradmin ">
+                    <p *ngIf="item.role === 'administrator' "> Madame/Monsieur <b>{{ item.name }}</b></p>
+                  </div>
+                  <p> Je me permets de vous adresser cette demande de congé pour la période allant du <b>{{
+                      leave.start_date | date:'dd/MM/yyyy' }} au {{ leave.end_date | date:'dd/MM/yyyy' }}.</b>
+                    Durant cette période, je souhaiterais m'absenter pour des raisons <b>{{ leave.reason }}.</b>
+                    <br>
+                    Je reste à votre disposition pour toute information complémentaire et pour organiser la reprise de
+                    mes tâches en votre absence.
+                    <br>
+                    Dans l’attente de votre retour, je vous remercie par avance pour votre compréhension.
+                    <br>
+                    Cordialement,<br>
+                    <b> {{ datauser.name }}<br>
+                      {{ datauser.role }}</b>
                   </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-  
+
       </div>
     </div>
-  
+
     <ng-template #noLeavesMessage>
       <p>Aucun congé trouvé pour ce statut.</p>
     </ng-template>
   </div>
-  
+
 </div>
-
-
-
-    

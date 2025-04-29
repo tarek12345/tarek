@@ -21,7 +21,9 @@ export class LeavesComponent implements OnInit {
   currentUserRole: string = 'administrator'; // or 'employer'
   currentUserId: number = 1;
   user: any;
-
+  searchTerm: string = '';
+  currentPage: number = 1;
+  itemsPerPage: number = 8;
   constructor(private api: ApiService, private userService: UserService,private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
@@ -64,7 +66,7 @@ export class LeavesComponent implements OnInit {
         this.reason = '';
         this.replacant = null;
       });
-      this.refreshComponent() 
+      // this.refreshComponent() 
     }
   }
   
@@ -106,7 +108,7 @@ export class LeavesComponent implements OnInit {
         }
       });
     }
-    this.refreshComponent()
+
   }
   editLeave(leave: any): void {
     this.selected = {
@@ -116,7 +118,7 @@ export class LeavesComponent implements OnInit {
     this.reason = leave.reason;
     this.replacant = leave.replacant?.id ?? null;
     this.editingLeaveId = leave.id;
-    this.refreshComponent()
+  
   }
   resetForm(): void {
     this.selected = null;
@@ -127,8 +129,56 @@ export class LeavesComponent implements OnInit {
 
   rejectLeave(id: number): void {
     this.api.rejectLeave(id).subscribe(() => {
-      this.fetchLeaves(); // Reload leaves after deleting
-      this.refreshComponent()
+      this.fetchLeaves(); // Reload leaves after rejecting
+      this.refreshComponent();
     });
   }
+
+
+  // Getter pour filtrer et paginer
+  get filteredLeaves(): any[] {
+    let filtered = this.leaves;
+  
+    if (this.searchTerm.trim() !== '') {
+      if (this.currentUserRole === 'administrator') {
+        filtered = this.leaves.filter((leave) =>
+          leave.creator?.name?.toLowerCase().includes(this.searchTerm.toLowerCase())
+        );
+      } else {
+        // Tu peux aussi filtrer par raison, statut, ou remplaçant
+        filtered = this.leaves.filter((leave) =>
+          leave.reason?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+          leave.status?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+          leave.replacant?.name?.toLowerCase().includes(this.searchTerm.toLowerCase())
+        );
+      }
+    }
+  
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    return filtered.slice(start, start + this.itemsPerPage);
+  }
+  get totalPages(): number[] {
+    const totalItems = this.totalFilteredLeavesCount;
+    const totalPages = Math.ceil(totalItems / this.itemsPerPage);
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+  get totalFilteredLeavesCount(): number {
+    if (this.searchTerm.trim() === '') {
+      return this.leaves.length;
+    }
+  
+    if (this.currentUserRole === 'administrator') {
+      return this.leaves.filter((leave) =>
+        leave.creator?.name?.toLowerCase().includes(this.searchTerm.toLowerCase())
+      ).length;
+    } else {
+      return this.leaves.filter((leave) =>
+        leave.reason?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        leave.status?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        leave.replacant?.name?.toLowerCase().includes(this.searchTerm.toLowerCase())
+      ).length;
+    }
+  }
+  
+  
 }

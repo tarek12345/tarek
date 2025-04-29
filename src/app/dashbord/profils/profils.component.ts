@@ -171,11 +171,6 @@ openPopupEdit(day: any, user: any) {
   this.cdr.detectChanges();
 }
 
-
-
-  // itemdate(user: any){
-  //   this.selectedUserpointage =   user.history
-  // }
   closePopupEdit() {
     this.displayStylePointage = "none"; 
   }

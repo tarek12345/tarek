@@ -133,7 +133,7 @@ export class ApiService {
   }
 
   downloadMonthlyReport(selectedMonth: string): Observable<Blob> {
-    const url = `${this.apiUrl}export-csv?month=${selectedMonth}`;
+    const url = `${this.apiUrl}/export-csv?month=${selectedMonth}`;
     return this.http.get(url, { responseType: 'blob' });
   }
   

@@ -13,6 +13,8 @@ import { format, startOfWeek, endOfWeek, getWeek, addDays, getMonth } from 'date
 })
 export class HeaderComponent implements OnInit {
   @Input() datauser: any;
+  @Input() useradmin: any[] = [];
+  
   @Input() conge: any[] = [];
   congeuser : any[] = [];
   approvedCount: number = 0;  // Nombre de congés approuvés
@@ -33,19 +35,26 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+ 
     
     this.GetUserSByid()
     this.refreshComponent()
   }
    // Cette méthode est appelée à chaque fois que 'conge' change
    ngOnChanges(changes: SimpleChanges): void {
-    if (changes['conge']) {
+    if (changes['conge'] || changes['useradmin']) {
       this.countStatuses();  // Recompte les statuts dès que la liste de congés change
+      this.detaileuseradmin();
     }
   }
   refreshComponent() {
     // Forcer Angular à vérifier les changements
     this.cdr.detectChanges();
+  }
+  detaileuseradmin(): void {
+   this.useradmin.filter(data=>{
+    console.log('-------datadata-----',data);
+   })
   }
   countStatuses(): void {
     // Filtrer les congés approuvés

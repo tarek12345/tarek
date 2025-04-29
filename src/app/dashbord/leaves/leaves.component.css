@@ -8,3 +8,7 @@
     font-weight: bold;
     font-size: 16px;
 }
+.table-custom-radius {
+    border-radius: 12px;
+    overflow: hidden; /* Important pour masquer les débordements */
+  }
