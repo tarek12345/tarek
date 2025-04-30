@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-
+import { catchError } from 'rxjs/operators';
 // Interface pour les données d'un utilisateur
 interface Employe {
   name: string;
@@ -179,5 +179,46 @@ export class ApiService {
     return this.http.post(`${this.apiUrl}/leaves/${id}/reject`, {});
   }
   
-  
+   /* message chat  */
+
+
+// Fonction pour envoyer un message
+  // Fonction pour envoyer un message
+  sendMessage(message: string, receiverId: number): Observable<any> {
+    const userToken = localStorage.getItem('auth_token');  // Récupère le token d'authentification de l'utilisateur, si disponible.
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${userToken}`, // Ajoute le token d'authentification dans les en-têtes de la requête
+      'Content-Type': 'application/json',
+    });
+
+    return this.http
+      .post(`${this.apiUrl}/messages`, { message, receiver_id: receiverId }, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Erreur lors de l\'envoi du message', error);
+          throw error;
+        })
+      );
+  }
+
+  // Fonction pour récupérer les messages d'un utilisateur
+  getMessages(receiverId: number): Observable<any> {
+    const userToken = localStorage.getItem('auth_token');  // Récupère le token d'authentification de l'utilisateur.
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${userToken}`, // Ajoute le token d'authentification dans les en-têtes de la requête
+      'Content-Type': 'application/json',
+    });
+
+    return this.http
+      .get(`${this.apiUrl}/messages/${receiverId}`, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Erreur lors de la récupération des messages', error);
+          throw error;
+        })
+      );
+  }
+
 }

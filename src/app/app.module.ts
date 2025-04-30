@@ -39,6 +39,7 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -57,6 +58,7 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
     ChartComponent,
     ChartCircleComponent,
     LeavesComponent,
+  
 
   ],
   imports: [

@@ -27,6 +27,7 @@
     "crypto-js": "^4.2.0",
     "date-fns": "^4.1.0",
     "face-api.js": "^0.22.2",
+    "laravel-echo": "^1.19.0",
     "leaflet": "^1.9.4",
     "moment": "^2.30.1",
     "ng2-charts": "^3.1.2",
@@ -34,6 +35,7 @@
     "ngx-csv": "^0.3.2",
     "ngx-daterangepicker-material": "^6.0.4",
     "ngx-toastr": "^19.0.0",
+    "pusher-js": "^8.4.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
@@ -44,6 +46,7 @@
     "@angular/compiler-cli": "^19.1.0",
     "@types/crypto-js": "^4.2.2",
     "@types/jasmine": "~5.1.0",
+    "@types/pusher-js": "^4.2.2",
     "jasmine-core": "~5.5.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",

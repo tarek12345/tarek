@@ -9,7 +9,7 @@
     <thead>
       <tr>
         <th scope="col">Mois</th>
-        <th scope="col">Semaine</th>
+        <!-- <th scope="col">Semaine</th> -->
         <th scope="col">Jour</th>
         <th scope="col">Heures</th>
         
@@ -18,7 +18,7 @@
     <tbody *ngIf="workDays.length > 0; else noData">
       <tr *ngFor="let day of workDays" [ngClass]="{'d-none': day.day === 'Samedi' || day.day === 'Dimanche'}">
         <td>{{ day.month }}</td>
-        <td>{{ day.week }}</td>
+        <!-- <td>{{ day.week }}</td> -->
         <td>{{ day.day }}</td>
         <td>
           <span [ngClass]="{'text-danger': day.hours !== '08:00:00' && day.hours === '00:00:00'}">
