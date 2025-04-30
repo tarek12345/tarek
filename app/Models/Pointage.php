@@ -17,10 +17,4 @@ class Pointage extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-
-public function leaves()
-{
-    return $this->hasMany(Leave::class);
-}
 }

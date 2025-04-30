@@ -51,11 +51,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/historique/{userId}/{date}', [PointageController::class, 'getHistoryByDate']);
     Route::get('/export-csv', [AuthController::class, 'exportUserWorkDays']);
     Route::get('/search-users', [AuthController::class, 'searchUsers']);
-        // web.php (routes)
-        Route::get('/leaves', [LeaveController::class, 'index']);
-        Route::post('/leaves', [LeaveController::class, 'store']);
-        Route::put('/leaves/{id}', [LeaveController::class, 'update']);
-        Route::delete('/leaves/{id}', [LeaveController::class, 'destroy']);
-        Route::post('/leaves/{id}/approve', [LeaveController::class, 'approve']);
-        Route::get('/leavesuser/{userId}', [LeaveController::class, 'leavesUser']);
+
+    Route::post('/leaves', [LeaveController::class, 'addLeave']); // Création d'un congé par un employé
+    Route::post('/leaves/{id}/approve', [LeaveController::class, 'approve']); // Approuver un congé
+    Route::post('/leaves/{id}/reject', [LeaveController::class, 'reject']); // Rejeter un congé
+    Route::get('/leavesuser/{userId}', [LeaveController::class, 'leavesUser']);
+        Route::delete('/leaves/{id}', [LeaveController::class, 'destroy']); // Supprimer un congé
+    Route::put('/leaves/{id}', [LeaveController::class, 'update']); // Mettre à jour un congé
 });
