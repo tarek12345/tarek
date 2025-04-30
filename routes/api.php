@@ -50,6 +50,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users/{userId}/worked-hours', [PointageController::class, 'getWorkedHours']);
     Route::get('/historique/{userId}/{date}', [PointageController::class, 'getHistoryByDate']);
     Route::get('/export-csv', [AuthController::class, 'exportUserWorkDays']);
+<<<<<<< HEAD
     Route::get('/search-users', [AuthController::class, 'searchUsers']);
 
     Route::post('/leaves', [LeaveController::class, 'addLeave']); // Création d'un congé par un employé
@@ -58,4 +59,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/leavesuser/{userId}', [LeaveController::class, 'leavesUser']);
         Route::delete('/leaves/{id}', [LeaveController::class, 'destroy']); // Supprimer un congé
     Route::put('/leaves/{id}', [LeaveController::class, 'update']); // Mettre à jour un congé
+=======
+
+>>>>>>> 700800c34e12c0d9541ead2da0e289de81a8df4d
 });
