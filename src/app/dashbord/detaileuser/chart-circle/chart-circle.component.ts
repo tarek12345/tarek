@@ -12,16 +12,15 @@ export class ChartCircleComponent implements OnChanges, AfterViewInit {
   @Input() chartusers: any;
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
-  public totalSecondsWorked: number = 0;
   public totaldayWorked: number = 0;
-  public targetSeconds: number = 22 * 7.25 * 3600; // 22 jours × 7h15
+  public totalTargetDays: number = 22;
 
   public doughnutChartLabels: string[] = ['Jours travaillés', 'Jours restants'];
   public doughnutChartData: ChartData<'doughnut'> = {
     labels: this.doughnutChartLabels,
     datasets: [
       {
-        data: [0, 0],
+        data: [0, 22],
         backgroundColor: ['#5358D9', '#E0E0E0'],
         hoverBackgroundColor: ['#3F43B5', '#C0C0C0'],
         borderWidth: 1
@@ -44,50 +43,31 @@ export class ChartCircleComponent implements OnChanges, AfterViewInit {
       }
     }
   };
-
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['chartusers']) {
-      const workedDays = this.chartusers?.user?.history?.length || 0;
-      const remainingDays = Math.max(22 - workedDays, 0);
-
-      this.doughnutChartData = {
-        labels: this.doughnutChartLabels,
-        datasets: [
-          {
-            data: [workedDays, remainingDays],
-            backgroundColor: ['#5358D9', '#E0E0E0'],
-            hoverBackgroundColor: ['#3F43B5', '#C0C0C0'],
-            borderWidth: 1
-          }
-        ]
-      };
-
-      // Calcul du total des heures travaillées en secondes
-      if (this.chartusers?.user?.history) {
-        const totalSeconds = remainingDays
-    
-        this.totalSecondsWorked = totalSeconds;
-        this.totaldayWorked = workedDays
-      } else {
-        this.totalSecondsWorked = 0;
-      }
-
-      // Mise à jour du chart
-      if (this.chart) {
-        this.chart.update();
-      }
-    }
+    // console.log('chartusers reçu :', this.chartusers); // 👈 Ajout ici
+  
+    const history = this.chartusers?.user?.history || this.chartusers?.history || [];
+    const workedDays = history.length;
+    const remainingDays = Math.max(this.totalTargetDays - workedDays, 0);
+  
+    this.totaldayWorked = workedDays;
+  
+    this.doughnutChartData = {
+      labels: this.doughnutChartLabels,
+      datasets: [
+        {
+          data: [workedDays, remainingDays],
+          backgroundColor: ['#5358D9', '#E0E0E0'],
+          hoverBackgroundColor: ['#3F43B5', '#C0C0C0'],
+          borderWidth: 1
+        }
+      ]
+    };
+  
+    if (this.chart) this.chart.update();
   }
-
+  
   ngAfterViewInit(): void {
-    if (this.chart) {
-      this.chart.update();
-    }
-  }
-
-  private convertToSeconds(timeStr: string): number {
-    if (!timeStr || timeStr === '00:00:00') return 0;
-    const [h, m, s] = timeStr.split(':').map(Number);
-    return h * 3600 + m * 60 + s;
+    if (this.chart) this.chart.update();
   }
 }

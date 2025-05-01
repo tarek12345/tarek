@@ -43,48 +43,6 @@ export class ChartComponent implements OnChanges {
 
   public barChartType: ChartType = 'bar';
 
-  // public barChartOptions: ChartOptions = {
-  //   responsive: true,
-  //   scales: {
-  //     x: {
-  //       title: {
-  //         display: true,
-  //         text: 'Jour & Date'
-  //       }
-  //     },
-  //     y: {
-  //       title: {
-  //         display: true,
-  //         text: 'Nombre d\'heures'
-  //       },
-  //       beginAtZero: true,
-  //       ticks: {
-  //         stepSize: 20, // chaque tick représente 20 minutes
-  //         callback: function(value) {
-  //           const hours = Math.floor(+value / 60);
-  //           return `${hours}h`;
-  //         }
-  //       }
-  //     }
-  //   },
-  //   plugins: {
-  //     tooltip: {
-  //       callbacks: {
-  //         label: (tooltipItem: any) => {
-  //           const totalSeconds = tooltipItem.raw;
-  //           const hours = Math.floor(totalSeconds / 3600);
-  //           const minutes = Math.floor((totalSeconds % 3600) / 60);
-  //           const seconds = totalSeconds % 60;
-      
-  //           const pad = (n: number) => String(n).padStart(2, '0');
-  //           return `Durée: ${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
-  //         }
-  //       }
-  //     }
-      
-      
-  //   }
-  // };
   public barChartOptions: ChartOptions = {
     responsive: true,
     scales: {

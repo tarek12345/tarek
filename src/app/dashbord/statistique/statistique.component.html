@@ -85,7 +85,7 @@
                 </ul>
                 <div class="tab-content" id="pills-tabContent">
                   <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
-            
+                   
                     <div class="chats">
                       <ng-container *ngIf="item?.history?.length > 0; else chats">
                         <app-chart *ngIf="item?.history?.length > 0" [chartusers]="item"></app-chart>
@@ -100,10 +100,11 @@
                   </div>
                   <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
                     <div class="chats">
-                      <ng-container *ngIf="userdetaile?.user?.history?.length > 0; else chats">
-                        <app-chart-circle *ngIf="userdetaile?.user?.history?.length > 0" [chartusers]="userdetaile"></app-chart-circle>
+                      
+                      <ng-container *ngIf="item?.history?.length > 0; else chatscercle">
+                        <app-chart-circle *ngIf="item?.history?.length > 0" [chartusers]="item"></app-chart-circle>
                       </ng-container>
-                      <ng-template #chats>
+                      <ng-template #chatscercle>
                         <div class="chats d-flex justify-content-center align-items-center flex-column">
                           <p><b>Pas de statistique</b></p>
                           <img src="../../../assets/credit-score.gif" alt="location" class="icons w-25" />

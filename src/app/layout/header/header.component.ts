@@ -53,7 +53,7 @@ export class HeaderComponent implements OnInit {
   }
   detaileuseradmin(): void {
    this.useradmin.filter(data=>{
-    console.log('-------datadata-----',data);
+    // console.log('-------datadata-----',data);
    })
   }
   countStatuses(): void {
