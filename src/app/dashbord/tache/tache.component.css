@@ -21,3 +21,98 @@ img.enteimg {
     object-fit: cover;
     border-radius: 50%;
 }
+.tackheader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #f8f9fa;
+  }
+  
+  .tackheader-1 p {
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+  
+  .tackheader-left {
+    display: flex;
+    align-items: center;
+  }
+  
+  .listuser {
+    margin-right: 10px;
+  }
+  
+  .enteimg {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .more-users button {
+    font-size: 1.1em;
+    color: #007bff;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+  }
+  
+  .tache-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+  }
+  
+  .tache-column {
+    width: 30%;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .tache-list {
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    min-height: 300px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .tache-card {
+    background-color: #ffffff;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .tache-card-content h5 {
+    margin: 0;
+    font-size: 1.1em;
+  }
+  
+  .tache-card-content p {
+    font-size: 0.9em;
+    color: #555;
+  }
+  
+  .modal-body .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+  }
+  sup.addtt {
+    top: -51px;
+    left: 27px;
+    background: #5358d9;
+    color: #fff;
+    width: 17px;
+    height: 17px;
+    border-radius: 50px;
+    padding: 3px;
+    display: block;
+}

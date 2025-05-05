@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders ,HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -27,6 +27,19 @@ interface Employe {
     [key: string]: any;
   };
 }
+export type Statut = 'todo' | 'in_progress' | 'done';
+
+export interface Tache {
+  id?: number;
+  titre: string;
+  description: string;
+  statut: Statut;   // <- ici
+  user_id: number;
+  ordre: number;
+  created_at?: string;
+  updated_at?: string;
+}
+
 export interface PaginatedUsers {
   current_page: number;
   last_page: number;
@@ -222,5 +235,29 @@ export class ApiService {
         })
       );
   }
+
+
+
+  /* task service */
+  // Méthode pour récupérer les tâches
+  getTaches(userId?: number): Observable<Tache[]> {
+    let params = new HttpParams();
+    if (userId) {
+      params = params.set('user_id', userId.toString());
+    }
+    return this.http.get<Tache[]>(`${this.apiUrl}/taches`, { params });
+  }
+
+  // Méthode pour créer une tâche
+  createTache(tache: Tache): Observable<Tache> {
+    return this.http.post<Tache>(`${this.apiUrl}/taches`, tache);
+  }
+
+  // Méthode pour mettre à jour une tâche
+  updateTache(id: number, tache: Partial<Tache>): Observable<Tache> {
+    console.log('Données envoyées pour la mise à jour:', tache); // Vérification des données envoyées
+    return this.http.put<Tache>(`${this.apiUrl}/taches/${id}`, tache);
+  }
+  
 
 }

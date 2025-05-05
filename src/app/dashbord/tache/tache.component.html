@@ -1,53 +1,122 @@
+<!-- En-tête -->
 <div class="tackheader">
-    <div class="tackheader-1">
-     <p>listes des  tàches </p>
+  <div class="tackheader-1">
+    <p>Liste des tâches</p>
+  </div>
+
+  <div class="tackheader-left">
+    <div class="listuser" *ngFor="let item of visibleUsers" (click)="selectUser(item)">
+      <div type="button">
+        <ng-container *ngIf="item.profile_image_url; else defaultProfile">
+          <img [src]="item.profile_image_url" alt="Image de profil" class="enteimg" />
+        </ng-container>
+        <ng-template #defaultProfile>
+          <i class="bi bi-person-circle"></i>
+        </ng-template>
+        <sup class="addtt">
+          <i class="bi bi-plus" data-bs-toggle="tooltip" title="Ajouter tâche"></i>
+        </sup>
+      </div>
     </div>
-    <div class="tackheader-left">
-        <div class="listuser" *ngFor="let item of visibleUsers">
-            <div type="button" (click)="openPopup(item)">
-              <ng-container *ngIf="item.profile_image_url; else checkProfileImage">
-                <img [src]="item.profile_image_url" alt="Image de profil" class="enteimg" />
-              </ng-container>
-              <ng-template #checkProfileImage>
-                <i class="bi bi-person-circle"></i>
-              </ng-template>
-            </div>
-          </div>
-          
-          <!-- Bouton pour afficher les utilisateurs restants -->
-          <div *ngIf="!showAllUsers && hiddenUserCount > 0" class="more-users">
-            <button class="btn btn-link" (click)="toggleShowAllUsers()">
-              +{{ hiddenUserCount }}
-            </button>
-          </div>
-          
-<!-- (click)="openPopup(item)" -->
-<div class="tackheader-1"  >
-    <button type="button" class="btn btn-success"
-    data-bs-toggle="tooltip"
-    data-bs-placement="top"
-    title="Ajouter  tache"
-    > 
-        <i class="bi bi-patch-plus"></i>
-    </button>
 
-</div>
-</div>
+    <!-- Afficher les utilisateurs restants -->
+    <div *ngIf="!showAllUsers && hiddenUserCount > 0" class="more-users">
+      <button class="btn btn-link" (click)="toggleShowAllUsers()">
+        +{{ hiddenUserCount }}
+      </button>
+    </div>
+  </div>
 </div>
 
-<!-- Modal pour afficher les détails de l'utilisateur -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStyle}">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Détails de {{ selectedUser?.name }}</h4>
-        </div>
-        <div class="modal-body">
+<!-- Colonnes de tâches -->
+<div class="tache-container">
+  <div class="tache-column" *ngFor="let statut of statutKeys">
+    <h3>{{ statut | uppercase }}</h3>
   
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-dark" (click)="closePopup()">Fermer</button>
+    <div
+      cdkDropList
+      [id]="statut"
+      [cdkDropListData]="tachesByStatus[statut]"
+      (cdkDropListDropped)="drop($event, statut)"
+      [cdkDropListConnectedTo]="statutKeys"
+      class="tache-list"
+    >
+      <div
+        class="tache-card"
+        *ngFor="let tache of tachesByStatus[statut]"
+        cdkDrag
+        [cdkDragData]="tache"
+        (click)="selectTache(tache)"
+      >
+        <div *ngIf="tache">
+          <strong>{{ tache.titre }}</strong>
+          <p>{{ tache.description }}</p>
         </div>
+        <div *ngIf="!tache || !tache.titre">Aucune tâche</div>
       </div>
     </div>
   </div>
+  
+</div>
+
+<!-- Modal utilisateur -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStyle}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Détails de {{ selectedUser?.name || 'Utilisateur inconnu' }}</h4>
+        <button type="button" class="btn-close" (click)="closePopup()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="user-info">
+          <p><strong>Nom : </strong>{{ selectedUser?.name || '-' }}</p>
+          <p><strong>Email : </strong>{{ selectedUser?.email || '-' }}</p>
+          <p><strong>Rôle : </strong>{{ selectedUser?.role || '-' }}</p>
+          <p><strong>Tâches assignées : </strong>{{ selectedUser?.tasksCount || 0 }}</p>
+        </div>
+
+        <!-- Formulaire ajout tâche -->
+        <form (ngSubmit)="addTask()" *ngIf="selectedUser">
+          <div class="form-group">
+            <label for="taskTitle">Titre</label>
+            <input type="text" id="taskTitle" class="form-control" [(ngModel)]="newTask.titre" name="titre" required />
+          </div>
+          <div class="form-group">
+            <label for="taskDescription">Description</label>
+            <textarea id="taskDescription" class="form-control" [(ngModel)]="newTask.description" name="description"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="taskStatut">Statut</label>
+            <select id="taskStatut" class="form-control" [(ngModel)]="newTask.statut" name="statut">
+              <option value="todo">À faire</option>
+              <option value="in_progress">En cours</option>
+              <option value="done">Terminé</option>
+            </select>
+          </div>
+          <div class="form-group d-flex justify-content-end gap-3 mt-3">
+            <button type="submit" class="btn btn-success">Ajouter</button>
+            <button type="button" class="btn btn-danger" (click)="reset()">Annuler</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal tâche (si tu veux afficher les détails d'une tâche au clic) -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStyleTache}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Détails de la tâche</h4>
+        <button type="button" class="btn-close" (click)="closePopupTache()"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Titre :</strong> {{ selectedTache?.titre }}</p>
+        <p><strong>Description :</strong> {{ selectedTache?.description }}</p>
+        <p><strong>Statut :</strong> {{ selectedTache?.statut }}</p>
+        <p><strong>Assignée à :</strong> {{ selectedTache?.user_id }}</p>
+      </div>
+    </div>
+  </div>
+</div>

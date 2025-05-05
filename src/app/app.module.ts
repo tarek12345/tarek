@@ -35,6 +35,7 @@ import { ChartCircleComponent } from './dashbord/detaileuser/chart-circle/chart-
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { TacheComponent } from './dashbord/tache/tache.component';
 
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 
 
@@ -76,6 +77,7 @@ import { TacheComponent } from './dashbord/tache/tache.component';
     ToastrModule.forRoot(), // ToastrModule ajouté
     NgxChartsModule,
     NgxDaterangepickerMd.forRoot(),
+    DragDropModule
     
 ],
   providers: [

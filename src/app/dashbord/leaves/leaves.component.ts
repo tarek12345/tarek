@@ -46,7 +46,7 @@ export class LeavesComponent implements OnInit {
   }
 
   fetchUsers(): void {
-    this.api.GetUsers().subscribe((data) => {
+    this.api.getUsersnotpagination().subscribe((data) => {
       this.users = data.users;
     });
     
