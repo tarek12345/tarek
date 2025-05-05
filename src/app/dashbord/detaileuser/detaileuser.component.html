@@ -95,7 +95,7 @@
         <ng-container *ngIf="item.profile_image_url; else defaultImage">
           <div class="statprof">
             <img [src]="item.profile_image_url" alt="Image de profil" class="enteimg" />
-            <sup [class]="item.status === 'au bureau' ? 'text-success' : 'text-danger'">
+            <sup [class]="item.status === 'au_bureau' ? 'text-success' : 'text-danger'">
               <i class="bi bi-circle-fill"></i>
             </sup>
           </div>

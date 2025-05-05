@@ -72,4 +72,5 @@ export class UserService {
     localStorage.removeItem('totalTime');
     localStorage.removeItem('status');
   }
+
 }

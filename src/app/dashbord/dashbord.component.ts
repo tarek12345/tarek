@@ -28,7 +28,7 @@ export class DashbordComponent implements OnInit {
   totalTime: number = 0;  // Temps total en secondes
   interval: any;  // Intervalle pour le compteur
   counter: string = '00:00:00';  // Compteur initialisé à 00:00:00
-
+usernotpagination :any
   constructor(
     private apiService: ApiService,
     private userService: UserService,
@@ -60,6 +60,9 @@ export class DashbordComponent implements OnInit {
         this.leavesuser = data;  // Sauvegarde les congés récupérés dans leavesuser
       });
     }
+    this.apiService.getUsersnotpagination().subscribe(data => {
+      this.usernotpagination = data.users;
+    });
   }
   leavesuser: any[] = [];  // Liste des congés
 

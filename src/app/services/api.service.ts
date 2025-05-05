@@ -47,7 +47,9 @@ export class ApiService {
     return this.http.get<PaginatedUsers>(`${this.apiUrl}/users?page=${page}&per_page=${perPage}`);
   }
   
-
+  getUsersnotpagination() {
+    return this.http.get<any>(`${this.apiUrl}/usersall`);
+  }
 
   // Récupérer un utilisateur par ID
   GetUserServiceByid(id: number): Observable<any> {

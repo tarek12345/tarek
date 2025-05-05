@@ -33,6 +33,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ChartCircleComponent } from './dashbord/detaileuser/chart-circle/chart-circle.component';
 
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+import { TacheComponent } from './dashbord/tache/tache.component';
 
 
 
@@ -58,6 +59,7 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
     ChartComponent,
     ChartCircleComponent,
     LeavesComponent,
+    TacheComponent,
   
 
   ],

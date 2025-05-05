@@ -1,0 +1,23 @@
+.tackheader{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #f9f9f9;
+    position: relative;
+}
+.tackheader-left {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    gap: 5px;
+}
+img.enteimg {
+    width: 40px;
+    height: 40px;
+    -o-object-fit: cover;
+    object-fit: cover;
+    border-radius: 50%;
+}
