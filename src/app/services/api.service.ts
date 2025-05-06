@@ -258,6 +258,10 @@ export class ApiService {
     console.log('Données envoyées pour la mise à jour:', tache); // Vérification des données envoyées
     return this.http.put<Tache>(`${this.apiUrl}/taches/${id}`, tache);
   }
-  
-
+  deleteTache(id: number) {
+    return this.http.delete(`${this.apiUrl}/taches/${id}`);
+  }
+  updateTacheInfo(id: number, data: { titre?: string; description?: string }) {
+    return this.http.patch(`${this.apiUrl}/taches/${id}/info`, data);
+  }
 }

@@ -46,11 +46,22 @@
         *ngFor="let tache of tachesByStatus[statut]"
         cdkDrag
         [cdkDragData]="tache"
-        (click)="selectTache(tache)"
+        
       >
-        <div *ngIf="tache">
-          <strong>{{ tache.titre }}</strong>
-          <p>{{ tache.description }}</p>
+        <div *ngIf="tache" class="d-flex justify-content-between " >
+          <div >
+          <strong  class="cursor-pointer">{{ tache.titre }}  </strong>
+          </div>
+          <div class=" d-flex gap-3">
+            <button  class="btn btn-danger p-1"(click)="onDeleteTache(tache.id)">   
+              <i class="bi bi-trash"  data-bs-toggle="tooltip" title="Supprimer tâche"></i>
+            </button>
+            <button  class="btn  btn-warning p-1"(click)="selectTache(tache)" > 
+              <i class="bi bi-pencil-square" data-bs-toggle="tooltip" title="Edit tâche" ></i>
+            </button>
+          
+            </div>
+          <!-- <p>{{ tache.description }}</p> -->
         </div>
         <div *ngIf="!tache || !tache.titre">Aucune tâche</div>
       </div>
@@ -104,7 +115,7 @@
 </div>
 
 <!-- Modal tâche (si tu veux afficher les détails d'une tâche au clic) -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStyleTache}">
+<!-- <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStyleTache}">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -116,6 +127,52 @@
         <p><strong>Description :</strong> {{ selectedTache?.description }}</p>
         <p><strong>Statut :</strong> {{ selectedTache?.statut }}</p>
         <p><strong>Assignée à :</strong> {{ selectedTache?.user_id }}</p>
+      </div>
+    </div>
+  </div> 
+</div> -->
+<!-- Modal tâche (pour afficher et modifier les informations de la tâche) -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStyleTache}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Modifier la tâche</h4>
+        <button type="button" class="btn-close" (click)="closePopupTache()"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Affichage des informations de la tâche -->
+        <p><strong>Titre :</strong> {{ selectedTache?.titre }}</p>
+        <p><strong>Description :</strong> {{ selectedTache?.description }}</p>
+        <p><strong>Statut :</strong> {{ selectedTache?.statut }}</p>
+        <p><strong>Assignée à :</strong> {{ selectedTache?.user_id ? selectedTache?.user_id : 'Aucun utilisateur' }}</p>
+
+        <!-- Formulaire de modification -->
+        <form *ngIf="selectedTache" (ngSubmit)="updateTacheInfo()">
+          <div class="form-group">
+            <label for="taskTitle">Titre</label>
+            <input type="text" id="taskTitle" class="form-control" [(ngModel)]="selectedTache.titre" name="titre" required />
+          </div>
+        
+          <div class="form-group">
+            <label for="taskDescription">Description</label>
+            <ckeditor [(ngModel)]="selectedTache.description" name="description" required></ckeditor>
+          </div>
+        
+          <div class="form-group">
+            <label for="taskStatut">Statut</label>
+            <select id="taskStatut" class="form-control" [(ngModel)]="selectedTache.statut" name="statut">
+              <option value="todo">À faire</option>
+              <option value="in_progress">En cours</option>
+              <option value="done">Terminé</option>
+            </select>
+          </div>
+        
+          <div class="form-group d-flex justify-content-end gap-3 mt-3">
+            <button type="submit" class="btn btn-success">Mettre à jour</button>
+            <button type="button" class="btn btn-danger" (click)="closePopupTache()">Annuler</button>
+          </div>
+        </form>
+        
       </div>
     </div>
   </div>
