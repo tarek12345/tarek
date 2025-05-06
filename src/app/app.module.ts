@@ -36,6 +36,7 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { TacheComponent } from './dashbord/tache/tache.component';
 
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 
 
@@ -77,7 +78,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     ToastrModule.forRoot(), // ToastrModule ajouté
     NgxChartsModule,
     NgxDaterangepickerMd.forRoot(),
-    DragDropModule
+    DragDropModule,
+    CKEditorModule 
     
 ],
   providers: [

@@ -61,12 +61,12 @@ img.enteimg {
   .tache-container {
     display: flex;
     justify-content: space-between;
-    padding: 20px;
+    padding: 20px 3px;
   }
   
   .tache-column {
     width: 30%;
-    background-color: #f0f0f0;
+    background-color: rgb(240 240 240 / 70%);
     padding: 10px;
     border-radius: 5px;
   }

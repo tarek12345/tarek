@@ -167,4 +167,47 @@ export class TacheComponent implements OnInit {
     this.newTask = { titre: '', description: '', statut: 'todo', user_id: 0, ordre: 0 };
     this.closePopup();
   }
+  onDeleteTache(id: number | undefined) {
+    if (id === undefined) {
+      console.error('ID de la tâche est indéfini.');
+      return;
+    }
+  
+    if (confirm('Voulez-vous vraiment supprimer cette tâche ?')) {
+      this.apiService.deleteTache(id).subscribe({
+        next: (res) => {
+          console.log('Tâche supprimée avec succès', res);
+          this.toastr.success('Tâche supprimée avec succès');
+          this.loadTaches()
+          // Mettre à jour la liste des tâches ici
+        },
+        error: (err) => {
+          this.toastr.error('Erreur lors de supprimée  Tâche',err);        }
+      });
+    }
+  }
+updateTacheInfo(): void {
+  if (!this.selectedTache || !this.selectedTache.id) {
+    this.toastr.error("Aucune tâche sélectionnée");
+    return;
+  }
+
+  const data = {
+    titre: this.selectedTache.titre,
+    description: this.selectedTache.description
+  };
+
+  this.apiService.updateTacheInfo(this.selectedTache.id, data).subscribe({
+    next: (res) => {
+      this.toastr.success("Tâche mise à jour");
+      this.closePopupTache();
+      this.loadTaches();
+    },
+    error: (err) => {
+      this.toastr.error("Erreur lors de la mise à jour", err.message);
+    }
+  });
+}
+
+
 }
