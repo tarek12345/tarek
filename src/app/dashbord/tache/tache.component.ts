@@ -4,7 +4,7 @@ import { UserService } from '../../services/user-service.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-
+import "quill/dist/quill.core.css";
 @Component({
   selector: 'app-tache',
   templateUrl: './tache.component.html',
@@ -13,9 +13,14 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 })
 export class TacheComponent implements OnInit {
   @Input() userdetaile: any;
+ 
+  taches: Tache[] = []; // ✅ Déclaration correcte
+  selectedshowTache: Tache | null = null; // ✅ Typage explicite
+  newComment: { [taskId: number]: string } = {};
+
   displayStyle: string = "none";
   displayStyleTache: string = "none";
-
+  ShowStyleTache: string = "none";
   selectedUser: any = null;
   selectedTache: any = null;
   allusers: any[] = [];
@@ -118,7 +123,10 @@ export class TacheComponent implements OnInit {
     this.selectedUser = user || null;
     this.displayStyle = "block";
   }
-
+  openPopupshow(user: any): void {
+    this.selectedshowTache = user || null;
+    this.ShowStyleTache = "block";
+  }
   selectUser(user: any): void {
     this.selectedUser = user;
     this.displayStyle = "block";
@@ -136,7 +144,9 @@ export class TacheComponent implements OnInit {
   closePopupTache(): void {
     this.displayStyleTache = "none";
   }
-
+  closePopupshowTache(): void {
+    this.ShowStyleTache = "none";
+  }
   addTask(): void {
     if (!this.newTask.titre || !this.newTask.description) {
       this.toastr.error('Le titre et la description sont obligatoires');
@@ -162,11 +172,10 @@ export class TacheComponent implements OnInit {
       }
     );
   }
-
-  reset(): void {
-    this.newTask = { titre: '', description: '', statut: 'todo', user_id: 0, ordre: 0 };
-    this.closePopup();
-  }
+reset(): void {
+  this.newTask = { titre: '', description: '', statut: 'todo', user_id: 0, ordre: 0 };
+  this.closePopup();
+}
   onDeleteTache(id: number | undefined) {
     if (id === undefined) {
       console.error('ID de la tâche est indéfini.');
@@ -208,6 +217,46 @@ updateTacheInfo(): void {
     }
   });
 }
+sanitizeDescription(desc: string): string {
+  const div = document.createElement('div');
+  div.innerHTML = desc;
 
+  const images = div.querySelectorAll('img');
+  images.forEach(img => {
+    img.style.maxWidth = '100%';
+    img.style.width = '150px';
+    img.style.height = 'auto';
+  });
+
+  return div.innerHTML;
+}
+  ajouterCommentaire(tacheId: number): void {
+    const content = this.newComment[tacheId];
+    if (!content || content.trim() === '') return;
+
+    this.apiService.updateCommentaireTache(tacheId, content).subscribe(() => {
+      this.newComment[tacheId] = '';
+
+      // 🔄 Rafraîchir la tâche affichée si nécessaire
+      const tache = this.taches.find(t => t.id === tacheId);
+      if (tache) {
+        if (!tache.comments) tache.comments = [];
+        tache.comments.push({
+          id: Date.now(), // temporaire, en attendant un vrai ID du backend
+          content,
+          created_at: new Date().toISOString()
+        });
+      }
+
+      if (this.selectedshowTache?.id === tacheId) {
+        if (!this.selectedshowTache.comments) this.selectedshowTache.comments = [];
+        this.selectedshowTache.comments.push({
+          id: Date.now(),
+          content,
+          created_at: new Date().toISOString()
+        });
+      }
+    });
+  }
 
 }

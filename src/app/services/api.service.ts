@@ -38,6 +38,8 @@ export interface Tache {
   ordre: number;
   created_at?: string;
   updated_at?: string;
+    email?: string;
+  comments?: { id: number; content: string; created_at: string }[];
 }
 
 export interface PaginatedUsers {
@@ -264,4 +266,9 @@ export class ApiService {
   updateTacheInfo(id: number, data: { titre?: string; description?: string }) {
     return this.http.patch(`${this.apiUrl}/taches/${id}/info`, data);
   }
+updateCommentaireTache(tacheId: number, commentaire: string) {
+  return this.http.post(`${this.apiUrl}/taches/${tacheId}/commentaire`, { commentaire });
+}
+
+
 }

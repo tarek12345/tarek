@@ -59,10 +59,15 @@
             <button  class="btn  btn-warning p-1"(click)="selectTache(tache)" > 
               <i class="bi bi-pencil-square" data-bs-toggle="tooltip" title="Edit tâche" ></i>
             </button>
-          
+                   <button  class="btn  btn-warning p-1"(click)="openPopupshow(tache)" > 
+                  <i class="bi bi-display"  data-bs-toggle="tooltip" title="Affiche tâche" ></i>
+                   </button>
+         
             </div>
-          <!-- <p>{{ tache.description }}</p> -->
         </div>
+        <!-- <p>{{ tache.description }}</p> -->
+        <!-- <div class="description-content" [innerHTML]="tache.description"></div> -->
+
         <div *ngIf="!tache || !tache.titre">Aucune tâche</div>
       </div>
     </div>
@@ -94,7 +99,9 @@
           </div>
           <div class="form-group">
             <label for="taskDescription">Description</label>
-            <textarea id="taskDescription" class="form-control" [(ngModel)]="newTask.description" name="description"></textarea>
+            <!-- <textarea id="taskDescription" class="form-control" [(ngModel)]="newTask.description" name="description"></textarea> -->
+            <quill-editor [(ngModel)]="newTask.description" [ngModelOptions]="{standalone: true}"></quill-editor>
+
           </div>
           <div class="form-group">
             <label for="taskStatut">Statut</label>
@@ -113,24 +120,6 @@
     </div>
   </div>
 </div>
-
-<!-- Modal tâche (si tu veux afficher les détails d'une tâche au clic) -->
-<!-- <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStyleTache}">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Détails de la tâche</h4>
-        <button type="button" class="btn-close" (click)="closePopupTache()"></button>
-      </div>
-      <div class="modal-body">
-        <p><strong>Titre :</strong> {{ selectedTache?.titre }}</p>
-        <p><strong>Description :</strong> {{ selectedTache?.description }}</p>
-        <p><strong>Statut :</strong> {{ selectedTache?.statut }}</p>
-        <p><strong>Assignée à :</strong> {{ selectedTache?.user_id }}</p>
-      </div>
-    </div>
-  </div> 
-</div> -->
 <!-- Modal tâche (pour afficher et modifier les informations de la tâche) -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStyleTache}">
   <div class="modal-dialog" role="document">
@@ -142,31 +131,17 @@
       <div class="modal-body">
         <!-- Affichage des informations de la tâche -->
         <p><strong>Titre :</strong> {{ selectedTache?.titre }}</p>
-        <p><strong>Description :</strong> {{ selectedTache?.description }}</p>
+        <!-- <p><strong>Description :</strong> </p>
+        <div class="description-content" id="imageeditor" [innerHTML]="selectedTache?.description"></div> -->
         <p><strong>Statut :</strong> {{ selectedTache?.statut }}</p>
-        <p><strong>Assignée à :</strong> {{ selectedTache?.user_id ? selectedTache?.user_id : 'Aucun utilisateur' }}</p>
+        <p><strong>Assignée à :</strong> {{ selectedUser?.email ? selectedUser?.email: 'Aucun utilisateur' }}</p>
 
         <!-- Formulaire de modification -->
-        <form *ngIf="selectedTache" (ngSubmit)="updateTacheInfo()">
-          <div class="form-group">
-            <label for="taskTitle">Titre</label>
-            <input type="text" id="taskTitle" class="form-control" [(ngModel)]="selectedTache.titre" name="titre" required />
-          </div>
-        
+        <form *ngIf="selectedTache" (ngSubmit)="updateTacheInfo()">      
           <div class="form-group">
             <label for="taskDescription">Description</label>
-            <ckeditor [(ngModel)]="selectedTache.description" name="description" required></ckeditor>
-          </div>
-        
-          <div class="form-group">
-            <label for="taskStatut">Statut</label>
-            <select id="taskStatut" class="form-control" [(ngModel)]="selectedTache.statut" name="statut">
-              <option value="todo">À faire</option>
-              <option value="in_progress">En cours</option>
-              <option value="done">Terminé</option>
-            </select>
-          </div>
-        
+            <quill-editor id="imageeditor" [(ngModel)]="selectedTache.description" [ngModelOptions]="{standalone: true}"></quill-editor>
+          </div>        
           <div class="form-group d-flex justify-content-end gap-3 mt-3">
             <button type="submit" class="btn btn-success">Mettre à jour</button>
             <button type="button" class="btn btn-danger" (click)="closePopupTache()">Annuler</button>
@@ -177,3 +152,67 @@
     </div>
   </div>
 </div>
+
+
+
+
+<!-- Modal tâche (affichage + ajout de commentaire) -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{ 'display': ShowStyleTache }">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" *ngIf="selectedshowTache as tache">
+      <div class="modal-header">
+        <h4 class="modal-title">Afficher la tâche</h4>
+        <button type="button" class="btn-close" (click)="closePopupshowTache()"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Infos tâche -->
+        <p><strong>Titre :</strong> {{ tache.titre }}</p>
+        <p><strong>Statut :</strong> {{ tache.statut }}</p>
+        <p><strong>Assignée à :</strong> {{ tache.email || 'Aucun utilisateur' }}</p>
+
+        <!-- Description -->
+        <div class="form-group">
+          <label>Description</label>
+          <quill-editor
+            [readOnly]="true"
+            [ngModel]="tache.description"
+            [ngModelOptions]="{ standalone: true }"
+          ></quill-editor>
+        </div>
+
+        <!-- Commentaires existants -->
+        <div *ngIf="tache.comments?.length" class="mt-3">
+          <strong>Commentaires :</strong>
+          <ul class="list-unstyled">
+            <li *ngFor="let comment of tache.comments" class="mb-2">
+              <div class="border rounded p-2 bg-light">
+                <span>{{ comment.content }}</span><br />
+                <small class="text-muted">{{ comment.created_at | date:'short' }}</small>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Ajout commentaire -->
+        <div class="mt-3">
+          <label>Ajouter un commentaire :</label>
+          <textarea
+            class="form-control"
+            rows="2"
+            [(ngModel)]="newComment[tache.id!]"
+            placeholder="Saisir un commentaire..."
+          ></textarea>
+        </div>
+
+        <!-- Boutons -->
+        <div class="d-flex justify-content-end gap-3 mt-3">
+          <button type="button" class="btn btn-success" (click)="ajouterCommentaire(tache.id!)">Ajouter</button>
+          <button type="button" class="btn btn-danger" (click)="closePopupshowTache()">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

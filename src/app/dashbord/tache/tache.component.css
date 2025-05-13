@@ -116,3 +116,24 @@ img.enteimg {
     padding: 3px;
     display: block;
 }
+.ql-editor {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.ql-toolbar {
+  background-color: #f4f4f4;
+}
+.description-content img {
+  width: 100%;
+  object-fit: contain;
+  height: 300px;
+}
+div#imageeditor{
+  position: relative!important;
+}
+
+div#imageeditor img {
+    display: block;
+    width: 254px!important;
+}

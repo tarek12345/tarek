@@ -31,13 +31,10 @@ import { ChartComponent } from './dashbord/detaileuser/chart/chart.component';
 import { LeavesComponent } from './dashbord/leaves/leaves.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ChartCircleComponent } from './dashbord/detaileuser/chart-circle/chart-circle.component';
-
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { TacheComponent } from './dashbord/tache/tache.component';
-
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-
+import { QuillModule } from 'ngx-quill';
 
 
 
@@ -79,7 +76,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     NgxChartsModule,
     NgxDaterangepickerMd.forRoot(),
     DragDropModule,
-    CKEditorModule 
+    QuillModule.forRoot()
     
 ],
   providers: [

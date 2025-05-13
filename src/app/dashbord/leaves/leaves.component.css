@@ -12,3 +12,8 @@
     border-radius: 12px;
     overflow: hidden; /* Important pour masquer les débordements */
   }
+  p#imageeditor img {
+    width: 140px!important;
+    display: block!important;
+    margin: 0 auto!important;
+}

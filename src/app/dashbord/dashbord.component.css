@@ -130,3 +130,8 @@ div#v-pills-tabContent {
   width: 85%;
 }
 }
+p#imageeditor img {
+    width: 140px!important;
+    display: block!important;
+    margin: 0 auto!important;
+}
