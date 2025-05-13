@@ -7,7 +7,7 @@ use App\Http\Controllers\PointageController;
 use App\Http\Controllers\WorkDayController;
 use App\Http\Controllers\PublicHolidayController;
 use App\Http\Controllers\LeaveController;
-
+use App\Http\Controllers\TacheController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +31,7 @@ Route::post('login', [AuthController::class, 'login']);
 
 
 Route::get('users', [AuthController::class, 'getUsers']);
+Route::get('usersall', [AuthController::class, 'getUsersAll']);
 Route::middleware('auth:sanctum')->post('logout', [AuthController::class, 'logout']);
 Route::middleware('auth:sanctum')->put('/users/{id}', [AuthController::class, 'updateUser']);
 
@@ -50,16 +51,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users/{userId}/worked-hours', [PointageController::class, 'getWorkedHours']);
     Route::get('/historique/{userId}/{date}', [PointageController::class, 'getHistoryByDate']);
     Route::get('/export-csv', [AuthController::class, 'exportUserWorkDays']);
-<<<<<<< HEAD
     Route::get('/search-users', [AuthController::class, 'searchUsers']);
 
     Route::post('/leaves', [LeaveController::class, 'addLeave']); // Création d'un congé par un employé
     Route::post('/leaves/{id}/approve', [LeaveController::class, 'approve']); // Approuver un congé
     Route::post('/leaves/{id}/reject', [LeaveController::class, 'reject']); // Rejeter un congé
     Route::get('/leavesuser/{userId}', [LeaveController::class, 'leavesUser']);
-        Route::delete('/leaves/{id}', [LeaveController::class, 'destroy']); // Supprimer un congé
+    Route::delete('/leaves/{id}', [LeaveController::class, 'destroy']); // Supprimer un congé
     Route::put('/leaves/{id}', [LeaveController::class, 'update']); // Mettre à jour un congé
-=======
+    Route::apiResource('taches', TacheController::class);
+    Route::patch('taches/{id}/info', [TacheController::class, 'updateInfo']);
+    Route::post('/taches/{id}/commentaire', [TacheController::class, 'updateCommentaire']);
 
->>>>>>> 700800c34e12c0d9541ead2da0e289de81a8df4d
 });

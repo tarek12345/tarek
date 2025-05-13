@@ -142,23 +142,24 @@ class LeaveController extends Controller
     {
         // Trouver le congé par son ID
         $leave = Leave::find($id);
-    
+        
         // Vérifier si le congé existe
         if (!$leave) {
             return response()->json(['error' => 'Leave not found'], 404);
         }
-    
+        
         // Vérifier que l'utilisateur actuel est un administrateur
         $user = auth()->user();
         if ($user->role !== 'administrator') {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
-    
+        
         // Mettre à jour le statut du congé en 'rejected'
         $leave->status = 'rejected';
         $leave->save();
-    
+        
         return response()->json(['message' => 'Leave rejected']);
     }
+    
     
 }
