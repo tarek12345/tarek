@@ -61,6 +61,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/leaves/{id}', [LeaveController::class, 'update']); // Mettre à jour un congé
     Route::apiResource('taches', TacheController::class);
     Route::patch('taches/{id}/info', [TacheController::class, 'updateInfo']);
-    Route::post('/taches/{id}/commentaire', [TacheController::class, 'updateCommentaire']); 
+    Route::post('/taches/{id}/commentaire', [TacheController::class, 'updateCommentaire']); // Mettre à jour un TACHE
 
 });
