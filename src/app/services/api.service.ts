@@ -38,7 +38,6 @@ export interface Tache {
   ordre: number;
   created_at?: string;
   updated_at?: string;
-    email?: string;
   comments?: { id: number; content: string; created_at: string }[];
 }
 

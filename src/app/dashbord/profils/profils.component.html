@@ -22,7 +22,7 @@
 <div id="update" *ngIf="!loading">
   <div id="allusers">
     <div class="classright" *ngFor="let item of filteredUsers">
-      <div class="deleteuser" (click)="openPopupDelete(item)">
+      <div *ngIf="item.role !=='administrator'" class="deleteuser" (click)="openPopupDelete(item)">
         <i class="bi bi-trash"></i>
       </div>
 

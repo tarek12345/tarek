@@ -123,10 +123,13 @@ export class TacheComponent implements OnInit {
     this.selectedUser = user || null;
     this.displayStyle = "block";
   }
-  openPopupshow(user: any): void {
-    this.selectedshowTache = user || null;
-    this.ShowStyleTache = "block";
-  }
+  selectedusermodal :any
+openPopupshow(task: any): void {
+  this.selectedshowTache = task;
+  this.selectedusermodal = this.visibleUsers.find(u => u.id === task.user_id) || null;
+  this.ShowStyleTache = "block";
+}
+
   selectUser(user: any): void {
     this.selectedUser = user;
     this.displayStyle = "block";
@@ -134,6 +137,8 @@ export class TacheComponent implements OnInit {
 
   selectTache(tache: any): void {
     this.selectedTache = tache;
+    this.selectedusermodal = this.visibleUsers.find(u => u.id === tache.user_id) || null;
+   // console.log("first",this.selectedusermodal)
     this.displayStyleTache = "block";
   }
 
@@ -164,7 +169,7 @@ export class TacheComponent implements OnInit {
       (newTache) => {
         this.tachesByStatus['todo'].push(newTache);
         this.toastr.success('Tâche ajoutée avec succès');
-        this.newTask = { titre: '', description: '', statut: 'todo', user_id: 0, ordre: 0 };
+        this.newTask = { titre: '', description: '', statut: 'todo', user_id: 0, ordre: 0  };
         this.closePopup();
       },
       (error) => {
@@ -172,6 +177,9 @@ export class TacheComponent implements OnInit {
       }
     );
   }
+  getUserById(id: number): any {
+  return this.allusers.find(u => u.id === id);
+}
 reset(): void {
   this.newTask = { titre: '', description: '', statut: 'todo', user_id: 0, ordre: 0 };
   this.closePopup();
@@ -188,7 +196,6 @@ reset(): void {
           console.log('Tâche supprimée avec succès', res);
           this.toastr.success('Tâche supprimée avec succès');
           this.loadTaches()
-          // Mettre à jour la liste des tâches ici
         },
         error: (err) => {
           this.toastr.error('Erreur lors de supprimée  Tâche',err);        }
