@@ -30,6 +30,7 @@
     "crypto-js": "^4.2.0",
     "date-fns": "^4.1.0",
     "face-api.js": "^0.22.2",
+    "intro.js": "^7.2.0",
     "laravel-echo": "^1.19.0",
     "leaflet": "^1.9.4",
     "moment": "^2.30.1",

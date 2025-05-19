@@ -17,3 +17,14 @@
     display: block!important;
     margin: 0 auto!important;
 }
+.limiter {
+  max-width: 10ch;          
+  white-space: nowrap;       
+  overflow: hidden;          
+  text-overflow: ellipsis;   
+}
+.wrap-text {
+  white-space: normal;   
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}

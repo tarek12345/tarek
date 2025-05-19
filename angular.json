@@ -49,7 +49,8 @@
               "node_modules/ngx-toastr/toastr.css",
                "node_modules/leaflet/dist/leaflet.css",
                "node_modules/quill/dist/quill.core.css",
-               "node_modules/quill/dist/quill.snow.css"
+               "node_modules/quill/dist/quill.snow.css",
+               "node_modules/intro.js/minified/introjs.min.css"
             ],
             "scripts": [ 
             "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"]
@@ -115,7 +116,8 @@
               "node_modules/ngx-toastr/toastr.css",
                "node_modules/leaflet/dist/leaflet.css",
                "node_modules/quill/dist/quill.core.css",
-               "node_modules/quill/dist/quill.snow.css"
+               "node_modules/quill/dist/quill.snow.css",
+               "node_modules/intro.js/minified/introjs.min.css"
             ],
             "scripts": [ 
             "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"]

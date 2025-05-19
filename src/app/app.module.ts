@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule,LOCALE_ID  } from '@angular/core';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms'; // Import FormsModule
@@ -9,7 +9,7 @@ import { AppRoutingModule } from './app-routing.module'; // Module de routing
 
 import { GetEmployesComponent } from './home/get-employes/get-employes.component'; // Composant Home
 
-import { CommonModule } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ToastrModule } from 'ngx-toastr';
@@ -35,6 +35,9 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { TacheComponent } from './dashbord/tache/tache.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { QuillModule } from 'ngx-quill';
+import localeFr from '@angular/common/locales/fr';
+
+registerLocaleData(localeFr, 'fr');
 
 
 
@@ -85,7 +88,9 @@ import { QuillModule } from 'ngx-quill';
       useClass: AuthInterceptor,
       multi: true,
     },
+    { provide: LOCALE_ID, useValue: 'fr' } // <-- ajoute ceci
   ],
   bootstrap: [AppComponent], // Composant principal à lancer
 })
+
 export class AppModule {}

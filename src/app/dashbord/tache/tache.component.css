@@ -39,9 +39,7 @@ img.enteimg {
     align-items: center;
   }
   
-  .listuser {
-    margin-right: 10px;
-  }
+
   
   .enteimg {
     width: 40px;
@@ -106,8 +104,8 @@ img.enteimg {
     justify-content: flex-end;
   }
   sup.addtt {
-    top: -51px;
-    left: 27px;
+    top: -9px;
+    left: -9px;
     background: #5358d9;
     color: #fff;
     width: 17px;
@@ -136,4 +134,59 @@ div#imageeditor{
 div#imageeditor img {
     display: block;
     width: 254px!important;
+}
+.list-group.membres {
+display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    align-items: flex-start;
+    gap: 2px;
+    flex-direction: row
+}
+
+.list-group.membres .listuser {
+    width: calc(15% - 5px); /* 4 éléments par ligne avec marge */
+    margin-bottom: 10px; /* espacement vertical */
+    box-sizing: border-box;
+}
+.resume {
+    display: flex;
+    flex-direction: column;
+}
+.glow-border img {
+  border: 3px solid gold;
+  border-radius: 50%;
+  box-shadow: 0 0 10px gold;
+}
+
+.listuser div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.more-users button {
+    color: #000000;
+    text-decoration: none;
+        background: transparent;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+      font-weight: blod;
+
+}
+.more-users button:hover {
+  font-weight: blod;
+    color: #fff;
+    text-decoration: none;
+    background: #827ed6;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

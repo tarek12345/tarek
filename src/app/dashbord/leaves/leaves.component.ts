@@ -179,6 +179,14 @@ export class LeavesComponent implements OnInit {
       ).length;
     }
   }
-  
-  
+    displayStyle: string = "none";
+  selectedUser: any = null;
+   openPopup(conge: any): void {
+    this.selectedUser = conge || null;
+    console.log('========',this.selectedUser)
+    this.displayStyle = "block";
+  } 
+  closesModal(){
+     this.displayStyle = "none";
+  }
 }

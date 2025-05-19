@@ -13,11 +13,12 @@ import "quill/dist/quill.core.css";
 })
 export class TacheComponent implements OnInit {
   @Input() userdetaile: any;
- 
+  @Input() datauser: any;
+   selected: { startDate: moment.Moment, endDate: moment.Moment } | null = null;
   taches: Tache[] = []; // ✅ Déclaration correcte
   selectedshowTache: Tache | null = null; // ✅ Typage explicite
   newComment: { [taskId: number]: string } = {};
-
+  userid :any
   displayStyle: string = "none";
   displayStyleTache: string = "none";
   ShowStyleTache: string = "none";
@@ -28,9 +29,12 @@ export class TacheComponent implements OnInit {
   newTask: Tache = {
     titre: '',
     description: '',
+    end_date:'',
+    start_date:'',
     statut: 'todo',
     user_id: 1,
-    ordre: 0
+    ordre: 0,
+
   };
 
   tachesByStatus: { [key in Statut]: Tache[] } = {
@@ -50,10 +54,16 @@ export class TacheComponent implements OnInit {
     if (changes['userdetaile']) {
       this.allusers = changes['userdetaile']?.currentValue;
     }
+    else  {
+      this.userid = changes['datauser']?.currentValue?.user
+      console.log(this.userid)
+    }
   }
 
   ngOnInit(): void {
+    
     this.loadTaches();
+  
   }
 
   loadTaches(): void {
@@ -67,43 +77,60 @@ export class TacheComponent implements OnInit {
   }
   statutKeys: Statut[] = ['todo', 'in_progress', 'done'];
 
-  drop(event: CdkDragDrop<Tache[]>, newStatut: Statut): void {
-    const prevStatut = event.previousContainer.id as Statut;
-    const tache: Tache = event.item.data;
+  
+drop(event: CdkDragDrop<Tache[]>, newStatut: Statut): void {
+  const prevStatut = event.previousContainer.id as Statut;
+  const tache: Tache = event.item.data;
 
-    if (!tache || !tache.id) {
-      this.toastr.error("Tâche invalide");
-      return;
-    }
-
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-      tache.ordre = event.currentIndex;
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
-
-      tache.statut = newStatut;
-      tache.ordre = event.currentIndex;
-
-      this.apiService.updateTache(tache.id, {
-        statut: newStatut,
-        ordre: tache.ordre
-      }).subscribe(
-        (updatedTache) => {
-          this.toastr.success("Tâche déplacée");
-        },
-        (error) => {
-          this.toastr.error("Erreur lors de la mise à jour de la tâche");
-          console.error("Erreur", error);
-        }
-      );
-    }
+  if (!tache || !tache.id) {
+    this.toastr.error("Tâche invalide");
+    return;
   }
+
+  // Mappage des statuts vers leur "ordre de colonne"
+  const statutOrdre: { [key in Statut]: number } = {
+    todo: 0,
+    in_progress: 1,
+    done: 2
+  };
+
+  if (event.previousContainer === event.container) {
+    // Drag dans la même colonne : on peut ignorer ou réordonner localement
+    moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    // Facultatif : mise à jour si tu veux un ordre visuel dans la colonne
+  } else {
+    // Drag vers une autre colonne
+    transferArrayItem(
+      event.previousContainer.data,
+      event.container.data,
+      event.previousIndex,
+      event.currentIndex
+    );
+
+    tache.statut = newStatut;
+    tache.ordre = statutOrdre[newStatut]; // 👉 ordre basé sur la colonne
+
+    console.log("➡️ Données envoyées:", {
+      statut: tache.statut,
+      ordre: tache.ordre
+    });
+
+    this.apiService.updateTache(tache.id, {
+      statut: tache.statut,
+      ordre: tache.ordre
+    }).subscribe(
+      (updated) => {
+        this.toastr.success("Tâche déplacée");
+      },
+      (err) => {
+        this.toastr.error("Erreur mise à jour tâche");
+        console.error(err);
+      }
+    );
+  }
+}
+
+
 
   get visibleUsers() {
     return this.allusers ? (this.showAllUsers ? this.allusers : this.allusers.slice(0, 5)) : [];
@@ -115,9 +142,7 @@ export class TacheComponent implements OnInit {
 
   showAllUsers: boolean = false;
 
-  toggleShowAllUsers(): void {
-    this.showAllUsers = true;
-  }
+
 
   openPopup(user: any): void {
     this.selectedUser = user || null;
@@ -133,6 +158,7 @@ openPopupshow(task: any): void {
   selectUser(user: any): void {
     this.selectedUser = user;
     this.displayStyle = "block";
+    this.closeHiddenUsersModal()
   }
 
   selectTache(tache: any): void {
@@ -152,33 +178,45 @@ openPopupshow(task: any): void {
   closePopupshowTache(): void {
     this.ShowStyleTache = "none";
   }
+
   addTask(): void {
-    if (!this.newTask.titre || !this.newTask.description) {
-      this.toastr.error('Le titre et la description sont obligatoires');
-      return;
-    }
-
-    if (this.selectedUser) {
-      this.newTask.user_id = this.selectedUser.id;
-    } else {
-      this.toastr.error('Aucun utilisateur sélectionné');
-      return;
-    }
-
-    this.apiService.createTache(this.newTask).subscribe(
-      (newTache) => {
-        this.tachesByStatus['todo'].push(newTache);
-        this.toastr.success('Tâche ajoutée avec succès');
-        this.newTask = { titre: '', description: '', statut: 'todo', user_id: 0, ordre: 0  };
-        this.closePopup();
-      },
-      (error) => {
-        this.toastr.error('Erreur lors de la création de la tâche');
-      }
-    );
+  if (!this.newTask.titre || !this.newTask.description) {
+    this.toastr.error('Le titre et la description sont obligatoires');
+    return;
   }
+
+  if (!this.selectedUser) {
+    this.toastr.error('Aucun utilisateur sélectionné');
+    return;
+  }
+
+  if (!this.selected || !this.selected.startDate || !this.selected.endDate) {
+    this.toastr.error('Veuillez sélectionner une période de date');
+    return;
+  }
+
+  // Affectation des valeurs sûres
+  this.newTask.user_id = this.selectedUser.id;
+  this.newTask.start_date = this.selected.startDate.format('YYYY-MM-DD');
+  this.newTask.end_date = this.selected.endDate.format('YYYY-MM-DD');
+
+  this.apiService.createTache(this.newTask).subscribe(
+    (newTache) => {
+      this.tachesByStatus['todo'].push(newTache);
+      this.toastr.success('Tâche ajoutée avec succès');
+      this.newTask = { titre: '', description: '', statut: 'todo', user_id: 0, ordre: 0 };
+      this.selected = null;
+      this.closePopup();
+    },
+    (error) => {
+      this.toastr.error('Erreur lors de la création de la tâche');
+      console.error(error);
+    }
+  );
+}
+
   getUserById(id: number): any {
-  return this.allusers.find(u => u.id === id);
+  return this.allusers?.find(u => u.id === id);
 }
 reset(): void {
   this.newTask = { titre: '', description: '', statut: 'todo', user_id: 0, ordre: 0 };
@@ -266,4 +304,34 @@ sanitizeDescription(desc: string): string {
     });
   }
 
+
+
+  showHiddenUsersModal: boolean = false;
+
+get hiddenUsers(): any[] {
+  return this.allusers && this.allusers.length > 5
+    ? this.allusers.slice(5)
+    : [];
+}
+
+toggleShowAllUsers(): void {
+  this.showHiddenUsersModal = true;
+}
+
+closeHiddenUsersModal(): void {
+  this.showHiddenUsersModal = false;
+}
+
+selectUserFromModal(user: any): void {
+  this.selectedUser = user;
+  this.displayStyle = 'block';
+  this.showHiddenUsersModal = false;
+}
+searchTerm: string = '';
+
+filteredUsers(): any[] {
+  return this.allusers?.filter(user =>
+    user.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+  );
+}
 }

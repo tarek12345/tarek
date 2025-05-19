@@ -5,8 +5,8 @@
   </div>
 
   <div class="tackheader-left">
-    <div class="listuser" *ngFor="let item of visibleUsers" (click)="selectUser(item)">
-      <div type="button" *ngIf="item.role !=='administrator'">
+    <div class="listuser" *ngFor="let item of visibleUsers" (click)="selectUser(item)" >
+      <div type="button"  [ngClass]="userid.id==item.id ?'glow-border':''">
         <ng-container *ngIf="item.profile_image_url; else defaultProfile">
           <img [src]="item.profile_image_url" alt="Image de profil" class="enteimg" />
         </ng-container>
@@ -65,10 +65,16 @@
          
             </div>
         </div>
+        <div class="resume">
         <!-- 👇 Affichage utilisateur assigné -->
-  <small class="text-muted mt-1">
-    Assignée à : {{ getUserById(tache.user_id)?.name || 'Utilisateur inconnu' }}
-  </small>
+        <small class="text-muted mt-1">
+          Assignée à : {{ getUserById(tache.user_id)?.name || 'Utilisateur inconnu' }}
+        </small> 
+        <small class="text-muted mt-1">
+          Date fin : {{ tache?.end_date | date:'d MMMM y' : '' : 'fr' }}
+
+        </small>
+        </div>
         <!-- <p>{{ tache.description }}</p> -->
         <!-- <div class="description-content" [innerHTML]="tache.description"></div> -->
 
@@ -97,6 +103,17 @@
 
         <!-- Formulaire ajout tâche -->
         <form (ngSubmit)="addTask()" *ngIf="selectedUser">
+            <!-- Sélection de la période de tache -->
+          <input
+            type="text"
+            class="form-control mb-3"
+            ngxDaterangepickerMd
+            [(ngModel)]="selected"
+            [ngModelOptions]="{ standalone: true }"
+            [autoApply]="true"
+            placeholder="Sélectionner une période"
+          />
+
           <div class="form-group">
             <label for="taskTitle">Titre</label>
             <input type="text" id="taskTitle" class="form-control" [(ngModel)]="newTask.titre" name="titre" required />
@@ -135,6 +152,7 @@
       <div class="modal-body">
         <!-- Affichage des informations de la tâche -->
         <p><strong>Titre :</strong> {{ selectedTache?.titre }}</p>
+             
         <!-- <p><strong>Description :</strong> </p>
         <div class="description-content" id="imageeditor" [innerHTML]="selectedTache?.description"></div> -->
         <p><strong>Statut :</strong> {{ selectedTache?.statut }}</p>
@@ -142,6 +160,10 @@
         <!-- Formulaire de modification -->
         <form *ngIf="selectedTache" (ngSubmit)="updateTacheInfo()">      
           <div class="form-group">
+                <div class="form-group">
+            <label for="taskTitle">Titre</label>
+            <input type="text" id="taskTitle" class="form-control" [(ngModel)]="selectedTache.titre" name="titre" required />
+          </div>
             <label for="taskDescription">Description</label>
             <quill-editor id="imageeditor" [(ngModel)]="selectedTache.description" [ngModelOptions]="{standalone: true}"></quill-editor>
           </div>        
@@ -219,4 +241,37 @@
 </div>
 
 
+
+
+<!-- Modal des utilisateurs cachés -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': showHiddenUsersModal ? 'block' : 'none'}">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Utilisateurs restants</h5>
+        <button type="button" class="btn-close" (click)="closeHiddenUsersModal()"></button>
+      </div>
+      <div class="modal-body">
+            <span class="d-block mb-4"> Membres de  l'espace du travail</span>
+          <div class="form-group mb-4">
+            <input type="text"  class="form-control" placeholder="Recherche membre"  [(ngModel)]="searchTerm" name="search"  />
+          </div>  <div class="list-group membres">
+    <div class="listuser " *ngFor="let item of filteredUsers()" (click)="selectUser(item)">
+      <div type="button"  data-bs-toggle="tooltip" [attr.title]="item.name" >
+        <ng-container *ngIf="item.profile_image_url; else defaultProfile">
+          <img [src]="item.profile_image_url" alt="Image de profil" class="enteimg" />
+        </ng-container>
+        <ng-template #defaultProfile>
+          <i class="bi bi-person-circle"></i>
+        </ng-template>
+        <sup class="addtt">
+          <i class="bi bi-plus" data-bs-toggle="tooltip" title="Ajouter tâche"></i>
+        </sup>
+      </div>
+    </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 

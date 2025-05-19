@@ -79,7 +79,7 @@
           <td>{{ leave.start_date }}</td>
           <td>{{ leave.end_date }}</td>
           <td>{{ leave.replacant?.name || '—' }}</td>
-          <td>{{ leave.reason }}</td>
+          <td class="limiter">{{ leave.reason }}</td>
           <td>
             <span class="badge" [ngClass]="{
               'bg-success': leave.status === 'approved',
@@ -128,6 +128,9 @@
             >
           <i class="bi bi-x-circle"></i> 
           </button>
+            <button  class="btn  btn-info p-1"(click)="openPopup(leave)" > 
+                  <i class="bi bi-display"  data-bs-toggle="tooltip" title="Affiche demande de congé" ></i>
+            </button>
           </td>
         </tr>
       </tbody>
@@ -160,4 +163,53 @@
   </ng-template>
 
  
+</div>
+
+
+<!-- Modal des utilisateurs cachés -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStyle}">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Demande de congé</h5>
+        <button type="button" class="btn-close" (click)="closesModal()"></button>
+      </div>
+      <div class="modal-body">
+         
+           <div class="leave-item">
+            <h3> État 
+              <span class="badge" [ngClass]="{
+                'bg-success': selectedUser?.status === 'approved',
+                'bg-warning': selectedUser?.status === 'pending',
+                'bg-danger': selectedUser?.status === 'rejected'
+              }">
+                {{ selectedUser?.status }}
+                <ng-container [ngSwitch]="selectedUser?.status">
+                  <i *ngSwitchCase="'approved'" class="bi bi-emoji-smile"></i>
+                  <i *ngSwitchCase="'pending'" class="bi bi-emoji-expressionless"></i>
+                  <i *ngSwitchCase="'rejected'" class="bi bi-emoji-frown-fill"></i>
+                </ng-container>
+              </span>
+            </h3>
+
+                  <div>
+                    <p *ngIf="currentUserRole === 'administrator' "> Madame/Monsieur <b>{{ selectedUser?.name }}</b></p>
+                  </div>
+                  <p> Je me permets de vous adresser cette demande de congé pour la période allant du <b>{{
+                      selectedUser?.start_date | date:'dd/MM/yyyy' }} au {{ selectedUser?.end_date | date:'dd/MM/yyyy' }}.</b>
+                    Durant cette période, je souhaiterais m'absenter pour des raisons <b class="wrap-text">{{ selectedUser?.reason }}.</b>
+                    <br>
+                    Je reste à votre disposition pour toute information complémentaire et pour organiser la reprise de
+                    mes tâches en votre absence.
+                    <br>
+                    Dans l’attente de votre retour, je vous remercie par avance pour votre compréhension.
+                    <br>
+                    Cordialement,<br>
+                    <b> {{ selectedUser?.name }}<br>
+                      {{ selectedUser?.role }}</b>
+                  </p>
+                </div>
+      </div>
+    </div>
+  </div>
 </div>

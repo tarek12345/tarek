@@ -5,6 +5,8 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user-service.service';
 import * as faceapi from 'face-api.js';
+import introJs from 'intro.js';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -12,7 +14,7 @@ import * as faceapi from 'face-api.js';
   standalone : false
 })
 export class HomeComponent implements OnInit {
-
+intro = introJs();
   DataMessage: any[] = [];
   login = { email: '', password: '' };
 
@@ -34,9 +36,21 @@ export class HomeComponent implements OnInit {
     if (token) {
       this.router.navigate(['/dashboard']);
     }
-  
+  this.startTour()
   }
+ startTour() {
+    const intro = introJs(); // ✅ Crée l'instance
 
+    intro.setOptions({
+      steps: [
+        { intro: 'Bienvenue dans notre app !' },
+        { element: '#step1', intro: 'Connecter avec login et  possword .' },
+        { element: '#step2', intro: 'Oublier  mot de pass   par envoyer un mail .' }
+      ]
+    });
+
+    intro.start();
+  }
   
   
   

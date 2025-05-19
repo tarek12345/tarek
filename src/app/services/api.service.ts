@@ -36,6 +36,8 @@ export interface Tache {
   statut: Statut;   // <- ici
   user_id: number;
   ordre: number;
+  start_date?: string;
+  end_date?: string;
   created_at?: string;
   updated_at?: string;
   comments?: { id: number; content: string; created_at: string }[];

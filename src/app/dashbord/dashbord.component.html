@@ -74,7 +74,7 @@
       </div>
       <div class="tab-pane fade" id="v-pills-tache" role="tabpanel" aria-labelledby="v-pills-tache-tab"
       tabindex="0">
-      <app-tache [userdetaile]=usernotpagination></app-tache>
+      <app-tache [userdetaile]=usernotpagination [datauser]="user"></app-tache>
     </div>
       <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab"
         tabindex="0"><app-secttings *ngIf="user?.user" [userdetaile]="user.user"></app-secttings></div>
