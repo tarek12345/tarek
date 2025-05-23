@@ -86,6 +86,7 @@
       <!-- Affichage du dernier pointage uniquement -->
       <div *ngIf="lastPointage">
         <h3>Dernier Pointage</h3>
+         <p><strong>Jour :</strong> {{this.pointageuser.day }}</p>
         <p><strong>Heure d'arrivée :</strong> {{ lastPointage.arrival_date }}</p>
         <p><strong>Heure de départ :</strong> {{ lastPointage.last_departure ? (lastPointage.last_departure |
           date:'HH:mm:ss') : 'Non encore parti' }}</p>

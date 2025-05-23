@@ -46,12 +46,18 @@
             <span>Poste :<b> {{ item.role }}</b></span>
           </div>
           <div class="content-2 d-flex">
-            <div class="input-group date">
+            <!-- <div class="input-group date">
               <input type="month" 
                      class="form-control" 
                      (change)="downloadReportForMonth($event)" />
+            </div>     -->
+              <div class="input-group date">
+              <input type="month" 
+                     class="form-control" 
+                     (change)="downloadUserReport(item.id, $event)" />
             </div>
           </div>
+    
         </div>
 
         <ng-container *ngIf="item.history?.length; else upddatedate">

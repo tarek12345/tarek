@@ -4,10 +4,33 @@ import { ToastrService } from 'ngx-toastr';
 import { ApiService } from '../../services/api.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ngxCsv } from 'ngx-csv';
+interface Pointage {
+  id: number;
+  arrival_date: string;    // heure d'arrivée (ex: "08:00:25")
+  last_departure: string;  // heure de départ (ex: "2025-05-20 15:54:31")
+  location: string;        // lieu (ex: "Avenue Charles Nicole, Tunis, Tunisie")
+  user_id: number;
+  // Tu peux ajouter d'autres propriétés ici si besoin
+}
+
+interface Day {
+  id: number;
+  date: string;            // ex: "2025-05-20"
+  day: string;             // ex: "Mardi"
+  month: string;           // ex: "Mai"
+  week: number;            // ex: 3 (semaine dans le mois)
+  arrival_date: string;    // ex: "08:00:25"
+  last_departure: string;  // ex: "15:54:31"
+  location: string;        // ex: "Avenue Charles Nicole, Tunis, Tunisie"
+  status: string;          // ex: "hors ligne"
+  total_hours: string;     // ex: "07:54:06"
+  counter: number;         // ex: 28446 (seconds)
+  pointages: Pointage[];   // tableau des pointages associés à ce jour
+}
+
 @Component({
   selector: 'app-profils',
   standalone: false,
-  
   templateUrl: './profils.component.html',
   styleUrl: './profils.component.css'
 })
@@ -28,6 +51,8 @@ export class ProfilsComponent {
   displayStyle: string = "none"; // Contrôle l'affichage du modal
   displayStyleDelete: string = "none"; // Contrôle l'affichage du modal
   displayStylePointage: string = "none";
+   selectedUserpointage: any;
+   
   ngOnInit(): void {
     this.GetUsers();
     this.allUsers.forEach(user => {
@@ -152,59 +177,67 @@ export class ProfilsComponent {
     this.GetUsers(); // Recharge les employés
   }
 
- selectedUserpointage :any ;
- selectedDay: string = '';
 
   // 🔴 **NOUVEAU : Gestion du Pointage**
 // Quand l'utilisateur clique pour modifier un pointage
-openPopupEdit(day: any, user: any) {
-  this.displayStylePointage = "block";
-  this.selectedDay = day;
-  this.selectedUserpointage = user.id;
+openPopupEdit(day: Day, user: any) {
+    this.displayStylePointage = "block";
+    this.selectedDay = day;
+    this.selectedUserpointage = user.id; // fixed variable name
+    console.log("selectedDay",this.selectedDay)
+    console.log("selectedUserpointage",this.selectedUserpointage)
 
-  this.pointageForm.patchValue({
-    date: day.date,
-    heure_arrivee: day.arrival_date,
-    heure_depart: day.last_departure
-  });
+    this.pointageForm.patchValue({
+      date: day.date,
+      heure_arrivee: day.arrival_date,
+      heure_depart: day.last_departure
+    });
+    this.cdr.detectChanges();
+  }
 
-  this.cdr.detectChanges();
-}
 
   closePopupEdit() {
     this.displayStylePointage = "none"; 
   }
-  submitPointage() {
-    if (this.pointageForm.valid) {
-      const formData = this.pointageForm.value;
-      const userId = this.selectedUserpointage;
-  
-      const arrival = formData.heure_arrivee ? new Date('1970-01-01T' + formData.heure_arrivee).getTime() : 0;
-      const departure = formData.heure_depart ? new Date('1970-01-01T' + formData.heure_depart).getTime() : 0;
-      const counter = departure - arrival;
-  
-      const updatedPointage = {
-        date: formData.date,
-        heure_arrivee: formData.heure_arrivee,
-        heure_depart: formData.heure_depart,
-        total_time_seconds: counter
-      };
-  
-      this.apiService.updatePointage(userId, updatedPointage).subscribe(
-        response => {
-          this.toastr.success('Pointage mis à jour avec succès !');
-          this.refreshList();
-          this.closePopupEdit();
-          
-        },
-        error => {
-          this.toastr.error('Erreur lors de la mise à jour du pointage.');
-          console.error(error);
-        }
-      );
-    }
+selectedDay?: Day; // ou selectedDay: Day | null = null;
+
+submitPointage() {
+  if (this.pointageForm.valid && this.selectedDay && this.selectedDay.pointages && this.selectedDay.pointages.length > 0) {
+    const formData = this.pointageForm.value;
+    const userId = this.selectedUserpointage; // id utilisateur
+
+    // Récupérer l'id du pointage dans le premier élément du tableau pointages
+    const pointageId = this.selectedDay.pointages[0].id;
+
+    const arrival = formData.heure_arrivee ? new Date('1970-01-01T' + formData.heure_arrivee).getTime() : 0;
+    const departure = formData.heure_depart ? new Date('1970-01-01T' + formData.heure_depart).getTime() : 0;
+    const counter = departure - arrival;
+
+    const updatedPointage = {
+      date: formData.date,
+      heure_arrivee: formData.heure_arrivee,
+      heure_depart: formData.heure_depart,
+      total_time_seconds: counter
+    };
+
+    this.apiService.updatePointage(userId, pointageId, updatedPointage).subscribe(
+      response => {
+        this.toastr.success('Pointage mis à jour avec succès !');
+        this.refreshList();
+        this.closePopupEdit();
+      },
+      error => {
+        this.toastr.error('Erreur lors de la mise à jour du pointage.');
+        console.error(error);
+      }
+    );
+  } else {
+    this.toastr.error('Formulaire invalide ou pointage non sélectionné.');
   }
-  
+}
+
+
+
 
 // Fonction pour calculer le counter (total des heures en secondes)
 calculateCounter(): number {
@@ -243,4 +276,24 @@ downloadReportForMonth(event: Event) {
     });
   }
 }
+
+downloadUserReport(userId: number, event: Event) {
+  const input = event.target as HTMLInputElement;
+  const selectedMonth = input.value;
+
+  if (selectedMonth) {
+    this.apiService.downloadUserMonthlyReport(userId, selectedMonth).subscribe(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `rapport_${userId}_${selectedMonth}.csv`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    });
+  }
 }
+
+
+}
+
+

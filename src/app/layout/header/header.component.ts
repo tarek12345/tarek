@@ -116,7 +116,7 @@ export class HeaderComponent implements OnInit {
   
   
   
-  
+  pointageuser : any
   getLastPointage() {
     const history = this.datauser?.history;
     if (!history) {
@@ -128,9 +128,11 @@ export class HeaderComponent implements OnInit {
     let allPointages = Object.values(history)
       .flatMap((day: any) => day.pointages)
       .sort((a: any, b: any) => new Date(b.last_departure).getTime() - new Date(a.last_departure).getTime());
-  
+      let allPointagesglobal = Object.values(history)
+      .flatMap((date: any) => date)
     // Prendre le dernier pointage
     this.lastPointage = allPointages.length > 0 ? allPointages[0] : null;
+    this.pointageuser = allPointagesglobal.length > 0 ?allPointagesglobal[0] : null;
   }
   
   

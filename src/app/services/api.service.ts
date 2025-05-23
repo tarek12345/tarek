@@ -146,15 +146,22 @@ export class ApiService {
   }
   
   // Mettre à jour un pointage
-  updatePointage(userId: number, data: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/users/${userId}/pointages/edit`, data);
-  }
+  // updatePointage(userId: number, data: any): Observable<any> {
+  //   return this.http.put(`${this.apiUrl}/users/${userId}/pointages/edit`, data);
+  // }
+updatePointage(userId: number, pointageId: number, data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/users/${userId}/pointages/${pointageId}/edit`, data);
+}
 
   downloadMonthlyReport(selectedMonth: string): Observable<Blob> {
     const url = `${this.apiUrl}/export-csv?month=${selectedMonth}`;
     return this.http.get(url, { responseType: 'blob' });
   }
-  
+  downloadUserMonthlyReport(userId: number, month: string) {
+  return this.http.get(`${this.apiUrl}/export-csv/${userId}?month=${month}`, {
+    responseType: 'blob'
+  });
+}
   searchUsers(searchQuery: string, perPage: number, page: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/search-users`, {
       params: {
