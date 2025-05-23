@@ -24,6 +24,8 @@ class TacheController extends Controller
         $validated = $request->validate([
             'titre' => 'required|string',
             'description' => 'nullable|string',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
             'statut' => 'in:todo,in_progress,done',
             'user_id' => 'required|exists:users,id',
             'ordre' => 'nullable|integer',
@@ -54,26 +56,27 @@ class TacheController extends Controller
     return response()->json(['message' => 'Commentaire mis à jour', 'tache' => $tache]);
 }
 
- 
-/** update stut task  */
- 
 public function update(Request $request, $id)
 {
     try {
         $tache = Tache::findOrFail($id);
+
         $validated = $request->validate([
             'titre' => 'sometimes|required|string',
             'description' => 'nullable|string',
-            'statut' => 'in:todo,in_progress,done',
+            'start_date' => 'sometimes|required|date',
+            'end_date' => 'sometimes|required|date|after_or_equal:start_date',
+            'statut' => 'sometimes|required|in:todo,in_progress,done',
             'user_id' => 'sometimes|required|exists:users,id',
-            'ordre' => 'nullable|integer',
-            'commentaire' => 'nullable|string', // ajout ici
+            'ordre' => 'sometimes|nullable|integer',
+            'commentaire' => 'sometimes|nullable|string',
         ]);
 
         $tache->fill($validated);
         $tache->save();
 
         \Log::info('Tâche mise à jour avec succès :', $tache->toArray());
+
         return response()->json($tache);
 
     } catch (\Throwable $e) {

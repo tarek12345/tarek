@@ -625,19 +625,15 @@ class AuthController extends Controller
         }
     }
 
-    // forgotPassword  user //
-
+// Envoi du lien de réinitialisation
     public function forgotPassword(Request $request)
     {
-        // Validation des données
         $request->validate([
-            'email' => 'required|email|exists:users,email', // Assurez-vous que l'email existe dans la base de données
+            'email' => 'required|email|exists:users,email',
         ]);
 
-        // Générer un token de réinitialisation
         $token = Str::random(60);
 
-        // Insérer dans la table password_resets
         DB::table('password_resets')->updateOrInsert(
             ['email' => $request->email],
             [
@@ -646,10 +642,9 @@ class AuthController extends Controller
             ]
         );
 
-        // Construire le lien de réinitialisation avec le token et l'email
-        $resetLink = url("http://localhost:4200/reset-password?token=$token&email=" . urlencode($request->email));
+        $frontendUrl = config('app.frontend_url');
+        $resetLink = $frontendUrl . "/reset-password?token=$token&email=" . urlencode($request->email);
 
-        // Envoyer un email avec le lien de réinitialisation
         Mail::send([], [], function ($message) use ($request, $resetLink) {
             $message->to($request->email)
                 ->subject('Réinitialisation de votre mot de passe')
@@ -661,39 +656,61 @@ class AuthController extends Controller
         ]);
     }
 
-   // resetPassword  user //
-    public function resetPassword(Request $request)
+    // Vérification du token (appelée par Angular avant affichage du formulaire de nouveau mot de passe)
+    public function verifyResetToken(Request $request)
     {
-        // Validation des champs
         $request->validate([
-            'token' => 'required',
             'email' => 'required|email',
-            'password' => 'required|confirmed|min:8',
+            'token' => 'required'
         ]);
 
-        // Vérifier le token et l'email dans la table password_resets
-        $resetRecord = DB::table('password_resets')
-            ->where('token', $request->token)
+        $reset = DB::table('password_resets')
             ->where('email', $request->email)
+            ->where('token', $request->token)
             ->first();
 
-        if (!$resetRecord) {
-            return response()->json([
-                'message' => 'Le lien de réinitialisation est invalide ou expiré.'
-            ], 400);
+        if (!$reset) {
+            return response()->json(['message' => 'Token invalide.'], 400);
         }
 
-        // Trouver l'utilisateur par email et mettre à jour son mot de passe
-        $user = User::where('email', $request->email)->first();
-        $user->password = Hash::make($request->password);
-        $user->save();
+        // Expiration après 1 minute
+        if (Carbon::parse($reset->created_at)->addMinutes(1)->isPast()) {
+            return response()->json(['message' => 'Le lien de réinitialisation a expiré.'], 400);
+        }
 
-        // Supprimer le token de la table password_resets après utilisation
+        return response()->json(['message' => 'Token valide.'], 200);
+    }
+
+    // Réinitialisation effective du mot de passe
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'token' => 'required',
+            'password' => 'required|confirmed|min:6',
+        ]);
+
+        $reset = DB::table('password_resets')
+            ->where('email', $request->email)
+            ->where('token', $request->token)
+            ->first();
+
+        if (!$reset) {
+            return response()->json(['message' => 'Token invalide.'], 400);
+        }
+
+        if (Carbon::parse($reset->created_at)->addMinutes(1)->isPast()) {
+            return response()->json(['message' => 'Le lien a expiré.'], 400);
+        }
+
+        DB::table('users')
+            ->where('email', $request->email)
+            ->update(['password' => bcrypt($request->password)]);
+
+        // Supprimer le token une fois utilisé
         DB::table('password_resets')->where('email', $request->email)->delete();
 
-        return response()->json([
-            'message' => 'Mot de passe réinitialisé avec succès.'
-        ]);
+        return response()->json(['message' => 'Mot de passe réinitialisé avec succès.']);
     }
    // export pointage  user //
     public function exportUserWorkDays(Request $request)
@@ -776,6 +793,68 @@ class AuthController extends Controller
             "Expires"             => "0",
         ]);
     }
+    public function exportUserWorkDaysById(Request $request, $userId)
+{
+    $selectedMonth = $request->query('month'); // Format '2025-04'
+
+    if (!$selectedMonth) {
+        return response()->json(['message' => 'Mois non sélectionné'], 400);
+    }
+
+    $firstDay = Carbon::createFromFormat('Y-m', $selectedMonth)->startOfMonth();
+    $lastDay  = Carbon::createFromFormat('Y-m', $selectedMonth)->endOfMonth();
+
+    $totalWorkingDays = $firstDay->diffInDaysFiltered(function(Carbon $date) {
+        return $date->isWeekday();
+    }, $lastDay) + 1;
+
+    $user = User::with(['pointages' => function ($query) use ($firstDay, $lastDay) {
+        $query->whereBetween('arrival_date', [$firstDay, $lastDay]);
+    }])->findOrFail($userId);
+
+    $headers = ['Nom', 'Email', 'Jours de travail', 'Jours d\'absence', 'Total heures'];
+
+    return Response::stream(function () use ($headers, $user, $firstDay, $lastDay, $totalWorkingDays) {
+        $handle = fopen('php://output', 'w');
+        fprintf($handle, chr(0xEF).chr(0xBB).chr(0xBF)); // BOM UTF-8
+        fputcsv($handle, $headers, ';');
+
+        $workDays = 0;
+        $totalSeconds = 0;
+
+        foreach (new \DatePeriod($firstDay, \DateInterval::createFromDateString('1 day'), $lastDay->copy()->addDay()) as $date) {
+            $dateStr = Carbon::instance($date)->toDateString();
+
+            $pointages = $user->pointages->filter(function ($p) use ($dateStr) {
+                return Carbon::parse($p->arrival_date)->toDateString() === $dateStr ||
+                       Carbon::parse($p->last_departure)->toDateString() === $dateStr;
+            });
+
+            if ($pointages->isNotEmpty()) {
+                $workDays++;
+                $totalSeconds += $pointages->sum('counter');
+            }
+        }
+
+        $absenceDays = max($totalWorkingDays - $workDays, 0);
+
+        fputcsv($handle, [
+            $user->name,
+            $user->email,
+            $workDays,
+            $absenceDays,
+            gmdate('H:i:s', $totalSeconds)
+        ], ';');
+
+        fclose($handle);
+    }, 200, [
+        "Content-Type"        => "text/csv; charset=UTF-8",
+        "Content-Disposition" => "attachment; filename=rapport_utilisateur_{$user->id}_{$selectedMonth}.csv",
+        "Pragma"              => "no-cache",
+        "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+        "Expires"             => "0",
+    ]);
+}
    // convert  image //
     private function base64ToImage($base64Image)
     {

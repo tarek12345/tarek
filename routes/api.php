@@ -36,7 +36,7 @@ Route::middleware('auth:sanctum')->post('logout', [AuthController::class, 'logou
 Route::middleware('auth:sanctum')->put('/users/{id}', [AuthController::class, 'updateUser']);
 
 Route::middleware('guest')->post('forgot-password', [AuthController::class, 'forgotPassword']);
-
+Route::post('/verify-reset-token', [UserController::class, 'verifyResetToken']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
 // Pointage 
@@ -46,11 +46,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/users/{userId}/pointages/arrivee', [PointageController::class, 'onArrival']);
     Route::post('/users/{userId}/pointages/depart', [PointageController::class, 'onDeparture']);
     Route::get('/users/{userId}/pointages/historique', [PointageController::class, 'showHistory']);
-    Route::put('/users/{userId}/pointages/edit', [PointageController::class, 'editPointage']);
+    Route::put('/users/{userId}/pointages/{pointageId}/edit', [PointageController::class, 'editPointage']);
+
     Route::get('/users/{userId}/pointages/active-counters', [PointageController::class, 'getActiveCounter']);
     Route::get('/users/{userId}/worked-hours', [PointageController::class, 'getWorkedHours']);
     Route::get('/historique/{userId}/{date}', [PointageController::class, 'getHistoryByDate']);
     Route::get('/export-csv', [AuthController::class, 'exportUserWorkDays']);
+    Route::get('/export-csv/{userId}', [AuthController::class, 'exportUserWorkDaysById']);
+
     Route::get('/search-users', [AuthController::class, 'searchUsers']);
 
     Route::post('/leaves', [LeaveController::class, 'addLeave']); // Création d'un congé par un employé

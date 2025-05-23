@@ -12,6 +12,8 @@ class Tache extends Model
     protected $fillable = [
         'titre',
         'description',
+        'start_date',
+        'end_date',
         'statut',
         'user_id',
         'ordre',
