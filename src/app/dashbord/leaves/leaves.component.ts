@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } fro
 import { ApiService } from '../../services/api.service';
 import * as moment from 'moment';
 import { UserService } from '../../services/user-service.service';
-
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-leaves',
   templateUrl: './leaves.component.html',
@@ -24,7 +24,10 @@ export class LeavesComponent implements OnInit {
   searchTerm: string = '';
   currentPage: number = 1;
   itemsPerPage: number = 8;
-  constructor(private api: ApiService, private userService: UserService,private cdr: ChangeDetectorRef) {}
+  constructor(private api: ApiService,
+     private userService: UserService,
+     private cdr: ChangeDetectorRef,
+    private toastr: ToastrService,) {}
 
   ngOnInit(): void {
     this.user = this.userService.getUserInfo();
@@ -75,12 +78,22 @@ export class LeavesComponent implements OnInit {
    window.location.reload();
   }
   deleteLeave(id: number): void {
-    this.api.deleteLeave(id).subscribe(() => {
-      this.fetchLeaves(); // Reload leaves after deleting
-      this.refreshComponent()
-    });
+      if (confirm('Voulez-vous vraiment supprimer cette tâche ?')) {
+    this.api.deleteLeave(id).subscribe({
+
+       next: (res) => {
+          console.log('Tâche supprimée avec succès', res);
+          this.toastr.success('Tâche supprimée avec succès');
+          this.fetchLeaves(); // Reload leaves after deleting
+          this.refreshComponent()
+        },
+        error: (err) => {
+          this.toastr.error('Erreur lors de supprimée  Tâche',err);        }
+      });
+   
   }
-  
+}
+ 
   approveLeave(id: number): void {
     this.api.approveLeave(id).subscribe((leave) => {
     

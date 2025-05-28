@@ -36,21 +36,21 @@ intro = introJs();
     if (token) {
       this.router.navigate(['/dashboard']);
     }
-  this.startTour()
+  // this.startTour()
   }
- startTour() {
-    const intro = introJs(); // ✅ Crée l'instance
+//  startTour() {
+//     const intro = introJs(); // ✅ Crée l'instance
 
-    intro.setOptions({
-      steps: [
-        { intro: 'Bienvenue dans notre app !' },
-        { element: '#step1', intro: 'Connecter avec login et  possword .' },
-        { element: '#step2', intro: 'Oublier  mot de pass   par envoyer un mail .' }
-      ]
-    });
+//     intro.setOptions({
+//       steps: [
+//         { intro: 'Bienvenue dans notre app !' },
+//         { element: '#step1', intro: 'Connecter avec login et  possword .' },
+//         { element: '#step2', intro: 'Oublier  mot de pass   par envoyer un mail .' }
+//       ]
+//     });
 
-    intro.start();
-  }
+//     intro.start();
+//   }
   
   
   
