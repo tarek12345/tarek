@@ -81,36 +81,74 @@ class LeaveController extends Controller
     }
 
     // Mettre à jour un congé
-    public function update(Request $request, $id)
-    {
-        $leave = Leave::find($id);
+    // public function update(Request $request, $id)
+    // {
+    //     $leave = Leave::find($id);
     
-        if (!$leave) {
-            return response()->json(['error' => 'Leave not found'], 404);
-        }
+    //     if (!$leave) {
+    //         return response()->json(['error' => 'Leave not found'], 404);
+    //     }
     
-        $user = auth()->user();
-        if ($user->id !== $leave->created_by && $user->role !== 'administrator') {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
+    //     $user = auth()->user();
+    //     if ($user->id !== $leave->created_by && $user->role !== 'administrator') {
+    //         return response()->json(['error' => 'Unauthorized'], 403);
+    //     }
     
-        $validated = $request->validate([
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'reason' => 'required|string|max:255',
-            'replacant' => 'nullable|exists:users,id',
-        ]);
+    //     $validated = $request->validate([
+    //         'start_date' => 'required|date',
+    //         'end_date' => 'required|date|after_or_equal:start_date',
+    //         'reason' => 'required|string|max:255',
+    //         'replacant' => 'nullable|exists:users,id',
+    //     ]);
     
-        $leave->update([
-            'start_date' => $validated['start_date'],
-            'end_date' => $validated['end_date'],
-            'reason' => $validated['reason'],
-            'replacant' => $validated['replacant'] ?? $leave->replacant,
-        ]);
+    //     $leave->update([
+    //         'start_date' => $validated['start_date'],
+    //         'end_date' => $validated['end_date'],
+    //         'reason' => $validated['reason'],
+    //         'replacant' => $validated['replacant'] ?? $leave->replacant,
+    //     ]);
     
-        return response()->json(['message' => 'Leave updated successfully', 'leave' => $leave]);
+    //     return response()->json(['message' => 'Leave updated successfully', 'leave' => $leave]);
+    // }
+    
+public function update(Request $request, $id)
+{
+    $leave = Leave::find($id);
+
+    if (!$leave) {
+        return response()->json(['error' => 'Leave not found'], 404);
     }
-    
+
+    $user = auth()->user();
+
+    if ($user->id !== $leave->created_by && $user->role !== 'administrator') {
+        return response()->json(['error' => 'Unauthorized'], 403);
+    }
+
+    $validated = $request->validate([
+        'start_date' => 'required|date',
+        'end_date' => 'required|date|after_or_equal:start_date',
+        'reason' => 'required|string|max:255',
+        'replacant' => 'nullable|exists:users,id',
+    ]);
+
+    $leave->start_date = $validated['start_date'];
+    $leave->end_date = $validated['end_date'];
+    $leave->reason = $validated['reason'];
+    $leave->replacant = $validated['replacant'] ?? $leave->replacant;
+
+    // Si l'utilisateur est un employer et que le congé était approuvé, on remet le statut à pending
+    if ($user->role === 'employer' && $leave->status === 'approved') {
+        $leave->status = 'pending';
+    }
+
+    $leave->save();
+
+    return response()->json([
+        'message' => 'Leave updated successfully',
+        'leave' => $leave
+    ]);
+}
 
     // Approuver un congé (réservé à l'administrateur)
     public function approve($id)
