@@ -65,7 +65,11 @@ usernotpagination :any
     });
   }
   leavesuser: any[] = [];  // Liste des congés
+showProfileSubmenu: boolean = false;
 
+toggleProfileSubmenu() {
+  this.showProfileSubmenu = !this.showProfileSubmenu;
+}
 
   GetUserSByid() {
     this.apiService.GetUserServiceByid(this.user.id).subscribe({

@@ -135,3 +135,13 @@ p#imageeditor img {
     display: block!important;
     margin: 0 auto!important;
 }
+.submenu {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+.nav-link.sub {
+  background-color: #f8f9fa;
+  color: #333;
+  font-size: 0.9rem;
+}
