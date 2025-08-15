@@ -19,7 +19,8 @@ class CreateTachesTable extends Migration
             $table->text('description')->nullable();
             $table->date('start_date');
             $table->date('end_date');
-            $table->enum('statut', ['todo', 'in_progress', 'done'])->default('todo');
+            $table->enum('statut', ['todo', 'in_progress', 'test', 'done'])->default('todo');
+            
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->integer('ordre')->nullable();
             $table->text('commentaire')->nullable(); // ✅ Ligne ajoutée ici

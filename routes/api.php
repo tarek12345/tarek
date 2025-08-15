@@ -8,7 +8,7 @@ use App\Http\Controllers\WorkDayController;
 use App\Http\Controllers\PublicHolidayController;
 use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\TacheController;
-
+use App\Http\Controllers\LettreDeChangeController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -65,5 +65,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('taches', TacheController::class);
     Route::patch('taches/{id}/info', [TacheController::class, 'updateInfo']);
     Route::post('/taches/{id}/commentaire', [TacheController::class, 'updateCommentaire']); // Mettre à jour un TACHE
+    Route::post('/lettre-de-change/generer-import', [LettreDeChangeController::class, 'genererDepuisImport']);
 
+    Route::post('/traites', [LettreDeChangeController::class, 'store']);
+Route::get('/traiteconfigs', [LettreDeChangeController::class, 'indexConfig']);
+Route::post('/traiteconfigs', [LettreDeChangeController::class, 'storeConfig']);
+
+Route::delete('/traiteconfigs/{id}', [LettreDeChangeController::class, 'destroyConfig']);
+    Route::get('/traitesuser/{id}', [LettreDeChangeController::class, 'gettraitebyuser']);
+    Route::delete('/traites/{id}', [LettreDeChangeController::class, 'deleteTraite']); // Supprimer un congé
+    Route::get('/traite-with-users', [LettreDeChangeController::class, 'getAllTraitesWithUsers']);
 });

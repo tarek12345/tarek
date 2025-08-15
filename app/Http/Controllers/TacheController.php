@@ -26,7 +26,7 @@ class TacheController extends Controller
             'description' => 'nullable|string',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
-            'statut' => 'in:todo,in_progress,done',
+            'statut' => 'in:todo,in_progress,test,done',
             'user_id' => 'required|exists:users,id',
             'ordre' => 'nullable|integer',
             'commentaire' => 'nullable|string', // ajout ici
@@ -66,7 +66,7 @@ public function update(Request $request, $id)
             'description' => 'nullable|string',
             'start_date' => 'sometimes|required|date',
             'end_date' => 'sometimes|required|date|after_or_equal:start_date',
-            'statut' => 'sometimes|required|in:todo,in_progress,done',
+            'statut' => 'sometimes|required|in:todo,in_progress,test,done',
             'user_id' => 'sometimes|required|exists:users,id',
             'ordre' => 'sometimes|nullable|integer',
             'commentaire' => 'sometimes|nullable|string',
