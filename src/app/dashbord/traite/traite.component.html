@@ -1,0 +1,88 @@
+<div class="listraite rounded shadow bg-light p-4">
+  <div *ngIf="loading" class="text-center mt-4">
+    Chargement des lettres de change...
+  </div>
+  <ng-container *ngIf=" !loading && traites.length > 0; else defaultImage">
+    <h2 class="mb-3">Total des lettres de change : {{ total }}</h2>
+    <div class="table-responsive mt-4">
+
+      <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+          <tr>
+            <th>Pdf traite</th>
+            <th>Employer</th>
+            <th>Nom</th>
+            <!-- <th>Montant</th>
+            <th>Montant en lettres</th> -->
+            <th>Date création</th>
+            <th>Date échéance</th>
+            <!-- <th>Lieu</th> -->
+            <th>Jours Restants </th>
+            <th>RIB</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let traite of traites" [ngClass]="{
+      'depassee': getAlerteType(traite.date_echeance) === 'depassee',
+      'derniere': getAlerteType(traite.date_echeance) === 'derniere'
+    }">
+            <td>
+              <a [href]="this.apiUrl +'/storage/' + traite.pdf_path" target="_blank" title="Voir le PDF"
+                class="d-flex justify-content-center align-items-center">
+                <i class="bi bi-file-earmark-pdf-fill text-danger fs-4"></i>
+              </a>
+
+            </td>
+            <td>
+              <span class="d-flex justify-content-center align-items-center">{{ traite.user?.name }}</span>
+            </td>
+            <td><span class="d-flex justify-content-center align-items-center">{{ traite.nom }}</span></td>
+            <!--  <td>{{ traite.montant }} DT</td>
+           <td>{{ traite.ml }}</td> -->
+            <td><span class="d-flex justify-content-center align-items-center">{{ traite.date_creation }}</span></td>
+            <td><span class="d-flex justify-content-center align-items-center">{{ traite.date_echeance }}</span></td>
+            <!-- <td>{{ traite.lieu }}</td> -->
+            <td>
+
+    <ng-container [ngSwitch]="getAlerteType(traite.date_echeance)">
+      <span *ngSwitchCase="'depassee'" class="alert-message text-danger">
+         Tu as dépassé la date d’échéance, merci de payer !
+      </span>
+      <span *ngSwitchCase="'derniere'" class="alert-message text-warning">
+         Aujourd’hui est le <b>dernier jour</b> pour payer cette traite !
+      </span>
+      <span *ngSwitchDefault class="alert-message text-success">
+        {{ traite.jours_restants }} jours restants
+      </span>
+    </ng-container>
+
+            </td>
+            <td><span class="d-flex justify-content-center align-items-center">{{ traite.rib }}</span></td>
+            <td>
+              <div class="d-flex justify-content-center align-items-center">
+                <!-- <button class="btn btn-sm btn-primary me-1" title="Modifier" (click)="onEdit(traite)">
+                  <i class="bi bi-pencil-square"></i>
+                </button> -->
+
+                <button class="btn btn-sm btn-danger me-1" title="Supprimer" (click)="onDelete(traite)">
+                  <i class="bi bi-trash-fill"></i>
+                </button>
+
+                <button class="btn btn-sm btn-success" title="Marquer comme payée" (click)="onPay(traite)">
+                  <i class="bi bi-cash-coin"></i>
+                </button>
+              </div>
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-container>
+  <ng-template #defaultImage>
+    <div *ngIf="!loading" class="alert alert-warning mt-4">
+      Aucune traite trouvée pour cet utilisateur.
+    </div>
+  </ng-template>
+</div>

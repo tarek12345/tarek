@@ -28,10 +28,10 @@
         <!-- Boutons d'arrivée et de départ -->
         <div class="buttons">
           <ng-container *ngIf="!isWeekend(); else noPointage">
-            <button class="btn btn-success" (click)="onArrival()" [disabled]="status === 'au bureau'">
+            <button class="btn btn-success" (click)="onArrival()" [disabled]="isArrivalDisabled">
               Arrivée
             </button>
-            <button class="btn btn-dark" (click)="onDeparture()" [disabled]="status === 'hors ligne'">
+            <button class="btn btn-dark" (click)="onDeparture()" [disabled]="isDepartureDisabled">
               Départ
             </button>
           </ng-container>

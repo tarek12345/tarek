@@ -188,8 +188,25 @@ span.text {
   height: 400px; /* ou toute autre taille souhaitée */
 }
 
-@media(max-width:1599px){
+@media(min-width:1599px){
   .status {
     gap: 19px;
+}
+}
+@media(max-width:1360px){
+  .status {
+    gap: 19px;
+}
+.rightcontent ,.pointage{
+      width: 50%;
+}
+.chats{
+  width: 100%;
+}
+.statprof{
+      width: 20%;
+}
+.conteneuruser{
+ width: 80%;
 }
 }

@@ -27,7 +27,7 @@ interface Employe {
     [key: string]: any;
   };
 }
-export type Statut = 'todo' | 'in_progress' | 'done';
+export type Statut = 'todo' | 'in_progress' | 'test' | 'done';
 
 export interface Tache {
   id?: number;
@@ -278,5 +278,42 @@ updateCommentaireTache(tacheId: number, commentaire: string) {
   return this.http.post(`${this.apiUrl}/taches/${tacheId}/commentaire`, { commentaire });
 }
 
+  // Méthode pour créer une traite
+  createtraite(formData: FormData): Observable<Blob> {
+    return this.http.post(`${this.apiUrl}/lettre-de-change/generer-import`, formData, {
+      responseType: 'blob'
+    });
+  }
 
+enregistrerTraite(data: any) {
+  return this.http.post<any>(`${this.apiUrl}/traites`, data);
+}
+
+getTraitListByUser(userId: number ,page: number = 1) {
+  return this.http.get<any[]>(`${this.apiUrl}/traitesuser/${userId}`);
+
+}
+
+getTraitList() {
+  return this.http.get<{ success: boolean, traites: any[] }>(this.apiUrl + '/traite-with-users');
+}
+  Deletetraite(traiteId: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/traites/${traiteId}`);
+  }
+
+
+
+
+   getAllConfig(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/traiteconfigs`);
+  }
+
+  addConfig(data: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/traiteconfigs`, data);
+  }
+
+  deleteConfig(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/traiteconfigs/${id}`);
+  }
+  
 }

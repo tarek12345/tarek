@@ -36,6 +36,11 @@ import { TacheComponent } from './dashbord/tache/tache.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { QuillModule } from 'ngx-quill';
 import localeFr from '@angular/common/locales/fr';
+import { MobileBlockComponent } from './mobile-block/mobile-block.component';
+import { TraiteComponent } from './dashbord/traite/traite.component';
+import { AddTraiteComponent } from './dashbord/traite/add-traite/add-traite.component';
+import { ConfigTraiteComponent } from './dashbord/traite/config-traite/config-traite.component';
+
 
 registerLocaleData(localeFr, 'fr');
 
@@ -62,6 +67,10 @@ registerLocaleData(localeFr, 'fr');
     ChartCircleComponent,
     LeavesComponent,
     TacheComponent,
+    MobileBlockComponent,
+    TraiteComponent,
+    AddTraiteComponent,
+    ConfigTraiteComponent,
   
 
   ],

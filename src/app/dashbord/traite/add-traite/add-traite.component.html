@@ -1,0 +1,136 @@
+<div class="d-flex justify-content-center">
+  <form class="container mt-4 p-4 border rounded shadow bg-light" (ngSubmit)="onSubmit(traiteForm)"
+        #traiteForm="ngForm" novalidate>
+
+    <div class="title d-flex justify-content-between">
+      <h2>Lettre de Change</h2>
+      <h2>كمبيالة</h2>
+    </div>
+
+    <!-- Import PDF -->
+    <div class="mb-3">
+      <label class="form-label">Importer un PDF modèle</label>
+      <input type="file" (change)="onFileSelected($event)" accept="application/pdf" required>
+    </div>
+
+    <div class="d-flex gap-1 justify-content-around">
+      <!-- Sélect Fournisseur -->
+      <div class="mb-3 w-25">
+        <label class="form-label">Fournisseur</label>
+        <select class="form-select"
+                name="nom"
+                [(ngModel)]="formData.nom"
+                (change)="onFournisseurChange($event)">
+          <option value="">-- Sélectionner --</option>
+          <option *ngFor="let item of configs" [value]="item.id">
+            {{ item.fournisseur }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Sélect RIB -->
+      <div class="mb-3 w-25">
+        <label class="form-label">RIB</label>
+        <select class="form-select"
+                [(ngModel)]="formData.rib"
+                name="rib"
+                #rib="ngModel"
+                required>
+          <option value="">-- Sélectionner --</option>
+          <option *ngFor="let item of ribOptions" [value]="item">
+            {{ item }}
+          </option>
+        </select>
+        <div *ngIf="rib.invalid && traiteForm.submitted" class="text-danger">
+          RIB requis
+        </div>
+      </div>
+
+      <!-- RIB structuré (Aperçu) -->
+      <div class="mb-3 w-25">
+        <label class="form-label">RIB structuré (Aperçu) :</label>
+        <div class="d-flex gap-2">
+          <input class="form-control text-center" style="width: 60px;" [value]="ribParts.codeBanque" readonly>
+          <input class="form-control text-center" style="width: 60px;" [value]="ribParts.codeAgence" readonly>
+          <input class="form-control text-center" style="width: 100%;" [value]="ribParts.numCompte" readonly>
+          <input class="form-control text-center" style="width: 60px;" [value]="ribParts.cle" readonly>
+        </div>
+      </div>
+
+      <!-- Date de Échéance -->
+      <div class="mb-3 w-25">
+        <label class="form-label">Date de Échéance</label>
+        <input type="date" class="form-control"
+               [(ngModel)]="formData.date_echeance"
+               #date_echeance="ngModel" name="date_echeance" required>
+        <div *ngIf="date_echeance.invalid && traiteForm.submitted" class="text-danger">
+          Date d’échéance
+        </div>
+      </div>
+    </div>
+
+    <!-- Montant -->
+    <div class="d-flex gap-1 justify-content-around">
+      <div class="mb-3 w-50">
+        <label class="form-label">Montant</label>
+        <input type="number" class="form-control" [(ngModel)]="formData.montant" name="montant"
+               (input)="onMontantInput()" required #montant="ngModel">
+        <div *ngIf="montant.invalid && traiteForm.submitted" class="text-danger">Montant vide</div>
+      </div>
+      <div class="mb-3 w-50">
+        <label class="form-label">Montant en lettres</label>
+        <input type="text" class="form-control" [(ngModel)]="formData.ml" name="ml"
+               placeholder="Montant en lettres" readonly>
+      </div>
+    </div>
+
+    <!-- Date / Lieu / Cédant -->
+    <div class="d-flex gap-1 justify-content-around">
+      <div class="mb-3" style="width :33.33%">
+        <label class="form-label">Date de création</label>
+        <input type="date" class="form-control" [(ngModel)]="formData.date_creation" #date_creation="ngModel"
+               name="date_creation" required>
+        <div *ngIf="date_creation.invalid && traiteForm.submitted" class="text-danger">date vide</div>
+      </div>
+      <div class="mb-3 " style="width :33.33%">
+        <label class="form-label">Lieu de création</label>
+        <input type="text" class="form-control" [(ngModel)]="formData.lieu" name="lieu"
+               placeholder="Lieu de création" #lieu="ngModel" required>
+        <div *ngIf="lieu.invalid &&  traiteForm.submitted" class="text-danger">lieu de création</div>
+      </div>
+      <div class="mb-3 " style="width :33.33%">
+        <label class="form-label">Nom du cédant</label>
+        <input type="text" class="form-control" [(ngModel)]="formData.lieuc" name="lieuc"
+               placeholder="Nom du cédant">
+      </div>
+    </div>
+
+    <!-- Tiré / Valeur / Domicilation -->
+    <div class="d-flex gap-1 justify-content-around">
+      <div class="mb-3" style="width :33.33%">
+        <label class="form-label">Nom et adresse de tiré </label>
+        <input type="text" class="form-control" [(ngModel)]="formData.nd" #nd="ngModel" name="nd" required>
+        <div *ngIf="nd.invalid && traiteForm.submitted" class="text-danger">Nom ou adresse de tiré vide </div>
+      </div>
+      <div class="mb-3" style="width :33.33%">
+        <label class="form-label">Valeur en </label>
+        <select class="form-select" name="valeur_en" [(ngModel)]="formData.valeur_en">
+          <option value="dinar">Dinars</option>
+          <option value="euro">Euro</option>
+          <option value="dolar">Dolar</option>
+        </select>
+      </div>
+      <div class="mb-3" style="width :33.33%">
+        <label class="form-label">Domicilation</label>
+        <input type="text" class="form-control" [(ngModel)]="formData.domicilation" name="domicilation"
+               placeholder="Domicilation" required #domicilation="ngModel">
+        <div *ngIf="domicilation.invalid &&  traiteForm.submitted" class="text-danger">Domicilation vide </div>
+      </div>
+    </div>
+
+    <div class="d-flex gap-3 justify-content-end">
+      <button type="submit" class="btn btn-success">Générer PDF</button>
+    </div>
+
+  </form>
+</div>

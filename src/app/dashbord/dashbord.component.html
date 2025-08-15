@@ -40,8 +40,8 @@
           <div class="submenu " *ngIf="showProfileSubmenu && user.user?.role === 'administrator'">
             <button class="nav-link sub" data-bs-toggle="pill" data-bs-target="#v-pills-profile-list"
               type="button" role="tab">👥 Listes</button>
-            <button class="nav-link sub" data-bs-toggle="pill" data-bs-target="#v-pills-profile-add"
-              type="button" role="tab">➕ Ajouter role</button>
+            <!-- <button class="nav-link sub" data-bs-toggle="pill" data-bs-target="#v-pills-profile-add"
+              type="button" role="tab">➕ Ajouter role</button> -->
           
           </div>
             <button class="nav-link" id="v-pills-statistique-tab" data-bs-toggle="pill" data-bs-target="#v-pills-statistique"
@@ -55,8 +55,32 @@
             type="button" role="tab" aria-controls="v-pills-tache" aria-selected="false"><i class="bi bi-chat-dots"></i>
             Tàche 
             </button>
-          <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings"
-            type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false"> <i class="bi bi-gear"></i> Paramètre </button>
+
+          
+         <!-- Profiles Button avec toggle submenu -->
+           
+          <button class="nav-link" type="button"
+        
+            (click)="toggleProfileSubmenutraite()">
+           <i class="bi bi-file-earmark-medical-fill"></i> Traite 
+          </button>
+            <!-- Sous-menu pour Profiles -->
+          <div class="submenu " *ngIf="showProfileSubmenut">
+            <button class="nav-link sub" data-bs-toggle="pill" data-bs-target="#v-pills-traite-list"
+              type="button" role="tab"> Listes</button>
+             <button class="nav-link sub" data-bs-toggle="pill" data-bs-target="#v-pills-traite-config"
+              type="button" role="tab"> Config traite</button> 
+             <button class="nav-link sub" data-bs-toggle="pill" data-bs-target="#v-pills-traite-add"
+              type="button" role="tab"> Imprimé traite</button> 
+          </div>
+
+
+
+
+
+            <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings"
+            type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false"> <i class="bi bi-gear"></i> Paramètre 
+          </button>
         </div>
        
       </div>
@@ -73,25 +97,33 @@
       <div class="tab-pane fade" id="v-pills-profile-list" role="tabpanel">
         <app-profils [userdetaile]="user"></app-profils>
       </div>
-
-      <div class="tab-pane fade" id="v-pills-profile-add" role="tabpanel">
-      SDFDSFDSF
-      </div>
       <div class="tab-pane fade" id="v-pills-statistique" role="tabpanel" aria-labelledby="v-pills-statistique-tab"
-      tabindex="0">
+      tabindex="1">
       <app-statistique [userdetaile]=user> 
       </app-statistique>
     </div>
       <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab"
-        tabindex="0">
+        tabindex="2">
         <app-leaves [userdetaile]=user></app-leaves>
       </div>
       <div class="tab-pane fade" id="v-pills-tache" role="tabpanel" aria-labelledby="v-pills-tache-tab"
-      tabindex="0">
+      tabindex="3">
       <app-tache [userdetaile]=usernotpagination [datauser]="user"></app-tache>
     </div>
+    <div class="tab-pane fade" id="v-pills-traite-list" role="tabpanel" aria-labelledby="v-pills-traite-list-tab"
+      tabindex="4">
+      <app-traite [userdetaile]=usernotpagination [datauser]="user"></app-traite>
+    </div>
+        <div class="tab-pane fade" id="v-pills-traite-config" role="tabpanel" aria-labelledby="v-pills-traite-config-tab"
+      tabindex="4">
+    <app-config-traite [userdetaile]=usernotpagination [datauser]="user"></app-config-traite>
+    </div>   
+     <div class="tab-pane fade" id="v-pills-traite-add" role="tabpanel" aria-labelledby="v-pills-traite-add-tab"
+      tabindex="4">
+      <app-add-traite [userdetaile]=usernotpagination [datauser]="user"></app-add-traite>
+    </div>
       <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab"
-        tabindex="0"><app-secttings *ngIf="user?.user" [userdetaile]="user.user"></app-secttings></div>
+        tabindex="5"><app-secttings *ngIf="user?.user" [userdetaile]="user.user"></app-secttings></div>
     </div>
   </div>
 

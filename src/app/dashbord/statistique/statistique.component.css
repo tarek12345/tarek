@@ -81,13 +81,14 @@ div#update {
       .classright {
         width: 100%; /* 1 élément par ligne */
       }
-    }
-    @media(max-width: 1599px) {
-    #allusers .classright {
-      width: calc(40% - 0px);
   
-  }
     }
+      @media(max-width: 1199px) {
+         #allusers .classright {
+        width: calc(100% - 0px);
+    }
+  }
+
     .status {
       position: relative;
   }

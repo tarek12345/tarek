@@ -66,11 +66,14 @@ usernotpagination :any
   }
   leavesuser: any[] = [];  // Liste des congés
 showProfileSubmenu: boolean = false;
+showProfileSubmenut: boolean = false;
 
 toggleProfileSubmenu() {
   this.showProfileSubmenu = !this.showProfileSubmenu;
 }
-
+toggleProfileSubmenutraite() {
+  this.showProfileSubmenut = !this.showProfileSubmenut;
+}
   GetUserSByid() {
     this.apiService.GetUserServiceByid(this.user.id).subscribe({
       next: (data) => {

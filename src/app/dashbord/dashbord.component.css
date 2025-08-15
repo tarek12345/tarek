@@ -104,6 +104,7 @@ button.nav-pills .nav-link.active {
 }
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
   background-color: #5358d9;
+      color: #fff;
 }
 .nav-link {
   background: #827ed6;

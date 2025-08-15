@@ -1,1 +1,5 @@
-<router-outlet />
+    <app-mobile-block *ngIf="isMobile"></app-mobile-block>
+    <div *ngIf="!isMobile">
+      <!-- ton app normale -->
+      <router-outlet></router-outlet>
+    </div>

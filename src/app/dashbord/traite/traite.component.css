@@ -1,0 +1,27 @@
+.invisible {
+  visibility: hidden !important;
+}
+.depassee {
+  animation: clignote-rouge 1s infinite;
+  background-color: #ffe0e0;
+}
+.derniere {
+  animation: clignote-orange 1s infinite;
+  background-color: #fff3cd;
+}
+
+@keyframes clignote-rouge {
+  0%   { background-color: #ffe0e0; }
+  50%  { background-color: #ffffff; }
+  100% { background-color: #ffe0e0; }
+}
+
+@keyframes clignote-orange {
+  0%   { background-color: #fff3cd; }
+  50%  { background-color: #ffffff; }
+  100% { background-color: #fff3cd; }
+}
+
+.alert-message {
+  font-weight: bold;
+}

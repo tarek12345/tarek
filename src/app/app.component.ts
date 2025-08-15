@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component ,HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -8,4 +8,18 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'pointingworks';
+    isMobile = false;
+
+  ngOnInit() {
+    this.checkDevice();
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.checkDevice();
+  }
+
+  checkDevice() {
+    this.isMobile = window.innerWidth <= 768; // tu peux ajuster ce seuil si besoin
+  }
 }

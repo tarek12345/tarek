@@ -60,6 +60,7 @@ img.enteimg {
     display: flex;
     justify-content: space-between;
     padding: 20px 3px;
+       gap: 12px;
   }
   
   .tache-column {

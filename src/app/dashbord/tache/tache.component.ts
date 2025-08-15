@@ -40,6 +40,7 @@ export class TacheComponent implements OnInit {
   tachesByStatus: { [key in Statut]: Tache[] } = {
     todo: [],
     in_progress: [],
+    test: [],
     done: []
   };
 
@@ -71,11 +72,12 @@ export class TacheComponent implements OnInit {
       this.tachesByStatus = {
         todo: taches.filter(t => t.statut === 'todo'),
         in_progress: taches.filter(t => t.statut === 'in_progress'),
+        test: taches.filter(t => t.statut === 'test'),
         done: taches.filter(t => t.statut === 'done'),
       };
     });
   }
-  statutKeys: Statut[] = ['todo', 'in_progress', 'done'];
+  statutKeys: Statut[] = ['todo', 'in_progress', 'test' ,'done'];
 
   
 drop(event: CdkDragDrop<Tache[]>, newStatut: Statut): void {
@@ -91,7 +93,8 @@ drop(event: CdkDragDrop<Tache[]>, newStatut: Statut): void {
   const statutOrdre: { [key in Statut]: number } = {
     todo: 0,
     in_progress: 1,
-    done: 2
+    test :2,
+    done: 3
   };
 
   if (event.previousContainer === event.container) {

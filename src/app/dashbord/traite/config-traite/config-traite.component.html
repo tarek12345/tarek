@@ -1,0 +1,29 @@
+<!-- src/app/components/traiteconfig/traiteconfig.component.html -->
+<div class="container mt-4">
+  <h2 class="text-light">Configuration Fournisseur & RIB</h2>
+
+  <div class="mb-3">
+    <input type="text" [(ngModel)]="fournisseur" placeholder="Fournisseur" class="form-control mb-2">
+    <input type="text" [(ngModel)]="rib" placeholder="RIB" class="form-control mb-2">
+    <button class="btn btn-primary" (click)="addConfig()">Ajouter</button>
+  </div>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Fournisseur</th>
+        <th>RIB</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cfg of configs">
+        <td>{{ cfg.fournisseur }}</td>
+        <td>{{ cfg.rib }}</td>
+        <td>
+          <button class="btn btn-danger btn-sm" (click)="deleteConfig(cfg.id)">Supprimer</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

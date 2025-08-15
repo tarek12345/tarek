@@ -62,8 +62,21 @@ constructor(
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
     tooltipTriggerList.map((tooltipTriggerEl: any) => new bootstrap.Tooltip(tooltipTriggerEl))
   }
-
+isArrivalDisabled = false;
+isDepartureDisabled = false;
   async ngOnInit(): Promise<void> {
+ const savedStatus = this.userService.getDecryptedItem('status');
+  const savedArrivalDate = this.userService.getDecryptedItem('arrivalDate');
+
+  this.status = savedStatus || 'hors ligne';
+
+  this.isArrivalDisabled = this.status === 'au bureau';
+  this.isDepartureDisabled = this.status === 'hors ligne';
+
+  if (this.status === 'au bureau' && savedArrivalDate) {
+    this.arrivalDate = savedArrivalDate;
+    this.startCounter();
+  }
     await this.initializeUser();
     this.loadCounterState();
     this.checkCounterReset(); 
