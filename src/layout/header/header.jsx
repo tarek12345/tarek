@@ -12,8 +12,8 @@ export default function Header({ long, toggleLanguage }) {
   const [language, setLanguage] = useState(long || "FR");
 
   useEffect(() => {
-    setLanguage(long); // Update language when props.long changes
-  }, [long]);
+    setLanguage(long); 
+  }, [long]);  
 
   return (
     <div className="sectionheader-all" id='sectionfirsts'>
