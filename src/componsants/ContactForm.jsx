@@ -89,7 +89,7 @@ export default function ContactForm(tras) {
         </div>
         <ReCAPTCHA
           ref={recaptchaRef}
-          sitekey="6Lc3oYIqAAAAAFTxs6emwU2Z8onowyIEZ65qx1fM"
+          sitekey="6Lc5ge0rAAAAAKn5DjgvURFe97ENmn4MRKnLzlu3"
         />
 
         <button type="submit" className="btn-hover color-7">
