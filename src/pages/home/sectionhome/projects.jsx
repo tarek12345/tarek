@@ -7,6 +7,8 @@ import flashcartegrise from "../../../assets/flashcartegrise.png";
 import lesrousses from "../../../assets/lesrousses.png";
 import Bbord from "../../../assets/bborad.png";
 import Bborddetaile from "../../../assets/bboraddetaille.png";
+import BborddetaileDox from "../../../assets/documex1.jpeg";
+import BborddetaileDox1 from "../../../assets/documex.jpeg";
 import yellowsmidth from "../../../assets/buildersite.png";
 import yellowsmidthdetaile from "../../../assets/ys-auth.png";
 import yellowsmidthlist from "../../../assets/ysdetaille.png";
@@ -46,6 +48,18 @@ export default function Projects(props) {
       thumbnail: Bborddetaile,
       caption: " Tableaux du bord",
       captionen: "Bbord",
+    },
+       {
+      url: "https://documenx.com",
+      thumbnail: BborddetaileDox1,
+      caption: " auth",
+      captionen: "Documex",
+    },
+       {
+      url: "https://documenx.com",
+      thumbnail: BborddetaileDox,
+      caption: " Tableaux du bord",
+      captionen: "Documex",
     },
   ];
 
