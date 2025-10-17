@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/tarek/static/css/main.1303f6ca.css",
-    "main.js": "/tarek/static/js/main.459d6490.js",
-    "static/js/453.b5c04722.chunk.js": "/tarek/static/js/453.b5c04722.chunk.js",
+    "main.css": "/tarek/static/css/main.505bd5fc.css",
+    "main.js": "/tarek/static/js/main.320c21a4.js",
+    "static/js/453.3ac6b82a.chunk.js": "/tarek/static/js/453.3ac6b82a.chunk.js",
     "static/media/videocode.mp4": "/tarek/static/media/videocode.83522e448aa6d02c96c1.mp4",
     "static/media/programming.jpg": "/tarek/static/media/programming.b5fe33f1d544d6180afd.jpg",
     "static/media/lesrousses.png": "/tarek/static/media/lesrousses.d7c1a1c1e976343dcc88.png",
@@ -30,12 +30,12 @@
     "static/media/bitbakedimg.png": "/tarek/static/media/bitbakedimg.46a28984bab16db0f7e8.png",
     "static/media/whatsapp.png": "/tarek/static/media/whatsapp.d026940870fb334920b7.png",
     "index.html": "/tarek/index.html",
-    "main.1303f6ca.css.map": "/tarek/static/css/main.1303f6ca.css.map",
-    "main.459d6490.js.map": "/tarek/static/js/main.459d6490.js.map",
-    "453.b5c04722.chunk.js.map": "/tarek/static/js/453.b5c04722.chunk.js.map"
+    "main.505bd5fc.css.map": "/tarek/static/css/main.505bd5fc.css.map",
+    "main.320c21a4.js.map": "/tarek/static/js/main.320c21a4.js.map",
+    "453.3ac6b82a.chunk.js.map": "/tarek/static/js/453.3ac6b82a.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.1303f6ca.css",
-    "static/js/main.459d6490.js"
+    "static/css/main.505bd5fc.css",
+    "static/js/main.320c21a4.js"
   ]
 }

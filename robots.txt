@@ -7,4 +7,4 @@ Disallow: /admin
 Disallow: /private
 
 # Ajouter le lien vers la sitemap (si disponible)
-Sitemap: https://tarek-portfolio.tn/sitemap.xml
+Sitemap: https://tarek12345.github.io/tarek/sitemap.xml
