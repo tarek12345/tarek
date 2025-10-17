@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/tarek/static/css/main.505bd5fc.css",
-    "main.js": "/tarek/static/js/main.2757f150.js",
+    "main.js": "/tarek/static/js/main.0d211d00.js",
     "static/js/453.3ac6b82a.chunk.js": "/tarek/static/js/453.3ac6b82a.chunk.js",
     "static/media/videocode.mp4": "/tarek/static/media/videocode.83522e448aa6d02c96c1.mp4",
     "static/media/programming.jpg": "/tarek/static/media/programming.b5fe33f1d544d6180afd.jpg",
@@ -17,6 +17,7 @@
     "static/media/XD.png": "/tarek/static/media/XD.3938e5b75ca06f4bb418.png",
     "static/media/vscodeimg.png": "/tarek/static/media/vscodeimg.fc3cee5dd4159a256353.png",
     "static/media/logiciels.png": "/tarek/static/media/logiciels.def8414270b794f49529.png",
+    "static/media/documex.jpeg": "/tarek/static/media/documex.924d3c4f9912b47c8c2e.jpeg",
     "static/media/jiraimg.png": "/tarek/static/media/jiraimg.47d5b7e424a4c338502c.png",
     "static/media/ys-auth.png": "/tarek/static/media/ys-auth.fa57822a8fed223797ac.png",
     "static/media/ZohoSprintimg.png": "/tarek/static/media/ZohoSprintimg.b1908d9d9c6165c62090.png",
@@ -28,14 +29,15 @@
     "static/media/buildersite.png": "/tarek/static/media/buildersite.4540e7f1e189793846d5.png",
     "static/media/englishCV.pdf": "/tarek/static/media/englishCV.333ba74a16e57a0c7fb1.pdf",
     "static/media/bitbakedimg.png": "/tarek/static/media/bitbakedimg.46a28984bab16db0f7e8.png",
+    "static/media/documex1.jpeg": "/tarek/static/media/documex1.036fe2c4ab9cedb5d4af.jpeg",
     "static/media/whatsapp.png": "/tarek/static/media/whatsapp.d026940870fb334920b7.png",
     "index.html": "/tarek/index.html",
     "main.505bd5fc.css.map": "/tarek/static/css/main.505bd5fc.css.map",
-    "main.2757f150.js.map": "/tarek/static/js/main.2757f150.js.map",
+    "main.0d211d00.js.map": "/tarek/static/js/main.0d211d00.js.map",
     "453.3ac6b82a.chunk.js.map": "/tarek/static/js/453.3ac6b82a.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.505bd5fc.css",
-    "static/js/main.2757f150.js"
+    "static/js/main.0d211d00.js"
   ]
 }

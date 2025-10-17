@@ -24,6 +24,7 @@ const [experiences] = useState([
 { name: "4 ans d'expérience", value: 4 },
 { name: "5 ans d'expérience", value: 5 },
 { name: "6 ans d'expérience", value: 6 },
+{ name: "7 ans d'expérience", value: 7 },
 ]);
 const [searchQuery, setSearchQuery] = useState("");
 const [filteredSkills, setFilteredSkills] = useState(skills);
