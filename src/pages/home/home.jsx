@@ -37,7 +37,7 @@ export default function Home() {
   const [activeLink, setActiveLink] = useState('/');
   const [compteur] = useState([
     { namfr: "Projet", namen: "Project", value: "400" },
-    { namfr: "Expérience", namen: "Experience", value: "6" },
+    { namfr: "Expérience", namen: "Experience", value: "7" },
   ]);
   const [skills] = useState([
     { name: "HTML 5", level: 100, icon: faHtml5 },
