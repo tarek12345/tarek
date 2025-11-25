@@ -11,6 +11,10 @@ return new class extends Migration {
             $table->id();
             $table->string('fournisseur', 255);
             $table->string('rib', 255);
+            $table->string('lieu',255);
+            $table->string('nd',255);
+
+
             $table->timestamps();
         });
     }

@@ -9,6 +9,8 @@ use App\Http\Controllers\PublicHolidayController;
 use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\TacheController;
 use App\Http\Controllers\LettreDeChangeController;
+use App\Http\Controllers\ChatController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -39,6 +41,15 @@ Route::middleware('guest')->post('forgot-password', [AuthController::class, 'for
 Route::post('/verify-reset-token', [UserController::class, 'verifyResetToken']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
+
+
+Route::get('/conversations/{userId}', [ChatController::class, 'getConversations']);
+Route::get('/messages/{conversationId}', [ChatController::class, 'getMessages']);
+Route::post('/start', [ChatController::class, 'startConversation']);
+Route::post('/send', [ChatController::class, 'sendMessage']);
+Route::get('/chat/unread/{userId}', [ChatController::class, 'getUnreadMessages']);
+
+Route::post('/messages/mark-read/{convId}/{userId}', [ChatController::class, 'markAsRead']);
 // Pointage 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('users/{id}', [AuthController::class, 'getUserById']); // Added semicolon here
@@ -71,8 +82,10 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::get('/traiteconfigs', [LettreDeChangeController::class, 'indexConfig']);
 Route::post('/traiteconfigs', [LettreDeChangeController::class, 'storeConfig']);
 
-Route::delete('/traiteconfigs/{id}', [LettreDeChangeController::class, 'destroyConfig']);
+   Route::delete('/traiteconfigs/{id}', [LettreDeChangeController::class, 'destroyConfig']);
     Route::get('/traitesuser/{id}', [LettreDeChangeController::class, 'gettraitebyuser']);
     Route::delete('/traites/{id}', [LettreDeChangeController::class, 'deleteTraite']); // Supprimer un congé
-    Route::get('/traite-with-users', [LettreDeChangeController::class, 'getAllTraitesWithUsers']);
+   Route::get('/traite-with-users', [LettreDeChangeController::class, 'getAllTraitesWithUsers']);
+   Route::middleware('auth:sanctum')->get('/traites', [LettreDeChangeController::class, 'getTraites']);
+
 });

@@ -867,46 +867,167 @@ class AuthController extends Controller
     }
  
     // serach user //
-    public function searchUsers(Request $request)
+//     public function searchUsers(Request $request)
+// {
+//     $perPage = $request->input('per_page', 3);
+//     $search = $request->input('search');
+
+//     $query = User::query()->with(['pointages' => function ($q) {
+//         $q->latest('created_at');
+//     }]);
+
+//     // Si une recherche est fournie : filtrer
+//     if ($search) {
+//         $query->where(function($q) use ($search) {
+//             $q->where('name', 'like', '%' . $search . '%')
+//               ->orWhere('email', 'like', '%' . $search . '%');
+//         });
+//     }
+
+//     // Paginer les résultats
+//     $users = $query->paginate($perPage);
+
+//     // Calculer les statuts
+//     $statusCounts = [
+//         'au_bureau' => 0,
+//         'hors_ligne' => 0,
+//     ];
+
+//     foreach ($users as $user) {
+//         $lastPointage = $user->pointages->first();
+//         $status = $lastPointage && $lastPointage->is_active ? 'au_bureau' : 'hors_ligne';
+//         $user->status = $status;
+
+//         if ($status === 'au_bureau') {
+//             $statusCounts['au_bureau']++;
+//         } else {
+//             $statusCounts['hors_ligne']++;
+//         }
+
+//         $user->profile_image_url = $user->profile_image ? URL::to('/') . '/storage/' . $user->profile_image : null;
+//         $user->arrival_date = $lastPointage ? Carbon::parse($lastPointage->arrival_date)->format('H:i:s') : null;
+//         $user->location = $lastPointage ? $lastPointage->location : null;
+//     }
+
+//     return response()->json([
+//         'users' => $users->items(),
+//         'status_counts' => $statusCounts,
+//         'current_page' => $users->currentPage(),
+//         'last_page' => $users->lastPage(),
+//         'per_page' => $users->perPage(),
+//         'total' => $users->total(),
+//     ], 200);
+// }
+public function searchUsers(Request $request)
 {
     $perPage = $request->input('per_page', 3);
     $search = $request->input('search');
 
-    $query = User::query()->with(['pointages' => function ($q) {
-        $q->latest('created_at');
-    }]);
+    $query = User::query()->with('pointages');
 
-    // Si une recherche est fournie : filtrer
     if ($search) {
-        $query->where(function($q) use ($search) {
-            $q->where('name', 'like', '%' . $search . '%')
-              ->orWhere('email', 'like', '%' . $search . '%');
+        $query->where(function ($q) use ($search) {
+            $q->where('name', 'like', "%$search%")
+              ->orWhere('email', 'like', "%$search%");
         });
     }
 
-    // Paginer les résultats
     $users = $query->paginate($perPage);
 
-    // Calculer les statuts
+    $today = Carbon::today();
+    $firstDayOfMonth = $today->copy()->startOfMonth();
+    $lastDayOfMonth = $today->copy()->endOfMonth();
+
     $statusCounts = [
         'au_bureau' => 0,
         'hors_ligne' => 0,
     ];
 
+    // Fonction formattage identique à getUserById
+    $formatDayData = function ($date, $pointages) {
+        $dayName = ucfirst(Carbon::parse($date)->locale('fr')->isoFormat('dddd'));
+        $monthName = ucfirst(Carbon::parse($date)->locale('fr')->isoFormat('MMMM'));
+        $weekNumber = Carbon::parse($date)->weekOfMonth;
+
+        if ($pointages->isEmpty()) {
+            return [
+                "date" => $date,
+                "day" => $dayName,
+                "month" => $monthName,
+                "week" => $weekNumber,
+                "arrival_date" => null,
+                "last_departure" => null,
+                "location" => null,
+                "status" => "hors ligne",
+                "total_hours" => "00:00:00",
+                "counter" => 0,
+                "pointages" => [],
+            ];
+        }
+
+        $first = $pointages->first();
+        $last = $pointages->last();
+        $totalSeconds = $pointages->sum('counter');
+
+        return [
+            "date" => $date,
+            "day" => $dayName,
+            "month" => $monthName,
+            "week" => $weekNumber,
+            "arrival_date" => Carbon::parse($first->arrival_date)->format('H:i:s'),
+            "last_departure" => Carbon::parse($last->last_departure)->format('H:i:s'),
+            "location" => $last->location ?? null,
+            "status" => $last->is_active ? "au_bureau" : "hors_ligne",
+            "total_hours" => gmdate('H:i:s', $totalSeconds),
+            "counter" => $totalSeconds,
+            "pointages" => $pointages->map(function ($p) {
+                return [
+                    "id" => $p->id,
+                    "user_id" => $p->user_id,
+                    "arrival_date" => Carbon::parse($p->arrival_date)->format('H:i:s'),
+                    "counter" => $p->counter,
+                    "last_departure" => Carbon::parse($p->last_departure)->format('Y-m-d H:i:s'),
+                    "location" => $p->location ?? null,
+                ];
+            }),
+        ];
+    };
+
     foreach ($users as $user) {
-        $lastPointage = $user->pointages->first();
+        $monthlyPointages = $user->pointages()
+            ->whereBetween('arrival_date', [$firstDayOfMonth, $lastDayOfMonth])
+            ->get();
+
+        $user->profile_image_url = $user->profile_image
+            ? URL::to('/') . '/storage/' . $user->profile_image
+            : null;
+
+        // Regroupement par date
+        $history = [];
+        $totalCounter = 0;
+
+        if (!$monthlyPointages->isEmpty()) {
+            $byDay = [];
+            foreach ($monthlyPointages as $p) {
+                $date = Carbon::parse($p->last_departure)->toDateString();
+                $byDay[$date][] = $p;
+            }
+
+            foreach ($byDay as $date => $rows) {
+                $dayData = $formatDayData($date, collect($rows));
+                $history[] = $dayData;
+                $totalCounter += $dayData['counter'];
+            }
+        }
+
+        $user->history = $history;
+        $user->counter = $totalCounter;
+
+        $lastPointage = $user->pointages->last();
         $status = $lastPointage && $lastPointage->is_active ? 'au_bureau' : 'hors_ligne';
         $user->status = $status;
 
-        if ($status === 'au_bureau') {
-            $statusCounts['au_bureau']++;
-        } else {
-            $statusCounts['hors_ligne']++;
-        }
-
-        $user->profile_image_url = $user->profile_image ? URL::to('/') . '/storage/' . $user->profile_image : null;
-        $user->arrival_date = $lastPointage ? Carbon::parse($lastPointage->arrival_date)->format('H:i:s') : null;
-        $user->location = $lastPointage ? $lastPointage->location : null;
+        $statusCounts[$status]++;
     }
 
     return response()->json([

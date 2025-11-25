@@ -14,5 +14,7 @@ class TraiteConfig extends Model
     protected $fillable = [
         'fournisseur',
         'rib',
+        'lieu',
+        'nd'
     ];
 }
