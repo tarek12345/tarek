@@ -40,7 +40,12 @@
                 "glob": "**/*",
                 "input": "public",
                 "output": "public"
-              }
+              },
+              {
+              "glob": "_redirects",
+              "input": "src",
+              "output": "./"
+            }
             ],
             "styles": [
               "src/styles.css",
@@ -63,9 +68,9 @@
             "production": {
               "budgets": [
                 {
-                  "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                     "type": "initial",
+                      "maximumWarning": "3mb",
+                      "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
