@@ -21,6 +21,10 @@ img.enteimg {
     object-fit: cover;
     border-radius: 50%;
 }
+i.bi.bi-person-circle{
+    font-size: 36px;
+    line-height: 36px;
+}
 .tackheader {
     display: flex;
     justify-content: space-between;
@@ -190,4 +194,8 @@ display: flex;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.disabledbtn {
+  pointer-events: none; /* bloque les clics */
+  opacity: 0.5;         /* rend visuellement désactivé */
 }

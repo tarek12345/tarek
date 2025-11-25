@@ -1,0 +1,54 @@
+<div class="historiques">
+  
+  <div class="row">
+    <div class="col-md-8">
+      <h2 class="text-secondary">Historique des pointages</h2>
+    </div>
+    <div class="col-md-4">
+      <input type="date"
+             class="form-control mt-2"
+             [(ngModel)]="selectedDate"
+             (change)="filterBySelectedDate()">
+    </div>
+  </div>
+
+  <table class="table mt-3">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Mois</th>
+        <th>Jour</th>
+        <th>Heures</th>
+      </tr>
+    </thead>
+
+    <tbody *ngIf="workDays.length > 0; else noData">
+      <tr *ngFor="let day of workDays"
+          [ngClass]="{'d-none': day.day === 'Samedi' || day.day === 'Dimanche'}">
+
+        <td>{{ day.date }}</td>
+        <td>{{ day.month }}</td>
+        <td>{{ day.day }}</td>
+
+        <td>
+          <span [ngClass]="{'text-danger': day.hours === '00:00:00'}">
+            {{ day.hours }}
+          </span>
+        </td>
+      </tr>
+    </tbody>
+
+    <ng-template #noData>
+      <tr>
+        <td colspan="4" class="text-center">Aucune donnée trouvée.</td>
+      </tr>
+    </ng-template>
+
+  </table>
+
+  <div class="text-end fw-bold pe-3">
+    Total du mois :
+    <span class="text-primary">{{ totalMonthHours }}</span>
+  </div>
+
+</div>

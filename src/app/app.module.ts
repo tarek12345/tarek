@@ -40,6 +40,8 @@ import { MobileBlockComponent } from './mobile-block/mobile-block.component';
 import { TraiteComponent } from './dashbord/traite/traite.component';
 import { AddTraiteComponent } from './dashbord/traite/add-traite/add-traite.component';
 import { ConfigTraiteComponent } from './dashbord/traite/config-traite/config-traite.component';
+import { HistoriqueComponent } from './dashbord/historique/historique.component';
+import { ChatComponent } from './dashbord/chat/chat.component';
 
 
 registerLocaleData(localeFr, 'fr');
@@ -71,6 +73,8 @@ registerLocaleData(localeFr, 'fr');
     TraiteComponent,
     AddTraiteComponent,
     ConfigTraiteComponent,
+    HistoriqueComponent,
+    ChatComponent,
   
 
   ],

@@ -4,28 +4,33 @@
     <p>Liste des tâches</p>
   </div>
 
-  <div class="tackheader-left">
-    <div class="listuser" *ngFor="let item of visibleUsers" (click)="selectUser(item)" >
-      <div type="button"  [ngClass]="userid.id==item.id ?'glow-border':''">
-        <ng-container *ngIf="item.profile_image_url; else defaultProfile">
-          <img [src]="item.profile_image_url" alt="Image de profil" class="enteimg" />
-        </ng-container>
-        <ng-template #defaultProfile>
-          <i class="bi bi-person-circle"></i>
-        </ng-template>
-        <sup class="addtt">
-          <i class="bi bi-plus" data-bs-toggle="tooltip" title="Ajouter tâche"></i>
-        </sup>
-      </div>
-    </div>
+<div class="tackheader-left">
+  <div class="listuser" *ngFor="let item of visibleUsers" (click)="selectUser(item)"  [ngClass]="userid?.role ==='administrator' ? '' : 'disabledbtn'" >
+    <div type="button" [ngClass]="userid?.id == item.id ? 'glow-border' : ''"
+     >
 
-    <!-- Afficher les utilisateurs restants -->
-    <div *ngIf="!showAllUsers && hiddenUserCount > 0" class="more-users">
-      <button class="btn btn-link" (click)="toggleShowAllUsers()">
-        +{{ hiddenUserCount }}
-      </button>
+      <ng-container *ngIf="item.profile_image_url; else defaultProfile">
+        <img [src]="item.profile_image_url" alt="Image de profil" class="enteimg"   data-bs-toggle="tooltip" title="Crée une  ticket"/>
+      </ng-container>
+
+      <ng-template #defaultProfile>
+        <i class="bi bi-person-circle"></i>
+      </ng-template>
+
+      <sup class="addtt">
+        <i class="bi bi-plus" data-bs-toggle="tooltip" title="Ajouter tâche"></i>
+      </sup>
     </div>
   </div>
+
+  <!-- Afficher les utilisateurs restants -->
+  <div *ngIf="!showAllUsers && hiddenUserCount > 0" class="more-users" [ngClass]="userid?.role ==='administrator' ? '' : 'disabledbtn'">
+    <button class="btn btn-link" (click)="toggleShowAllUsers()">
+      +{{ hiddenUserCount }}
+    </button>
+  </div>
+</div>
+
 </div>
 
 <!-- Colonnes de tâches -->

@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders ,HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -315,5 +315,10 @@ getTraitList() {
   deleteConfig(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/traiteconfigs/${id}`);
   }
-  
+  getAuthenticatedUser(): Observable<any> {
+  const token = localStorage.getItem('auth_token');
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  return this.http.get(`${this.apiUrl}/user`, { headers });
+}
+
 }

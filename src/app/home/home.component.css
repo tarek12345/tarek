@@ -22,6 +22,9 @@
 .authHome .rightsection .briefcase img {
     height: 265px;
 }
+button.btn.btn-outline-secondary.eyess:hover {
+    background: #d268cc;
+}
 .btns {
     display: flex;
     justify-content: center;

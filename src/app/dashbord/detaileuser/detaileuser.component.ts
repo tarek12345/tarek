@@ -1,9 +1,9 @@
-import { Component, Input, OnInit, ViewChild, ElementRef,AfterViewInit   } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { ApiService, PaginatedUsers } from '../../services/api.service';
+import { ApiService } from '../../services/api.service';
 import { UserService } from '../../services/user-service.service';
-import { format, startOfWeek, endOfWeek, getMonth, getYear, addDays } from 'date-fns';
+import { format, startOfWeek, endOfWeek, getMonth, addDays } from 'date-fns';
 import { fr } from 'date-fns/locale';
 declare var bootstrap: any;
 @Component({
@@ -47,13 +47,16 @@ export class Detaileuser implements OnInit {
   lastPage: number = 1;
   perPage: number = 4;
   total: number = 0;
-
-    // Déclaration du graphique
+ GetAllusers : any;
+ userdetaileid :any
+ isArrivalDisabled = false;
+isDepartureDisabled = false;
 constructor(
     private apiService: ApiService,
     private userService: UserService,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef 
   ) {
     
   }
@@ -62,10 +65,9 @@ constructor(
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
     tooltipTriggerList.map((tooltipTriggerEl: any) => new bootstrap.Tooltip(tooltipTriggerEl))
   }
-isArrivalDisabled = false;
-isDepartureDisabled = false;
+
   async ngOnInit(): Promise<void> {
- const savedStatus = this.userService.getDecryptedItem('status');
+   const savedStatus = this.userService.getDecryptedItem('status');
   const savedArrivalDate = this.userService.getDecryptedItem('arrivalDate');
 
   this.status = savedStatus || 'hors ligne';
@@ -82,7 +84,9 @@ isDepartureDisabled = false;
     this.checkCounterReset(); 
     await this.GetUserSByid(); // Ensure this happens after loading user data
   }
- 
+   refreshComponent() {
+    this.cdr.detectChanges();
+   }
   checkCounterReset(): void {
     const interval = setInterval(() => {
       const now = new Date();
@@ -95,17 +99,15 @@ isDepartureDisabled = false;
       }
     }, 60000); // Check every minute
   }
-  
-
   resetCounter(): void {
-    this.stopCounter(); // Arrêter le compteur actuel
-    this.totalTime = 0; // Réinitialiser le compteur à zéro
-    this.dailyTotal = 0; // Réinitialiser le total des heures journalières
-    this.weeklyTotal = 0; // Réinitialiser le total des heures hebdomadaires
-    this.monthlyTotal = 0; // Réinitialiser le total des heures mensuelles
-    this.updateCounterDisplay(this.totalTime); // Mettre à jour l'affichage du compteur
-    this.userService.setEncryptedItem('totalTime', '0'); // Sauvegarder la valeur réinitialisée dans le stockage
-    this.status = 'hors ligne'; // Réinitialiser le statut de l'utilisateur
+    this.stopCounter(); 
+    this.totalTime = 0; 
+    this.dailyTotal = 0; 
+    this.weeklyTotal = 0; 
+    this.monthlyTotal = 0; 
+    this.updateCounterDisplay(this.totalTime); 
+    this.userService.setEncryptedItem('totalTime', '0'); 
+    this.status = 'hors ligne'; 
     this.toastr.info('Le compteur a été réinitialisé automatiquement après 24 heures sans activité.');
   }
   initializeUser(): void {
@@ -152,12 +154,7 @@ isDepartureDisabled = false;
       );
     }
   }
-  
-  
-  
-  
-  // Fonction de conversion de l'heure au format "hh:mm:ss" en secondes
-  convertTimeToSeconds(timeString: string): number {
+ convertTimeToSeconds(timeString: string): number {
     const timeParts = timeString.split(':'); // Divise la chaîne en heures, minutes et secondes
     const hours = parseInt(timeParts[0], 10) || 0;
     const minutes = parseInt(timeParts[1], 10) || 0;
@@ -177,14 +174,11 @@ isDepartureDisabled = false;
         this.dailyTotal = response.daily_hours || 0;
         this.weeklyTotal = response.weekly_hours || 0;
         this.monthlyTotal = response.monthly_hours || 0;
-  
-        // S'assurer que le status est bien mis à jour
         this.status = response.status || 'hors ligne';
   
         if (this.status === 'au bureau') {
           this.startCounter();
         } else {
-          // Si l'utilisateur est hors ligne → afficher 00:00:00
           this.totalTime = 0;
           this.updateCounterDisplay(0);
           this.stopCounter();
@@ -203,23 +197,18 @@ isDepartureDisabled = false;
     this.GetUsers();
     this.updateCurrentTime();
   }
-  
-
-
 updateCurrentTime(): void {
   setInterval(() => {
     this.currentTime = new Date().toLocaleTimeString();
   }, 1000);
 }
-
-
   openPopup(user: any): void {
-    this.selectedUser = user; // Stocker l'utilisateur sélectionné
+    this.selectedUser = user; 
   this.selectedUserday =user
     if (this.userdetaile.role === 'administrator') {
-      this.displayStyle = "block"; // Afficher le modal
+      this.displayStyle = "block"; 
     } else {
-      this.displayStyle = "none"; // Cacher le modal
+      this.displayStyle = "none"; 
     }
   }
 
@@ -243,9 +232,8 @@ updateCurrentTime(): void {
     }
   }
   calculateWeeklyAndMonthlyHours(): void {
-    // Calculer les heures hebdomadaires et mensuelles
-    this.weeklyTotal = this.dailyTotal * 5; // 5 jours de travail par semaine
-    this.monthlyTotal = this.dailyTotal * 22; // 22 jours de travail par mois
+    this.weeklyTotal = this.dailyTotal * 5; 
+    this.monthlyTotal = this.dailyTotal * 22; 
   }
   updateCounterDisplay(totalTime: number): void {
     const hours = Math.floor(totalTime / 3600);
@@ -259,11 +247,9 @@ updateCurrentTime(): void {
     return value < 10 ? `0${value}` : `${value}`;
   }
   
- GetAllusers : any
  GetUsers(page: number = 1) {
   this.apiService.GetUsers(page).subscribe((data) => {
  this.GetAllusers  =  data
-    // Vérification de la présence des utilisateurs avant de les traiter
     if (data?.users && Array.isArray(data.users)) {
       this.allUsers = data.users.map(user => ({
         ...user,
@@ -271,14 +257,11 @@ updateCurrentTime(): void {
         historyKeys: this.getHistoryKeys(user.history)
       }));
 
-      // Initialiser filteredUsers avec les utilisateurs traités
       this.filteredUsers = [...this.allUsers];
     } else {
       console.warn('Aucun utilisateur trouvé dans la réponse de l\'API.');
-      this.filteredUsers = [];  // Si aucun utilisateur trouvé, initialise filteredUsers comme un tableau vide
+      this.filteredUsers = [];  
     }
-
-    // Mise à jour des autres données de pagination
     this.currentPage = data.current_page;
     this.lastPage = data.last_page;
     this.total = data.total;
@@ -296,7 +279,7 @@ getHistoryKeys(history: any): string[] {
   }
   return Object.keys(history);
 }
- async onArrival(): Promise<void> {
+async onArrival(): Promise<void> {
   if (this.status === 'au bureau') {
     this.toastr.warning('Vous êtes déjà au bureau.');
     return;
@@ -312,7 +295,13 @@ getHistoryKeys(history: any): string[] {
         this.toastr.success('Arrivée enregistrée avec succès.');
         this.userService.setEncryptedItem('arrivalDate', this.arrivalDate);
         this.userService.setEncryptedItem('status', this.status);
+        
+        // 🔹 mettre à jour les boutons
+        this.isArrivalDisabled = true;
+        this.isDepartureDisabled = false;
+
         this.startCounter();
+        this.refreshComponent();
       });
   } catch (error) {
     this.toastr.error('Erreur lors de l\'arrivée.');
@@ -339,14 +328,19 @@ async onDeparture(): Promise<void> {
 
     this.toastr.success('Départ enregistré avec succès.');
     this.userService.setEncryptedItem('departureDate', this.departureDate);
-    this.status = 'hors ligne'; // Mise à jour du statut
+    this.status = 'hors ligne';
     this.userService.setEncryptedItem('status', this.status);
-    window.location.reload();
 
+    // 🔹 mettre à jour les boutons
+    this.isArrivalDisabled = false;
+    this.isDepartureDisabled = true;
+
+    window.location.reload();
   } catch (error) {
     this.toastr.error('Erreur lors de l\'enregistrement du départ.');
   }
 }
+
 
 formatDuration(seconds: number): string {
   const hours = Math.floor(seconds / 3600);
@@ -383,13 +377,7 @@ getLocation(): Promise<string> {
       }
     );
   });
-}
-
-
-  
-  
-userdetaileid :any
-
+}  
 
   GetUserSByid(): void {
     this.apiService.GetUserServiceByid(this.userId).subscribe((data) => {
@@ -415,7 +403,6 @@ userdetaileid :any
     return null;
   }
   
-  
   isCurrentDay(day: string): boolean {
     const today = format(new Date(), 'EEEE', { locale: fr }); // ex: 'lundi'
     return today.toLowerCase() === day.toLowerCase(); // comparaison insensible à la casse
@@ -436,14 +423,12 @@ userdetaileid :any
       this.GetUsers(page);
     }
   }
-    // Récupérer les semaines du mois actuel sans samedi et dimanche
     getCurrentMonthWeeks(): { month: string, weeks: { weekRange: string, days: string[], totalHours: number }[] } {
       return {
         month: format(new Date(this.selectedYear, this.currentMonth, 1), 'MMMM', { locale: fr }),
         weeks: this.getWeeksInMonth(this.currentMonth, this.selectedYear)
       };
     }
-      // Récupérer les semaines d'un mois donné en excluant samedi et dimanche
       getWeeksInMonth(month: number, year: number): { weekRange: string, days: string[], totalHours: number }[] {
         const weeks = [];
         let date = new Date(year, month, 1);

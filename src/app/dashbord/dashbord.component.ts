@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService, PaginatedUsers } from '../services/api.service';
+import { ApiService } from '../services/api.service';
 import { UserService } from '../services/user-service.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router'; // Pour la redirection
+import { ChatService } from '../services/chat.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -28,21 +29,25 @@ export class DashbordComponent implements OnInit {
   totalTime: number = 0;  // Temps total en secondes
   interval: any;  // Intervalle pour le compteur
   counter: string = '00:00:00';  // Compteur initialisé à 00:00:00
-usernotpagination :any
+usernotpagination :any;
+ unreadCount: number = 0;
   constructor(
     private apiService: ApiService,
     private userService: UserService,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private chatService: ChatService
   ) {}
 
   ngOnInit(): void {
   
     this.user = this.userService.getUserInfo();
    
-    if (this.user) {
-      this.userId = this.user.id;
-    }
+ if (this.user) {
+    this.userId = this.user.id;
+    this.updateUnreadBadge(); // chargement initial
+    setInterval(() => this.updateUnreadBadge(), 3000); // polling toutes les 3s
+  }
     const token = localStorage.getItem('token');
     
     if (this.user.status === 401) {
@@ -63,6 +68,7 @@ usernotpagination :any
     this.apiService.getUsersnotpagination().subscribe(data => {
       this.usernotpagination = data.users;
     });
+
   }
   leavesuser: any[] = [];  // Liste des congés
 showProfileSubmenu: boolean = false;
@@ -133,6 +139,27 @@ toggleProfileSubmenutraite() {
       this.currentTime = new Date().toLocaleTimeString();
     }, 1000);
   }
+
+activeTab: string = 'home';
+
+setActiveTab(tab: string) {
+  this.activeTab = tab;
+}
+isChatOpen = false;
+
+toggleChat() {
+  this.isChatOpen = !this.isChatOpen;
+ this.updateUnreadBadge
+}
+updateUnreadBadge() {
+  if (!this.user || !this.user.id) return;
+
+  this.chatService.getUnreadMessages(this.user.id).subscribe(res => {
+    this.unreadCount = res.unread; // met à jour immédiatement
+    console.log("🔵 Unread =", this.unreadCount);
+  });
+}
+
 
 
   logout() {

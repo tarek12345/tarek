@@ -11,6 +11,7 @@
 .table-custom-radius {
     border-radius: 12px;
     overflow: hidden; /* Important pour masquer les débordements */
+        background: #fff;
   }
   p#imageeditor img {
     width: 140px!important;

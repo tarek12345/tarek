@@ -1,88 +1,106 @@
 <!-- dashboard.component.html -->
 <div class="contentapp">
   <div class="entete">
-    <app-header [datauser]="user" [useradmin] ="allUsers"  [conge]="leavesuser"></app-header>
+    <app-header [datauser]="user" [useradmin]="allUsers" [conge]="leavesuser"></app-header>
+  </div> 
+<!-- Bouton flottant pour ouvrir/fermer le chat -->
+<button class="chat-toggle-btn" (click)="toggleChat()">
+  💬 Chat  
+  <span class="badge" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
+</button>
+
+<!-- Boîte du chat -->
+<div class="chat-box" [class.open]="isChatOpen">
+  <div class="chat-header">
+    Chat Application
+    <span class="close-btn" (click)="toggleChat()">✖</span>
   </div>
+  <div class="chat-content">
+<app-chat (refreshUnread)="updateUnreadBadge()" [unreadCountchiled] ="unreadCount"></app-chat>
+  </div>
+</div>
+
+
+  <!-- <app-chat></app-chat> -->
   <div class="dashed">
     <div class="sidebar">
-
     
+
       <div class="dlmenu">
         <div class="headersidbr">
           <span class="titles">
-           Bienvenue <br> {{ user.user?.name }}
+            Bienvenue <br> {{ user.user?.name }}
           </span>
-        
-          <ng-container *ngIf="user.user?.role === 'administrator'; else poste">
-            <span class="titles">
-              Role : Admin
-            </span>
-          </ng-container>
-        
-          <ng-template #poste>
-            <span class="titles">
-              Role : Employer
-            </span>
-          </ng-template>
+          <span [ngSwitch]="user.user?.role">
+            <span *ngSwitchCase="'administrator'">Role :Admin</span>
+            <span *ngSwitchCase="'employer'"> Role :Employer</span>
+            <span *ngSwitchCase="'client'">Role :Client</span>
+            <span *ngSwitchDefault>Inconnu</span>
+          </span>
+
         </div>
-        
+
         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
           <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home"
-            type="button" role="tab" aria-controls="v-pills-home" aria-selected="true"> <i class="bi bi-house"></i> Accueil</button>
+            type="button" role="tab" aria-controls="v-pills-home" aria-selected="true"> <i class="bi bi-house"></i>
+            Accueil</button>
           <!-- Profiles Button avec toggle submenu -->
-           
-          <button class="nav-link" type="button"
-            [ngClass]="{'d-none': user.user?.role === 'employer'}"
-            (click)="toggleProfileSubmenu()">
+
+          <button *ngIf=" user.user?.role === 'administrator' " class="nav-link"
+            type="button" (click)="toggleProfileSubmenu()">
             <i class="bi bi-person-circle"></i> Profiles
           </button>
-            <!-- Sous-menu pour Profiles -->
+          <!-- Sous-menu pour Profiles -->
           <div class="submenu " *ngIf="showProfileSubmenu && user.user?.role === 'administrator'">
-            <button class="nav-link sub" data-bs-toggle="pill" data-bs-target="#v-pills-profile-list"
-              type="button" role="tab">👥 Listes</button>
-            <!-- <button class="nav-link sub" data-bs-toggle="pill" data-bs-target="#v-pills-profile-add"
-              type="button" role="tab">➕ Ajouter role</button> -->
-          
+            <button class="nav-link sub" data-bs-toggle="pill" data-bs-target="#v-pills-profile-list" type="button"
+              role="tab"><i class="bi bi-person-lines-fill"></i> Listes</button>
           </div>
-            <button class="nav-link" id="v-pills-statistique-tab" data-bs-toggle="pill" data-bs-target="#v-pills-statistique"
-            type="button" role="tab" aria-controls="v-pills-statistique" aria-selected="false"><i class="bi bi-clipboard-data"></i> Statistique</button>
-          
-          <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages"
-            type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false"><i class="bi bi-chat-dots"></i>
-            Congé 
-            </button>
-            <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-tache"
-            type="button" role="tab" aria-controls="v-pills-tache" aria-selected="false"><i class="bi bi-chat-dots"></i>
-            Tàche 
-            </button>
+          <button *ngIf=" user.user?.role === 'administrator' || user.user?.role === 'employer' " class="nav-link"
+            id="v-pills-statistique-tab" data-bs-toggle="pill" data-bs-target="#v-pills-statistique" type="button"
+            role="tab" aria-controls="v-pills-statistique" aria-selected="false"><i class="bi bi-clipboard-data"></i>
+            Statistique</button>
 
-          
-         <!-- Profiles Button avec toggle submenu -->
-           
-          <button class="nav-link" type="button"
-        
-            (click)="toggleProfileSubmenutraite()">
-           <i class="bi bi-file-earmark-medical-fill"></i> Traite 
+          <button *ngIf=" user.user?.role === 'administrator' || user.user?.role === 'employer' " class="nav-link"
+            id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab"
+            aria-controls="v-pills-messages" aria-selected="false"><i class="bi bi-calendar-event"></i>
+            Congé
           </button>
-            <!-- Sous-menu pour Profiles -->
-          <div class="submenu " *ngIf="showProfileSubmenut">
-            <button class="nav-link sub" data-bs-toggle="pill" data-bs-target="#v-pills-traite-list"
-              type="button" role="tab"> Listes</button>
-             <button class="nav-link sub" data-bs-toggle="pill" data-bs-target="#v-pills-traite-config"
-              type="button" role="tab"> Config traite</button> 
-             <button class="nav-link sub" data-bs-toggle="pill" data-bs-target="#v-pills-traite-add"
-              type="button" role="tab"> Imprimé traite</button> 
+          <button *ngIf=" user.user?.role === 'administrator' || user.user?.role === 'employer' " class="nav-link"
+            id="v-pills-historique-tab" data-bs-toggle="pill" data-bs-target="#v-pills-historique" type="button" role="tab"
+            aria-controls="v-pills-historique" aria-selected="false"><i class="bi bi-clock"></i>
+            Historique
+          </button>
+          <button *ngIf=" user.user?.role === 'administrator' || user.user?.role === 'employer' " class="nav-link"
+            id="v-pills-tache-tab" data-bs-toggle="pill" data-bs-target="#v-pills-tache" type="button" role="tab"
+            aria-controls="v-pills-tache" aria-selected="false"><i class="bi bi-chat-dots"></i>
+            Tàche
+          </button>
+          <!-- Profiles Button avec toggle submenu -->
+          <button *ngIf=" user.user?.role === 'administrator' || user.user?.role === 'client' " 
+           class="nav-link" type="button" (click)="toggleProfileSubmenutraite()">
+            <i class="bi bi-file-earmark-medical-fill"></i> Traite
+          </button>
+          <!-- Sous-menu pour Profiles -->
+          <div class="submenu"
+            *ngIf="showProfileSubmenut && user.user?.role === 'administrator' ||  user.user?.role === 'client'">
+            <button class="nav-link sub" data-bs-toggle="pill" data-bs-target="#v-pills-traite-list" type="button"
+              role="tab"> Listes</button>
+            <button class="nav-link sub" data-bs-toggle="pill" data-bs-target="#v-pills-traite-config" type="button"
+              role="tab"> Config traite</button>
+            <button class="nav-link sub" data-bs-toggle="pill" data-bs-target="#v-pills-traite-add" type="button"
+              role="tab"> Imprimé traite</button>
           </div>
 
 
 
 
 
-            <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings"
-            type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false"> <i class="bi bi-gear"></i> Paramètre 
+          <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings"
+            type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false"> <i class="bi bi-gear"></i>
+            Paramètre
           </button>
         </div>
-       
+
       </div>
       <div class="copyright">
         Copyright © 2025 Pointingworks. Tous droits réservé
@@ -98,30 +116,34 @@
         <app-profils [userdetaile]="user"></app-profils>
       </div>
       <div class="tab-pane fade" id="v-pills-statistique" role="tabpanel" aria-labelledby="v-pills-statistique-tab"
-      tabindex="1">
-      <app-statistique [userdetaile]=user> 
-      </app-statistique>
-    </div>
+        tabindex="1">
+        <app-statistique [userdetaile]=user>
+        </app-statistique>
+      </div>
+
       <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab"
         tabindex="2">
-        <app-leaves [userdetaile]=user></app-leaves>
+        <app-leaves [userdetaile]=allUsers></app-leaves>
       </div>
-      <div class="tab-pane fade" id="v-pills-tache" role="tabpanel" aria-labelledby="v-pills-tache-tab"
-      tabindex="3">
-      <app-tache [userdetaile]=usernotpagination [datauser]="user"></app-tache>
-    </div>
-    <div class="tab-pane fade" id="v-pills-traite-list" role="tabpanel" aria-labelledby="v-pills-traite-list-tab"
-      tabindex="4">
-      <app-traite [userdetaile]=usernotpagination [datauser]="user"></app-traite>
-    </div>
-        <div class="tab-pane fade" id="v-pills-traite-config" role="tabpanel" aria-labelledby="v-pills-traite-config-tab"
-      tabindex="4">
-    <app-config-traite [userdetaile]=usernotpagination [datauser]="user"></app-config-traite>
-    </div>   
-     <div class="tab-pane fade" id="v-pills-traite-add" role="tabpanel" aria-labelledby="v-pills-traite-add-tab"
-      tabindex="4">
-      <app-add-traite [userdetaile]=usernotpagination [datauser]="user"></app-add-traite>
-    </div>
+         <div class="tab-pane fade" id="v-pills-historique" role="tabpanel" aria-labelledby="v-pills-historique-tab"
+        tabindex="3">
+        <app-historique  [userdetaile]=user></app-historique>
+      </div>
+      <div class="tab-pane fade" id="v-pills-tache" role="tabpanel" aria-labelledby="v-pills-tache-tab" tabindex="3">
+        <app-tache [userdetaile]=usernotpagination [datauser]="user"></app-tache>
+      </div>
+      <div class="tab-pane fade" id="v-pills-traite-list" role="tabpanel" aria-labelledby="v-pills-traite-list-tab"
+        tabindex="4">
+        <app-traite [userdetaile]=usernotpagination [datauser]="user"></app-traite>
+      </div>
+      <div class="tab-pane fade" id="v-pills-traite-config" role="tabpanel" aria-labelledby="v-pills-traite-config-tab"
+        tabindex="4">
+        <app-config-traite [userdetaile]=usernotpagination [datauser]="user"></app-config-traite>
+      </div>
+      <div class="tab-pane fade" id="v-pills-traite-add" role="tabpanel" aria-labelledby="v-pills-traite-add-tab"
+        tabindex="4">
+        <app-add-traite [userdetaile]=usernotpagination [datauser]="user"></app-add-traite>
+      </div>
       <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab"
         tabindex="5"><app-secttings *ngIf="user?.user" [userdetaile]="user.user"></app-secttings></div>
     </div>

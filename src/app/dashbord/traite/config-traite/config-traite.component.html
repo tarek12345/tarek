@@ -1,18 +1,33 @@
 <!-- src/app/components/traiteconfig/traiteconfig.component.html -->
-<div class="container mt-4">
-  <h2 class="text-light">Configuration Fournisseur & RIB</h2>
+<div class=" configtraite container mt-4">
+  <h2 class="text-secondary">Configuration Fournisseur & RIB</h2>
 
-  <div class="mb-3">
-    <input type="text" [(ngModel)]="fournisseur" placeholder="Fournisseur" class="form-control mb-2">
-    <input type="text" [(ngModel)]="rib" placeholder="RIB" class="form-control mb-2">
-    <button class="btn btn-primary" (click)="addConfig()">Ajouter</button>
+  <div class="d-flex justify-content-start gap-3 ">
+    <div class="mb-3 w-50">
+      <input type="text" [(ngModel)]="fournisseur" placeholder="Fournisseur" class="form-control mb-2">
+    </div>
+    <div class="mb-3 w-50">
+      <input type="text" [(ngModel)]="rib" placeholder="RIB" class="form-control mb-2">
+    </div>
   </div>
+  <div class="d-flex justify-content-start gap-3 ">
+    <div class="mb-3 w-50">
+      <input type="text" [(ngModel)]="lieu" placeholder="Lieu" class="form-control mb-2">
+    </div>
+    <div class="mb-3 w-50">
+      <input type="text" [(ngModel)]="nd" placeholder="adresse" class="form-control mb-2">
+    </div>
+  </div>
+  <button class="btn btn-primary" (click)="addConfig()">Ajouter</button>
 
-  <table class="table table-bordered">
+
+  <table class="table table-bordered mt-4">
     <thead>
       <tr>
         <th>Fournisseur</th>
         <th>RIB</th>
+        <th>Lieu</th>
+        <th>Adresse</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -20,6 +35,8 @@
       <tr *ngFor="let cfg of configs">
         <td>{{ cfg.fournisseur }}</td>
         <td>{{ cfg.rib }}</td>
+        <td>{{ cfg.lieu }}</td>
+        <td>{{ cfg.nd }}</td>
         <td>
           <button class="btn btn-danger btn-sm" (click)="deleteConfig(cfg.id)">Supprimer</button>
         </td>

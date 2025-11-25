@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
-import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from '../../../services/api.service';
 import { SharedConfigService } from '../../../services/shared-config.service';
@@ -17,7 +16,9 @@ export class ConfigTraiteComponent {
       allusers: any[] = [];
       userid :any
     fournisseur = '';
-  rib = '';
+     rib = '';
+     nd = '';
+     lieu ='';
   configs: any[] = [];
   
 ngOnChanges(changes: SimpleChanges): void {
@@ -35,6 +36,8 @@ ngOnChanges(changes: SimpleChanges): void {
   formDataconfig = {
     nom: '',
     rib: '',
+    lieu: '',
+    nd: '',
   };
 ngOnInit() {
     this.loadConfigs();
@@ -47,10 +50,12 @@ ngOnInit() {
   }
 
   addConfig() {
-    if (!this.fournisseur || !this.rib) return;
-    this.configtraite.addConfig({ fournisseur: this.fournisseur, rib: this.rib }).subscribe(() => {
+    if (!this.fournisseur || !this.rib || !this.lieu || !this.nd) return;
+    this.configtraite.addConfig({ fournisseur: this.fournisseur, rib: this.rib, lieu: this.lieu,nd :this.nd }).subscribe(() => {
       this.fournisseur = '';
       this.rib = '';
+      this.lieu = '';
+      this.nd = '';
       this.loadConfigs();
       this.sharedConfig.triggerRefresh();
     });

@@ -50,10 +50,13 @@
                "node_modules/leaflet/dist/leaflet.css",
                "node_modules/quill/dist/quill.core.css",
                "node_modules/quill/dist/quill.snow.css",
-               "node_modules/intro.js/minified/introjs.min.css"
+               "node_modules/intro.js/minified/introjs.min.css",
+               "node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css"
             ],
             "scripts": [ 
-            "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"]
+            "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+            "node_modules/bootstrap-datepicker/dist/locales/bootstrap-datepicker.fr.min.js"
+]
           
           },
           "configurations": {
@@ -117,10 +120,12 @@
                "node_modules/leaflet/dist/leaflet.css",
                "node_modules/quill/dist/quill.core.css",
                "node_modules/quill/dist/quill.snow.css",
-               "node_modules/intro.js/minified/introjs.min.css"
+               "node_modules/intro.js/minified/introjs.min.css",
+                "node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css"
             ],
             "scripts": [ 
-            "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"]
+            "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+           "node_modules/bootstrap-datepicker/dist/locales/bootstrap-datepicker.fr.min.js"]
           }
         }
       }

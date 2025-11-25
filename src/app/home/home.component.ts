@@ -1,10 +1,8 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ApiService } from '../services/api.service';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user-service.service';
-import * as faceapi from 'face-api.js';
 import introJs from 'intro.js';
 
 @Component({

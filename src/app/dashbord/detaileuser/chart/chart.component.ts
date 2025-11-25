@@ -1,4 +1,3 @@
-
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ChartOptions, ChartData, ChartType } from 'chart.js';
 
@@ -59,7 +58,7 @@ export class ChartComponent implements OnChanges {
         },
         beginAtZero: true,
         ticks: {
-          stepSize: 60, // 1 minute en secondes
+          stepSize: 60, 
           callback: function (tickValue: string | number) {
             const value = typeof tickValue === 'string' ? parseFloat(tickValue) : tickValue;
             const hours = Math.floor(value / 3600);
@@ -88,32 +87,46 @@ export class ChartComponent implements OnChanges {
     }
   };
   
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['chartusers'] && this.chartusers?.history) {
-      const jours: Jour[] = this.chartusers.history;
-    ;
-       
-      this.barChartLabels = jours.map(
-        (j: Jour) => `${j.day} ${this.formatDate(j.date)}`
-      );
-      
-      this.totalHoursRaw = jours.map((j: Jour) => j.total_hours || '00:00:00');
-      const data = this.totalHoursRaw.map(h => this.convertToSeconds(h));
 
-      this.barChartData = {
-        labels: this.barChartLabels,
-        datasets: [
-          {
-            data: data,
-            label: 'Heures travaillées',
-            backgroundColor: 'rgba(83 , 88 , 217, 0.5)',
-            borderColor: 'rgba(83, 88, 217, 1)',
-            borderWidth: 1
-          }
-        ]
-      };
-    }
+  ngOnChanges(changes: SimpleChanges): void {
+  if (changes['chartusers'] && this.chartusers?.history) {
+    const jours: Jour[] = this.chartusers.history;
+
+    const monthlyData: { [key: string]: number } = {}; 
+
+    jours.forEach((j: Jour) => {
+      const date = new Date(j.date);
+      const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+      const seconds = this.convertToSeconds(j.total_hours);
+
+      if (!monthlyData[monthKey]) {
+        monthlyData[monthKey] = 0;
+      }
+      monthlyData[monthKey] += seconds;
+    });
+
+    this.barChartLabels = Object.keys(monthlyData).map(key => {
+      const [year, month] = key.split('-');
+      return `${month}-${year}`; // exemple "01-2025"
+    });
+
+    const data = Object.values(monthlyData);
+
+    this.barChartData = {
+      labels: this.barChartLabels,
+      datasets: [
+        {
+          data: data,
+          label: 'Heures travaillées (par mois)',
+          backgroundColor: 'rgba(83, 88, 217, 0.5)',
+          borderColor: 'rgba(83, 88, 217, 1)',
+          borderWidth: 1
+        }
+      ]
+    };
   }
+}
+
   private convertToSeconds(timeStr: string): number {
     if (!timeStr || timeStr === '00:00:00') return 0;
     const [h, m, s] = timeStr.split(':').map(Number);

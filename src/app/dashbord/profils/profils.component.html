@@ -25,7 +25,9 @@
       <div *ngIf="item.role !=='administrator'" class="deleteuser" (click)="openPopupDelete(item)">
         <i class="bi bi-trash"></i>
       </div>
-
+<div *ngIf="item.role !=='administrator'" class="deleteuser update" (click)="openPopupupdate(item)">
+        <i class="bi bi-arrow-repeat"></i>
+      </div>
       <div class="status">
         <!-- Affichage de l'image de profil -->
         <ng-container *ngIf="item.profile_image_url; else defaultImage">
@@ -123,7 +125,38 @@
                             </div>
                         </div>
                     </div>
-    
+               <div
+  class="modal fade show"
+  tabindex="-1"
+  role="dialog"
+  [ngStyle]="{'display': displayStyleUpdate}"
+  aria-modal="true"
+  style="background: rgba(0, 0, 0, 0.5);"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <!-- En-tête avec bouton de fermeture -->
+      <div class="modal-header">
+        <h4 class="modal-title text-black">Modifier utilisateur</h4>
+        <button
+          type="button"
+          class="btn-close"
+          aria-label="Close"
+          (click)="closePopupUpdate()"
+        ></button>
+      </div>
+
+      <!-- Corps de la modale -->
+      <div class="modal-body">
+        <app-secttings [userdetaile]="selectedUser"></app-secttings>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
                     <!-- Modal de modification du pointage -->
                     <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStylePointage}">
                         <div class="modal-dialog" role="document">

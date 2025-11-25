@@ -19,6 +19,8 @@ export class AddTraiteComponent {
     userid :any
  configs: any[] = [];
 ribOptions: string[] = []; // Liste RIB filtrés selon le fournisseur choisi
+lieuOptions : string[] = [];
+ndOptions : string[] = [];
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['userdetaile']) {
       this.allusers = changes['userdetaile']?.currentValue;
@@ -217,11 +219,19 @@ onFournisseurChange(event: any) {
   if (fournisseur) {
     // Mettre à jour la liste RIB selon le fournisseur
     this.ribOptions = [fournisseur.rib];
+    this.lieuOptions = [fournisseur.lieu];
+    this.ndOptions = [fournisseur.nd]
     // Sélectionner automatiquement le RIB
     this.formData.rib = fournisseur.rib;
+    this.formData.lieu = fournisseur.lieu;
+    this.formData.nd = fournisseur.nd;
   } else {
     this.ribOptions = [];
+    this.lieuOptions = [];
+    this.ndOptions = [];
     this.formData.rib = '';
+    this.formData.lieu = '';
+    this.formData.nd = '';
   }
 }
 }

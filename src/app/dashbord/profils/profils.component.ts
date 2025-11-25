@@ -1,9 +1,8 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit,Output  } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from '../../services/api.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ngxCsv } from 'ngx-csv';
 interface Pointage {
   id: number;
   arrival_date: string;    // heure d'arrivée (ex: "08:00:25")
@@ -50,6 +49,7 @@ export class ProfilsComponent {
   @Output() employeeAdded = new EventEmitter<void>();
   displayStyle: string = "none"; // Contrôle l'affichage du modal
   displayStyleDelete: string = "none"; // Contrôle l'affichage du modal
+  displayStyleUpdate:string = "none"; // Contrôle l'affichage du modal
   displayStylePointage: string = "none";
    selectedUserpointage: any;
    
@@ -115,18 +115,38 @@ export class ProfilsComponent {
     }
 
     statusCounts :any
+    // onSearch(event: any): void {
+    //   const query = event.target.value;
+    //   this.searchQuery = query;
+    
+    //   this.apiService.searchUsers(this.searchQuery, this.perPage, 1).subscribe(response => {
+    //     this.filteredUsers = response.users;
+    //     this.currentPage = response.current_page;
+    //     this.lastPage = response.last_page;
+    //     this.statusCounts = response.status_counts;
+    //   });
+    // }
     onSearch(event: any): void {
-      const query = event.target.value;
-      this.searchQuery = query;
-    
-      this.apiService.searchUsers(this.searchQuery, this.perPage, 1).subscribe(response => {
-        this.filteredUsers = response.users;
-        this.currentPage = response.current_page;
-        this.lastPage = response.last_page;
-        this.statusCounts = response.status_counts;
-      });
-    }
-    
+  const query = event.target.value.trim();
+  this.searchQuery = query;
+
+  if (!query) {
+    this.filteredUsers = [...this.allUsers]; // retour liste complète
+    return;
+  }
+
+  this.apiService.searchUsers(query, this.perPage, 1).subscribe(response => {
+    this.filteredUsers = response.users.map((user: any) => ({
+      ...user,
+      history: Array.isArray(user.history) ? user.history : Object.values(user.history || {})
+    }));
+
+    this.currentPage = response.current_page;
+    this.lastPage = response.last_page;
+    this.statusCounts = response.status_counts;
+  });
+}
+
   getHistoryKeys(history: any): string[] {
     if (!history || typeof history !== 'object') {
       return [];
@@ -162,9 +182,17 @@ export class ProfilsComponent {
     this.displayStyleDelete = "block"; 
     this.selectedUser = user
   }
+    openPopupupdate(user: any) { 
+    this.displayStyleUpdate = "block"; 
+    this.selectedUser = user
+  }
   closePopupDelete() { 
     this.displayStyleDelete = "none"; 
   }
+    closePopupUpdate() { 
+    this.displayStyleUpdate = "none"; 
+  }
+ 
   openPopup() { 
     this.displayStyle = "block"; 
 

@@ -1,7 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { lastValueFrom, Observable } from 'rxjs';
-import * as WebAuthn from '@passwordless-id/webauthn';
 import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root',

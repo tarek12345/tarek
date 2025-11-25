@@ -1,0 +1,74 @@
+<div class="messenger-container">
+<div class="messenger-container">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <input type="text"
+           placeholder="🔍 Rechercher un utilisateur..."
+           [(ngModel)]="searchText"
+           (input)="searchUsers()"
+           class="search-bar">
+
+    <div class="user-list">
+      <div class="user-item"
+           *ngFor="let user of filteredUsers"
+           (click)="currentUserId && startConversation(user)"
+           [class.active]="selectedUser?.id === user.id">
+            <ng-container *ngIf="user.profile_image_url; else defaultAvatar">
+            <img [src]="user.profile_image_url" class="avatar" alt="Photo de profil"      
+          [ngStyle]="{
+         'border': user.unreadCount > 0 ? '3px solid #6a1b9a' : '3px solid transparent'
+       }">
+          </ng-container>
+
+          <ng-template #defaultAvatar>
+            <i class="bi bi-person-circle avatar-default"></i>
+          </ng-template>
+                <div class="info"> {{user.status}} 
+                  <div class="badge-unread" *ngIf="user.unreadCount > 0">
+                  {{ user.unreadCount }}
+                  </div>
+            <span [ngStyle]="{'font-weight': user.unreadCount > 0 ? 'bold' : 'normal'}">
+              {{ user.name }}
+              <span class="status-dot"
+                    [class]="user.status === 'hors_ligne' ? 'text-danger' : 'text-success'"></span>
+            </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAT -->
+  <div class="chat-section">
+
+    <div *ngIf="selectedUser" class="chat-header">
+
+        <ng-container *ngIf="selectedUser.profile_image_url; else defaultAvatar">
+    <img [src]="selectedUser.profile_image_url" class="avatar" alt="Photo de profil">
+  </ng-container>
+
+  <ng-template #defaultAvatar>
+    <i class="bi bi-person-circle avatar-default"></i>
+  </ng-template>
+      <strong>{{ selectedUser.name }}</strong>
+    </div>
+
+    <div class="messages" *ngIf="selectedUser">
+      <div *ngFor="let m of messages"
+           class="bubble"
+           [class.me]="m.sender_id === currentUserId">
+
+        <div class="text">{{ m.message }}</div>
+        <div class="time">{{ formatTime(m.created_at) }}</div>
+      </div>
+    </div>
+
+    <div class="chat-input" *ngIf="selectedUser">
+      <input [(ngModel)]="newMessage"
+             placeholder="Écrire un message..."
+             (keyup.enter)="sendMessage()">
+      <button (click)="sendMessage()">➤</button>
+      </div>
+    </div>
+  </div>
+</div>

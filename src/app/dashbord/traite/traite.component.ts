@@ -29,7 +29,7 @@ export class TraiteComponent {
     if (changes['userdetaile']) {
 
       this.allusers = changes['userdetaile']?.currentValue;
-          console.log('dddddddddddddd',this.allusers) 
+         
     }
     else  {
       this.userid = changes['datauser']?.currentValue?.user

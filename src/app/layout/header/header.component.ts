@@ -44,7 +44,7 @@ export class HeaderComponent implements OnInit, OnChanges {
     private apiService: ApiService,
     private toastr: ToastrService,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef 
   ) {}
 
   ngOnInit(): void {
@@ -70,7 +70,7 @@ export class HeaderComponent implements OnInit, OnChanges {
   }
 
   detaileuseradmin(): void {
-    console.log('User Admin Updated:', this.useradmin);
+   // console.log('User Admin Updated:', this.useradmin);
   }
 
   countStatuses(): void {

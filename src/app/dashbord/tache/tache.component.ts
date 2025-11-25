@@ -57,7 +57,6 @@ export class TacheComponent implements OnInit {
     }
     else  {
       this.userid = changes['datauser']?.currentValue?.user
-      console.log(this.userid)
     }
   }
 
