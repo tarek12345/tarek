@@ -8,7 +8,6 @@ use App\Events\MessageSent;
 
 class ChatController extends Controller
 {
-    // Récupérer toutes les conversations d’un utilisateur
 public function getConversations($userId)
 {
     $convs = Conversation::where('user_one_id', $userId)
