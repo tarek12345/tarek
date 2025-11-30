@@ -5,6 +5,6 @@
 //   };
 export const environment = {
   production: true,
-  apiUrl: "https://tarek-x9f7.onrender.com/api/",
+  apiUrl: "https://tarek-x9f7.onrender.com/api",
   baseUrl: "https://tarek-x9f7.onrender.com"
 };
