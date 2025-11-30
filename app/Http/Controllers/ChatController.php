@@ -7,7 +7,8 @@ use App\Models\Message;
 use App\Events\MessageSent;
 
 class ChatController extends Controller
-{
+// fdf
+{ 
 public function getConversations($userId)
 {
     $convs = Conversation::where('user_one_id', $userId)
