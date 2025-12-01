@@ -1,11 +1,14 @@
 # Utiliser PHP 8.3 avec Apache
 FROM php:8.3-apache
 
-# Installer les extensions PHP nécessaires
+# Installer les librairies nécessaires
 RUN apt-get update && apt-get install -y \
     libpq-dev \
-    libpng-dev libonig-dev libxml2-dev zip unzip git \
-    && docker-php-ext-install pdo pdo_pgsql pgsql mbstring exif pcntl bcmath gd
+    libpng-dev libonig-dev libxml2-dev zip unzip git
+
+# Installer les extensions PHP
+RUN docker-php-ext-install pdo pdo_pgsql pgsql
+RUN docker-php-ext-install mbstring exif pcntl bcmath gd
 
 # Activer mod_rewrite
 RUN a2enmod rewrite
