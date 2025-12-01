@@ -23,7 +23,6 @@
     </div>
   </div>
 
-  <!-- Afficher les utilisateurs restants -->
   <div *ngIf="!showAllUsers && hiddenUserCount > 0" class="more-users" [ngClass]="userid?.role ==='administrator' ? '' : 'disabledbtn'">
     <button class="btn btn-link" (click)="toggleShowAllUsers()">
       +{{ hiddenUserCount }}
