@@ -25,8 +25,14 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Installer les dépendances Laravel
 RUN composer install --no-dev --optimize-autoloader
 
-# Fix des permissions Laravel
+# Créer le dossier pour les images
+RUN mkdir -p /var/www/html/storage/app/public/profile_images
+
+# Fix des permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+
+# Exécuter storage:link
+RUN php /var/www/html/artisan storage:link || true
 
 EXPOSE 80
