@@ -142,7 +142,7 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}/users/${userId}/total-hours`, { headers });
   }
   DeleteService(userId: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}users/${userId}`);
+    return this.http.delete(`${this.apiUrl}/users/${userId}`);
   }
   
   // Mettre à jour un pointage
