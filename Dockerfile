@@ -1,35 +1,38 @@
+# Utiliser PHP 8.3 avec Apache
 FROM php:8.3-apache
 
-# Installer librairies
+# Installer les librairies nécessaires
 RUN apt-get update && apt-get install -y \
     libpq-dev \
     libpng-dev libonig-dev libxml2-dev zip unzip git
 
-# Installer les extensions PHP AVANT composer install
-RUN docker-php-ext-install pdo pdo_pgsql pgsql \
-    && docker-php-ext-install mbstring exif pcntl bcmath gd
+# Installer les extensions PHP
+RUN docker-php-ext-install pdo pdo_pgsql pgsql
+RUN docker-php-ext-install mbstring exif pcntl bcmath gd
 
 # Activer mod_rewrite
 RUN a2enmod rewrite
 
-# Installer Composer avant composer install
+# Copier le code dans /var/www/html
+COPY . /var/www/html
+
+# Copier le Virtual Host
+COPY ./vhost.conf /etc/apache2/sites-available/000-default.conf
+
+# Installer Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-WORKDIR /var/www/html
+# Installer les dépendances Laravel
+RUN composer install --no-dev --optimize-autoloader
 
-# Copier composer.json + lock uniquement
-COPY composer.json composer.lock ./
+# Créer le dossier pour les images
+RUN mkdir -p /var/www/html/storage/app/public/profile_images
 
-# Installer dépendances Laravel
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+# Fix des permissions
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Copier le reste de l'application
-COPY . .
-
-# Permissions
-RUN chown -R www-data:www-data storage bootstrap/cache \
-    && chmod -R 775 storage bootstrap/cache
-
-RUN php artisan storage:link || true
+# Exécuter storage:link
+RUN php /var/www/html/artisan storage:link || true
 
 EXPOSE 80
