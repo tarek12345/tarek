@@ -7,32 +7,31 @@ RUN apt-get update && apt-get install -y \
     libpng-dev libonig-dev libxml2-dev zip unzip git
 
 # Installer les extensions PHP
-RUN docker-php-ext-install pdo pdo_pgsql pgsql
-RUN docker-php-ext-install mbstring exif pcntl bcmath gd
+RUN docker-php-ext-install pdo pdo_pgsql pgsql mbstring exif pcntl bcmath gd
 
 # Activer mod_rewrite
 RUN a2enmod rewrite
 
-# Copier le code dans /var/www/html
-COPY . /var/www/html
-
-# Copier le Virtual Host
-COPY ./vhost.conf /etc/apache2/sites-available/000-default.conf
-
-# Installer Composer
+# Installer Composer (copie depuis l'image officielle)
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Installer les dépendances Laravel
-RUN composer install --no-dev --optimize-autoloader
+# Définir WORKDIR
+WORKDIR /var/www/html
 
-# Créer le dossier pour les images
-RUN mkdir -p /var/www/html/storage/app/public/profile_images
+# Copier uniquement composer.json et composer.lock d'abord (meilleure cache)
+COPY composer.json composer.lock ./
+
+# Installation des dépendances Laravel
+RUN composer install --no-dev --optimize-autoloader --no-interaction
+
+# Copier tout le projet ensuite
+COPY . .
 
 # Fix des permissions
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
-    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+RUN chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
 
 # Exécuter storage:link
-RUN php /var/www/html/artisan storage:link || true
+RUN php artisan storage:link || true
 
 EXPOSE 80
