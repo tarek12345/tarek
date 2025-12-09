@@ -186,4 +186,10 @@ img.imghitorique {
               transform: translateX(-6px) rotate(-1.2deg);
     }
   }
-  
+.offcanvas-body.user {
+    justify-content: start;
+    align-items: start;
+}
+ul.list {
+    padding: 0px 18px;
+}

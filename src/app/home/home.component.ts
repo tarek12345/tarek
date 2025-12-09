@@ -12,12 +12,15 @@ import introJs from 'intro.js';
   standalone : false
 })
 export class HomeComponent implements OnInit {
+  
 intro = introJs();
   DataMessage: any[] = [];
   login = { email: '', password: '' };
 
   displayStyleF: string = "none"; // Contrôle l'affichage du modal
+   displayStyleUser: string = "none"; // Contrôle l'affichage du modal
   passwordFieldType: string = 'password';
+
 
 
   constructor(
@@ -59,11 +62,16 @@ intro = introJs();
   openPopupForgeten() { 
     this.displayStyleF = "block"; 
   }
-  
+  openPopupUser(){
+        this.displayStyleUser = "block"; 
+
+  }
   closePopupForgeten() { 
     this.displayStyleF = "none"; 
   }
-
+closePopupUser() {
+this.displayStyleUser = "none";   
+}
 
 
 

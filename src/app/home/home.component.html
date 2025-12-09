@@ -51,12 +51,14 @@
       <div class="basforget">
       
         <button type="button" class="btn btn-link" id="step2" (click)="openPopupForgeten()">Oublier mot de passe !</button>
+        <button type="button" class="btn btn-link" id="step2" (click)="openPopupUser()">Crée un compte  !</button>
       </div>
     </form>
 
     
     
   </div>
+    <app-add-employes [displayStyleChild]="displayStyleUser" (closeEvent)="closePopupUser()"></app-add-employes>
 
   <app-forgetpassowrd [displayStyleChild]="displayStyleF" (closeEvent)="closePopupForgeten()"></app-forgetpassowrd>
 </div>
