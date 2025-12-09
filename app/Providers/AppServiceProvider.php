@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
          Schema::defaultStringLength(191);
-         // 👉 Création automatique d’un super admin si aucun utilisateur n'existe
+        
     if (\App\Models\User::count() === 0) {
         \App\Models\User::create([
             'name' => 'Super Admin',
