@@ -1,38 +1,35 @@
-# Utiliser PHP 8.3 avec Apache
 FROM php:8.3-apache
 
-# Installer les librairies nécessaires
+# Installer librairies
 RUN apt-get update && apt-get install -y \
     libpq-dev \
     libpng-dev libonig-dev libxml2-dev zip unzip git
 
-# Installer les extensions PHP
-RUN docker-php-ext-install pdo pdo_pgsql pgsql
-RUN docker-php-ext-install mbstring exif pcntl bcmath gd
+# Installer les extensions PHP AVANT composer install
+RUN docker-php-ext-install pdo pdo_pgsql pgsql \
+    && docker-php-ext-install mbstring exif pcntl bcmath gd
 
 # Activer mod_rewrite
 RUN a2enmod rewrite
 
-# Copier le code dans /var/www/html
-COPY . /var/www/html
-
-# Copier le Virtual Host
-COPY ./vhost.conf /etc/apache2/sites-available/000-default.conf
-
-# Installer Composer
+# Installer Composer avant composer install
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Installer les dépendances Laravel
-RUN composer install --no-dev --optimize-autoloader
+WORKDIR /var/www/html
 
-# Créer le dossier pour les images
-RUN mkdir -p /var/www/html/storage/app/public/profile_images
+# Copier composer.json + lock uniquement
+COPY composer.json composer.lock ./
 
-# Fix des permissions
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
-    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+# Installer dépendances Laravel
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-# Exécuter storage:link
-RUN php /var/www/html/artisan storage:link || true
+# Copier le reste de l'application
+COPY . .
+
+# Permissions
+RUN chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
+
+RUN php artisan storage:link || true
 
 EXPOSE 80
