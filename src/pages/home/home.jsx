@@ -36,7 +36,7 @@ export default function Home() {
   const [language, setLanguage] = useState("FR");
   const [activeLink, setActiveLink] = useState('/');
   const [compteur] = useState([
-    { namfr: "Projet", namen: "Project", value: "400" },
+    { namfr: "Projet", namen: "Project", value: "300" },
     { namfr: "Expérience", namen: "Experience", value: "8" },
   ]);
   const [skills] = useState([
