@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import programming from "../../assets/programming.jpg";
 import bitbakedimg from "../../assets/bitbakedimg.png";
 import githubimg from "../../assets/githubimg.png";
@@ -9,11 +9,11 @@ import ZohoSprintimg from "../../assets/ZohoSprintimg.png";
 import jiraimg from "../../assets/jiraimg.png";
 import zohocc from "../../assets/zohocc.png";
 import XD from "../../assets/XD.png";
-import whatsapp from "../../assets/whatsapp.png"
+import whatsapp from "../../assets/whatsapp.png";
 import Header from '../../layout/header/header';
 import Footer from '../../layout/footer/footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowDown,faSearch,faCode,faLayerGroup ,faLeaf,faDatabase } from '@fortawesome/free-solid-svg-icons'; // Icônes solid
+import { faArrowDown, faSearch, faCode, faLayerGroup, faLeaf, faDatabase } from '@fortawesome/free-solid-svg-icons'; // Icônes solid
 import {
   faHtml5,
   faCss3Alt,
@@ -21,8 +21,8 @@ import {
   faReact,
   faAngular,
   faBootstrap,
-  faWordpress ,
-  faVuejs   ,faPhp,faLaravel
+  faWordpress,
+  faVuejs, faPhp, faLaravel
 } from '@fortawesome/free-brands-svg-icons'; // Icônes brands
 
 import Competences from './sectionhome/competences';
@@ -37,7 +37,7 @@ export default function Home() {
   const [activeLink, setActiveLink] = useState('/');
   const [compteur] = useState([
     { namfr: "Projet", namen: "Project", value: "400" },
-    { namfr: "Expérience", namen: "Experience", value: "7" },
+    { namfr: "Expérience", namen: "Experience", value: "8" },
   ]);
   const [skills] = useState([
     { name: "HTML 5", level: 100, icon: faHtml5 },
