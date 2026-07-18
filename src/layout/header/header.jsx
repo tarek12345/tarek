@@ -64,7 +64,7 @@ const experienceYears = currentYear - startYear;
             </div>
             <Slider long={language} />
           </div>
-        </div>
+        </div>   
       </div>
     </div>
   );
