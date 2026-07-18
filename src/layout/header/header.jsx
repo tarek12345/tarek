@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./header.css";
-import imgfront from '../../assets/sliderhome.jpg';
+import imgfront from '../../assets/sliderhome.png';
 import frenchCV from '../../assets/frenchCV.pdf';
 import englishCV from '../../assets/englishCV.pdf';
 import Menu from "../../pages/route";
