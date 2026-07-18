@@ -7,8 +7,16 @@ function App() {
   return (
     <div className="App">
        <Helmet>
-        <title>Mon Portfolio</title>
-        <meta name="description" content="Portfolio où je présente mes projets et compétences." />
+         <title>Tarek Ben Arfa | Développeur Front-End React JS, Angular, Next.js</title>
+       <meta 
+name="description" 
+content="Portfolio de Tarek Ben Arfa, développeur Front-End spécialisé React JS, Angular, Next.js, WordPress et développement web moderne."
+/>
+
+<meta 
+name="keywords" 
+content="Tarek Ben Arfa, développeur React JS, Angular, Next.js, Front-End Developer Tunisie, Portfolio développeur"
+/>
       </Helmet>
     <Home/>
     </div>
