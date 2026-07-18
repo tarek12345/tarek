@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./header.css";
 import imgfront from '../../assets/sliderhome.jpg';
 import frenchCV from '../../assets/frenchCV.pdf';
@@ -10,7 +10,9 @@ import Slider from "../../componsants/slider/slider";
 
 export default function Header({ long, toggleLanguage }) {
   const [language, setLanguage] = useState(long || "FR");
-
+const currentYear = new Date().getFullYear();
+ const startYear  = 2018;
+const experienceYears = currentYear - startYear;
   useEffect(() => {
     setLanguage(long); 
   }, [long]);  
@@ -48,11 +50,11 @@ export default function Header({ long, toggleLanguage }) {
               <div className="discrptionname">
                 {language === "FR" ? <span className="title-top">Développeur full stack</span> : <span className="title-top">Full stack developer</span>}
                 <h1>Benarfa <br /> Tarek</h1>
-                <p>
-                  {language === "FR"
-                    ? "Je suis développeur full stack  avec 7 ans d'expérience."
-                    : "I am a full stack developer with 7 years of experience."}
-                </p>
+               <p>
+  {language === "FR"
+    ? `Je suis développeur full stack avec ${experienceYears} ans d'expérience.`
+    : `I am a full stack developer with ${experienceYears} years of experience.`}
+</p>
               </div>
               <div className="buttons">
                 <a href={language === "FR" ? frenchCV : englishCV} download className="btn-hover color-3">
