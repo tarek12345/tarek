@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/tarek/static/css/main.896f204d.css",
-    "main.js": "/tarek/static/js/main.85cd7df0.js",
+    "main.css": "/tarek/static/css/main.a3e7576d.css",
+    "main.js": "/tarek/static/js/main.6080d073.js",
     "static/js/453.3ac6b82a.chunk.js": "/tarek/static/js/453.3ac6b82a.chunk.js",
     "static/media/videocode.mp4": "/tarek/static/media/videocode.83522e448aa6d02c96c1.mp4",
     "static/media/programming.jpg": "/tarek/static/media/programming.b5fe33f1d544d6180afd.jpg",
@@ -31,13 +31,14 @@
     "static/media/bitbakedimg.png": "/tarek/static/media/bitbakedimg.46a28984bab16db0f7e8.png",
     "static/media/documex1.jpeg": "/tarek/static/media/documex1.036fe2c4ab9cedb5d4af.jpeg",
     "static/media/whatsapp.png": "/tarek/static/media/whatsapp.d026940870fb334920b7.png",
+    "static/media/linkedin.png": "/tarek/static/media/linkedin.6892b3ae328c7a1e055f.png",
     "index.html": "/tarek/index.html",
-    "main.896f204d.css.map": "/tarek/static/css/main.896f204d.css.map",
-    "main.85cd7df0.js.map": "/tarek/static/js/main.85cd7df0.js.map",
+    "main.a3e7576d.css.map": "/tarek/static/css/main.a3e7576d.css.map",
+    "main.6080d073.js.map": "/tarek/static/js/main.6080d073.js.map",
     "453.3ac6b82a.chunk.js.map": "/tarek/static/js/453.3ac6b82a.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.896f204d.css",
-    "static/js/main.85cd7df0.js"
+    "static/css/main.a3e7576d.css",
+    "static/js/main.6080d073.js"
   ]
 }
