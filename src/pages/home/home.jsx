@@ -191,10 +191,10 @@ export default function Home() {
      
       <Footer long={language} />
       <div className="fixed-bottom right-100 p-300 p-3" style={{zIndex:6 , left: "initial"}}>
-       <a href="https://www.linkedin.com/in/benarfa-tarek-104964112/" target="_blank">
+       <a href="https://www.linkedin.com/in/benarfa-tarek-104964112/" target="_blank" title='Linkedin'>
        <img src={linkedin} width="60" alt="Linkedin" />
        </a>
-           <a href="https://wa.me/50269194?text=Bonjour je suis intéressé pour  un autre  oprtunité" target="_blank">
+           <a href="https://wa.me/50269194?text=Bonjour je suis intéressé pour  un autre  oprtunité" target="_blank" title='Whatsupp'>
        <img src={whatsapp} width="60" alt="whatsupp" />
        </a>
       </div>
