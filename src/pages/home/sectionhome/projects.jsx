@@ -1,4 +1,3 @@
-import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import Fancybox from "../../../componsants/Fancybox/Fancybox";
@@ -12,6 +11,9 @@ import BborddetaileDox1 from "../../../assets/documex.jpeg";
 import yellowsmidth from "../../../assets/buildersite.png";
 import yellowsmidthdetaile from "../../../assets/ys-auth.png";
 import yellowsmidthlist from "../../../assets/ysdetaille.png";
+import koredge from "../../../assets/XD.png";
+
+
 export default function Projects(props) {
   // Define separate image arrays for each project type
   const wordpressImages = [
@@ -80,9 +82,16 @@ export default function Projects(props) {
       url: "https://ysbuilder.b-forbiz.com/",
       thumbnail: yellowsmidth,
       caption: "Bbord bforbiz",
+    }
+  ];
+  const vueImages = [
+
+    {
+      url: "https://www.koredge.fr/outils-metiers/koredge-smart-contact/",
+      thumbnail: koredge,
+      caption: "Koredge contact",
     },
   ];
-
   return (
     <div id="section3">
       <div className="img-right">
@@ -136,6 +145,20 @@ export default function Projects(props) {
             {props.long === "FR" ? "Projets React" : "   Projects React"}
           </button>
         </li>
+        <li className="nav-item" role="presentation">
+          <button
+            className="nav-link"
+            id="pills-vue-tab"
+            data-bs-toggle="pill"
+            data-bs-target="#pills-vue"
+            type="button"
+            role="tab"
+            aria-controls="pills-vue"
+            aria-selected="false"
+          >
+            {props.long === "FR" ? "Projets Vue" : "   Projects Vue"}
+          </button>
+        </li>
       </ul>
       <div className="tab-content" id="pills-tabContent">
         <div
@@ -164,6 +187,15 @@ export default function Projects(props) {
           tabIndex="2"
         >
           <Fancybox galleryName="react-gallery" images={reactImages} longth={props}/>
+        </div>
+        <div
+          className="tab-pane fade"
+          id="pills-vue"
+          role="tabpanel"
+          aria-labelledby="pills-vue-tab"
+          tabIndex="3"
+        >
+          <Fancybox galleryName="vue-gallery" images={vueImages} longth={props}/>
         </div>
       </div>
     </div>

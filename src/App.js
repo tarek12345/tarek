@@ -8,10 +8,9 @@ function App() {
     <div className="App">
        <Helmet>
          <title>Tarek Ben Arfa | Développeur Front-End React JS, Angular, Next.js</title>
-       <meta 
-name="description" 
-content="Portfolio de Tarek Ben Arfa, développeur Front-End spécialisé React JS, Angular, Next.js, WordPress et développement web moderne."
-/>
+         <meta name="robots" content="index, follow"></meta>
+<meta name="description" content="Développeur Full Stack React, Next.js, Angular, Laravel et WordPress en Tunisie."/>
+<link rel="canonical" href="https://tarek12345.github.io/tarek/"/>
 
 <meta 
 name="keywords" 

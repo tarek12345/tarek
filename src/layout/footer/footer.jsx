@@ -1,13 +1,8 @@
-import React from "react";
 import "./footer.css";
 import footerbg from "../../assets/footerbg.png";
 import suivez from "../../assets/suivez.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faLinkedin,
-  faWhatsapp,
-  faFacebook,
-} from "@fortawesome/free-brands-svg-icons";
+import { faLinkedin, faWhatsapp, faFacebook, faGitAlt } from "@fortawesome/free-brands-svg-icons";
 
 export default function Footer(props) {
   return (
@@ -40,6 +35,14 @@ export default function Footer(props) {
           >
             <FontAwesomeIcon icon={faFacebook} />
           </a>
+          <a
+            href="https://github.com/tarek12345/tarek"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+              <FontAwesomeIcon icon={faGitAlt} />
+          </a>
+       
         </div>
       </div>
       <div className="copyright">
