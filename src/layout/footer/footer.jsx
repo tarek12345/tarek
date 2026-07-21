@@ -18,6 +18,8 @@ export default function Footer(props) {
             href="https://www.linkedin.com/in/benarfa-tarek-104964112/"
             target="_blank"
             rel="noopener noreferrer"
+            title="linkedin"
+
           >
             <FontAwesomeIcon icon={faLinkedin} />
           </a>
@@ -25,6 +27,7 @@ export default function Footer(props) {
             href="https://wa.me/50269194?text=Bonjour je suis intéressé pour  un autre  oprtunité"
             target="_blank"
             rel="noopener noreferrer"
+            title="whatsapp"
           >
             <FontAwesomeIcon icon={faWhatsapp} />
           </a>
@@ -32,6 +35,8 @@ export default function Footer(props) {
             href="https://www.facebook.com/TAREK.BENARFA/?locale=fr_FR"
             target="_blank"
             rel="noopener noreferrer"
+            title="facebook"
+
           >
             <FontAwesomeIcon icon={faFacebook} />
           </a>
@@ -39,6 +44,8 @@ export default function Footer(props) {
             href="https://github.com/tarek12345/tarek"
             target="_blank"
             rel="noopener noreferrer"
+            title="Git"
+
           >
               <FontAwesomeIcon icon={faGitAlt} />
           </a>
