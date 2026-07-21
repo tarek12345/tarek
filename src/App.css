@@ -633,3 +633,8 @@ div#section5 .img-left {
   line-height: 59px;
 
 }}
+.fixed-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}

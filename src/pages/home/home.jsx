@@ -10,6 +10,7 @@ import jiraimg from "../../assets/jiraimg.png";
 import zohocc from "../../assets/zohocc.png";
 import XD from "../../assets/XD.png";
 import whatsapp from "../../assets/whatsapp.png";
+import linkedin from "../../assets/linkedin.png";
 import Header from '../../layout/header/header';
 import Footer from '../../layout/footer/footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -190,7 +191,10 @@ export default function Home() {
      
       <Footer long={language} />
       <div className="fixed-bottom right-100 p-300 p-3" style={{zIndex:6 , left: "initial"}}>
-       <a href="https://wa.me/50269194?text=Bonjour je suis intéressé pour  un autre  oprtunité" target="_blank">
+       <a href="https://www.linkedin.com/in/benarfa-tarek-104964112/" target="_blank">
+       <img src={linkedin} width="60" alt="Linkedin" />
+       </a>
+           <a href="https://wa.me/50269194?text=Bonjour je suis intéressé pour  un autre  oprtunité" target="_blank">
        <img src={whatsapp} width="60" alt="whatsupp" />
        </a>
       </div>
