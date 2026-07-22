@@ -73,7 +73,23 @@ export default function Competences({ long, skills }) {
 
   <ProgressBar now={skill.level} label={`${skill.level}%`} visuallyHidden />
 
-               <span className="stateskills">{skill.state}</span>
+               <span className="stateskills">{
+  long === "FR"
+    ? skill.state === "Intermédiaire"
+      ? "Intermédiaire"
+      : skill.state === "Expert"
+        ? "Expert"
+        : skill.state === "Avancé"
+          ? "Avancé"
+          : ""
+    : skill.state === "Intermédiaire"
+      ? "Intermediate"
+      : skill.state === "Expert"
+        ? "Expert"
+        : skill.state === "Avancé"
+          ? "Advanced"
+          : ""
+} </span>
                </div>
 </div>
              
@@ -105,11 +121,32 @@ export default function Competences({ long, skills }) {
               <span className="levercom">{`${skill.level}%`}</span> 
              </div>
 
-  <ProgressBar now={skill.level} label={`${skill.level}%`} visuallyHidden />
+               <ProgressBar now={skill.level} label={`${skill.level}%`} visuallyHidden />
 
-               <span className="stateskills">{skill.state}</span>
+               <span className="stateskills">
+                
+{
+  long === "FR"
+    ? skill.state === "Intermédiaire"
+      ? "Intermédiaire"
+      : skill.state === "Expert"
+        ? "Expert"
+        : skill.state === "Avancé"
+          ? "Avancé"
+          : ""
+    : skill.state === "Intermédiaire"
+      ? "Intermediate"
+      : skill.state === "Expert"
+        ? "Expert"
+        : skill.state === "Avancé"
+          ? "Advanced"
+          : ""
+}               
+                </span>
+                        
+
                </div>
-</div>
+</div> 
               </div>
             </SwiperSlide>
           ))}

@@ -46,8 +46,8 @@ export default function Home() {
     { name: "Tailwind CSS", level: 80, icon: faBootstrap, state:"Avancé" },
     { name: "Bootstrap", level: 95, icon: faBootstrap, state:"Expert" },
     { name: "Matriel ui", level: 95, icon: faLayerGroup, state:"Expert"  },
-    { name: "MySQL ", level: 70, icon: faDatabase, state:"Intérmidiare"  },
-    { name: "MongoDB ", level: 65, icon: faLeaf, state:"Intérmidiare"   },
+    { name: "MySQL ", level: 70, icon: faDatabase, state:"Intermédiaire"  },
+    { name: "MongoDB ", level: 65, icon: faLeaf, state:"Intermédiaire"   },
     { name: "Php", level: 80, icon: faPhp, state:"Avancé"  },
     { name: "JavaScript", level: 80, icon: faJsSquare, state:"Avancé" },
     { name: "TypeScript", level: 80, icon: faJsSquare, state:"Avancé" },
@@ -60,7 +60,7 @@ export default function Home() {
     { name: "Wordpress divi", level: 100, icon: faWordpress, state:"Expert" }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée.
     { name: "Wordpress Gutenberg", level: 90, icon: faWordpress, state:"Expert" }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée.
     { name: "Seo", level: 80, icon: faSearch, state:"Avancé" }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée
-    { name: "Laravel", level: 60, icon: faLaravel, state:"Intérmidiare" }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée
+    { name: "Laravel", level: 60, icon: faLaravel, state:"Intermédiaire" }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée
 
   ]);
   const imgsatware = [

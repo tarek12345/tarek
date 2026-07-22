@@ -54,7 +54,7 @@ export default function Footer(props) {
       </div>
       <div className="copyright">
         {props.long === "FR"
-          ? "Réalisé par Benara Tarek ©"
+          ? "Réalisée par Benara Tarek ©"
           : "Directed by Benara Tarek ©"}{" "}
         {new Date().getFullYear()}
       </div>

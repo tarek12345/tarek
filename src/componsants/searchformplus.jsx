@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faPhone, faSadTear, faSmile } from "@fortawesome/free-solid-svg-icons";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import { Doughnut } from "react-chartjs-2";
 import {
-Chart as ChartJS,
-ArcElement,
-Tooltip,
-Legend,
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
 } from "chart.js";
 
 // Enregistrer les composants Chart.js nécessaires
@@ -94,7 +94,7 @@ return (
 
   <div className="search-input-container mb-3 champs">
     <textarea className="form-control"
-     placeholder={props.long==="FR"?"Saissir decription du votre offre d'emploi..."
+     placeholder={props.long==="FR"?"Saissie decription du votre offre d'emploi..."
       :'Enter a description of your job offer...'} 
      value={searchQuery} onChange={(e)=> setSearchQuery(e.target.value)}
           rows="4"
