@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/free-mode";
@@ -6,7 +6,7 @@ import "swiper/css/pagination";
 import { Pagination, Navigation } from "swiper/modules";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
-
+import ProgressBar from "react-bootstrap/ProgressBar";
 export default function Competences({ long, skills }) {
   
 
@@ -34,7 +34,8 @@ export default function Competences({ long, skills }) {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+    setFilteredSkills(skills || []);
+  }, [skills]);
 
   return (
     <div id="section2">
@@ -60,18 +61,22 @@ export default function Competences({ long, skills }) {
         <div className="skills">
           {filteredSkills.map((skill, index) => (
             <div className="card-skills" key={index}>
+               <div className="card-skills-1">
+              <div className="logoicon">
               <FontAwesomeIcon icon={skill.icon} />
-              <span>{skill.name}</span>
-              <div className="circle-container">
-                {[...Array(10)].map((_, circleIndex) => (
-                  <div
-                    key={circleIndex}
-                    className={`circle ${
-                      circleIndex < Math.ceil(skill.level / 10) ? "filled" : ""
-                    }`}
-                  />
-                ))}
               </div>
+               <div className="contenticon">
+                 <div className="contenticon-1">
+              <span>{skill.name}</span>
+              <span className="levercom">{`${skill.level}%`}</span> 
+             </div>
+
+  <ProgressBar now={skill.level} label={`${skill.level}%`} visuallyHidden />
+
+               <span className="stateskills">{skill.state}</span>
+               </div>
+</div>
+             
             </div>
           ))}
         </div>
@@ -90,20 +95,21 @@ export default function Competences({ long, skills }) {
           {filteredSkills.map((skill, index) => (
             <SwiperSlide key={index}>
               <div className="card-skills">
-                <FontAwesomeIcon icon={skill.icon} size="2x" />
-                <span>{skill.name}</span>
-                <div className="circle-container">
-                  {[...Array(10)].map((_, circleIndex) => (
-                    <div
-                      key={circleIndex}
-                      className={`circle ${
-                        circleIndex < Math.ceil(skill.level / 10)
-                          ? "filled"
-                          : ""
-                      }`}
-                    />
-                  ))}
-                </div>
+                             <div className="card-skills-1">
+              <div className="logoicon">
+              <FontAwesomeIcon icon={skill.icon} />
+              </div>
+               <div className="contenticon">
+                 <div className="contenticon-1">
+              <span>{skill.name}</span>
+              <span className="levercom">{`${skill.level}%`}</span> 
+             </div>
+
+  <ProgressBar now={skill.level} label={`${skill.level}%`} visuallyHidden />
+
+               <span className="stateskills">{skill.state}</span>
+               </div>
+</div>
               </div>
             </SwiperSlide>
           ))}

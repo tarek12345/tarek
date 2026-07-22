@@ -41,26 +41,26 @@ export default function Home() {
     { namfr: "Expérience", namen: "Experience", value: "8" },
   ]);
   const [skills] = useState([
-    { name: "HTML 5", level: 100, icon: faHtml5 },
-    { name: "CSS 3", level: 100, icon: faCss3Alt },
-    { name: "Tailwind CSS", level: 80, icon: faBootstrap },
-    { name: "Bootstrap", level: 95, icon: faBootstrap },
-    { name: "Matriel ui", level: 95, icon: faLayerGroup  },
-    { name: "MySQL ", level: 70, icon: faDatabase  },
-    { name: "MongoDB ", level: 65, icon: faLeaf   },
-    { name: "Php", level: 80, icon: faPhp  },
-    { name: "JavaScript", level: 80, icon: faJsSquare },
-    { name: "TypeScript", level: 80, icon: faJsSquare },
-    { name: "React JS", level: 90, icon: faReact },
-    { name: "Angular JS", level: 80, icon: faAngular },
-    { name: "Vue JS", level: 70, icon: faVuejs }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée.
-    { name: "REST API", level: 80, icon: faCode },
-    { name: "Next JS", level: 90, icon: faJsSquare }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée.
-    { name: "Wordpress elemntor", level: 100, icon: faWordpress },
-    { name: "Wordpress divi", level: 100, icon: faWordpress }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée.
-    { name: "Wordpress Gutenberg", level: 90, icon: faWordpress }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée.
-    { name: "Seo", level: 80, icon: faSearch }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée
-    { name: "Laravel", level: 60, icon: faLaravel }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée
+    { name: "HTML 5", level: 100, icon: faHtml5, state:"Expert" },
+    { name: "CSS 3", level: 100, icon: faCss3Alt, state:"Expert" },
+    { name: "Tailwind CSS", level: 80, icon: faBootstrap, state:"Avancé" },
+    { name: "Bootstrap", level: 95, icon: faBootstrap, state:"Expert" },
+    { name: "Matriel ui", level: 95, icon: faLayerGroup, state:"Expert"  },
+    { name: "MySQL ", level: 70, icon: faDatabase, state:"Intérmidiare"  },
+    { name: "MongoDB ", level: 65, icon: faLeaf, state:"Intérmidiare"   },
+    { name: "Php", level: 80, icon: faPhp, state:"Avancé"  },
+    { name: "JavaScript", level: 80, icon: faJsSquare, state:"Avancé" },
+    { name: "TypeScript", level: 80, icon: faJsSquare, state:"Avancé" },
+    { name: "React JS", level: 90, icon: faReact, state:"Expert" },
+    { name: "Angular JS", level: 80, icon: faAngular, state:"Expert" },
+    { name: "Vue JS", level: 70, icon: faVuejs, state:"Avancé" }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée.
+    { name: "REST API", level: 80, icon: faCode, state:"Avancé" },
+    { name: "Next JS", level: 90, icon: faJsSquare, state:"Expert" }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée.
+    { name: "Wordpress elemntor", level: 100, icon: faWordpress, state:"Expert" },
+    { name: "Wordpress divi", level: 100, icon: faWordpress, state:"Expert" }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée.
+    { name: "Wordpress Gutenberg", level: 90, icon: faWordpress, state:"Expert" }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée.
+    { name: "Seo", level: 80, icon: faSearch, state:"Avancé" }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée
+    { name: "Laravel", level: 60, icon: faLaravel, state:"Intérmidiare" }, // Si faNode n'est pas disponible, utilisez une autre icône appropriée
 
   ]);
   const imgsatware = [
