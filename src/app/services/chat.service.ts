@@ -31,6 +31,8 @@ getUnreadMessages(userId: number) {
 markAsRead(convId: number, userId: number) {
   return this.http.post(`${this.apiUrl}/messages/mark-read/${convId}/${userId}`, {});
 }
-
+sendFile(data: FormData) {
+  return this.http.post(`${this.apiUrl}/send-file`, data);
+}
 
 }

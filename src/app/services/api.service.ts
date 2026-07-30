@@ -297,8 +297,43 @@ getTraitListByUser(userId: number ,page: number = 1) {
 getTraitList() {
   return this.http.get<{ success: boolean, traites: any[] }>(this.apiUrl + '/traite-with-users');
 }
-  Deletetraite(traiteId: number): Observable<any> {
+Deletetraite(traiteId: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/traites/${traiteId}`);
+}
+
+
+
+enregistrerPaix(data: any) {
+  return this.http.post<any>(`${this.apiUrl}/paix`, data);
+}
+
+getPaixListByUser(userId: number ,page: number = 1) {
+  return this.http.get<any[]>(`${this.apiUrl}/paixsuser/${userId}`);
+
+}
+
+getPaixList() {
+  return this.http.get<{ success: boolean, traites: any[] }>(this.apiUrl + '/paix-with-users');
+}
+DeletePaix(traiteId: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/paix/${traiteId}`);
+}
+ createtpaix(formData: FormData): Observable<Blob> {
+    return this.http.post(`${this.apiUrl}/fiche-de-paix/generer-import`, formData, {
+      responseType: 'blob'
+    });
+  }
+
+   getAllConfigPaix(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/paixconfigs`);
+  }
+
+  addConfigPaix(data: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/paixconfigs`, data);
+  }
+
+  deleteConfigPaix(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/paixconfigs/${id}`);
   }
 
 

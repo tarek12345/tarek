@@ -5,7 +5,7 @@
 <div class="btnsheraders">
   <div class="congee d-flex align-items-center">
     <!-- Affichage du bouton pour les congés approuvés -->
-    <div *ngIf="conge.length > 0 && datauser.role === 'employer'" class="d-flex align-items-center">
+    <div *ngIf="conge.length > 0 " class="d-flex align-items-center">
       <button *ngIf="approvedCount > 0" class="btn btn-primary" (click)="getleavesbystatus('approved')" type="button"
         data-bs-toggle="offcanvas" data-bs-target="#offcanvasLeft1" aria-controls="offcanvasLeft1">
         <i class="bi bi-calendar"></i>

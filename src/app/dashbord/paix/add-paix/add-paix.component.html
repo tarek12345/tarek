@@ -1,0 +1,226 @@
+<div class="d-flex justify-content-center">
+
+    <form class="container mt-4 p-4 border rounded shadow bg-light" (ngSubmit)="onSubmit(paiefForm)" #paiefForm="ngForm"
+        novalidate>
+
+
+        <div class="title d-flex justify-content-between">
+            <h2>Fiche de Paie</h2>
+            <h2>بطاقة خلاص</h2>
+        </div>
+
+
+        <!-- Import PDF -->
+        <div class="mb-3">
+            <label class="form-label">
+                Importer un PDF modèle fiche de paie
+            </label>
+
+            <input type="file" (change)="onFileSelected($event)" accept="application/pdf" required>
+        </div>
+
+
+
+        <!-- Société / période -->
+
+        <div class="d-flex gap-2">
+
+            <div class="mb-3 w-50">
+                <label>Société</label> 
+                <input class="form-control" disabled="true" [(ngModel)]="formData.entreprise" name="entreprise">
+            </div>
+
+
+            <div class="mb-3 w-25">
+                <label>Mois</label>
+                <input type="text" class="form-control" [(ngModel)]="formData.mois" name="mois">
+            </div>
+
+
+            <div class="mb-3 w-25">
+                <label>Année</label>
+                <input type="number" class="form-control" [(ngModel)]="formData.annee" name="annee">
+            </div>
+
+
+        </div>
+
+
+
+        <!-- Salarié -->
+
+        <div class="d-flex gap-2">
+
+            <div class="mb-3 w-25">
+                <label>Matricule</label>
+                 <select
+        class="form-select"
+        (change)="onConfigChange($event)"
+        name="matriculeSelection">
+
+        <option value="">Sélectionner un matricule</option>
+
+        <option *ngFor="let cfg of configs" [value]="cfg.id">
+            {{ cfg.matricule }}
+        </option>
+
+    </select>
+            </div>
+    
+
+            <div class="mb-3 w-25">
+                <label>Nom</label>
+        <input
+        class="form-control"
+        [(ngModel)]="formData.nom"
+        name="nom"
+        readonly>
+            </div>
+
+
+            <div class="mb-3 w-25">
+                <label>Prénom</label>
+                <input class="form-control" [(ngModel)]="formData.prenom" name="prenom">
+            </div>
+
+
+            <div class="mb-3 w-25">
+                <label>N° CNSS</label>
+                <input class="form-control" [(ngModel)]="formData.cnss" name="cnss">
+            </div>
+
+
+        </div>
+
+
+
+        <!-- Situation -->
+
+        <div class="d-flex gap-3">
+
+
+            <div class="mb-3">
+                <label>
+                    <input type="checkbox" [(ngModel)]="formData.chef_famille" name="chef_famille">
+
+                    Chef de famille
+                </label>
+            </div>
+
+
+
+            <div class="mb-3">
+                <label>Nombre enfants</label>
+
+                <input type="number" class="form-control" [(ngModel)]="formData.nombre_enfants" name="nombre_enfants">
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- Salaire -->
+
+        <div class="d-flex gap-2">
+
+
+            <div class="mb-3 w-50">
+
+                <label>
+                    Salaire Brut (TND)
+                </label>
+<input
+  type="number"
+  class="form-control"
+  [(ngModel)]="formData.salaire_brut"
+  name="salaire_brut"
+  (blur)="calculDepuisBrut()">
+
+            </div>
+
+
+
+            <div class="mb-3 w-50">
+
+                <label>
+                    Salaire Net (TND)
+                </label>
+<input
+  type="number"
+  class="form-control"
+  [(ngModel)]="formData.salaire_net"
+  name="salaire_net"
+  (blur)="calculDepuisNet()">
+
+            </div>
+
+
+        </div>
+
+
+
+
+        <!-- Résultat -->
+
+
+        <div class="border rounded p-3 bg-white">
+
+
+            <h5>Données de paie</h5>
+
+
+            <div class="d-flex justify-content-between">
+                <span>Salaire brut</span>
+                <b>{{formData.salaire_brut | number:'1.3-3'}}</b>
+            </div>
+
+
+            <div class="d-flex justify-content-between">
+                <span>Retenue CNSS</span>
+                <b>{{formData.retenue_cnss | number:'1.3-3'}}</b>
+            </div>
+
+
+            <div class="d-flex justify-content-between">
+                <span>Salaire brut imposable</span>
+                <b>{{formData.salaire_brut_imposable | number:'1.3-3'}}</b>
+            </div>
+
+
+            <div class="d-flex justify-content-between">
+                <span>Retenue à la source IRPP</span>
+                <b>{{formData.retenue_source | number:'1.3-3'}}</b>
+            </div>
+
+
+            <div class="d-flex justify-content-between">
+                <span>Contribution sociale solidarité</span>
+                <b>{{formData.contribution_sociale | number:'1.3-3'}}</b>
+            </div>
+
+
+            <hr>
+
+
+            <div class="d-flex justify-content-between text-success">
+                <h5>Salaire Net</h5>
+                <h5>
+                    {{formData.salaire_net | number:'1.3-3'}} TND
+                </h5>
+            </div>
+
+
+        </div>
+
+
+
+        <button class="btn btn-success mt-3">
+            Générer PDF
+        </button>
+
+
+    </form>
+
+</div>

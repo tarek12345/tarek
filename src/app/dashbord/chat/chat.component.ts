@@ -170,20 +170,28 @@ startConversation(user: any) {
   }
 
 sendMessage() {
-  if (!this.newMessage.trim()) return;
+  if (!this.newMessage.trim() && !this.selectedFile) return;
 
-  const data = {
-    conversation_id: this.selectedConversation.id,
-    sender_id: this.currentUserId,
-    message: this.newMessage.trim()
-  };
+  const formData = new FormData();
+  formData.append('conversation_id', this.selectedConversation.id);
+  formData.append('sender_id', this.currentUserId.toString());
 
-  this.chatService.sendMessage(data).subscribe((msg) => {
+  if (this.newMessage.trim()) {
+    formData.append('message', this.newMessage.trim());
+  }
+
+  if (this.selectedFile) {
+    formData.append('file', this.selectedFile);
+  }
+
+  this.chatService.sendMessage(formData).subscribe((msg: any) => {
     this.messages.push(msg);
-    this.newMessage = '';
-    this.scrollToBottom();
 
-    // 🔵 notifier le parent pour mettre à jour le badge
+    // reset
+    this.newMessage = '';
+    this.selectedFile = null;
+
+    this.scrollToBottom();
     this.refreshUnread.emit();
   });
 }
@@ -194,4 +202,40 @@ sendMessage() {
       if (list) list.scrollTop = list.scrollHeight;
     }, 50);
   }
+
+  showEmoji = false;
+
+toggleEmoji() {
+  this.showEmoji = !this.showEmoji;
+}
+
+addEmoji(emoji: string) {
+  this.newMessage += emoji;
+  this.showEmoji = false;
+}
+selectedFile: File | null = null;
+
+
+onFileSelected(event: any) {
+  const file = event.target.files[0];
+  if (file) {
+    this.selectedFile = file;
+  }
+}
+
+sendFile() {
+  if (!this.selectedFile || !this.selectedConversation) return;
+
+  const formData = new FormData();
+  formData.append('conversation_id', this.selectedConversation.id);
+  formData.append('sender_id', this.currentUserId.toString());
+  formData.append('file', this.selectedFile);
+
+  this.chatService.sendFile(formData).subscribe((msg: any) => {
+    this.messages.push(msg);
+    this.selectedFile = null;
+    this.scrollToBottom();
+    this.refreshUnread.emit();
+  });
+}
 }

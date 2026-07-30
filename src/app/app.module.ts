@@ -1,4 +1,4 @@
-import { NgModule,LOCALE_ID  } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms'; // Import FormsModule
@@ -42,6 +42,11 @@ import { AddTraiteComponent } from './dashbord/traite/add-traite/add-traite.comp
 import { ConfigTraiteComponent } from './dashbord/traite/config-traite/config-traite.component';
 import { HistoriqueComponent } from './dashbord/historique/historique.component';
 import { ChatComponent } from './dashbord/chat/chat.component';
+import { PaixComponent } from './dashbord/paix/paix.component';
+import { AddPaixComponent } from './dashbord/paix/add-paix/add-paix.component';
+import { ConfigPaixComponent } from './dashbord/paix/config-paix/config-paix.component';
+
+
 
 
 registerLocaleData(localeFr, 'fr');
@@ -75,6 +80,9 @@ registerLocaleData(localeFr, 'fr');
     ConfigTraiteComponent,
     HistoriqueComponent,
     ChatComponent,
+    PaixComponent,
+    AddPaixComponent,
+    ConfigPaixComponent,
   
 
   ],

@@ -1,0 +1,123 @@
+/* Conteneur formulaire */
+.payroll-container {
+  max-width: 700px;
+  margin: 30px auto;
+  padding: 25px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* Titre */
+.payroll-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #2c3e50;
+}
+
+/* Groupe champ */
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #34495e;
+}
+
+/* Input */
+.form-control {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.form-control:focus {
+  border-color: #0d6efd;
+  outline: none;
+  box-shadow: 0 0 5px rgba(13,110,253,.25);
+}
+
+/* Checkbox */
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkbox-group input {
+  width: 18px;
+  height: 18px;
+}
+
+
+/* Bouton */
+.btn-calcul {
+  width: 100%;
+  padding: 12px;
+  background: #0d6efd;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.btn-calcul:hover {
+  background: #084298;
+}
+
+
+/* Résultat paie */
+.result-box {
+  margin-top: 30px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.result-box h3 {
+  background: #f8f9fa;
+  padding: 15px;
+  margin: 0;
+  color: #212529;
+}
+
+
+/* Ligne résultat */
+.result-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 18px;
+  border-bottom: 1px solid #eee;
+}
+
+.result-row:last-child {
+  border-bottom: none;
+}
+
+
+.result-row span:first-child {
+  font-weight: 600;
+  color: #495057;
+}
+
+
+.result-row span:last-child {
+  font-weight: bold;
+  color: #198754;
+}
+
+
+/* Salaire net */
+.net-salary {
+  background: #198754;
+  color: white !important;
+  font-size: 18px;
+}

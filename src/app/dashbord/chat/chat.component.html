@@ -58,17 +58,67 @@
            class="bubble"
            [class.me]="m.sender_id === currentUserId">
 
-        <div class="text">{{ m.message }}</div>
+        <!-- TEXTE -->
+<div class="text" *ngIf="m.message">{{ m.message }}</div>
+
+<!-- IMAGE -->
+<img *ngIf="m.file_type === 'image'"
+     [src]="m.file_url"
+     class="chat-img">
+
+<!-- VIDEO -->
+<video *ngIf="m.file_type === 'video'"
+       controls
+       class="chat-video">
+  <source [src]="m.file_url">
+</video>
+
+<!-- DOCUMENT -->
+<a *ngIf="m.file_type === 'document'"
+   [href]="m.file_url"
+   target="_blank">
+  📄 Télécharger fichier
+</a>
         <div class="time">{{ formatTime(m.created_at) }}</div>
       </div>
     </div>
 
-    <div class="chat-input" *ngIf="selectedUser">
-      <input [(ngModel)]="newMessage"
-             placeholder="Écrire un message..."
-             (keyup.enter)="sendMessage()">
-      <button (click)="sendMessage()">➤</button>
-      </div>
+<div class="chat-input" *ngIf="selectedUser">
+
+  <!-- EMOJI -->
+  <button class="emoji-btn" (click)="toggleEmoji()">😊</button>
+
+  <div class="emoji-picker" *ngIf="showEmoji">
+    <span (click)="addEmoji('😀')">😀</span>
+    <span (click)="addEmoji('😂')">😂</span>
+    <span (click)="addEmoji('😍')">😍</span>
+    <span (click)="addEmoji('😎')">😎</span>
+    <span (click)="addEmoji('😭')">😭</span>
+    <span (click)="addEmoji('👍')">👍</span>
+    <span (click)="addEmoji('❤️')">❤️</span>
+  </div>
+
+  <!-- 📎 INPUT FILE (IMAGE / VIDEO / DOC) -->
+  <input type="file"
+         #fileInput
+         (change)="onFileSelected($event)"
+         accept="image/*,video/*,.pdf,.doc,.docx,.xls,.xlsx"
+         hidden>
+
+  <!-- 📎 BOUTON -->
+  <button (click)="fileInput.click()" class="file-btn">📎</button>
+
+  <!-- INPUT MESSAGE -->
+  <input [(ngModel)]="newMessage"
+         placeholder="Écrire un message..."
+         (keyup.enter)="sendMessage()">
+<div *ngIf="selectedFile">
+  📎 {{ selectedFile.name }}
+</div>
+  <!-- SEND -->
+  <button (click)="sendMessage()">➤</button>
+
+</div>
     </div>
   </div>
 </div>

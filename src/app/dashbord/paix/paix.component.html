@@ -1,0 +1,145 @@
+<div class="listrpaix rounded shadow bg-light p-4">
+
+  <div *ngIf="loading" class="text-center mt-4">
+    Chargement des fiches de paie...
+  </div>
+
+
+  <ng-container *ngIf="!loading && paix.length > 0; else defaultImage">
+
+
+    <h2 class="mb-3">
+      Total des fiches de paie : {{total}}
+    </h2>
+
+
+    <div class="table-responsive mt-4">
+
+      <table class="table table-bordered table-striped">
+
+        <thead class="table-dark">
+
+          <tr>
+            <th>PDF</th>
+            <th>Employé</th>
+            <th>Salaire brut</th>
+            <th>Salaire net</th>
+            <th>Date création</th>
+            <th>Actions</th>
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+
+          <tr *ngFor="let p of paix">
+
+
+            <td>
+
+              <a 
+              [href]="apiUrl+'/storage/'+p.pdf_path"
+              target="_blank"
+              class="d-flex justify-content-center">
+
+                <i class="bi bi-file-earmark-pdf-fill text-danger fs-4"></i>
+
+              </a>
+
+            </td>
+
+
+
+            <td>
+
+              <span>
+                {{p.nom}} {{p.prenom}}
+              </span>
+
+            </td>
+
+
+
+            <td>
+
+              {{p.salaire_brut}} DT
+
+            </td>
+
+
+
+            <td>
+
+              {{p.salaire_net}} DT
+
+            </td>
+
+
+
+            <td>
+
+              {{p.created_at |  date:'dd/MM/yyyy'}}
+
+            </td>
+
+
+
+
+            <td>
+
+              <div class="d-flex justify-content-center">
+
+
+                <button 
+                class="btn btn-sm btn-primary me-1"
+                (click)="onEdit(p)">
+
+                  <i class="bi bi-pencil-square"></i>
+
+                </button>
+
+
+
+                <button 
+                class="btn btn-sm btn-danger"
+                (click)="onDelete(p)">
+
+                  <i class="bi bi-trash-fill"></i>
+
+                </button>
+
+
+              </div>
+
+            </td>
+
+
+          </tr>
+
+
+        </tbody>
+
+
+      </table>
+
+    </div>
+
+
+  </ng-container>
+
+
+
+  <ng-template #defaultImage>
+
+    <div *ngIf="!loading" class="alert alert-warning mt-4">
+
+      Aucune fiche de paie trouvée.
+
+    </div>
+
+  </ng-template>
+
+
+</div>

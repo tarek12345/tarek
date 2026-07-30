@@ -1,0 +1,65 @@
+<!-- src/app/components/traiteconfig/traiteconfig.component.html -->
+<div class=" listraite container mt-4">
+  <h2 class="text-secondary">Configuration fiche </h2>
+
+  <div class="d-flex justify-content-start gap-3 ">
+    <div class="mb-3 w-50">
+      <input type="text" [(ngModel)]="formDataconfig.nom" placeholder="Nom" class="form-control mb-2">
+    </div>
+    <div class="mb-3 w-50">
+      <input type="text" [(ngModel)]="formDataconfig.prenom" placeholder="Prenom" class="form-control mb-2">
+    </div>
+  </div>
+  <div class="d-flex justify-content-start gap-3 ">
+    <div class="mb-3 w-50">
+      <input type="text" [(ngModel)]="formDataconfig.matricule" placeholder="Matricule" class="form-control mb-2">
+    </div>
+    <div class="mb-3 w-50">
+      <input type="text" [(ngModel)]="formDataconfig.cin" placeholder="Cin" class="form-control mb-2">
+    </div>
+  </div>
+    <div class="d-flex justify-content-start gap-3 ">
+    <div class="mb-3 w-50">
+      <input type="text" [(ngModel)]="formDataconfig.cnss" placeholder="Cnss" class="form-control mb-2">
+    </div>
+    <div class="mb-3 w-50">
+      <input type="text" [(ngModel)]="formDataconfig.poste" placeholder="Poste" class="form-control mb-2">
+    </div>
+  </div>
+      <div class="d-flex justify-content-start gap-3 ">
+    <div class="mb-3 w-50">
+      <input type="text" [(ngModel)]="formDataconfig.entreprise" placeholder="Entreprise" class="form-control mb-2">
+    </div>
+    <div class="mb-3 w-50">
+      <input type="text" [(ngModel)]="formDataconfig.matricule_fiscal" placeholder="Matricule fiscal" class="form-control mb-2">
+    </div>
+  </div>
+  <button class="btn btn-primary" (click)="addConfig()">Ajouter</button>
+
+  <table class="table table-bordered mt-4">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Prenom</th>
+        <th>Cin</th>
+        <th>Cnss</th>
+        <th>Poste</th>
+        <th>Entreprise</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cfg of configs">
+        <td>{{ cfg.nom }}</td>
+        <td>{{ cfg.prenom }}</td>
+        <td>{{ cfg.cin }}</td>
+        <td>{{ cfg.cnss }}</td>
+        <td>{{ cfg.poste }}</td>
+        <td>{{ cfg.entreprise }}</td>
+        <td>
+          <button class="btn btn-danger btn-sm" (click)="deleteConfig(cfg.id)">Supprimer</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

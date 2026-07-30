@@ -30,6 +30,7 @@ export class DashbordComponent implements OnInit {
   interval: any;  // Intervalle pour le compteur
   counter: string = '00:00:00';  // Compteur initialisé à 00:00:00
 usernotpagination :any;
+
  unreadCount: number = 0;
   constructor(
     private apiService: ApiService,
@@ -73,12 +74,15 @@ usernotpagination :any;
   leavesuser: any[] = [];  // Liste des congés
 showProfileSubmenu: boolean = false;
 showProfileSubmenut: boolean = false;
-
+showProfileSubmenutpaix: boolean = false;
 toggleProfileSubmenu() {
   this.showProfileSubmenu = !this.showProfileSubmenu;
 }
 toggleProfileSubmenutraite() {
   this.showProfileSubmenut = !this.showProfileSubmenut;
+}
+toggleProfileSubmenupaix() {
+  this.showProfileSubmenutpaix = !this.showProfileSubmenutpaix;
 }
   GetUserSByid() {
     this.apiService.GetUserServiceByid(this.user.id).subscribe({
@@ -141,7 +145,7 @@ toggleProfileSubmenutraite() {
   }
 
 activeTab: string = 'home';
-
+lastmonth = new Date().getFullYear()
 setActiveTab(tab: string) {
   this.activeTab = tab;
 }
