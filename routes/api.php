@@ -10,7 +10,7 @@ use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\TacheController;
 use App\Http\Controllers\LettreDeChangeController;
 use App\Http\Controllers\ChatController;
-
+use App\Http\Controllers\PaixController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -48,7 +48,7 @@ Route::get('/messages/{conversationId}', [ChatController::class, 'getMessages'])
 Route::post('/start', [ChatController::class, 'startConversation']);
 Route::post('/send', [ChatController::class, 'sendMessage']);
 Route::get('/chat/unread/{userId}', [ChatController::class, 'getUnreadMessages']);
-
+Route::post('/send-file', [ChatController::class, 'sendFile']);
 Route::post('/messages/mark-read/{convId}/{userId}', [ChatController::class, 'markAsRead']);
 // Pointage 
 Route::middleware('auth:sanctum')->group(function () {
@@ -79,8 +79,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/lettre-de-change/generer-import', [LettreDeChangeController::class, 'genererDepuisImport']);
 
     Route::post('/traites', [LettreDeChangeController::class, 'store']);
-Route::get('/traiteconfigs', [LettreDeChangeController::class, 'indexConfig']);
-Route::post('/traiteconfigs', [LettreDeChangeController::class, 'storeConfig']);
+    Route::get('/traiteconfigs', [LettreDeChangeController::class, 'indexConfig']);
+    Route::post('/traiteconfigs', [LettreDeChangeController::class, 'storeConfig']);
 
    Route::delete('/traiteconfigs/{id}', [LettreDeChangeController::class, 'destroyConfig']);
     Route::get('/traitesuser/{id}', [LettreDeChangeController::class, 'gettraitebyuser']);
@@ -88,4 +88,38 @@ Route::post('/traiteconfigs', [LettreDeChangeController::class, 'storeConfig']);
    Route::get('/traite-with-users', [LettreDeChangeController::class, 'getAllTraitesWithUsers']);
    Route::middleware('auth:sanctum')->get('/traites', [LettreDeChangeController::class, 'getTraites']);
 
+
+
+
+
+
+
+
+
+
+
+   // Ajouter une paie
+Route::post('/paix', [PaixController::class, 'paixstore']);
+// Configurations paie (si vous avez besoin de paramètres)
+Route::get('/paixconfigs', [PaixController::class, 'indexpaixConfig']);
+Route::post('/paixconfigs', [PaixController::class, 'storepaixConfig']);
+
+Route::delete('/paixconfigs/{id}', [PaixController::class, 'destroypaixConfig']);
+
+
+// Paies par utilisateur
+Route::get('/paixsuser/{id}', [PaixController::class, 'paixsuser']);
+
+
+// Supprimer une paie
+Route::delete('/paix/{id}', [PaixController::class, 'deletePaix']);
+
+
+// Toutes les paies avec utilisateurs
+Route::get('/paix-with-users', [PaixController::class, 'getAllPaixWithUsers']);
+
+
+// Paies authentifiées
+Route::middleware('auth:sanctum')
+->get('/paies', [PaixController::class, 'getPaix']);
 });

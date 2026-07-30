@@ -63,26 +63,61 @@ public function startConversation(Request $request)
     // Envoyer un message
 public function sendMessage(Request $request)
 {
-    // Récupérer la conversation
-    $conversation = Conversation::findOrFail($request->conversation_id);
+    try {
+        $conversation = Conversation::findOrFail($request->conversation_id);
 
-    // Déterminer le destinataire
-    $receiver_id = ($conversation->user_one_id == $request->sender_id) 
-        ? $conversation->user_two_id 
-        : $conversation->user_one_id;
+        $receiver_id = ($conversation->user_one_id == $request->sender_id)
+            ? $conversation->user_two_id
+            : $conversation->user_one_id;
 
-    // Créer le message
-    $msg = Message::create([
-        'conversation_id' => $request->conversation_id,
-        'sender_id'       => $request->sender_id,
-        'receiver_id'     => $receiver_id,
-        'message'         => $request->message,
-        'is_read'         => 0, // message non lu
-    ]);
+        $fileUrl = null;
+        $fileType = null;
 
-    return response()->json($msg);
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+
+            // Vérifier qu'il y a bien un fichier valide
+            if (!$file->isValid()) {
+                return response()->json(['error' => 'Fichier invalide'], 400);
+            }
+
+            // Stocker le fichier
+            $path = $file->store('chat_files', 'public');
+
+            // Détecter le type
+            $type = $file->getMimeType();
+            $ext  = strtolower($file->getClientOriginalExtension());
+
+            if (strpos($type, 'image') !== false) {
+                $fileType = 'image';
+            } elseif (strpos($type, 'video') !== false || $ext === 'mp4') {
+                $fileType = 'video';
+            } else {
+                $fileType = 'document';
+            }
+
+            $fileUrl = asset('storage/' . $path);
+        }
+
+        // Créer le message (texte ou fichier ou les deux)
+        $msg = Message::create([
+            'conversation_id' => $request->conversation_id,
+            'sender_id'       => $request->sender_id,
+            'receiver_id'     => $receiver_id,
+            'message'         => $request->message ?? null,
+            'file_url'        => $fileUrl,
+            'file_type'       => $fileType,
+            'is_read'         => 0,
+        ]);
+
+        return response()->json($msg);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => $e->getMessage()
+        ], 500);
+    }
 }
-
 public function getUnreadMessages($userId)
 {
     $count = Message::where('receiver_id', $userId)
@@ -103,5 +138,5 @@ public function markAsRead($convId, $userId)
     return response()->json(['status' => 'ok']);
 }
 
-
+// chat  from file 
 }

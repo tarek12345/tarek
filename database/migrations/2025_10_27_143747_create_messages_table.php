@@ -17,9 +17,11 @@ class CreateMessagesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('conversation_id');
             $table->unsignedBigInteger('sender_id');
-            $table->text('message');
+            $table->text('message')->nullable();
             $table->boolean('is_read')->default(false);
             $table->unsignedBigInteger('receiver_id')->nullable();
+            $table->string('file_url')->nullable();
+            $table->string('file_type')->nullable(); // image, video, document
             $table->timestamps();
 
             $table->foreign('conversation_id')->references('id')->on('conversations')->onDelete('cascade');
