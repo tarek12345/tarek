@@ -77,7 +77,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('taches/{id}/info', [TacheController::class, 'updateInfo']);
     Route::post('/taches/{id}/commentaire', [TacheController::class, 'updateCommentaire']); // Mettre à jour un TACHE
     Route::post('/lettre-de-change/generer-import', [LettreDeChangeController::class, 'genererDepuisImport']);
-
     Route::post('/traites', [LettreDeChangeController::class, 'store']);
     Route::get('/traiteconfigs', [LettreDeChangeController::class, 'indexConfig']);
     Route::post('/traiteconfigs', [LettreDeChangeController::class, 'storeConfig']);
@@ -106,6 +105,7 @@ Route::post('/paixconfigs', [PaixController::class, 'storepaixConfig']);
 
 Route::delete('/paixconfigs/{id}', [PaixController::class, 'destroypaixConfig']);
 
+ Route::post('/fiche-de-paix/generer-import', [PaixController::class, 'genererDepuisImportPaix']);
 
 // Paies par utilisateur
 Route::get('/paixsuser/{id}', [PaixController::class, 'paixsuser']);

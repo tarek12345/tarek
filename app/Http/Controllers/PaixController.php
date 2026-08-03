@@ -21,8 +21,6 @@ class PaixController extends Controller
 
 public function genererDepuisImport(Request $request)
 {
-
-
 $validated = $request->validate([
 
     'user_id'=>'required|exists:users,id',
@@ -56,9 +54,6 @@ $validated = $request->validate([
     'annee'=>'nullable|string'
 
 ]);
-
-
-
 if(!$request->hasFile('pdf_modele')){
 
 return response()->json([
@@ -66,9 +61,6 @@ return response()->json([
 ],400);
 
 }
-
-
-
 $file=$request->file('pdf_modele');
 
 
@@ -370,8 +362,17 @@ $validated=$request->validate([
 
 
 
-$paix=Paix::create($validated);
+try {
 
+    $paix = Paix::create($validated);
+
+} catch(\Exception $e) {
+
+    return response()->json([
+        'error'=>$e->getMessage()
+    ],500);
+
+}
 
 
 return response()->json([
@@ -618,6 +619,349 @@ public function destroypaixConfig($id)
     ]);
 }
 
+public function genererDepuisImportPaix(Request $request)
+{
+    $validated = $request->validate([
 
+        'user_id' => 'required|exists:users,id',
+
+        // salarié
+        'nom' => 'required|string',
+        'prenom' => 'nullable|string',
+        'matricule' => 'nullable|string',
+        'cin' => 'nullable|string',
+        'cnss' => 'nullable|string',
+        'poste' => 'nullable|string',
+
+        // famille
+        'chef_famille' => 'nullable',
+        'nombre_enfants' => 'nullable|integer',
+
+        // salaire
+        'salaire_brut' => 'required|numeric',
+        'retenue_cnss' => 'required|numeric',
+        'salaire_brut_imposable' => 'required|numeric',
+        'retenue_source' => 'required|numeric',
+        'contribution_sociale' => 'required|numeric',
+        'salaire_net' => 'required|numeric',
+
+        // société
+        'entreprise' => 'nullable|string',
+        'matricule_fiscal' => 'nullable|string',
+
+        // période
+        'mois' => 'nullable|string',
+        'annee' => 'nullable|string'
+
+    ]);
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Correction checkbox
+    |--------------------------------------------------------------------------
+    */
+
+    $validated['chef_famille'] =
+        isset($validated['chef_famille']) 
+        && $validated['chef_famille'] == '1'
+        ? 1
+        : 0;
+
+
+    $validated['nombre_enfants'] =
+        $validated['nombre_enfants'] ?? 0;
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Vérification PDF
+    |--------------------------------------------------------------------------
+    */
+
+    if (!$request->hasFile('pdf_modele')) {
+
+        return response()->json([
+            'error' => 'Aucun fichier PDF importé.'
+        ],400);
+
+    }
+
+
+
+    try {
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Import modèle PDF
+        |--------------------------------------------------------------------------
+        */
+
+
+        $file = $request->file('pdf_modele');
+
+
+        $tempPath =
+            storage_path('app/temp_paix.pdf');
+
+
+        $file->move(
+            storage_path('app'),
+            'temp_paix.pdf'
+        );
+
+
+
+        $pdf = new Fpdi();
+
+
+
+        $pdf->setSourceFile($tempPath);
+
+
+
+        $template =
+            $pdf->importPage(1);
+
+
+
+        $size =
+            $pdf->getTemplateSize($template);
+
+
+
+        $pdf->AddPage(
+            $size['orientation'],
+            [
+                $size['width'],
+                $size['height']
+            ]
+        );
+
+
+
+        $pdf->useTemplate($template);
+
+
+
+        $pdf->SetFont(
+            'Arial',
+            'B',
+            10
+        );
+
+
+        $pdf->SetTextColor(0,0,0);
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Informations salarié
+        |--------------------------------------------------------------------------
+        */
+
+// Société
+$pdf->SetXY(80, 122);
+$pdf->Write(0, $validated['entreprise']);
+
+// Matricule fiscal
+$pdf->SetXY(35, 88);
+$pdf->Write(0, $validated['matricule_fiscal']);
+
+// Chef famille
+$pdf->SetXY(65, 99);
+$pdf->Write(0, $validated['chef_famille'] ? 'X' : '');
+
+// Nombre enfants
+$pdf->SetXY(45, 110);
+$pdf->Write(0, $validated['nombre_enfants']);
+
+// Mois
+$pdf->SetXY(138, 77);
+$pdf->Write(0, $validated['mois']);
+
+// Année
+$pdf->SetXY(138, 88);
+$pdf->Write(0, $validated['annee']);
+
+// Nom
+$pdf->SetXY(138, 99);
+$pdf->Write(0, $validated['nom']);
+
+// Prénom
+$pdf->SetXY(172, 99);
+$pdf->Write(0, $validated['prenom']);
+
+// CNSS
+$pdf->SetXY(138, 110);
+$pdf->Write(0, $validated['cnss']);
+
+// Poste
+$pdf->SetXY(35, 122);
+$pdf->Write(0, $validated['poste'] ?? '');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Situation familiale
+        |--------------------------------------------------------------------------
+        */
+
+
+        $pdf->SetXY(150,40);
+
+        $pdf->Write(
+            0,
+            $validated['chef_famille'] == 1
+            ? 'Oui'
+            : 'Non'
+        );
+
+
+        $pdf->SetXY(150,50);
+
+        $pdf->Write(
+            0,
+            $validated['nombre_enfants']
+        );
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Salaire
+        |--------------------------------------------------------------------------
+        */
+
+
+       $pdf->SetXY(55,137);
+$pdf->Write(0, number_format($validated['salaire_brut'],3));
+
+$pdf->SetXY(55,148);
+$pdf->Write(0, number_format($validated['retenue_cnss'],3));
+
+$pdf->SetXY(55,159);
+$pdf->Write(0, number_format($validated['salaire_brut_imposable'],3));
+
+$pdf->SetXY(118,137);
+$pdf->Write(0, number_format($validated['retenue_cnss'],3));
+
+$pdf->SetXY(118,148);
+$pdf->Write(0, number_format($validated['salaire_brut_imposable'],3));
+
+$pdf->SetXY(118,159);
+$pdf->Write(0, number_format($validated['contribution_sociale'],3));
+
+$pdf->SetXY(180,137);
+$pdf->Write(0, number_format($validated['salaire_brut'],3));
+
+$pdf->SetXY(180,148);
+$pdf->Write(0, number_format($validated['retenue_source'],3));
+
+$pdf->SetXY(96,181);
+$pdf->Write(0, number_format($validated['salaire_net'],3));
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Sauvegarde PDF
+        |--------------------------------------------------------------------------
+        */
+
+
+        if (file_exists($tempPath)) {
+            unlink($tempPath);
+        }
+
+
+
+        $folder =
+            storage_path('app/public/paies');
+
+
+
+        if (!file_exists($folder)) {
+
+            mkdir(
+                $folder,
+                0777,
+                true
+            );
+
+        }
+
+
+
+        $filename =
+            'paie_'.Str::uuid().'.pdf';
+
+
+
+        $relativePath =
+            'paies/'.$filename;
+
+
+
+        $absolutePath =
+            storage_path(
+                'app/public/'.$relativePath
+            );
+
+
+
+        $pdf->Output(
+            $absolutePath,
+            'F'
+        );
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Enregistrement DB
+        |--------------------------------------------------------------------------
+        */
+
+
+        $validated['pdf_path'] =
+            $relativePath;
+
+
+
+        $paie =
+            Paix::create($validated);
+
+
+
+return response()->file(
+    $absolutePath,
+    [
+        'Content-Type'=>'application/pdf',
+        'Content-Disposition'=>'attachment; filename="fiche_paie.pdf"'
+    ]
+);
+
+
+
+    } catch(\Exception $e) {
+
+
+        return response()->json([
+
+            'error'=>$e->getMessage(),
+
+            'line'=>$e->getLine(),
+
+            'file'=>$e->getFile()
+
+        ],500);
+
+
+    }
+
+}
 
 }
