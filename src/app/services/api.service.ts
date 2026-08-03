@@ -318,6 +318,7 @@ getPaixList() {
 DeletePaix(traiteId: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/paix/${traiteId}`);
 }
+
  createtpaix(formData: FormData): Observable<Blob> {
     return this.http.post(`${this.apiUrl}/fiche-de-paix/generer-import`, formData, {
       responseType: 'blob'

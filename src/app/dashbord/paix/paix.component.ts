@@ -95,7 +95,6 @@ export class PaixComponent {
 
           next: (res: any) => {
 
-
             this.paix = res.paies;
 
             this.total = res.total;

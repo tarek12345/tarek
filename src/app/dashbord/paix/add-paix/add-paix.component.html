@@ -26,21 +26,46 @@
         <div class="d-flex gap-2">
 
             <div class="mb-3 w-50">
-                <label>Société</label> 
+                <label>Société</label>
                 <input class="form-control" disabled="true" [(ngModel)]="formData.entreprise" name="entreprise">
             </div>
 
 
-            <div class="mb-3 w-25">
-                <label>Mois</label>
-                <input type="text" class="form-control" [(ngModel)]="formData.mois" name="mois">
-            </div>
+           <div class="mb-3 w-25">
+    <label>Mois</label>
+
+    <select class="form-select"
+            [(ngModel)]="formData.mois"
+            name="mois">
+
+        <option value="">Sélectionner un mois</option>
+        <option value="Janvier">Janvier</option>
+        <option value="Février">Février</option>
+        <option value="Mars">Mars</option>
+        <option value="Avril">Avril</option>
+        <option value="Mai">Mai</option>
+        <option value="Juin">Juin</option>
+        <option value="Juillet">Juillet</option>
+        <option value="Août">Août</option>
+        <option value="Septembre">Septembre</option>
+        <option value="Octobre">Octobre</option>
+        <option value="Novembre">Novembre</option>
+        <option value="Décembre">Décembre</option>
+
+    </select>
+</div>
 
 
-            <div class="mb-3 w-25">
-                <label>Année</label>
-                <input type="number" class="form-control" [(ngModel)]="formData.annee" name="annee">
-            </div>
+<div class="mb-3 w-25">
+    <label>Année</label>
+
+    <input type="number"
+           class="form-control"
+           [(ngModel)]="formData.annee"
+           name="annee"
+           min="2000"
+           max="2100">
+</div>
 
 
         </div>
@@ -53,28 +78,21 @@
 
             <div class="mb-3 w-25">
                 <label>Matricule</label>
-                 <select
-        class="form-select"
-        (change)="onConfigChange($event)"
-        name="matriculeSelection">
+                <select class="form-select" (change)="onConfigChange($event)" name="matriculeSelection">
 
-        <option value="">Sélectionner un matricule</option>
+                    <option value="">Sélectionner un matricule</option>
 
-        <option *ngFor="let cfg of configs" [value]="cfg.id">
-            {{ cfg.matricule }}
-        </option>
+                    <option *ngFor="let cfg of configs" [value]="cfg.id">
+                        {{ cfg.matricule }}
+                    </option>
 
-    </select>
+                </select>
             </div>
-    
+
 
             <div class="mb-3 w-25">
                 <label>Nom</label>
-        <input
-        class="form-control"
-        [(ngModel)]="formData.nom"
-        name="nom"
-        readonly>
+                <input class="form-control" [(ngModel)]="formData.nom" name="nom" readonly>
             </div>
 
 
@@ -131,12 +149,8 @@
                 <label>
                     Salaire Brut (TND)
                 </label>
-<input
-  type="number"
-  class="form-control"
-  [(ngModel)]="formData.salaire_brut"
-  name="salaire_brut"
-  (blur)="calculDepuisBrut()">
+                <input type="number" class="form-control" [(ngModel)]="formData.salaire_brut" name="salaire_brut"
+                    (blur)="calculDepuisBrut()">
 
             </div>
 
@@ -147,12 +161,8 @@
                 <label>
                     Salaire Net (TND)
                 </label>
-<input
-  type="number"
-  class="form-control"
-  [(ngModel)]="formData.salaire_net"
-  name="salaire_net"
-  (blur)="calculDepuisNet()">
+                <input type="number" class="form-control" [(ngModel)]="formData.salaire_net" name="salaire_net"
+                    (blur)="calculDepuisNet()">
 
             </div>
 

@@ -44,7 +44,7 @@ export class AddPaixComponent {
 
 
     // famille
-    chef_famille: false,
+    chef_famille: 0,
     nombre_enfants: 0,
 
 
@@ -283,15 +283,26 @@ resetCalcul(){
 
 
 
-    Object.entries(this.formData)
-      .forEach(([key, value]) => {
+Object.entries(this.formData)
+  .forEach(([key, value]) => {
 
-        data.append(
-          key,
-          String(value)
-        );
+    if (key === 'chef_famille') {
 
-      });
+      data.append(
+        key,
+        value ? '1' : '0'
+      );
+
+    } else {
+
+      data.append(
+        key,
+        String(value ?? '')
+      );
+
+    }
+
+  });
 
 
 
@@ -309,57 +320,44 @@ resetCalcul(){
       .subscribe(
 
 
-        (res: Blob) => {
+(res: Blob) => {
+
+  const file = new Blob(
+    [res],
+    { type: 'application/pdf' }
+  );
+
+  const fileURL = URL.createObjectURL(file);
 
 
-          const blob =
-            new Blob(
-              [res],
-              {
-                type: 'application/pdf'
-              }
-            );
+  const link = document.createElement('a');
+
+  link.href = fileURL;
+  link.download = 'fiche_paie.pdf';
+
+  document.body.appendChild(link);
+
+  link.click();
+
+  document.body.removeChild(link);
 
 
-
-          const url =
-            window.URL.createObjectURL(blob);
+  URL.revokeObjectURL(fileURL);
 
 
+  this.toastr.success(
+    'Fiche de paie générée avec succès'
+  );
+      this.sharedConfig.triggerRefresh();
+      form.resetForm();
+      this.uploadedFile = null;
 
-          const a =
-            document.createElement('a');
+}
 
-
-          a.href = url;
-
-          a.download =
-            'fiche_paie.pdf';
-
-
-          a.click();
+      
 
 
-
-
-          this.toastr.success(
-            "Fiche de paie générée"
-          );
-
-
-
-          this.sharedConfig.triggerRefresh();
-
-
-
-          form.resetForm();
-
-
-          this.uploadedFile = null;
-
-
-
-        },
+        ,
 
 
 

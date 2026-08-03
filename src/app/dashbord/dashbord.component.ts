@@ -156,12 +156,12 @@ toggleChat() {
  this.updateUnreadBadge
 }
 updateUnreadBadge() {
-  if (!this.user || !this.user.id) return;
+  // if (!this.user || !this.user.id) return;
 
-  this.chatService.getUnreadMessages(this.user.id).subscribe(res => {
-    this.unreadCount = res.unread; // met à jour immédiatement
-    console.log("🔵 Unread =", this.unreadCount);
-  });
+  // this.chatService.getUnreadMessages(this.user.id).subscribe(res => {
+  //   this.unreadCount = res.unread; // met à jour immédiatement
+  //   console.log("🔵 Unread =", this.unreadCount);
+  // });
 }
 
 
