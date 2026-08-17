@@ -59,7 +59,7 @@ export class ApiService {
 
   constructor(private http: HttpClient) {}
 
-  GetUsers(page: number = 1, perPage: number | string = 3): Observable<PaginatedUsers> {
+  GetUsers(page: number = 1, perPage: number | string = 5): Observable<PaginatedUsers> {
     return this.http.get<PaginatedUsers>(`${this.apiUrl}/users?page=${page}&per_page=${perPage}`);
   }
   
@@ -338,7 +338,12 @@ DeletePaix(traiteId: number): Observable<any> {
   }
 
 
-
+  EditConfigPaix(id: number, data: { nom?: string; prenom?: string , matricule?: string,matricule_fiscal?: string,cin?: string,cnss?: string,poste?: string}) {
+    return this.http.patch(`${this.apiUrl}/paixconfigs/${id}/edit`, data);
+  }
+    EditListPaix(id: number, data:any ){
+      return this.http.patch(`${this.apiUrl}/paixlist/${id}/edit`, data);
+    }
 
    getAllConfig(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/traiteconfigs`);

@@ -8,8 +8,25 @@
             <h2>Fiche de Paie</h2>
             <h2>بطاقة خلاص</h2>
         </div>
+<ng-container *ngIf="fichepaixselected?.pdf_path; else defaultImage">
+<div  class="mb-3 d-flex justify-content-start  gap-2">
 
+    <label>PDF actuel</label>
 
+    <div>
+        <a
+          [href]="storageUrl + '/' + fichepaixselected.pdf_path"
+          target="_blank"
+          class="btn btn-outline-primary btn-sm violet ">
+
+            Voir le PDF fiche
+
+        </a>
+    </div>
+
+</div>
+</ng-container>
+  <ng-template #defaultImage>
         <!-- Import PDF -->
         <div class="mb-3">
             <label class="form-label">
@@ -19,7 +36,7 @@
             <input type="file" (change)="onFileSelected($event)" accept="application/pdf" required>
         </div>
 
-
+</ng-template>
 
         <!-- Société / période -->
 
@@ -31,41 +48,35 @@
             </div>
 
 
-           <div class="mb-3 w-25">
-    <label>Mois</label>
+            <div class="mb-3 w-25">
+                <label>Mois</label>
 
-    <select class="form-select"
-            [(ngModel)]="formData.mois"
-            name="mois">
+                <select class="form-select" [(ngModel)]="formData.mois" name="mois">
 
-        <option value="">Sélectionner un mois</option>
-        <option value="Janvier">Janvier</option>
-        <option value="Février">Février</option>
-        <option value="Mars">Mars</option>
-        <option value="Avril">Avril</option>
-        <option value="Mai">Mai</option>
-        <option value="Juin">Juin</option>
-        <option value="Juillet">Juillet</option>
-        <option value="Août">Août</option>
-        <option value="Septembre">Septembre</option>
-        <option value="Octobre">Octobre</option>
-        <option value="Novembre">Novembre</option>
-        <option value="Décembre">Décembre</option>
+                    <option value="">Sélectionner un mois</option>
+                    <option value="Janvier">Janvier</option>
+                    <option value="Février">Février</option>
+                    <option value="Mars">Mars</option>
+                    <option value="Avril">Avril</option>
+                    <option value="Mai">Mai</option>
+                    <option value="Juin">Juin</option>
+                    <option value="Juillet">Juillet</option>
+                    <option value="Août">Août</option>
+                    <option value="Septembre">Septembre</option>
+                    <option value="Octobre">Octobre</option>
+                    <option value="Novembre">Novembre</option>
+                    <option value="Décembre">Décembre</option>
 
-    </select>
-</div>
+                </select>
+            </div>
 
 
-<div class="mb-3 w-25">
-    <label>Année</label>
+            <div class="mb-3 w-25">
+                <label>Année</label>
 
-    <input type="number"
-           class="form-control"
-           [(ngModel)]="formData.annee"
-           name="annee"
-           min="2000"
-           max="2100">
-</div>
+                <input type="number" class="form-control" [(ngModel)]="formData.annee" name="annee" min="2000"
+                    max="2100">
+            </div>
 
 
         </div>
@@ -78,15 +89,19 @@
 
             <div class="mb-3 w-25">
                 <label>Matricule</label>
-                <select class="form-select" (change)="onConfigChange($event)" name="matriculeSelection">
+    <select class="form-select"
+        [(ngModel)]="formData.matricule"
+        (change)="onConfigChange($event)"
+        name="matricule">
 
-                    <option value="">Sélectionner un matricule</option>
+    <option value="">Sélectionner un matricule</option>
 
-                    <option *ngFor="let cfg of configs" [value]="cfg.id">
-                        {{ cfg.matricule }}
-                    </option>
+    <option *ngFor="let cfg of configs"
+            [value]="cfg.matricule">
+        {{ cfg.matricule }}
+    </option>
 
-                </select>
+</select>
             </div>
 
 

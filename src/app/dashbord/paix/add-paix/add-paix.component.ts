@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgForm } from '@angular/forms';
 import { SharedConfigService } from '../../../services/shared-config.service';
 import { Subscription } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class AddPaixComponent {
 
   @Input() userdetaile: any;
   @Input() datauser: any;
-
+  @Input() fichepaixselected : any;
 
   userid: any;
   allusers: any[] = [];
@@ -70,7 +71,7 @@ export class AddPaixComponent {
 
   };
 
-
+  storageUrl = environment.mediaUrl;
 
 
   constructor(
@@ -90,10 +91,40 @@ export class AddPaixComponent {
     else  {
       this.userid = changes['datauser']?.currentValue?.user
     }
+      if (changes['fichepaixselected'] && changes['fichepaixselected'].currentValue) {
+
+    const p = changes['fichepaixselected'].currentValue;
+        this.formData = {
+      nom: p.nom ?? '',
+      prenom: p.prenom ?? '',
+      matricule: p.matricule ?? '',
+      cin: p.cin ?? '',
+      cnss: p.cnss ?? '',
+      poste: p.poste ?? '',
+
+      chef_famille: Number(p.chef_famille),
+      nombre_enfants: Number(p.nombre_enfants),
+
+      salaire_brut: Number(p.salaire_brut),
+      salaire_net: Number(p.salaire_net),
+
+      retenue_cnss: Number(p.retenue_cnss),
+      salaire_brut_imposable: Number(p.salaire_brut_imposable),
+      retenue_source: Number(p.retenue_source),
+      contribution_sociale: Number(p.contribution_sociale),
+
+      entreprise: p.entreprise ?? '',
+      matricule_fiscal: p.matricule_fiscal ?? '',
+
+      mois: p.mois ?? '',
+      annee: p.annee ?? ''
+    };
+
+  }
   }
 ngOnInit() {
 
-  this.loadConfigs();
+  //this.loadConfigs();
 
   this.sub = this.sharedConfig.refresh$.subscribe(refresh => {
     if (refresh) {
@@ -106,7 +137,7 @@ loadConfigs() {
   this.lettreService.getAllConfigPaix().subscribe(data => {
     this.configs = data;
 
-    if ((this.configs.length > 0) &&(this.formData.matricule == null)){
+  if (this.configs.length > 0 && this.formData.matricule === '') {
 
       const cfg = this.configs[0];
 
@@ -125,30 +156,14 @@ loadConfigs() {
 }
 onConfigChange(event: any) {
 
-  const id = Number(event.target.value);
+  const matricule = event.target.value;
 
-  // Aucun matricule sélectionné
-  if (!id) {
-
-    this.formData.matricule = '';
-    this.formData.nom = '';
-    this.formData.prenom = '';
-    this.formData.cin = '';
-    this.formData.cnss = '';
-    this.formData.poste = '';
-    this.formData.entreprise = '';
-    this.formData.matricule_fiscal = '';
-
-    return;
-  }
-
-  const cfg = this.configs.find(c => c.id === id);
+  const cfg = this.configs.find(c => c.matricule === matricule);
 
   if (!cfg) {
     return;
   }
 
-  this.formData.matricule = cfg.matricule;
   this.formData.nom = cfg.nom;
   this.formData.prenom = cfg.prenom;
   this.formData.cin = cfg.cin;
@@ -276,11 +291,11 @@ resetCalcul(){
 
 
 
-    data.append(
-      'pdf_modele',
-      this.uploadedFile
-    );
-
+if (this.uploadedFile) {
+    data.append('pdf_modele', this.uploadedFile);
+} else if (this.fichepaixselected?.pdf_path) {
+    data.append('pdf_path', this.fichepaixselected.pdf_path);
+}
 
 
 Object.entries(this.formData)

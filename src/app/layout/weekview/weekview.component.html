@@ -1,7 +1,11 @@
 <div class="week-view-container">
   <!-- Sélection de l'année -->
   <div class="current-month-container">
-    <h2><i class="bi bi-calendar-check"></i> Année {{ selectedYear }}</h2>
+<h2 class="d-flex justify-content-between">
+        <span> <i class="bi bi-clock"></i>  
+        Activité récente 
+      </span>
+     <span> Année {{ selectedYear }}</span></h2>
   </div>
 
   <!-- Tableau des jours de la semaine -->
@@ -16,11 +20,14 @@
       </tr>
     </thead>
     <tbody *ngIf="workDays.length > 0; else noData">
-      <tr *ngFor="let day of workDays" [ngClass]="{'d-none': day.day === 'Samedi' || day.day === 'Dimanche'}">
-        <td>{{ day.month }}</td>
+      <tr *ngFor="let day of workDays"   [ngClass]="{
+    'd-none': day.day.trim() === 'Samedi' ||
+              day.day.trim() === 'Dimanche'
+  }">
+        <td><span class="month">{{ day.month }}</span></td>
         <!-- <td>{{ day.week }}</td> -->
-        <td>{{ day.day }}</td>
-        <td>
+        <td><span class="days">{{ day.day }}</span></td>
+        <td class="hours">
           <span [ngClass]="{'text-danger': day.hours !== '08:00:00' && day.hours === '00:00:00'}">
             {{ day.hours }}
           </span>

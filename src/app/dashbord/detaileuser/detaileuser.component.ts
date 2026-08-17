@@ -13,11 +13,11 @@ declare var bootstrap: any;
   standalone: false
 })
 export class Detaileuser implements OnInit {
-  @Input() datauser: any;
   @Input() userdetaile: any;
   @Input() historyAll: any;
+  
   filteredUsers: any[] = [];  // Cette liste contiendra les utilisateurs filtrés
-
+  nbem :number =12
   currentYear: number = new Date().getFullYear(); 
   selectedYear: number = this.currentYear; 
   currentMonth: number = new Date().getMonth(); 
@@ -45,7 +45,7 @@ export class Detaileuser implements OnInit {
   address: string = 'Adresse non disponible';
   currentPage: number = 1;
   lastPage: number = 1;
-  perPage: number = 4;
+  perPage: number = 5;
   total: number = 0;
  GetAllusers : any;
  userdetaileid :any
@@ -82,7 +82,9 @@ constructor(
     await this.initializeUser();
     this.loadCounterState();
     this.checkCounterReset(); 
-    await this.GetUserSByid(); // Ensure this happens after loading user data
+    await this.GetUserSByid(); 
+
+    console.log("================<",this.leaveData)
   }
    refreshComponent() {
     this.cdr.detectChanges();
@@ -213,7 +215,9 @@ updateCurrentTime(): void {
   }
 
   closePopup() {
+    this.refreshComponent()
     this.displayStyle = "none";
+
   }
 
   startCounter(): void {
@@ -247,30 +251,40 @@ updateCurrentTime(): void {
     return value < 10 ? `0${value}` : `${value}`;
   }
   
- GetUsers(page: number = 1) {
-  this.apiService.GetUsers(page).subscribe((data) => {
- this.GetAllusers  =  data
+GetUsers(page: number = 1) {
+  this.apiService.GetUsers(page, this.perPage).subscribe((data) => {
+
+    this.GetAllusers = data;
+
     if (data?.users && Array.isArray(data.users)) {
+
       this.allUsers = data.users.map(user => ({
         ...user,
-        total_time_seconds: parseInt(sessionStorage.getItem('totalTime') || '0', 10),
+        total_time_seconds: parseInt(
+          sessionStorage.getItem('totalTime') || '0',
+          10
+        ),
         historyKeys: this.getHistoryKeys(user.history)
       }));
 
       this.filteredUsers = [...this.allUsers];
     } else {
       console.warn('Aucun utilisateur trouvé dans la réponse de l\'API.');
-      this.filteredUsers = [];  
+      this.filteredUsers = [];
     }
+
     this.currentPage = data.current_page;
     this.lastPage = data.last_page;
     this.total = data.total;
+
     this.loading = false;
 
   }, error => {
-    console.log('Error:', error);  // Affiche l'erreur dans la console
+
+    console.log('Error:', error);
     this.toastr.error('Erreur lors de la récupération des utilisateurs.');
     this.loading = false;
+
   });
 }
 getHistoryKeys(history: any): string[] {
@@ -466,7 +480,40 @@ getLocation(): Promise<string> {
       }
 
 
+openConges() {
+  const tab = document.querySelector('#v-pills-messages-tab') as HTMLElement;
 
+  if (tab) {
+    tab.click();
+  }
+}
  
-      
+leaveData: any[] = [];
+totalPending = 0;
+totalApproved = 0;
+totalLeaves = 0;
+
+receiveLeaveData(data: any[]): void {
+
+  console.log('Données reçues depuis Leaves:', data);
+
+  this.leaveData = data || [];
+
+  // Total de tous les congés
+  this.totalLeaves = this.leaveData.length;
+
+  // Total pending
+  this.totalPending = this.leaveData.filter(
+    leave => leave.status === 'pending'
+  ).length;
+
+  // Total approved
+  this.totalApproved = this.leaveData.filter(
+    leave => leave.status === 'approved'
+  ).length;
+
+  console.log('Total congés :', this.totalLeaves);
+  console.log('Total pending :', this.totalPending);
+  console.log('Total approved :', this.totalApproved);
+}    
 }

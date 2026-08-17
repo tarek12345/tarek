@@ -1,4 +1,5 @@
-<div class="container mt-4">
+
+<div class=" mt-4 blockone">
   <h1 class="text-white">Ajouter un congé</h1>
 
   <!-- Sélection de la période de congé -->
@@ -51,19 +52,28 @@
 </div>
 
 <!-- Liste des demandes de congé -->
-<div class="container mt-4">
-  <h1 class="text-white">Liste des congés</h1>
+<div class=" blocktow">
+  <h3><i class="bi bi-calendar-check"></i> Liste des congés</h3>
+    <div class="blocktow-1">
+
   <input
   type="text"
   [(ngModel)]="searchTerm"
   (ngModelChange)="currentPage = 1"
   class="form-control"
   placeholder="Recherche par utilisateur"
-/> <ng-container *ngIf="leaves.length !== 0; else leavesitem">
+/>
+</div>
+<ng-container *ngIf="leaves.length !== 0; else leavesitem">
+
+  <div class="table-scroll">
     <table class="table table-hover mt-4 table-custom-radius">
+
       <thead>
         <tr>
-          <th  *ngIf="currentUserRole === 'administrator' ">Nom utilisateur</th>
+          <th *ngIf="currentUserRole === 'administrator'">
+            Nom utilisateur
+          </th>
           <th>Date début</th>
           <th>Date fin</th>
           <th>Remplaçant</th>
@@ -72,89 +82,122 @@
           <th>Actions</th>
         </tr>
       </thead>
-  
+
       <tbody>
         <tr *ngFor="let leave of filteredLeaves">
-          <td   *ngIf="currentUserRole === 'administrator' ">{{ leave?.creator?.name || '—' }}</td>
-          <td>{{ leave.start_date }}</td>
-          <td>{{ leave.end_date }}</td>
-          <td>{{ leave.replacant?.name || '—' }}</td>
-          <td class="limiter">{{ leave.reason }}</td>
-          <td>
-            <span class="badge" [ngClass]="{
-              'bg-success': leave.status === 'approved',
-              'bg-warning': leave.status === 'pending',
-              'bg-danger': leave.status === 'rejected'
-            }">{{ leave.status }}</span>
+
+          <td *ngIf="currentUserRole === 'administrator'">
+            {{ leave?.creator?.name || '—' }}
           </td>
+
+          <td>{{ leave.start_date }}</td>
+
+          <td>{{ leave.end_date }}</td>
+
+          <td>{{ leave.replacant?.name || '—' }}</td>
+
+          <td class="limiter">{{ leave.reason }}</td>
+
           <td>
-            <!-- Actions pour supprimer ou approuver un congé -->
-            <button class="btn btn-danger btn-sm me-2" 
-            (click)="deleteLeave(leave.id)" 
-            data-bs-toggle="tooltip"
-            data-bs-placement="top"
-            title="Supprimer">
-              <i class="bi bi-trash"></i>  
-            </button>
-            
+            <span class="badge"
+              [ngClass]="{
+                'bg-success': leave.status === 'approved',
+                'bg-warning': leave.status === 'pending',
+                'bg-danger': leave.status === 'rejected'
+              }">
+              {{ leave.status }}
+            </span>
+          </td>
+
+          <td>
             <button
-              *ngIf="currentUserRole === 'administrator' && leave.status === 'pending' ||  leave.status === 'rejected'"
+              class="btn btn-danger btn-sm me-2"
+              (click)="deleteLeave(leave.id)"
+              [ngClass]="{'disabled': leave.status === 'approved'}"
+              title="Supprimer">
+              <i class="bi bi-trash"></i>
+            </button>
+
+            <button
+              *ngIf="currentUserRole === 'administrator' &&
+                     (leave.status === 'pending' || leave.status === 'rejected')"
               class="btn btn-primary btn-sm me-2"
               (click)="approveLeave(leave.id)"
-              data-bs-toggle="tooltip"
-            data-bs-placement="top"
-            title="Approuver"
-              >
-            <i class="bi bi-calendar-check"></i> 
+              title="Approuver">
+              <i class="bi bi-calendar-check"></i>
             </button>
-            
+
             <button
-            *ngIf="user.role === 'employer'"
-              class="btn btn-warning btn-sm"
+              *ngIf="user.role === 'employer'"
+              class="btn btn-warning btn-sm me-2"
               (click)="editLeave(leave)"
-              data-bs-toggle="tooltip"
-              data-bs-placement="top"
-              title="Modifier"
-            >
-            <i class="bi bi-pencil-square"></i> 
+              title="Modifier">
+              <i class="bi bi-pencil-square"></i>
             </button>
+
             <button
-            *ngIf="currentUserRole === 'administrator' && leave.status === 'pending'"
-            class="btn btn-secondary btn-sm me-2"
-            (click)="rejectLeave(leave.id)"
-            data-bs-toggle="tooltip"
-            data-bs-placement="top"
-            title="Annuler"
-            >
-          <i class="bi bi-x-circle"></i> 
-          </button>
-            <button  class="btn  btn-info p-1"(click)="openPopup(leave)" > 
-                  <i class="bi bi-display"  data-bs-toggle="tooltip" title="Affiche demande de congé" ></i>
+              *ngIf="currentUserRole === 'administrator' &&
+                     leave.status === 'pending'"
+              class="btn btn-secondary btn-sm me-2"
+              (click)="rejectLeave(leave.id)"
+              title="Annuler">
+              <i class="bi bi-x-circle"></i>
             </button>
+
+            <button
+              class="btn btn-info p-1"
+              (click)="openPopup(leave)"
+              title="Afficher demande de congé">
+              <i class="bi bi-display"></i>
+            </button>
+
           </td>
         </tr>
       </tbody>
+
     </table>
-    <nav *ngIf="totalPages.length > 1" class="mt-3">
-      <ul class="pagination justify-content-center">
-        <li class="page-item" [class.disabled]="currentPage === 1">
-          <button class="page-link" (click)="currentPage = currentPage - 1">Précédent</button>
-        </li>
-    
-        <li
-          class="page-item"
-          *ngFor="let page of totalPages"
-          [class.active]="page === currentPage"
-        >
-          <button class="page-link" (click)="currentPage = page">{{ page }}</button>
-        </li>
-    
-        <li class="page-item" [class.disabled]="currentPage === totalPages.length">
-          <button class="page-link" (click)="currentPage = currentPage + 1">Suivant</button>
-        </li>
-      </ul>
-    </nav>
-  </ng-container>
+  </div>
+
+  <nav *ngIf="totalPages.length > 1" class="mt-3">
+    <ul class="pagination justify-content-center">
+
+      <li class="page-item" [class.disabled]="currentPage === 1">
+        <button
+          class="page-link"
+          (click)="currentPage = currentPage - 1">
+          Précédent
+        </button>
+      </li>
+
+      <li
+        class="page-item"
+        *ngFor="let page of totalPages"
+        [class.active]="page === currentPage">
+
+        <button
+          class="page-link"
+          (click)="currentPage = page">
+          {{ page }}
+        </button>
+
+      </li>
+
+      <li
+        class="page-item"
+        [class.disabled]="currentPage === totalPages.length">
+
+        <button
+          class="page-link"
+          (click)="currentPage = currentPage + 1">
+          Suivant
+        </button>
+
+      </li>
+
+    </ul>
+  </nav>
+
+</ng-container>
   <ng-template #leavesitem>
    <div class="aucun  d-flex flex-column align-items-center bg-white p-3 mb-2 rounded">
     <img src="../../../assets/calendar.gif" alt="calendar"  class="icons "/>
@@ -163,9 +206,9 @@
   </ng-template>
 
  
+
+
 </div>
-
-
 <!-- Modal des utilisateurs cachés -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStyle}">
   <div class="modal-dialog modal-dialog-scrollable" role="document">

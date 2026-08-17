@@ -13,10 +13,11 @@ import { SharedConfigService } from '../../../services/shared-config.service';
 export class ConfigPaixComponent {
     @Input() userdetaile: any;
     @Input() datauser: any;
+  
       @Output() configUpdated = new EventEmitter<void>(); // 🔹 Événement pour le parent
       allusers: any[] = [];
       userid :any
-   
+   displayStyleFiche: string = "none";
   configs: any[] = [];
   
 ngOnChanges(changes: SimpleChanges): void {
@@ -98,5 +99,37 @@ this.configpaix.deleteConfigPaix(id).subscribe(() => {
 });
 }
 
+  selectedFiche: any
 
+EditPaix(): void {
+  const data = {
+    nom: this.selectedFiche.nom,
+    prenom: this.selectedFiche.prenom,
+    matricule :this.selectedFiche.matricule,
+    matricule_fiscal :this.selectedFiche.matricule_fiscal,
+    cin : this.selectedFiche.cin,
+    cnss: this.selectedFiche.cnss,
+    poste : this.selectedFiche.poste
+  };
+
+  this.configpaix.EditConfigPaix(this.selectedFiche.id, data).subscribe({
+    next: (res) => {
+      this.toastr.success("Config paie à jour");
+      this.closePopupFiche();
+      this.loadConfigs();
+    },
+    error: (err) => {
+      this.toastr.error("Erreur lors de la mise à jour", err.message);
+    }
+  });
+}
+closePopupFiche(){
+this.displayStyleFiche = "none"
+}
+OpenEditFiche(data :  any){
+  this.displayStyleFiche = "block";
+  this.selectedFiche =data
+  console.log("donne de  cofig fiche   de  paix",this.selectedFiche)
+ 
+}
 }

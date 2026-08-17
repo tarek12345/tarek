@@ -57,9 +57,71 @@
         <td>{{ cfg.poste }}</td>
         <td>{{ cfg.entreprise }}</td>
         <td>
-          <button class="btn btn-danger btn-sm" (click)="deleteConfig(cfg.id)">Supprimer</button>
+                <button class="btn btn-warning p-1 me-1" title="Edit" (click)="OpenEditFiche(cfg)">
+                  <i class="bi bi-pencil-square"></i>
+                </button>
+                <button class="btn btn-sm btn-danger me-1" title="Supprimer" (click)="deleteConfig(cfg.id)">
+                  <i class="bi bi-trash-fill"></i>
+                </button>
+                
         </td>
       </tr>
     </tbody>
   </table>
+  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStyleFiche}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Modifier la configutation de fiche</h4>
+        <button type="button" class="btn-close" (click)="closePopupFiche()"></button>
+      </div>
+      <div class="modal-body" *ngIf="selectedFiche">
+        <!-- Affichage des informations de la tâche -->
+        <p><strong>Edit</strong>  {{ selectedFiche?.prenom }} {{ selectedFiche?.nom }} </p>
+             
+
+        <!-- Formulaire de modification -->
+        <form (ngSubmit)="EditPaix()">      
+          <div class="form-group">
+       <div class="d-flex justify-content-start gap-3 ">
+    <div class="mb-3 w-50">
+       <input type="text"  class="form-control mb-2" [(ngModel)]="selectedFiche.nom" name="nom" required />
+    </div>
+    
+    <div class="mb-3 w-50">
+      <input type="text"  class="form-control mb-2" [(ngModel)]="selectedFiche.prenom"  name="prenom"   required >
+    </div>
+  </div>
+      <div class="d-flex justify-content-start gap-3 ">
+    <div class="mb-3 w-50">
+       <input type="text"  class="form-control mb-2" [(ngModel)]="selectedFiche.poste" name="poste" required />
+    </div>
+    <div class="mb-3 w-50">
+      <input type="text"  class="form-control mb-2" [(ngModel)]="selectedFiche.matricule"  name="matricule"   required >
+    </div>
+  </div>
+      <div class="d-flex justify-content-start gap-3 ">
+    <div class="mb-3 w-50">
+       <input type="text"  class="form-control mb-2" [(ngModel)]="selectedFiche.cnss" name="cnss" required />
+    </div>
+    <div class="mb-3 w-50">
+      <input type="text"  class="form-control mb-2" [(ngModel)]="selectedFiche.cin"  name="cin"   required >
+    </div>
+     
+  </div> 
+   <div class="mb-3 w-100">
+      <input type="text"  class="form-control mb-2" [(ngModel)]="selectedFiche.matricule_fiscal"  name="matricule_fiscal"   required >
+    </div>
+          </div>        
+          <div class="form-group d-flex justify-content-end gap-3 mt-3">
+            <button type="submit" class="btn btn-success">Mettre à jour</button>
+            <button type="button" class="btn btn-danger" (click)="closePopupFiche()">Annuler</button>
+          </div>
+        </form>
+        
+      </div>
+    </div>
+  </div>
 </div>
+</div>
+

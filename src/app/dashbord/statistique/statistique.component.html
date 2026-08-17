@@ -1,4 +1,4 @@
-<h1>Statistique du chaque employé</h1>
+<h3 class="text-white"> <i class="bi bi-calendar-check"></i> Statistique  par  jours </h3>
     <div class="mt-4" *ngIf="userdetaile?.user?.role ==='employer'">
       <div id="update" *ngIf="!loading">
         <div id="allusers">
@@ -76,10 +76,10 @@
 
                 <ul class="nav nav-pills mt-4 mb-3" id="pills-tab" role="tablist">
                   <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Par  jours</button>
+                    <button    class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Par  jours</button>
                   </li>
                   <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Par  mois</button>
+                    <button  class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Par  mois</button>
                   </li>
                  
                 </ul>
@@ -88,7 +88,7 @@
                    
                     <div class="chats">
                       <ng-container *ngIf="item?.history?.length > 0; else chats">
-                        <app-chart *ngIf="item?.history?.length > 0" [chartusers]="item"></app-chart>
+                        <app-chart  [chartusers]="item"></app-chart>
                       </ng-container>
                       <ng-template #chats>
                         <div class="chats d-flex justify-content-center align-items-center flex-column">
@@ -102,7 +102,7 @@
                     <div class="chats">
                       
                       <ng-container *ngIf="item?.history?.length > 0; else chatscercle">
-                        <app-chart-circle *ngIf="item?.history?.length > 0" [chartusers]="item"></app-chart-circle>
+                        <app-chart-circle  [chartusers]="item"></app-chart-circle>
                       </ng-container>
                       <ng-template #chatscercle>
                         <div class="chats d-flex justify-content-center align-items-center flex-column">

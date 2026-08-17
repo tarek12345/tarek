@@ -11,7 +11,13 @@
     <h2 class="mb-3">
       Total des fiches de paie : {{total}}
     </h2>
-
+  <input
+  type="text"
+  [(ngModel)]="searchTerm"
+  (ngModelChange)="currentPage = 1"
+  class="form-control"
+  placeholder="Recherche par utilisateur"
+/>
 
     <div class="table-responsive mt-4">
 
@@ -34,7 +40,7 @@
         <tbody>
 
 
-          <tr *ngFor="let p of paix">
+          <tr *ngFor="let p of filteredpaix">
 
 
             <td>
@@ -94,7 +100,7 @@
 
                 <button 
                 class="btn btn-sm btn-primary me-1"
-                (click)="onEdit(p)">
+                (click)="OpenEditFiche(p)">
 
                   <i class="bi bi-pencil-square"></i>
 
@@ -141,5 +147,21 @@
 
   </ng-template>
 
+ <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStyleFiche}">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Modifier  fiche</h4>
+        <button type="button" class="btn-close" (click)="closePopupFiche()"></button>
+      </div>
+      <div class="modal-body" *ngIf="fichepaixselected">
+        <!-- Affichage des informations de la tâche -->
+        <app-add-paix [fichepaixselected]="fichepaixselected"></app-add-paix>
+             
 
+        <!-- Formulaire de modification -->
+      </div>
+    </div>
+  </div>
+</div>
 </div>

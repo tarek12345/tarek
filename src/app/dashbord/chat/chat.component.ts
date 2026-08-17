@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, OnDestroy } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { ChatService } from '../../services/chat.service';
 
@@ -8,7 +8,7 @@ import { ChatService } from '../../services/chat.service';
   styleUrls: ['./chat.component.css'],
   standalone:false
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit,OnDestroy  {
   @Output() refreshUnread = new EventEmitter<void>();
 @Input() unreadCountchiled : any
   currentUser: any = null;
@@ -21,8 +21,8 @@ export class ChatComponent implements OnInit {
   newMessage: string = '';
   searchText: string = '';
 //  @Input() user: any;   
-
-
+private intervalId: any;
+private isLoadingMessages = false;
   constructor(
     private apiService: ApiService,
     private chatService: ChatService
@@ -67,8 +67,24 @@ ngOnInit(): void {
       });
     });
   });
-}
 
+  this.intervalId = setInterval(() => {
+   this.refreshUnread.emit();
+    if(this.selectedConversation){
+       this.loadMessages(this.selectedConversation.id);
+    }
+
+this.refreshUnread.emit();
+
+  },10000);
+}
+ngOnDestroy(){
+
+ if(this.intervalId){
+   clearInterval(this.intervalId);
+ }
+
+}
 refreshChat() {
   console.log("🔄 Refresh chat déclenché" ,this.selectedConversation);
   this.loadCurrentUser();  // recharge l'utilisateur actuel et la liste des utilisateurs
@@ -108,7 +124,7 @@ loadLastConversation() {
 
 
 loadAllUsers() {
-  this.chatService.getConversations(this.currentUserId).subscribe((convs: any) => {
+  this.chatService.getConversations(this.currentUserId)?.subscribe((convs: any) => {
     
     // Associer unread_count à chaque user
     this.apiService.getUsersnotpagination().subscribe((res: any) => {
@@ -138,7 +154,10 @@ loadAllUsers() {
     );
   }
 
+
+
 startConversation(user: any) {
+
   this.selectedUser = user;
 
   this.chatService.startConversation({
@@ -148,22 +167,38 @@ startConversation(user: any) {
 
     this.selectedConversation = conv;
 
- this.chatService.markAsRead(conv.id, this.currentUserId).subscribe(() => {
-  this.refreshUnread.emit(); 
-  user.unreadCount = 0; // localement remettre à zero
-});
+    this.chatService.markAsRead(conv.id, this.currentUserId).subscribe(() => {
+      this.refreshUnread.emit(); 
+      user.unreadCount = 0;
+    });
 
     this.loadMessages(conv.id);
   });
 }
 
 
-  loadMessages(convId: number) {
-    this.chatService.getMessages(convId).subscribe((msgs) => {
+loadMessages(convId: number) {
+
+  if (this.isLoadingMessages) {
+    return;
+  }
+
+  this.isLoadingMessages = true;
+
+  this.chatService.getMessages(convId).subscribe({
+    next: (msgs) => {
       this.messages = msgs;
       this.scrollToBottom();
-    });
-  }
+    },
+    error: () => {
+      this.isLoadingMessages = false;
+    },
+    complete: () => {
+      this.isLoadingMessages = false;
+    }
+  });
+
+}
 
   formatTime(date: string) {
     return new Date(date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -238,4 +273,5 @@ sendFile() {
     this.refreshUnread.emit();
   });
 }
+
 }

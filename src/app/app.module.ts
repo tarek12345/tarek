@@ -45,6 +45,7 @@ import { ChatComponent } from './dashbord/chat/chat.component';
 import { PaixComponent } from './dashbord/paix/paix.component';
 import { AddPaixComponent } from './dashbord/paix/add-paix/add-paix.component';
 import { ConfigPaixComponent } from './dashbord/paix/config-paix/config-paix.component';
+import { CounterDirective } from './dashbord/detaileuser/counter.directive';
 
 
 
@@ -83,6 +84,7 @@ registerLocaleData(localeFr, 'fr');
     PaixComponent,
     AddPaixComponent,
     ConfigPaixComponent,
+    CounterDirective,
   
 
   ],
@@ -100,6 +102,7 @@ registerLocaleData(localeFr, 'fr');
     NgxChartsModule,
     NgxDaterangepickerMd.forRoot(),
     DragDropModule,
+    NgChartsModule ,
     QuillModule.forRoot()
     
 ],

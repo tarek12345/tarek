@@ -20,7 +20,7 @@
   <div class="chat-box" [class.open]="isChatOpen">
     <div class="chat-header">
       Chat Application
-      <span class="close-btn" (click)="toggleChat()">✖</span>
+      <span class="close-btn" (click)="closeChat()">✖</span>
     </div>
 
     <div class="chat-content">
@@ -135,7 +135,7 @@
           </button>
           <!-- Fiche de paix -->
           <button
-            *ngIf="user.user?.role === 'administrator' || user.user?.role === 'client'"
+            *ngIf="user.user?.role === 'administrator'"
             class="nav-link"
             type="button"
             (click)="toggleProfileSubmenupaix()">
@@ -144,7 +144,7 @@
               <!-- SUBMENU PAIX -->
           <div
             class="submenu"
-            *ngIf="showProfileSubmenutpaix && (user.user?.role === 'administrator' || user.user?.role === 'client')">
+            *ngIf="showProfileSubmenutpaix && user.user?.role === 'administrator'">
 
             <button
               class="nav-link sub"
@@ -183,7 +183,7 @@
           <!-- SUBMENU TRAITE -->
           <div
             class="submenu"
-            *ngIf="showProfileSubmenut && (user.user?.role === 'administrator' || user.user?.role === 'client')">
+            *ngIf="showProfileSubmenut && user.user?.role === 'administrator'">
 
             <button
               class="nav-link sub"
@@ -232,7 +232,7 @@
     <div class="tab-content right" id="v-pills-tabContent">
 
       <div class="tab-pane fade show active" id="v-pills-home">
-        <app-detaileuser [userdetaile]="user"></app-detaileuser>
+        <app-detaileuser [userdetaile]="user" ></app-detaileuser>
       </div>
 
       <div class="tab-pane fade" id="v-pills-profile-list">

@@ -38,7 +38,11 @@
         <td>{{ cfg.lieu }}</td>
         <td>{{ cfg.nd }}</td>
         <td>
-          <button class="btn btn-danger btn-sm" (click)="deleteConfig(cfg.id)">Supprimer</button>
+        
+              <button class="btn btn-sm btn-danger me-1" title="Supprimer" (click)="deleteConfig(cfg.id)">
+                  <i class="bi bi-trash-fill"></i>
+                </button>
+                
         </td>
       </tr>
     </tbody>

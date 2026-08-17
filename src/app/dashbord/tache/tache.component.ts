@@ -4,7 +4,7 @@ import { UserService } from '../../services/user-service.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import "quill/dist/quill.core.css";
+
 @Component({
   selector: 'app-tache',
   templateUrl: './tache.component.html',

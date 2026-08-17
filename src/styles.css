@@ -3,7 +3,55 @@ a.page-link {
     cursor: pointer!important;
     
 }
+h1,h2,h3,h4{
+        font-family: "Poppins", serif;
+        color: #575757;
+}
+h3{
+    font-size: 18px !important}
 .active > .page-link, .page-link.active {
     background-color: #827ed6!important;
     border-color: #827ed6!important;
+}
+.btn-sm.violet {
+    background: #6a1b9a;
+    color: #fff;
+    border: none;
+}
+.content-dashboard .blockone {
+    display: none;
+}
+.Dashbord-conge .blocktow-1 {
+    display: none;
+}
+.blocktow h1 {
+    color: white;
+}
+.Dashbord-conge .blocktow h1 {
+    color: black;
+}
+.Dashbord-conge .blocktow table th:last-child,.Dashbord-conge .blocktow table tbody tr td:last-child {
+    display: none;
+}
+.blocktow .table-scroll {
+min-height: 126px;
+    max-height: 524px;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+.blocktow .table {
+    width: 100%;
+    margin-bottom: 0;
+}
+.listrpaix {
+    box-shadow: 0px 7px 19px #331a81 !important;
+}
+
+
+.listrpaix thead tr th {
+    background: #251163;
+}
+table.table th {
+    text-transform: uppercase;
 }

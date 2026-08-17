@@ -23,12 +23,19 @@
 .status {
     position: relative;
 }
+span.secand {
+    font-size: 25px;
+    font-weight: 700;
+}
 .rightcontent {
-    width: 35%;
     background: #fff;
     border-radius: 10px;
     padding: 10px;
     gap: 11px;
+    position: relative;
+}
+.rightcontent.emp{
+  width: 17%;
 }
 .content-dashboard {
   gap: 10px;
@@ -36,7 +43,6 @@
 }
 .conteneuruser {
     text-align: justify;
-    width: 40%;
 }
 .chats {
   width: 50%;
@@ -56,6 +62,9 @@
   
   .green {
     color: green;
+  }
+  .warning{
+    color :goldenrod
   }
   .status {
     text-align: center;
@@ -120,17 +129,21 @@
   }
   .status.all {
     flex-direction: row;
+    margin: 9px 0;
 }
 .status.all img.enteimg{
   border-radius: 50%;
   width: 50px;
   height: 50px;
 }
+.rightcontent.mt-2 .table-scroll {
+    max-height: 152px;
+}
 .statprof {
   position: relative;
   display: flex;
   align-items: end;
-  width: 10%;
+
 }
 .status.all sup {
   left: -9px;
@@ -209,4 +222,154 @@ span.text {
 .conteneuruser{
  width: 80%;
 }
+}
+.deleteuser {
+    position: absolute;
+    cursor: pointer;
+    right: 0;
+    top: 0;
+    background: #827ed6;
+    color: #fff;
+    padding: 12px;
+    border-radius: 10px 10px 0px 50px;
+}
+.nbemployer, .nbconge,.nbtache,.nbpaix,.nbpresence {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    width: 20%;
+}
+
+.resume {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.contantleft {
+    display: flex;
+    flex-direction: column;
+}
+
+.contantright {
+    background: #827ed62b;
+    padding: 15px;
+    color: #827ed6;
+    border-radius: 14px;
+    
+}
+.contantleft b, .contantleft .bi {
+    color: green;
+}
+.contantleft .bi.warning, .contantleft span.warning b{
+      color: rgb(206, 179, 28);
+}
+
+.contantleft span:last-child {
+    font-size: 12px;
+}
+.contantleft span:first-child {
+    font-weight: 700;
+    font-size: 12px;
+}
+.greeting {
+  color: #fff;
+font-family: "Poppins", serif;
+margin: 0px 0px 14px 0px;
+}
+
+.greeting h2 {
+  margin: 0 0 8px;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.2;
+    color: #fff;
+
+}
+
+.greeting h2 span {
+  font-size: 25px;
+  margin-left: 6px;
+}
+
+.greeting p {
+  margin: 0;
+  color: #d8d8e5;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+.rightcontent.weeks{
+  width: 41%;
+}
+.nbconge {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* Animation uniquement si totalLeaves > 0 */
+.nbconge.alert-leaves {
+  animation: leavesAlert 1.8s ease-in-out infinite;
+}
+
+/* Effet de pulsation */
+@keyframes leavesAlert {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.02);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Animation de l'icône */
+.nbconge.alert-leaves .contantright i {
+  animation: calendarAlert 1s ease-in-out infinite;
+}
+
+@keyframes calendarAlert {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+
+  25% {
+    transform: rotate(-8deg) scale(1.08);
+  }
+
+  50% {
+    transform: rotate(8deg) scale(1.08);
+  }
+
+  75% {
+    transform: rotate(-5deg) scale(1.05);
+  }
+
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+/* Animation du nombre */
+.nbconge.alert-leaves .secand {
+  animation: numberAlert 1.5s ease-in-out infinite;
+}
+
+@keyframes numberAlert {
+  0%, 100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.65;
+  }
 }

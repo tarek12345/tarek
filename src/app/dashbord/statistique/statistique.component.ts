@@ -1,8 +1,6 @@
-import { ChangeDetectorRef, Component, Input, SimpleChanges } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
-import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-statistique',
@@ -27,9 +25,6 @@ export class StatistiqueComponent {
     constructor(
       private apiService: ApiService,
       private toastr: ToastrService,
-      private router: Router,
-      private fb: FormBuilder,
-      private cdr: ChangeDetectorRef // Ajout
     ) {  // Initialisation du formulaire de pointage
 
       this.filteredUsers = [];  // Initialisation de la liste des utilisateurs filtrés
@@ -41,7 +36,8 @@ export class StatistiqueComponent {
       this.allUsers.forEach(user => {
         user.historyKeys = this.getHistoryKeys(user.history);
       });
-    }   
+    }  
+    
       GetUsers(page: number = 1) {
         this.apiService.GetUsers(page).subscribe((data) => {
       
@@ -96,4 +92,5 @@ export class StatistiqueComponent {
       this.statusCounts = response.status_counts;
     });
   }
+  
 }

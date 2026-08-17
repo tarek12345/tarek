@@ -12,6 +12,8 @@ import { ToastrService } from 'ngx-toastr';
 export class LeavesComponent implements OnInit {
   @Input() userdetaile: any[] = [];
   @Output() leavesLoaded = new EventEmitter<any>();
+  @Output() leaveData = new EventEmitter<any>();
+
   selected: { startDate: moment.Moment, endDate: moment.Moment } | null = null;
   reason: string = '';
   leaves: any[] = [];
@@ -44,6 +46,8 @@ export class LeavesComponent implements OnInit {
     this.api.getLeavesForUser(this.currentUserId).subscribe((data: any) => {
       this.leaves = data;
       this.leavesLoaded.emit(this.leaves);  // Émettre les congés au parent
+            this.leaveData.emit(data);
+
   
     });
   }

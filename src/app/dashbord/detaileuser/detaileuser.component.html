@@ -1,171 +1,282 @@
-<div class="content-dashboard d-flex">
-  <div class="pointage">
-    <div class="time-slot">
-      <div class="status">
-        <ng-container *ngIf="userdetaile.profile_image_url; else checkProfileImage">
-          <img [src]="userdetaile.profile_image_url" alt="Image de profil" class="enteimg" />
-        </ng-container>
+<div class="content-dashboard">
+  <div class="greeting">
+    <h2> Bonjour , {{userdetaile.name}} 👋</h2>
+    <p>Voici un aperçu de votre activité aujourd'hui.</p>
+  </div>
+  <div class="resume" *ngIf="userdetaile.role === 'administrator'">
 
-        <ng-template #checkProfileImage>
-          <i class="bi bi-person-circle"></i>
-        </ng-template>
-        <p><i class="bi bi-person-gear"></i> {{ userdetaile.name }}</p>
-        <p class="text-success"[ngClass]="status === 'hors ligne' ? 'text-danger' : 'text-success'">{{status}}</p>
-        <div>
-          <p>{{ counter }}</p>
-        </div>
-        <div class="buttons">
-          <ng-container *ngIf="!isWeekend(); else noPointage">
-            <button class="btn btn-success" (click)="onArrival()" [disabled]="isArrivalDisabled">
-              Arrivée
-            </button>
-            <button class="btn btn-dark" (click)="onDeparture()" [disabled]="isDepartureDisabled">
-              Départ
-            </button>
+    <div class="nbemployer">
+      <div class="contantleft">
+        <span class="first">Employés</span>
+        <span class="secand" [appCounter]="filteredUsers.length">0</span>
+        <span class="third">
+          <ng-container *ngIf="filteredUsers.length > nbem; else arrowsElment">
+            <b>+ {{filteredUsers.length}}</b> ce mois
+            <i class="bi bi-arrow-up-right"></i>
           </ng-container>
 
-          <ng-template #noPointage>
-            <img src="../../../assets/sleepy.gif" alt="sleepy" />
+          <ng-template #arrowsElment>
+            <b class="text-danger">- 12</b> ce mois
+            <i class="bi bi-arrow-down-right text-danger"></i>
           </ng-template>
-        </div>
+        </span>
+      </div>
+
+      <div class="contantright">
+        <i class="bi bi-person-lines-fill"></i>
+      </div>
+    </div>
 
 
-      </div>
-    </div>
-  </div>
-  <div *ngIf="loading" class="loading-spinner">
-    <div class="spinner"></div>
-    <p>Chargement des utilisateurs...</p>
-  </div>
-  <div *ngIf="!loading" class="d-flex flex-column rightcontent">
-    <div class="status all" *ngIf="userdetaile.role === 'administrator'">
-      <div class="status-summary">
-        <p class="text-success" 
-           data-bs-toggle="tooltip" 
-           data-bs-placement="top" 
-           title="Employés actuellement au bureau">
-          <i class="bi bi-person-check"></i> 
-          {{ GetAllusers.status_counts['au_bureau'] }}
-        </p>
-      
-        <p class="text-danger"
-           data-bs-toggle="tooltip" 
-           data-bs-placement="top" 
-           title="Employés actuellement hors ligne">
-          <i class="bi bi-person-dash"></i> 
-          {{ GetAllusers.status_counts['hors_ligne'] }} 
-        </p>
-      </div>
-      
-      
-    </div>
-<div class="listuser"*ngIf="userdetaile.role === 'administrator'">
-    <div   *ngFor="let item of filteredUsers" (click)="openPopup(item)">
-      <div class="status all" *ngIf="item.role !== 'administrator' && item.id !== userdetaile.id">
-        <ng-container *ngIf="item.profile_image_url; else defaultImage">
-          <div class="statprof">
-            <img [src]="item.profile_image_url" alt="Image de profil" class="enteimg" />
-            <sup [class]="item.status === 'au_bureau' ? 'text-success' : 'text-danger'">
-              <i class="bi bi-circle-fill"></i>
-            </sup>
-          </div>
-        </ng-container>
-        <ng-template #defaultImage>
-          <div class="statprof">
-            <i class="bi bi-person-circle"></i>
-            <sup 
-            [ngClass]="{ 'text-success': item.status !== 'au_bureau' }">
-              <i class="bi bi-circle-fill"></i>
-            </sup>
-          </div>
-        </ng-template>
-        <div class="conteneuruser">
-          <p>{{ item.name }}</p>
-          <p [class]="item.status === 'au_bureau' ? 'text-success' : 'text-danger'">{{ item.status.replace('_', ' ') }}</p>
-        </div>
-        <div class="totalehourss" *ngIf="getCurrentWorkDay() as today">
-          <div class="progress w-75">
-            <div class="progress-bar"
-                 [style.width]="getProgressPercentage(item?.counter || 0) + '%'"
-                 [attr.aria-valuenow]="item?.counter || 0"
-                 aria-valuemin="0"
-                 [attr.aria-valuemax]="maxDailyHours">
-              <span class="text">{{ formatDuration(item?.counter || 0) }} / 8h</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div *ngIf="userdetaile.role === 'administrator'">
-         <nav *ngIf="lastPage > 1" class="mt-4">
-      <ul class="pagination">
-        <li class="page-item" [class.disabled]="currentPage === 1">
-          <a class="page-link" (click)="onPageChange(currentPage - 1)"><i class="bi bi-caret-left"></i></a>
-        </li>
-    
-        <li class="page-item" *ngFor="let page of [].constructor(lastPage); let i = index"
-            [class.active]="currentPage === (i + 1)">
-          <a class="page-link" (click)="onPageChange(i + 1)">{{ i + 1 }}</a>
-        </li>
-    
-        <li class="page-item" [class.disabled]="currentPage === lastPage">
-          <a class="page-link" (click)="onPageChange(currentPage + 1)"><i class="bi bi-caret-right"></i></a>
-        </li>
-      </ul>
-    </nav>  
+<div class="nbconge" [class.alert-leaves]="totalPending > 0">
+
+  <div class="contantleft">
+    <span class="first">Congé totale</span>
+
+    <span class="secand" [appCounter]="totalLeaves">0</span>
+
+    <ng-container *ngIf="totalPending > 0; else Pending">
+      <span class="warning third">
+        <b>{{ totalPending }}</b> pending
+        <i class="bi bi-arrow-up-right warning"></i>
+      </span>
+    </ng-container>
+
+    <ng-template #Pending>
+      <span class="third">
+        <b>{{ totalPending }}</b> pending
+        <i class="bi bi-arrow-up-right "></i>
+      </span>
+    </ng-template>
   </div>
 
-    <!-- Affichage des totaux -->
-    <app-weekview [itemuser]="userdetaile"></app-weekview>
+  <div class="contantright">
+    <i class="bi bi-calendar2-week"></i>
+  </div>
 
-  </div>
-  <ng-container *ngIf="userdetaile?.history?.length > 0; else chats">
-    <div class="chats">
-      <h1 class="text-center">Statistiques par jours </h1>
-      <app-chart *ngIf="userdetaile?.history?.length > 0" [chartusers]="userdetaile"></app-chart>
-    </div>
-  </ng-container>
-  <ng-template #chats>
-  <div class="chats d-flex justify-content-center align-items-center flex-column">
-   <p><b>Pas de  statistique</b></p>
-   <img src="../../../assets/credit-score.gif" alt="location" class="icons w-25" />
-  </div>
-  </ng-template>
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStyle}">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Détails de {{ selectedUser?.name }}</h4>
-      </div>
-      <div class="modal-body">
-        <p>Temps travaillé : {{ formatDuration(selectedUser?.counter || 0) }}</p>
-        <div class="location d-flex">
-          <img src="../../../assets/location.gif" alt="location" class="icons" />
-          <p> {{ selectedUser?.location || 'Non disponible' }}</p>
-        </div>
-        <div *ngFor="let heur of  selectedUser.pointages ">
-          <div class="arrive">
-            <img src="../../../assets/busy.gif" alt="busy" class="icons" />
-            <span> Arrivé : </span>{{heur.arrival_date}}
-            <div class="location d-flex">
-              <img src="../../../assets/location.gif" alt="location" class="icons" />
-              <p> {{ selectedUser?.location || 'Non disponible' }}</p>
-            </div>
-          </div>
-          <div class="depart">
-            <img src="../../../assets/career.gif" alt="career" class="icons" />
-            <span> Depart : </span> {{heur.last_departure}}
-            <div class="location d-flex">
-              <img src="../../../assets/location.gif" alt="location" class="icons" />
-              <p> {{ selectedUser?.location || 'Non disponible' }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-dark" (click)="closePopup()">Fermer</button>
-      </div>
-    </div>
-  </div>
 </div>
+
+
+    <div class="nbtache">
+      <div class="contantleft">
+        <span class="first">Tâches en cours</span>
+        <span class="secand" [appCounter]="128">0</span>
+        <span class="third">
+          <b>+12</b> cette semaine
+          <i class="bi bi-arrow-up-right"></i>
+        </span>
+      </div>
+
+      <div class="contantright">
+        <i class="bi bi-ui-checks"></i>
+      </div>
+    </div>
+
+
+    <div class="nbpaix">
+      <div class="contantleft">
+        <span class="first">Fiche de paie</span>
+        <span  class="secand"[appCounter]="128">0</span>
+        <span class="third">
+          <b>+12</b> ce mois
+          <i class="bi bi-arrow-up-right"></i>
+        </span>
+      </div>
+
+      <div class="contantright">
+        <i class="bi bi-window-stack"></i>
+      </div>
+    </div>
+
+
+    <div class="nbpresence">
+      <div class="contantleft">
+        <span class="first">Présence aujourd'hui</span>
+        <span  class="secand"[appCounter]="128">0</span>
+        <span class="third">
+          <b>+12</b> ce mois
+          <i class="bi bi-arrow-up-right"></i>
+        </span>
+      </div>
+
+      <div class="contantright">
+        <i class="bi bi-graph-up-arrow"></i>
+      </div>
+    </div>
+
+  </div>
+  <div class="d-flex gap-2">
+    <div class="pointage">
+      <div class="time-slot">
+        <div class="status">
+          <ng-container *ngIf="userdetaile.profile_image_url; else checkProfileImage">
+            <img [src]="userdetaile.profile_image_url" alt="Image de profil" class="enteimg" />
+          </ng-container>
+
+          <ng-template #checkProfileImage>
+            <i class="bi bi-person-circle"></i>
+          </ng-template>
+          <p><i class="bi bi-person-gear"></i> {{ userdetaile.name }}</p>
+          <p class="text-success" [ngClass]="status === 'hors ligne' ? 'text-danger' : 'text-success'">{{status}}</p>
+          <div>
+            <p>{{ counter }}</p>
+          </div>
+          <div class="buttons">
+            <ng-container *ngIf="!isWeekend(); else noPointage">
+              <button class="btn btn-success" (click)="onArrival()" [disabled]="isArrivalDisabled">
+                Arrivée
+              </button>
+              <button class="btn btn-dark" (click)="onDeparture()" [disabled]="isDepartureDisabled">
+                Départ
+              </button>
+            </ng-container>
+
+            <ng-template #noPointage>
+              <img src="../../../assets/sleepy.gif" alt="sleepy" />
+            </ng-template>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+    <div *ngIf="loading" class="loading-spinner">
+      <div class="spinner"></div>
+      <p>Chargement des utilisateurs...</p>
+    </div>
+    <div *ngIf="!loading" class="d-flex flex-column rightcontent weeks ">
+      <app-weekview [itemuser]="userdetaile"></app-weekview>
+
+    </div>
+    <div *ngIf="!loading && userdetaile.role === 'administrator'" class="d-flex flex-column rightcontent emp">
+      <div class="status all ">
+        <div class="status-summary">
+          <p class="text-success" data-bs-toggle="tooltip" data-bs-placement="top"
+            title="Employés actuellement au bureau">
+            <i class="bi bi-person-check"></i>
+            {{ GetAllusers.status_counts['au_bureau'] }}
+          </p>
+
+          <p class="text-danger" data-bs-toggle="tooltip" data-bs-placement="top"
+            title="Employés actuellement hors ligne">
+            <i class="bi bi-person-dash"></i>
+            {{ GetAllusers.status_counts['hors_ligne'] }}
+          </p>
+        </div>
+
+
+      </div>
+      <div class="listuser" *ngIf="userdetaile.role === 'administrator'">
+        <div *ngFor="let item of filteredUsers" (click)="openPopup(item)">
+          <div class="status all" *ngIf="item.role !== 'administrator' && item.id !== userdetaile.id">
+            <ng-container *ngIf="item.profile_image_url; else defaultImage">
+              <div class="statprof">
+                <img [src]="item.profile_image_url" alt="Image de profil" class="enteimg" />
+                <sup [class]="item.status === 'au_bureau' ? 'text-success' : 'text-danger'">
+                  <i class="bi bi-circle-fill"></i>
+                </sup>
+              </div>
+            </ng-container>
+            <ng-template #defaultImage>
+              <div class="statprof">
+                <i class="bi bi-person-circle"></i>
+                <sup [ngClass]="{ 'text-success': item.status !== 'au_bureau' }">
+                  <i class="bi bi-circle-fill"></i>
+                </sup>
+              </div>
+            </ng-template>
+            <div class="conteneuruser">
+              <p>{{ item.name }}</p>
+              <p [class]="item.status === 'au_bureau' ? 'text-success' : 'text-danger'">{{ item.status.replace('_', ' ')
+                }}</p>
+            </div>
+            <div class="totalehourss" *ngIf="getCurrentWorkDay() as today">
+              <div class="progress w-75">
+                <div class="progress-bar" [style.width]="getProgressPercentage(item?.counter || 0) + '%'"
+                  [attr.aria-valuenow]="item?.counter || 0" aria-valuemin="0" [attr.aria-valuemax]="maxDailyHours">
+                  <span class="text">{{ formatDuration(item?.counter || 0) }} / 8h</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="userdetaile.role === 'administrator'">
+        <nav *ngIf="lastPage > 1" class="mt-4">
+          <ul class="pagination">
+            <li class="page-item" [class.disabled]="currentPage === 1">
+              <a class="page-link" (click)="onPageChange(currentPage - 1)"><i class="bi bi-caret-left"></i></a>
+            </li>
+
+            <li class="page-item" *ngFor="let page of [].constructor(lastPage); let i = index"
+              [class.active]="currentPage === (i + 1)">
+              <a class="page-link" (click)="onPageChange(i + 1)">{{ i + 1 }}</a>
+            </li>
+
+            <li class="page-item" [class.disabled]="currentPage === lastPage">
+              <a class="page-link" (click)="onPageChange(currentPage + 1)"><i class="bi bi-caret-right"></i></a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+    </div>
+    <ng-container *ngIf="userdetaile?.history?.length > 0; else chats">
+      <div class="chats">
+        <h3> <i class="bi bi-graph-up-arrow"></i>  Statistiqes par jours </h3>
+        <app-chart *ngIf="userdetaile?.history?.length > 0" [chartusers]="userdetaile"></app-chart>
+      </div>
+    </ng-container>
+    <ng-template #chats>
+      <div class="chats d-flex justify-content-center align-items-center flex-column">
+        <p><b>Pas de statistique</b></p>
+        <img src="../../../assets/credit-score.gif" alt="location" class="icons w-25" />
+      </div>
+    </ng-template>
+  </div>
+  <div class="rightcontent mt-2">
+    <div class="Dashbord-conge">
+      <div class="deleteuser" (click)="openConges()"> <i class="bi bi-eye"></i></div>
+      <app-leaves  (leaveData)="receiveLeaveData($event)"></app-leaves>
+    
+    </div>
+
+  </div>
+  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStyle}">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Détails de {{ selectedUser?.name }}</h4>
+        </div>
+        <div class="modal-body">
+          <p>Temps travaillé : {{ formatDuration(selectedUser?.counter || 0) }}</p>
+          <div class="location d-flex">
+            <img src="../../../assets/location.gif" alt="location" class="icons" />
+            <p> {{ selectedUser?.location || 'Non disponible' }}</p>
+          </div>
+          <div *ngFor="let heur of  selectedUser.pointages ">
+            <div class="arrive">
+              <img src="../../../assets/busy.gif" alt="busy" class="icons" />
+              <span> Arrivé : </span>{{heur.arrival_date}}
+              <div class="location d-flex">
+                <img src="../../../assets/location.gif" alt="location" class="icons" />
+                <p> {{ selectedUser?.location || 'Non disponible' }}</p>
+              </div>
+            </div>
+            <div class="depart">
+              <img src="../../../assets/career.gif" alt="career" class="icons" />
+              <span> Depart : </span> {{heur.last_departure}}
+              <div class="location d-flex">
+                <img src="../../../assets/location.gif" alt="location" class="icons" />
+                <p> {{ selectedUser?.location || 'Non disponible' }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-dark" (click)="closePopup()">Fermer</button>
+        </div>
+      </div>
+    </div>
+
+  </div>

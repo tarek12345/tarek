@@ -29,3 +29,14 @@
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
+/* .blocktow h3 {
+    margin-top: 59px;
+} */
+
+
+.blocktow {
+    background: #fff;
+    padding: 12px;
+    border-radius: 17px;
+    margin-top: 26px;
+}

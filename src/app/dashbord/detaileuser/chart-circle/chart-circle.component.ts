@@ -45,6 +45,7 @@ export class ChartCircleComponent implements OnChanges, AfterViewInit {
     }
   };
 ngOnChanges(changes: SimpleChanges): void {
+  console.log("gfjsdgfhjsdgjfghdsj",this.chartusers)
   const history = this.chartusers?.user?.history || this.chartusers?.history || [];
 
   const today = new Date();
@@ -95,7 +96,9 @@ private formatDuration(seconds: number): string {
   const pad = (n: number) => String(n).padStart(2, '0');
   return `${pad(hours)}:${pad(minutes)}:${pad(secs)}`;
 }  
-  ngAfterViewInit(): void {
-    if (this.chart) this.chart.update();
-  }
+ngAfterViewInit(): void {
+
+ this.chart?.update();
+
+}
 }

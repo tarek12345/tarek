@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { UserService } from '../services/user-service.service';
 import { ToastrService } from 'ngx-toastr';
@@ -11,7 +11,7 @@ import { ChatService } from '../services/chat.service';
   styleUrls: ['./dashbord.component.css'],
   standalone : false
 })
-export class DashbordComponent implements OnInit {
+export class DashbordComponent implements OnInit,OnDestroy {
   loading: boolean = true; // Indicateur de chargement
 
   currentTime: string = '';
@@ -30,24 +30,33 @@ export class DashbordComponent implements OnInit {
   interval: any;  // Intervalle pour le compteur
   counter: string = '00:00:00';  // Compteur initialisé à 00:00:00
 usernotpagination :any;
-
+private intervalId: any;
  unreadCount: number = 0;
   constructor(
     private apiService: ApiService,
     private userService: UserService,
     private toastr: ToastrService,
     private router: Router,
-    private chatService: ChatService
+    private chatService: ChatService,
+        private cdr: ChangeDetectorRef 
+    
   ) {}
 
   ngOnInit(): void {
   
     this.user = this.userService.getUserInfo();
    
- if (this.user) {
+
+  this.user = this.userService.getUserInfo();
+
+  if (this.user) {
     this.userId = this.user.id;
-    this.updateUnreadBadge(); // chargement initial
-    setInterval(() => this.updateUnreadBadge(), 3000); // polling toutes les 3s
+
+    this.updateUnreadBadge();
+
+    this.intervalId = setInterval(() => {
+      this.updateUnreadBadge();
+    }, 3000);
   }
     const token = localStorage.getItem('token');
     
@@ -71,6 +80,11 @@ usernotpagination :any;
     });
 
   }
+  ngOnDestroy() {
+  if(this.intervalId){
+    clearInterval(this.intervalId);
+  }
+}
   leavesuser: any[] = [];  // Liste des congés
 showProfileSubmenu: boolean = false;
 showProfileSubmenut: boolean = false;
@@ -153,18 +167,20 @@ isChatOpen = false;
 
 toggleChat() {
   this.isChatOpen = !this.isChatOpen;
- this.updateUnreadBadge
+ this.updateUnreadBadge()
 }
 updateUnreadBadge() {
-  // if (!this.user || !this.user.id) return;
-
-  // this.chatService.getUnreadMessages(this.user.id).subscribe(res => {
-  //   this.unreadCount = res.unread; // met à jour immédiatement
-  //   console.log("🔵 Unread =", this.unreadCount);
-  // });
+  if (!this.user || !this.user.id) return;
+  console.log("appel badge");
+  this.chatService.getUnreadMessages(this.user.id).subscribe(res => {
+    this.unreadCount = res.unread; // met à jour immédiatement
+  });
 }
 
-
+closeChat(){
+  this.isChatOpen =false;
+     this.unreadCount = 0
+}
 
   logout() {
     this.userService.clearUserInfo();

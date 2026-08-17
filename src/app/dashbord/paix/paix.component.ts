@@ -23,6 +23,9 @@ export class PaixComponent {
   paix: any[] = [];
   total: number = 0;
   loading = true;
+    searchTerm: string = '';
+  currentPage: number = 1;
+    itemsPerPage: number = 8;
   public apiUrl = environment.baseUrl; // Base URL de l'API
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -159,11 +162,8 @@ export class PaixComponent {
 
 
   }
-
-  onEdit(traite: any) {
-    console.log('Modifier', traite);
-    // ouvrir modal ou naviguer vers le formulaire
-  }
+displayStyleFiche :string = "none"
+  fichepaixselected :any
 onDelete(paix:any):void{
 
 
@@ -212,13 +212,87 @@ this.toastr.error(
 
 
 }
+closePopupFiche(){
+this.displayStyleFiche = "none"
+}
+OpenEditFiche(data :  any){
+  this.displayStyleFiche = "block";
+  this.fichepaixselected =data
+  console.log("donne de  listitem fiche   de  paix",this.fichepaixselected)
+ 
+}
   onPay(traite: any) {
     console.log('Payer', traite);
     // appel API pour changer statut ou autre logique
   }
 
 
+onEdit(): void {
+  this.lettreService.EditListPaix(this.fichepaixselected.id,  this.paix).subscribe({
+    next: (res) => {
+      this.toastr.success("Config paie à jour");
+      this.closePopupFiche();
+       this.getPaixListByUser()
+    },
+    error: (err) => {
+      this.toastr.error("Erreur lors de la mise à jour", err.message);
+    }
+  });
+}
+ // Getter pour filtrer et paginer
+get filteredpaix(): any[] {
 
+  let filtered = this.paix || [];
 
+  const search = (this.searchTerm || '').trim().toLowerCase();
+
+  if (search !== '') {
+
+    if (this.userid?.role === 'administrator') {
+
+      // ADMINISTRATEUR :
+      // Nom + Prénom + Salaire net + Salaire brut
+      filtered = this.paix.filter((p: any) => {
+
+        const nom = String(p.nom || '').toLowerCase();
+        const prenom = String(p.prenom || '').toLowerCase();
+        const salaireNet = String(p.salaire_net || '').toLowerCase();
+        const salaireBrut = String(p.salaire_brut || '').toLowerCase();
+
+        return (
+          nom.includes(search) ||
+          prenom.includes(search) ||
+          salaireNet.includes(search) ||
+          salaireBrut.includes(search)
+        );
+      });
+
+    } else {
+
+      // AUTRE UTILISATEUR :
+      // Salaire net + Salaire brut + Date de création
+      filtered = this.paix.filter((p: any) => {
+
+        const salaireNet = String(p.salaire_net || '').toLowerCase();
+        const salaireBrut = String(p.salaire_brut || '').toLowerCase();
+        const createdAt = String(p.created_at || '').toLowerCase();
+
+        return (
+          salaireNet.includes(search) ||
+          salaireBrut.includes(search) ||
+          createdAt.includes(search)
+        );
+      });
+    }
+  }
+
+  // Pagination
+  const start = (this.currentPage - 1) * this.itemsPerPage;
+
+  return filtered.slice(
+    start,
+    start + this.itemsPerPage
+  );
+}
 }
 

@@ -2,11 +2,24 @@
     text-transform: capitalize;
     font-size: 20px;
     line-height: 30px;
-    color: #e800ff;
-    font-weight: bold;
+    color: #575757;
 }
 .semaine{
     cursor: pointer;
 }.text-success {
     color: green;
   }
+  span.month {
+    font-weight: bold;
+    padding: 6px;
+    background: #a9abec99;
+    color: #7b78b5;
+    border: 1px solid #b3aff9;
+    border-radius: 10px;
+    font-family: "Poppins", serif;
+}
+td.hours span {
+    background: #ebebeb;
+    padding: 5pX;
+    border-radius: 5px;
+}
