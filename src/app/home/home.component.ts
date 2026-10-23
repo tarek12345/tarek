@@ -84,7 +84,7 @@ this.displayStyleUser = "none";
     this.authservice.login(this.login.email, this.login.password).subscribe(
       (response: any) => {
         // Succès : L'utilisateur est authentifié
-        this.toastr.success('Connexion réussie', 'Succès');
+        this.toastr.success(response.message);
   
         // Sauvegarder le token dans le stockage local
         localStorage.setItem('token', response.token);
@@ -97,8 +97,9 @@ this.displayStyleUser = "none";
         this.router.navigate(['/dashboard']);
       },
       (error) => {
+        console.log("qsdsq",error?.error.message)
         // Erreur : Identifiants incorrects
-        this.toastr.error('Nom ou mot de passe incorrect.', 'Erreur');
+        this.toastr.error( error?.error.message);
       }
     );
   }

@@ -224,15 +224,20 @@ span.text {
 }
 }
 .deleteuser {
-    position: absolute;
+position: absolute;
     cursor: pointer;
-    right: 0;
-    top: 0;
-    background: #827ed6;
-    color: #fff;
+    right: 3px;
+    top: 3px;
+    background: #827ed657;
+    color: #827ed6;
     padding: 12px;
-    border-radius: 10px 10px 0px 50px;
+    border-radius: 10px;
+    
 }
+.deleteuser i.bi.bi-eye {
+    font-weight: 900;
+}
+
 .nbemployer, .nbconge,.nbtache,.nbpaix,.nbpresence {
     display: flex;
     justify-content: space-between;
@@ -306,6 +311,20 @@ margin: 0px 0px 14px 0px;
 }
 .rightcontent.weeks{
   width: 41%;
+  justify-content: space-between;
+}
+span.pointer {
+text-align: center;
+    display: block;
+    cursor: pointer;
+    font-family: "Poppins", serif;
+    font-size: 13px;
+    font-weight: 600;
+        border-top: 1px solid #eee;
+    padding: 14px 0;
+}
+.week-view-container table.table tr td {
+    padding: 14px 0;
 }
 .nbconge {
   position: relative;

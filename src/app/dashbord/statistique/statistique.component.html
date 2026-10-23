@@ -1,142 +1,599 @@
-<h3 class="text-white"> <i class="bi bi-calendar-check"></i> Statistique  par  jours </h3>
-    <div class="mt-4" *ngIf="userdetaile?.user?.role ==='employer'">
-      <div id="update" *ngIf="!loading">
-        <div id="allusers">
-          <div class="classright">
-            <div class="status">
-              <!-- Affichage de l'image de profil -->
-              <ng-container *ngIf="userdetaile?.user?.profile_image_url; else defaultImage">
-                <img [src]="userdetaile?.user?.profile_image_url" alt="Image de profil" class="enteimg" />
-              </ng-container>
-              <ng-template #defaultImage>
-                <i class="bi bi-person-circle"></i>
-              </ng-template>
-              <sup [class]="userdetaile?.user?.status === 'au bureau' ? 'text-success' : 'text-danger'">
-                <i class="bi bi-circle-fill"></i>
-              </sup>
+<!-- TITRE -->
+<h3 class="text-white">
+  <i class="bi bi-calendar-check"></i>
+  Statistique par jours
+</h3>
+
+
+<!-- ===================================================== -->
+<!-- UTILISATEUR CONNECTÉ : EMPLOYER -->
+<!-- ===================================================== -->
+
+<div
+  class="mt-4"
+  *ngIf="userdetaile?.user?.role === 'employer'"
+>
+
+  <div
+    id="update"
+    *ngIf="!loading"
+  >
+
+    <div id="allusers">
+
+      <div class="classright">
+
+        <!-- PHOTO / STATUS -->
+        <div class="status">
+
+          <ng-container
+            *ngIf="
+              userdetaile?.user?.profile_image_url;
+              else defaultImageEmployer
+            "
+          >
+
+            <img
+              [src]="userdetaile.user.profile_image_url"
+              alt="Image de profil"
+              class="enteimg"
+            />
+
+          </ng-container>
+
+          <ng-template #defaultImageEmployer>
+
+            <i class="bi bi-person-circle"></i>
+
+          </ng-template>
+
+          <sup
+            [class]="
+              userdetaile?.user?.status === 'au bureau'
+                ? 'text-success'
+                : 'text-danger'
+            "
+          >
+
+            <i class="bi bi-circle-fill"></i>
+
+          </sup>
+
+        </div>
+
+
+        <!-- CONTENU -->
+        <div class="content">
+
+          <div class="content-1 d-flex flex-column mb-3">
+
+            <!-- INFORMATIONS -->
+            <div class="headertab">
+
+              <span>
+                Nom :
+                <b>
+                  {{ userdetaile?.user?.name }}
+                </b>
+              </span>
+
+              <span>
+                Poste :
+                <b>
+                  {{ userdetaile?.user?.role }}
+                </b>
+              </span>
+
             </div>
 
-            <div class="content">
-              <div class="content-1 d-flex flex-column mb-3">
-                <div class="headertab">
-                  <span>Nom :<b> {{ userdetaile?.user?.name }}</b></span>
-                  <span>Poste :<b> {{ userdetaile?.user?.role }}</b></span>
+
+            <!-- CHART -->
+            <div class="chats mt-3">
+
+              <ng-container
+                *ngIf="
+                  hasHistory(userdetaile?.user);
+                  else noEmployerStats
+                "
+              >
+
+                <!-- CHART CERCLE -->
+                <app-chart-circle
+                  [chartusers]="userdetaile"
+                >
+                </app-chart-circle>
+
+              </ng-container>
+
+
+              <!-- PAS DE STATISTIQUE -->
+              <ng-template #noEmployerStats>
+
+                <div
+                  class="chats d-flex justify-content-center align-items-center flex-column"
+                >
+
+                  <p>
+                    <b>Pas de statistique</b>
+                  </p>
+
+                  <img
+                    src="../../../assets/credit-score.gif"
+                    alt="Pas de statistique"
+                    class="icons w-25"
+                  />
+
                 </div>
+
+              </ng-template>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<!-- ===================================================== -->
+<!-- ADMINISTRATEUR -->
+<!-- ===================================================== -->
+
+<div
+  class="mt-4"
+  *ngIf="userdetaile?.user?.role === 'administrator'"
+>
+
+
+  <!-- ===================== -->
+  <!-- RECHERCHE -->
+  <!-- ===================== -->
+
+  <div class="input-group mb-3">
+
+    <span
+      class="input-group-text"
+      id="basic-addon1"
+    >
+
+      <i class="bi bi-search"></i>
+
+    </span>
+
+
+    <input
+      type="search"
+      class="form-control"
+      placeholder="Recherche par utilisateur"
+      aria-label="Recherche par utilisateur"
+      aria-describedby="basic-addon1"
+      [value]="searchQuery"
+      (input)="onSearch($event)"
+    />
+
+  </div>
+
+
+
+  <!-- ===================== -->
+  <!-- LOADING -->
+  <!-- ===================== -->
+
+  <div
+    *ngIf="loading"
+    class="d-flex justify-content-center align-items-center p-5"
+  >
+
+    <div
+      class="spinner-border text-light"
+      role="status"
+    >
+
+      <span class="visually-hidden">
+        Chargement...
+      </span>
+
+    </div>
+
+  </div>
+
+
+
+
+
+  <div
+    id="update"
+    *ngIf="!loading"
+  >
+
+    <div id="allusers">
+
+
+
+
+      <div
+        class="classright"
+        *ngFor="
+          let item of filteredUsers;
+          trackBy: trackByUserId
+        "
+      >
+
+
+        <!-- ============================= -->
+        <!-- PHOTO / STATUS -->
+        <!-- ============================= -->
+
+        <div class="status">
+
+          <ng-container
+            *ngIf="
+              item?.profile_image_url;
+              else defaultImage
+            "
+          >
+
+            <img
+              [src]="item.profile_image_url"
+              alt="Image de profil"
+              class="enteimg"
+            />
+
+          </ng-container>
+
+
+          <ng-template #defaultImage>
+
+            <i class="bi bi-person-circle"></i>
+
+          </ng-template>
+
+
+          <sup
+            [class]="
+              item?.status === 'au bureau'
+                ? 'text-success'
+                : 'text-danger'
+            "
+          >
+
+            <i class="bi bi-circle-fill"></i>
+
+          </sup>
+
+        </div>
+
+
+
+        <!-- ============================= -->
+        <!-- CONTENU -->
+        <!-- ============================= -->
+
+        <div class="content">
+
+          <div class="content-1 d-flex flex-column mb-3">
+
+
+            <!-- ============================= -->
+            <!-- INFORMATIONS USER -->
+            <!-- ============================= -->
+
+            <div class="headertab">
+
+              <span>
+
+                Nom :
+
+                <b>
+                  {{ item?.name }}
+                </b>
+
+              </span>
+
+
+              <span>
+
+                Poste :
+
+                <b>
+                  {{ item?.role }}
+                </b>
+
+              </span>
+
+            </div>
+
+
+
+            <ul
+              class="nav nav-pills mt-4 mb-3"
+              [id]="getTabId(item, 'tabs')"
+              role="tablist"
+            >
+
+              <li
+                class="nav-item"
+                role="presentation"
+              >
+
+                <button
+                  class="nav-link active"
+                  [id]="getTabId(item, 'daily-tab')"
+                  data-bs-toggle="pill"
+                  [attr.data-bs-target]="'#' + getTabId(item, 'daily')"
+                  type="button"
+                  role="tab"
+                  [attr.aria-controls]="
+                    getTabId(item, 'daily')
+                  "
+                  aria-selected="true"
+                >
+
+                  <i class="bi bi-calendar-day"></i>
+
+                  Par jours
+
+                </button>
+
+              </li>
+
+
+
+       
+              <li
+                class="nav-item"
+                role="presentation"
+              >
+
+                <button
+                  class="nav-link"
+                  [id]="getTabId(item, 'monthly-tab')"
+                  data-bs-toggle="pill"
+                  [attr.data-bs-target]="'#' + getTabId(item, 'monthly')"
+                  type="button"
+                  role="tab"
+                  [attr.aria-controls]="
+                    getTabId(item, 'monthly')
+                  "
+                  aria-selected="false"
+                >
+
+                  <i class="bi bi-calendar-month"></i>
+
+                  Par mois
+
+                </button>
+
+              </li>
+
+            </ul>
+
+            <div
+              class="tab-content"
+              [id]="getTabId(item, 'content')"
+            >
+              <div
+                class="tab-pane fade show active"
+                [id]="getTabId(item, 'daily')"
+                role="tabpanel"
+                [attr.aria-labelledby]="
+                  getTabId(item, 'daily-tab')
+                "
+                tabindex="0"
+              >
+
                 <div class="chats">
-                  <ng-container *ngIf="userdetaile?.user?.history?.length > 0; else chats">
-                    <app-chart-circle *ngIf="userdetaile?.user?.history?.length > 0" [chartusers]="userdetaile"></app-chart-circle>
+
+
+
+                  <ng-container
+                    *ngIf="
+                      hasHistory(item);
+                      else noDailyStats
+                    "
+                  >
+
+                    <app-chart
+                      [chartusers]="item"
+                    >
+                    </app-chart>
+
                   </ng-container>
-                  <ng-template #chats>
-                    <div class="chats d-flex justify-content-center align-items-center flex-column">
-                      <p><b>Pas de statistique</b></p>
-                      <img src="../../../assets/credit-score.gif" alt="location" class="icons w-25" />
+
+                  <ng-template #noDailyStats>
+
+                    <div
+                      class="chats d-flex justify-content-center align-items-center flex-column"
+                    >
+
+                      <p>
+                        <b>
+                          Pas de statistique
+                        </b>
+                      </p>
+
+                      <img
+                        src="../../../assets/credit-score.gif"
+                        alt="Pas de statistique"
+                        class="icons w-25"
+                      />
+
                     </div>
+
                   </ng-template>
+
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-
-    <div class="mt-4" *ngIf="userdetaile?.user?.role ==='administrator'">
-      <div class="input-group mb-3">
-        <span class="input-group-text" id="basic-addon1">
-          <i class="bi bi-search"></i>
-        </span>
-        <input type="search" class="form-control" placeholder="Recherche par  utilisateur" aria-label="Search"
-          aria-describedby="basic-addon1" (input)="onSearch($event)" />
-
-      </div>
-      <div id="update" *ngIf="!loading">
-        <div id="allusers">
-          <div class="classright" *ngFor="let item of filteredUsers">
-            <div class="status">
-              <!-- Affichage de l'image de profil -->
-              <ng-container *ngIf="item.profile_image_url; else defaultImage">
-                <img [src]="item.profile_image_url" alt="Image de profil" class="enteimg" />
-              </ng-container>
-              <ng-template #defaultImage>
-                <i class="bi bi-person-circle"></i>
-              </ng-template>
-              <sup [class]="item.status === 'au bureau' ? 'text-success' : 'text-danger'">
-                <i class="bi bi-circle-fill"></i>
-              </sup>
-            </div>
-
-            <div class="content">
-              <div class="content-1 d-flex flex-column mb-3">
-                <div class="headertab">
-                  <span>Nom :<b> {{ item.name }}</b></span>
-                  <span>Poste :<b> {{ item.role }}</b></span>
-                </div>
-
-                <ul class="nav nav-pills mt-4 mb-3" id="pills-tab" role="tablist">
-                  <li class="nav-item" role="presentation">
-                    <button    class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Par  jours</button>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                    <button  class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Par  mois</button>
-                  </li>
-                 
-                </ul>
-                <div class="tab-content" id="pills-tabContent">
-                  <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
-                   
-                    <div class="chats">
-                      <ng-container *ngIf="item?.history?.length > 0; else chats">
-                        <app-chart  [chartusers]="item"></app-chart>
-                      </ng-container>
-                      <ng-template #chats>
-                        <div class="chats d-flex justify-content-center align-items-center flex-column">
-                          <p><b>Pas de statistique</b></p>
-                          <img src="../../../assets/credit-score.gif" alt="location" class="icons w-25" />
-                        </div>
-                      </ng-template>
-                    </div>
-                  </div>
-                  <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
-                    <div class="chats">
-                      
-                      <ng-container *ngIf="item?.history?.length > 0; else chatscercle">
-                        <app-chart-circle  [chartusers]="item"></app-chart-circle>
-                      </ng-container>
-                      <ng-template #chatscercle>
-                        <div class="chats d-flex justify-content-center align-items-center flex-column">
-                          <p><b>Pas de statistique</b></p>
-                          <img src="../../../assets/credit-score.gif" alt="location" class="icons w-25" />
-                        </div>
-                      </ng-template>
-                    </div>
-                  </div>
-                 
-                </div>
-
-
 
               </div>
+
+
+
+              <!-- ================================================= -->
+              <!-- CHART PAR MOIS -->
+              <!-- ================================================= -->
+
+              <div
+                class="tab-pane fade"
+                [id]="getTabId(item, 'monthly')"
+                role="tabpanel"
+                [attr.aria-labelledby]="
+                  getTabId(item, 'monthly-tab')
+                "
+                tabindex="0"
+              >
+
+                <div class="chats">
+
+
+                  <!-- USER AVEC HISTORY -->
+
+                  <ng-container
+                    *ngIf="
+                      hasHistory(item);
+                      else noMonthlyStats
+                    "
+                  >
+
+                    <app-chart-circle
+                      [chartusers]="item"
+                    >
+                    </app-chart-circle>
+
+                  </ng-container>
+
+
+
+                  <!-- PAS DE STATISTIQUE -->
+
+                  <ng-template #noMonthlyStats>
+
+                    <div
+                      class="chats d-flex justify-content-center align-items-center flex-column"
+                    >
+
+                      <p>
+                        <b>
+                          Pas de statistique
+                        </b>
+                      </p>
+
+                      <img
+                        src="../../../assets/credit-score.gif"
+                        alt="Pas de statistique"
+                        class="icons w-25"
+                      />
+
+                    </div>
+
+                  </ng-template>
+
+                </div>
+
+              </div>
+
             </div>
+
           </div>
+
         </div>
 
       </div>
-      <nav *ngIf="lastPage > 1" class="mt-4">
-        <ul class="pagination">
-          <li class="page-item" [class.disabled]="currentPage === 1">
-            <a class="page-link" (click)="onPageChange(currentPage - 1)"><i class="bi bi-caret-left"></i></a>
-          </li>
 
-          <li class="page-item" *ngFor="let page of [].constructor(lastPage); let i = index"
-            [class.active]="currentPage === (i + 1)">
-            <a class="page-link" (click)="onPageChange(i + 1)">{{ i + 1 }}</a>
-          </li>
-
-          <li class="page-item" [class.disabled]="currentPage === lastPage">
-            <a class="page-link" (click)="onPageChange(currentPage + 1)"><i class="bi bi-caret-right"></i></a>
-          </li>
-        </ul>
-      </nav>
     </div>
+
+  </div>
+
+
+
+  <!-- ================================================= -->
+  <!-- PAGINATION -->
+  <!-- ================================================= -->
+
+  <nav
+    *ngIf="lastPage > 1 && !loading"
+    class="mt-4"
+  >
+
+    <ul class="pagination">
+
+
+      <!-- PREVIOUS -->
+
+      <li
+        class="page-item"
+        [class.disabled]="currentPage === 1"
+      >
+
+        <button
+          type="button"
+          class="page-link"
+          [disabled]="currentPage === 1"
+          (click)="onPageChange(currentPage - 1)"
+        >
+
+          <i class="bi bi-caret-left"></i>
+
+        </button>
+
+      </li>
+
+
+
+      <!-- NUMBERS -->
+
+      <li
+        class="page-item"
+        *ngFor="
+          let page of [].constructor(lastPage);
+          let i = index
+        "
+        [class.active]="currentPage === (i + 1)"
+      >
+
+        <button
+          type="button"
+          class="page-link"
+          (click)="onPageChange(i + 1)"
+        >
+
+          {{ i + 1 }}
+
+        </button>
+
+      </li>
+
+
+
+      <!-- NEXT -->
+
+      <li
+        class="page-item"
+        [class.disabled]="currentPage === lastPage"
+      >
+
+        <button
+          type="button"
+          class="page-link"
+          [disabled]="currentPage === lastPage"
+          (click)="onPageChange(currentPage + 1)"
+        >
+
+          <i class="bi bi-caret-right"></i>
+
+        </button>
+
+      </li>
+
+    </ul>
+
+  </nav>
+
+</div>

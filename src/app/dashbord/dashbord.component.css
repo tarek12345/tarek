@@ -212,7 +212,7 @@ p#imageeditor img {
 .chat-content {
   flex: 1;
   padding: 10px;
-  overflow-y: auto;
+  overflow-y: hidden;
   background: #f7f7f7;
 }
 .btn-disabled{

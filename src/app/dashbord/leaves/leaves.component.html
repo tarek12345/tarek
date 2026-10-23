@@ -72,7 +72,7 @@
       <thead>
         <tr>
           <th *ngIf="currentUserRole === 'administrator'">
-            Nom utilisateur
+            Utilsateur
           </th>
           <th>Date début</th>
           <th>Date fin</th>
@@ -87,14 +87,24 @@
         <tr *ngFor="let leave of filteredLeaves">
 
           <td *ngIf="currentUserRole === 'administrator'">
-            {{ leave?.creator?.name || '—' }}
+            <div _ngcontent-ng-c1872326183="" class="statprof">
+                      <img [src]="storageUrl+'/'+leave?.creator?.profile_image" class="enteimg" alt="Photo de profil"      
+            >  {{ leave?.creator?.name || '—' }}
+       </div>
           </td>
 
           <td>{{ leave.start_date }}</td>
 
           <td>{{ leave.end_date }}</td>
 
-          <td>{{ leave.replacant?.name || '—' }}</td>
+          <td>
+       <div _ngcontent-ng-c1872326183="" class="statprof">
+                      <img [src]="storageUrl+'/'+leave?.creator?.profile_image" class="enteimg" alt="Photo de profil"      
+            >  {{ leave?.replacant?.name || '—' }}
+       </div>
+
+
+          </td>
 
           <td class="limiter">{{ leave.reason }}</td>
 
@@ -113,7 +123,7 @@
             <button
               class="btn btn-danger btn-sm me-2"
               (click)="deleteLeave(leave.id)"
-              [ngClass]="{'disabled': leave.status === 'approved'}"
+              [ngClass]="{'disabled': leave.status === 'approved' && currentUserRole !== 'administrator'}"
               title="Supprimer">
               <i class="bi bi-trash"></i>
             </button>

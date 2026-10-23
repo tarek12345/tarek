@@ -50,13 +50,14 @@ private intervalId: any;
   this.user = this.userService.getUserInfo();
 
   if (this.user) {
+    console.log("this.user",this.user)
     this.userId = this.user.id;
 
     this.updateUnreadBadge();
 
     this.intervalId = setInterval(() => {
       this.updateUnreadBadge();
-    }, 3000);
+    }, 10000);
   }
     const token = localStorage.getItem('token');
     
@@ -70,6 +71,7 @@ private intervalId: any;
       user.historyKeys = this.getHistoryKeys(user.history);
     });
     if (this.user && this.user.id) {
+
       // Appel de l'API pour récupérer les congés pour l'utilisateur
       this.apiService.getLeavesForUser(this.user.id).subscribe((data: any) => {
         this.leavesuser = data;  // Sauvegarde les congés récupérés dans leavesuser
@@ -165,21 +167,24 @@ setActiveTab(tab: string) {
 }
 isChatOpen = false;
 
-toggleChat() {
+toggleChat(): void {
   this.isChatOpen = !this.isChatOpen;
- this.updateUnreadBadge()
+
+  if (this.isChatOpen) {
+    this.unreadCount = 0;
+    this.updateUnreadBadge();
+  }
 }
 updateUnreadBadge() {
   if (!this.user || !this.user.id) return;
-  console.log("appel badge");
   this.chatService.getUnreadMessages(this.user.id).subscribe(res => {
     this.unreadCount = res.unread; // met à jour immédiatement
+
   });
 }
 
 closeChat(){
   this.isChatOpen =false;
-     this.unreadCount = 0
 }
 
   logout() {

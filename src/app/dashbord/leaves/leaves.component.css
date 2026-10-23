@@ -40,3 +40,15 @@
     border-radius: 17px;
     margin-top: 26px;
 }
+.statprof {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.statprof img.enteimg{
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+}

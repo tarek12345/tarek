@@ -250,11 +250,22 @@ updateCurrentTime(): void {
   padZero(value: number): string {
     return value < 10 ? `0${value}` : `${value}`;
   }
-  
+  taches :any
+   tachestodo :any
+    tachesiprogtrss :any
+    tachestest :any
+    tachesdone :any
+
 GetUsers(page: number = 1) {
   this.apiService.GetUsers(page, this.perPage).subscribe((data) => {
 
     this.GetAllusers = data;
+    console.log("111111111111",this.GetAllusers)
+     this.taches =  this.GetAllusers?.total_taches
+     this.tachesiprogtrss =  this.GetAllusers?.totalInProgress
+     this.tachestest =  this.GetAllusers?.totalTest
+     this.tachestodo = this.GetAllusers?.totalTodo
+    this.tachesdone =  this.GetAllusers?.totalDone
 
     if (data?.users && Array.isArray(data.users)) {
 
@@ -487,7 +498,7 @@ openConges() {
     tab.click();
   }
 }
- 
+
 leaveData: any[] = [];
 totalPending = 0;
 totalApproved = 0;
@@ -512,8 +523,13 @@ receiveLeaveData(data: any[]): void {
     leave => leave.status === 'approved'
   ).length;
 
-  console.log('Total congés :', this.totalLeaves);
-  console.log('Total pending :', this.totalPending);
-  console.log('Total approved :', this.totalApproved);
-}    
+
+}  
+         openhistiruque() {
+  const tab = document.querySelector('#v-pills-historique-tab') as HTMLElement;
+
+  if (tab) {
+    tab.click();
+  }
+}  
 }

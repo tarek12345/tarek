@@ -37,14 +37,14 @@
 
     <ng-container *ngIf="totalPending > 0; else Pending">
       <span class="warning third">
-        <b>{{ totalPending }}</b> pending
+        <b>{{ totalPending }}</b> En cours 
         <i class="bi bi-arrow-up-right warning"></i>
       </span>
     </ng-container>
 
     <ng-template #Pending>
       <span class="third">
-        <b>{{ totalPending }}</b> pending
+        <b>{{ totalPending }}</b> Apprové
         <i class="bi bi-arrow-up-right "></i>
       </span>
     </ng-template>
@@ -60,11 +60,22 @@
     <div class="nbtache">
       <div class="contantleft">
         <span class="first">Tâches en cours</span>
-        <span class="secand" [appCounter]="128">0</span>
-        <span class="third">
-          <b>+12</b> cette semaine
-          <i class="bi bi-arrow-up-right"></i>
-        </span>
+        <span class="secand" [appCounter]="tachesiprogtrss">0</span>
+ 
+
+            <ng-container *ngIf=" tachesiprogtrss ==0  && tachestest ==0 && tachestodo ==0 && tachesdone > 0 ; else Todo">
+      <span class="success third">
+        <b>{{ taches }}</b> Terminé
+        <i class="bi bi-arrow-up-right "></i>
+      </span>
+    </ng-container>
+
+    <ng-template #Todo>
+      <span class="third warning">
+        <b>{{ taches }}</b> En cours 
+        <i class="bi bi-arrow-up-right warning "></i>
+      </span>
+    </ng-template>
       </div>
 
       <div class="contantright">
@@ -146,6 +157,10 @@
     </div>
     <div *ngIf="!loading" class="d-flex flex-column rightcontent weeks ">
       <app-weekview [itemuser]="userdetaile"></app-weekview>
+
+ <div class="activity">
+      <span   class="pointer"(click)="openhistiruque()">Voir plus actitvité <i class="bi bi-arrow-right "></i></span>
+    </div>
 
     </div>
     <div *ngIf="!loading && userdetaile.role === 'administrator'" class="d-flex flex-column rightcontent emp">

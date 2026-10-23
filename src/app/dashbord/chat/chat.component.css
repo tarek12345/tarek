@@ -133,7 +133,7 @@
   scroll-behavior: smooth;
 }
 
-.bubble {
+.message-wrapper .bubble {
   max-width: 70%;
   padding: 12px 15px;
   background: #e0e0e0;
@@ -141,15 +141,15 @@
   font-size: 15px;
   color: #222;
   line-height: 1.4;
-  align-self: flex-start;
+  align-self: flex-end;
   position: relative;
   word-wrap: break-word;
 }
 
-.bubble.me {
+.message-wrapper .bubble.me {
   background: #7c3aed;
   color: white;
-  align-self: flex-end;
+  align-self: flex-start;
   border-bottom-right-radius: 5px;
 }
 
@@ -281,3 +281,59 @@ span.status-dot.text-success {
   border-radius: 10px;
   margin-top: 5px;
 }
+/* Bouton caché par défaut */
+.message-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.message-wrapper.my-message {
+  margin-left: auto;
+}
+/* Bouton caché */
+.message-options {
+  position: absolute;
+
+  /* à côté du message */
+  right: -38px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  opacity: 0;
+  visibility: hidden;
+
+  transition: opacity 0.15s ease;
+}
+
+/* Apparition quand on survole TOUT le wrapper */
+.message-wrapper:hover .message-options {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Icône */
+.message-options i {
+  font-size: 18px;
+  color: #777;
+}
+
+.message-options:hover i {
+  color: #222;
+}
+
+/* Important : le bouton reste une zone de survol */
+.message-options {
+  pointer-events: auto;
+}
+

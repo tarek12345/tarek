@@ -113,3 +113,7 @@ div#update {
   div#pills-tabContent app-chart {
     width: 450px !important;
 }
+
+.chats {
+    width: 400px;
+}

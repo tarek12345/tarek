@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, OnDestroy } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { ChatService } from '../../services/chat.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-chat',
@@ -10,6 +11,8 @@ import { ChatService } from '../../services/chat.service';
 })
 export class ChatComponent implements OnInit,OnDestroy  {
   @Output() refreshUnread = new EventEmitter<void>();
+
+  
 @Input() unreadCountchiled : any
   currentUser: any = null;
   currentUserId: number = 0;
@@ -25,12 +28,13 @@ private intervalId: any;
 private isLoadingMessages = false;
   constructor(
     private apiService: ApiService,
-    private chatService: ChatService
+    private chatService: ChatService,
+        private toastr: ToastrService
+    
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     let ref =changes['unreadCountchiled'].currentValue;
-        console.log("qsdqdhkqshdkjh",ref)
 
   }
 ngOnInit(): void {
@@ -38,18 +42,18 @@ ngOnInit(): void {
     // Charger toutes les conversations et les utilisateurs
     this.chatService.getConversations(this.currentUserId).subscribe((convs: any) => {
       this.apiService.getUsersnotpagination().subscribe((res: any) => {
-        this.users = res.users
-          .filter((u: any) => u.id !== this.currentUserId)
-          .map((u: any) => {
-            const conv = convs.find((c: any) =>
-              (c.user_one_id === this.currentUserId && c.user_two_id === u.id) ||
-              (c.user_two_id === this.currentUserId && c.user_one_id === u.id)
-            );
-            return {
-              ...u,
-              unreadCount: conv ? conv.unread_count : 0
-            };
-          });
+this.users = res.users.map((u: any) => {
+  const conv = convs.find((c: any) =>
+    (c.user_one_id === this.currentUserId && c.user_two_id === u.id) ||
+    (c.user_two_id === this.currentUserId && c.user_one_id === u.id)
+  );
+
+  return {
+    ...u,
+    unreadCount: conv ? conv.unread_count : 0,
+    isCurrentUser: u.id === this.currentUserId
+  };
+});
 
         this.filteredUsers = this.users;
 
@@ -67,16 +71,14 @@ ngOnInit(): void {
       });
     });
   });
+  // this.intervalId = setInterval(() => {
+  //  this.refreshUnread.emit();
+  //   if(this.selectedConversation){
+  //      this.loadMessages(this.selectedConversation.id);
+  //   }
 
-  this.intervalId = setInterval(() => {
-   this.refreshUnread.emit();
-    if(this.selectedConversation){
-       this.loadMessages(this.selectedConversation.id);
-    }
 
-this.refreshUnread.emit();
-
-  },10000);
+  // },10000);
 }
 ngOnDestroy(){
 
@@ -86,10 +88,9 @@ ngOnDestroy(){
 
 }
 refreshChat() {
-  console.log("🔄 Refresh chat déclenché" ,this.selectedConversation);
-  this.loadCurrentUser();  // recharge l'utilisateur actuel et la liste des utilisateurs
+  this.loadCurrentUser(); 
   if (this.selectedConversation) {
-    this.loadMessages(this.selectedConversation.id); // recharge les messages si une conversation est ouverte
+    this.loadMessages(this.selectedConversation.id); 
   }
 }
 loadCurrentUser(callback?: Function) {
@@ -129,19 +130,30 @@ loadAllUsers() {
     // Associer unread_count à chaque user
     this.apiService.getUsersnotpagination().subscribe((res: any) => {
 
-      this.users = res.users
-        .filter((u: any) => u.id !== this.currentUserId)
-        .map((u: any) => {
-          const conv = convs.find((c: any) =>
-            (c.user_one_id === this.currentUserId && c.user_two_id === u.id) ||
-            (c.user_two_id === this.currentUserId && c.user_one_id === u.id)
-          );
-          return {
-            ...u,
-            unreadCount: conv ? conv.unread_count : 0
-          };
-        });
+      // this.users = res.users
+      //   .filter((u: any) => u.id !== this.currentUserId)
+      //   .map((u: any) => {
+      //     const conv = convs.find((c: any) =>
+      //       (c.user_one_id === this.currentUserId && c.user_two_id === u.id) ||
+      //       (c.user_two_id === this.currentUserId && c.user_one_id === u.id)
+      //     );
+      //     return {
+      //       ...u,
+      //       unreadCount: conv ? conv.unread_count : 0
+      //     };
+      //   });
+this.users = res.users.map((u: any) => {
+  const conv = convs.find((c: any) =>
+    (c.user_one_id === this.currentUserId && c.user_two_id === u.id) ||
+    (c.user_two_id === this.currentUserId && c.user_one_id === u.id)
+  );
 
+  return {
+    ...u,
+    unreadCount: conv ? conv.unread_count : 0,
+    isCurrentUser: u.id === this.currentUserId
+  };
+});
       this.filteredUsers = this.users;
     });
 
@@ -186,10 +198,15 @@ loadMessages(convId: number) {
   this.isLoadingMessages = true;
 
   this.chatService.getMessages(convId).subscribe({
-    next: (msgs) => {
-      this.messages = msgs;
-      this.scrollToBottom();
-    },
+next: (msgs) => {
+
+  this.messages = msgs.map((m: any) => ({
+    ...m,
+    sender_id: Number(m.sender_id)
+  }));
+
+  this.scrollToBottom();
+},
     error: () => {
       this.isLoadingMessages = false;
     },
@@ -219,18 +236,22 @@ sendMessage() {
     formData.append('file', this.selectedFile);
   }
 
-  this.chatService.sendMessage(formData).subscribe((msg: any) => {
-    this.messages.push(msg);
+this.chatService.sendMessage(formData).subscribe((msg: any) => {
 
-    // reset
-    this.newMessage = '';
-    this.selectedFile = null;
+  msg.sender_id = Number(msg.sender_id);
 
-    this.scrollToBottom();
-    this.refreshUnread.emit();
-  });
+  this.messages.push(msg);
+
+  this.newMessage = '';
+  this.selectedFile = null;
+
+  this.scrollToBottom();
+  this.refreshUnread.emit();
+});
 }
-
+isMyMessage(message: any): boolean {
+  return Number(message.sender_id) === Number(this.currentUserId);
+}
   scrollToBottom() {
     setTimeout(() => {
       const list = document.querySelector('.messages');
@@ -274,4 +295,60 @@ sendFile() {
   });
 }
 
+
+deleteMessage(message: any | undefined) {
+
+  if (message === undefined) {
+    this.toastr.error('Message introuvable.', 'Erreur');
+    return;
+  }
+
+  this.chatService.deleteMessage(
+    message.id,
+    this.currentUser.id
+  ).subscribe({
+
+    next: (response) => {
+
+      // Supprimer le message de la liste
+      this.messages = this.messages.filter(
+        m => m.id !== message.id
+      );
+
+      // Toast succès
+      this.toastr.success(
+        'Message supprimé avec succès.',
+        'Succès'
+      );
+    },
+
+    error: (error) => {
+
+      console.error('Erreur suppression message:', error);
+
+      if (error.status === 403) {
+
+        this.toastr.error(
+          'Vous ne pouvez supprimer que vos propres messages.',
+          'Accès refusé'
+        );
+
+      } else if (error.status === 404) {
+
+        this.toastr.error(
+          'Message introuvable.',
+          'Erreur'
+        );
+
+      } else {
+
+        this.toastr.error(
+          'Erreur lors de la suppression du message.',
+          'Erreur'
+        );
+      }
+    }
+  });
+}
+  
 }

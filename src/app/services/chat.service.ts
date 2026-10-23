@@ -34,5 +34,9 @@ markAsRead(convId: number, userId: number) {
 sendFile(data: FormData) {
   return this.http.post(`${this.apiUrl}/send-file`, data);
 }
-
+deleteMessage(idmessage: number, userId: number): Observable<any> {
+  return this.http.delete(
+    `${this.apiUrl}/messages/${idmessage}/user/${userId}`
+  );
+}
 }

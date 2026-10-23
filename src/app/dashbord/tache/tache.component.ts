@@ -15,8 +15,8 @@ export class TacheComponent implements OnInit {
   @Input() userdetaile: any;
   @Input() datauser: any;
    selected: { startDate: moment.Moment, endDate: moment.Moment } | null = null;
-  taches: Tache[] = []; // ✅ Déclaration correcte
-  selectedshowTache: Tache | null = null; // ✅ Typage explicite
+  taches: Tache[] = []; 
+  selectedshowTache: Tache | null = null; 
   newComment: { [taskId: number]: string } = {};
   userid :any
   displayStyle: string = "none";

@@ -1,22 +1,16 @@
 <div class="messenger-container">
-<div class="messenger-container">
+  <div class="messenger-container">
 
-  <!-- SIDEBAR -->
-  <div class="sidebar">
-    <input type="text"
-           placeholder="🔍 Rechercher un utilisateur..."
-           [(ngModel)]="searchText"
-           (input)="searchUsers()"
-           class="search-bar">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <input type="text" placeholder="🔍 Rechercher un utilisateur..." [(ngModel)]="searchText" (input)="searchUsers()"
+        class="search-bar">
 
-    <div class="user-list">
-      <div class="user-item"
-           *ngFor="let user of filteredUsers"
-           (click)="currentUserId && startConversation(user)"
-           [class.active]="selectedUser?.id === user.id">
-            <ng-container *ngIf="user.profile_image_url; else defaultAvatar">
-            <img [src]="user.profile_image_url" class="avatar" alt="Photo de profil"      
-          [ngStyle]="{
+      <div class="user-list">
+        <div class="user-item" *ngFor="let user of filteredUsers" (click)="currentUserId && startConversation(user)"
+          [class.active]="selectedUser?.id === user.id">
+          <ng-container *ngIf="user.profile_image_url; else defaultAvatar">
+            <img [src]="user.profile_image_url" class="avatar" alt="Photo de profil" [ngStyle]="{
          'border': user.unreadCount > 0 ? '3px solid #6a1b9a' : '3px solid transparent'
        }">
           </ng-container>
@@ -24,101 +18,145 @@
           <ng-template #defaultAvatar>
             <i class="bi bi-person-circle avatar-default"></i>
           </ng-template>
-                <div class="info"> {{user.status}} 
-                  <div class="badge-unread" *ngIf="user.unreadCount > 0">
-                  {{ user.unreadCount }}
-                  </div>
-            <span [ngStyle]="{'font-weight': user.unreadCount > 0 ? 'bold' : 'normal'}">
+          <div class="info"> {{user.status}}
+            <div class="badge-unread" *ngIf="user.unreadCount > 0">
+              {{ user.unreadCount }}
+            </div>
+            <!-- <span [ngStyle]="{'font-weight': user.unreadCount > 0 ? 'bold' : 'normal'}">
               {{ user.name }}
               <span class="status-dot"
                     [class]="user.status === 'hors_ligne' ? 'text-danger' : 'text-success'"></span>
+            </span> -->
+            <span [ngStyle]="{
+              'font-weight': user.unreadCount > 0 ? 'bold' : 'normal'
+            }">
+              {{ user.id === currentUserId ? user.name + ' (Moi)' : user.name }}
+
+              <span class="status-dot" [class]="user.status === 'hors_ligne'
+                  ? 'text-danger'
+                  : 'text-success'">
+              </span>
             </span>
+          </div>
+
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- CHAT -->
-  <div class="chat-section">
+    <!-- CHAT -->
+    <div class="chat-section">
 
-    <div *ngIf="selectedUser" class="chat-header">
+      <div *ngIf="selectedUser" class="chat-header">
 
         <ng-container *ngIf="selectedUser.profile_image_url; else defaultAvatar">
-    <img [src]="selectedUser.profile_image_url" class="avatar" alt="Photo de profil">
-  </ng-container>
+          <img [src]="selectedUser.profile_image_url" class="avatar" alt="Photo de profil">
+        </ng-container>
 
-  <ng-template #defaultAvatar>
-    <i class="bi bi-person-circle avatar-default"></i>
-  </ng-template>
-      <strong>{{ selectedUser.name }}</strong>
-    </div>
-
-    <div class="messages" *ngIf="selectedUser">
-      <div *ngFor="let m of messages"
-           class="bubble"
-           [class.me]="m.sender_id === currentUserId">
-
-        <!-- TEXTE -->
-<div class="text" *ngIf="m.message">{{ m.message }}</div>
-
-<!-- IMAGE -->
-<img *ngIf="m.file_type === 'image'"
-     [src]="m.file_url"
-     class="chat-img">
-
-<!-- VIDEO -->
-<video *ngIf="m.file_type === 'video'"
-       controls
-       class="chat-video">
-  <source [src]="m.file_url">
-</video>
-
-<!-- DOCUMENT -->
-<a *ngIf="m.file_type === 'document'"
-   [href]="m.file_url"
-   target="_blank">
-  📄 Télécharger fichier
-</a>
-        <div class="time">{{ formatTime(m.created_at) }}</div>
+        <ng-template #defaultAvatar>
+          <i class="bi bi-person-circle avatar-default"></i>
+        </ng-template>
+        <strong>{{ selectedUser.name }}</strong>
       </div>
+<div class="messages">
+      <div *ngFor="let m of messages"
+     class="message-wrapper">
+
+  <div class="bubble"
+       [class.me]="isMyMessage(m)">
+
+    <!-- OPTIONS -->
+    <div class="message-options"
+         *ngIf="isMyMessage(m)"
+         data-bs-toggle="dropdown"
+         aria-expanded="false">
+
+      <i class="bi bi-three-dots-vertical"></i>
+
+      <ul class="dropdown-menu">
+        <li>
+          <a class="dropdown-item pointer"
+             (click)="deleteMessage(m)">
+            <i class="bi bi-trash me-2"></i>
+            Supprimer
+          </a>
+        </li>
+
+        <li>
+          <a class="dropdown-item pointer">
+            <i class="bi bi-pencil me-2"></i>
+            Modifier
+          </a>
+        </li>
+      </ul>
+
     </div>
 
-<div class="chat-input" *ngIf="selectedUser">
+    <!-- MESSAGE -->
+    <div class="text">
 
-  <!-- EMOJI -->
-  <button class="emoji-btn" (click)="toggleEmoji()">😊</button>
+      <div *ngIf="m.message">
+        {{ m.message }}
+      </div>
 
-  <div class="emoji-picker" *ngIf="showEmoji">
-    <span (click)="addEmoji('😀')">😀</span>
-    <span (click)="addEmoji('😂')">😂</span>
-    <span (click)="addEmoji('😍')">😍</span>
-    <span (click)="addEmoji('😎')">😎</span>
-    <span (click)="addEmoji('😭')">😭</span>
-    <span (click)="addEmoji('👍')">👍</span>
-    <span (click)="addEmoji('❤️')">❤️</span>
+      <!-- IMAGE -->
+      <img *ngIf="m.file_type === 'image'"
+           [src]="m.file_url"
+           class="chat-img">
+
+      <!-- VIDEO -->
+      <video *ngIf="m.file_type === 'video'"
+             controls
+             class="chat-video">
+        <source [src]="m.file_url">
+      </video>
+
+      <!-- DOCUMENT -->
+      <a *ngIf="m.file_type === 'document'"
+         [href]="m.file_url"
+         target="_blank">
+        📄 Télécharger fichier
+      </a>
+
+      <div class="time">
+        {{ formatTime(m.created_at) }}
+      </div>
+
+    </div>
+
   </div>
 
-  <!-- 📎 INPUT FILE (IMAGE / VIDEO / DOC) -->
-  <input type="file"
-         #fileInput
-         (change)="onFileSelected($event)"
-         accept="image/*,video/*,.pdf,.doc,.docx,.xls,.xlsx"
-         hidden>
+     </div>
+     </div>
+       <div class="chat-input" *ngIf="selectedUser">
 
-  <!-- 📎 BOUTON -->
-  <button (click)="fileInput.click()" class="file-btn">📎</button>
+          <!-- EMOJI -->
+          <button class="emoji-btn" (click)="toggleEmoji()">😊</button>
 
-  <!-- INPUT MESSAGE -->
-  <input [(ngModel)]="newMessage"
-         placeholder="Écrire un message..."
-         (keyup.enter)="sendMessage()">
-<div *ngIf="selectedFile">
-  📎 {{ selectedFile.name }}
-</div>
-  <!-- SEND -->
-  <button (click)="sendMessage()">➤</button>
+          <div class="emoji-picker" *ngIf="showEmoji">
+            <span (click)="addEmoji('😀')">😀</span>
+            <span (click)="addEmoji('😂')">😂</span>
+            <span (click)="addEmoji('😍')">😍</span>
+            <span (click)="addEmoji('😎')">😎</span>
+            <span (click)="addEmoji('😭')">😭</span>
+            <span (click)="addEmoji('👍')">👍</span>
+            <span (click)="addEmoji('❤️')">❤️</span>
+          </div>
 
-</div>
+          <!-- 📎 INPUT FILE (IMAGE / VIDEO / DOC) -->
+          <input type="file" #fileInput (change)="onFileSelected($event)"
+            accept="image/*,video/*,.pdf,.doc,.docx,.xls,.xlsx" hidden>
+
+          <!-- 📎 BOUTON -->
+          <button (click)="fileInput.click()" class="file-btn">📎</button>
+
+          <!-- INPUT MESSAGE -->
+          <input [(ngModel)]="newMessage" placeholder="Écrire un message..." (keyup.enter)="sendMessage()">
+          <div *ngIf="selectedFile">
+            📎 {{ selectedFile.name }}
+          </div>
+          <!-- SEND -->
+          <button (click)="sendMessage()">➤</button>
+
+        </div>
     </div>
   </div>
-</div>

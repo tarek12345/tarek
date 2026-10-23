@@ -66,17 +66,24 @@
           <table class="table table-bordered">
             <thead>
               <tr>
+              <th>Mois</th>
+
                 <th>Jour</th>
                 <th>Heures</th>
+
                 <th>Localisation</th>
                 <th>Action</th>
               </tr>
             </thead>
+
+            
             <tbody>
               <ng-container *ngFor="let semaine of item.history">
                 <!-- {{semaine|json}} -->
                 <tr>
                   <ng-container *ngIf="semaine.day !== 'Samedi' && semaine.day !== 'Dimanche'">
+                    <td>{{ semaine.month || 'Jour inconnu' }}</td>
+
                     <td>{{ semaine.day || 'Jour inconnu' }}</td>
                     <td>
                       <ng-container *ngIf="semaine.total_hours; else noHours">

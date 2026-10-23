@@ -61,4 +61,5 @@ export class WeekviewComponent implements OnChanges {
     const today = format(new Date(), 'EEEE', { locale: fr });
     return today === day;
   }
+
 }

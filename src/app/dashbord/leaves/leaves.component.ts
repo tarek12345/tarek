@@ -3,6 +3,7 @@ import { ApiService } from '../../services/api.service';
 import * as moment from 'moment';
 import { UserService } from '../../services/user-service.service';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from '../../../environments/environment';
 @Component({
   selector: 'app-leaves',
   templateUrl: './leaves.component.html',
@@ -13,6 +14,7 @@ export class LeavesComponent implements OnInit {
   @Input() userdetaile: any[] = [];
   @Output() leavesLoaded = new EventEmitter<any>();
   @Output() leaveData = new EventEmitter<any>();
+  storageUrl = environment.mediaUrl;
 
   selected: { startDate: moment.Moment, endDate: moment.Moment } | null = null;
   reason: string = '';
