@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
 use App\Models\Pointage;
-
+use App\Models\Tache;
 class AuthController extends Controller
 {
     public function register(Request $request)
@@ -70,7 +70,13 @@ class AuthController extends Controller
     public function getUsers(Request $request)
     {
         $perPage = $request->input('per_page', 3); // Par défaut 3 utilisateurs par page
+$totalTaches = Tache::count();
+$totalTodo = Tache::where('statut', 'todo')->count();
+$totalInProgress = Tache::where('statut', 'in_progress')->count();
 
+$totalTest = Tache::where('statut', 'test')->count();
+
+$totalDone = Tache::where('statut', 'done')->count();
         // Récupérer tous les utilisateurs pour compter les statuts
         $allUsers = User::with(['pointages' => function ($q) {
             $q->latest('created_at');
@@ -92,8 +98,8 @@ class AuthController extends Controller
         }
 
         // Paginater les utilisateurs (en récupérant uniquement les utilisateurs de la page actuelle)
-        $users = User::paginate($perPage);
-
+       // $users = User::paginate($perPage);
+$users = User::with('taches')->paginate($perPage);
         $today = Carbon::today();
         $firstDayOfMonth = $today->copy()->startOfMonth();
         $lastDayOfMonth = $today->copy()->endOfMonth();
@@ -145,6 +151,7 @@ class AuthController extends Controller
                         "location" => $pointage->location ?? null,
                     ];
                 }),
+                
             ];
         };
 
@@ -189,6 +196,12 @@ class AuthController extends Controller
         return response()->json([
             'users' => $users->items(), // Contenu paginé
             'status_counts' => $statusCounts, // Nombre de personnes "au_bureau" et "hors_ligne"
+                'total_taches' => $totalTaches,
+          'totalTodo' => $totalTodo,
+          'totalInProgress' => $totalInProgress,
+           'totalTest' => $totalTest,
+           'totalDone' => $totalDone,
+
             'current_page' => $users->currentPage(),
             'last_page' => $users->lastPage(),
             'per_page' => $users->perPage(),
@@ -520,35 +533,109 @@ class AuthController extends Controller
         ];
     }
       // connexion user //
+   
     public function login(Request $request)
-    {
-        // Validation des données
-        $validated = $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string|min:8',
-        ]);
-    
-        // Récupérer l'utilisateur par email
-        $user = User::where('email', $validated['email'])->first();
-    
-        // Vérification du mot de passe
-        if ($user && Hash::check($validated['password'], $user->password)) {
-            // Créer un token Sanctum pour l'utilisateur
-            $token = $user->createToken('MyApp')->plainTextToken;
-    
-            // Retourner le token et les informations de l'utilisateur
-            return response()->json([
-                'message' => 'Login successful',
-                'token' => $token,
-                'user' => $user
-            ], 200);
-        }
-    
-        // Retourner une erreur si l'authentification échoue
+{
+    // 1. Validation
+    $validated = $request->validate([
+        'email' => 'required|string|email',
+        'password' => 'required|string|min:8',
+    ]);
+
+    // 2. Rechercher l'utilisateur
+    $user = User::where('email', $validated['email'])->first();
+
+    // 3. Ne pas révéler si l'email existe
+    if (!$user) {
         return response()->json([
-            'message' => 'Invalid credentials',
+            'message' => 'Identifiants incorrects.'
         ], 401);
     }
+
+    // 4. Vérifier si le compte est actuellement bloqué
+    if (
+        $user->locked_until &&
+        now()->lt($user->locked_until)
+    ) {
+
+        $remainingSeconds = now()->diffInSeconds(
+            $user->locked_until
+        );
+
+        $remainingMinutes = ceil($remainingSeconds / 60);
+
+        return response()->json([
+            'message' => 'Votre compte est temporairement bloqué. Veuillez réessayer plus tard.',
+            'locked' => true,
+            'remaining_minutes' => $remainingMinutes,
+            'locked_until' => $user->locked_until,
+        ], 423);
+    }
+
+    // 5. Si les 15 minutes sont terminées
+    if (
+        $user->locked_until &&
+        now()->gte($user->locked_until)
+    ) {
+
+        $user->failed_login_attempts = 0;
+        $user->locked_until = null;
+        $user->save();
+    }
+
+    // 6. Vérification du mot de passe
+    if (!Hash::check(
+        $validated['password'],
+        $user->password
+    )) {
+
+        // Ajouter une tentative incorrecte
+        $user->failed_login_attempts++;
+
+        // 7. 3 mauvaises tentatives = blocage 15 minutes
+        if ($user->failed_login_attempts >= 3) {
+
+            $user->locked_until = now()->addMinutes(15);
+
+            $user->save();
+
+            return response()->json([
+                'message' => 'Votre compte est bloqué pendant 15 minutes après 3 tentatives incorrectes.',
+                'locked' => true,
+                'remaining_attempts' => 0,
+                'locked_until' => $user->locked_until,
+            ], 423);
+        }
+
+        // Sauvegarder le nombre de tentatives
+        $user->save();
+
+        $remainingAttempts =
+            3 - $user->failed_login_attempts;
+
+        return response()->json([
+            'message' => 'Identifiants incorrects.',
+            'locked' => false,
+            'remaining_attempts' => $remainingAttempts,
+        ], 401);
+    }
+
+    // 8. Mot de passe correct
+    // Réinitialiser les tentatives
+    $user->failed_login_attempts = 0;
+    $user->locked_until = null;
+    $user->save();
+
+    // 9. Créer le token Sanctum
+    $token = $user->createToken('MyApp')->plainTextToken;
+
+    // 10. Réponse
+    return response()->json([
+        'message' => 'Login successful',
+        'token' => $token,
+        'user' => $user,
+    ], 200);
+}
       // deconnexion user //
     public function logout(Request $request)
     {
@@ -866,61 +953,9 @@ class AuthController extends Controller
         return base64_decode($base64Image);
     }
  
-    // serach user //
-//     public function searchUsers(Request $request)
-// {
-//     $perPage = $request->input('per_page', 3);
-//     $search = $request->input('search');
-
-//     $query = User::query()->with(['pointages' => function ($q) {
-//         $q->latest('created_at');
-//     }]);
-
-//     // Si une recherche est fournie : filtrer
-//     if ($search) {
-//         $query->where(function($q) use ($search) {
-//             $q->where('name', 'like', '%' . $search . '%')
-//               ->orWhere('email', 'like', '%' . $search . '%');
-//         });
-//     }
-
-//     // Paginer les résultats
-//     $users = $query->paginate($perPage);
-
-//     // Calculer les statuts
-//     $statusCounts = [
-//         'au_bureau' => 0,
-//         'hors_ligne' => 0,
-//     ];
-
-//     foreach ($users as $user) {
-//         $lastPointage = $user->pointages->first();
-//         $status = $lastPointage && $lastPointage->is_active ? 'au_bureau' : 'hors_ligne';
-//         $user->status = $status;
-
-//         if ($status === 'au_bureau') {
-//             $statusCounts['au_bureau']++;
-//         } else {
-//             $statusCounts['hors_ligne']++;
-//         }
-
-//         $user->profile_image_url = $user->profile_image ? URL::to('/') . '/storage/' . $user->profile_image : null;
-//         $user->arrival_date = $lastPointage ? Carbon::parse($lastPointage->arrival_date)->format('H:i:s') : null;
-//         $user->location = $lastPointage ? $lastPointage->location : null;
-//     }
-
-//     return response()->json([
-//         'users' => $users->items(),
-//         'status_counts' => $statusCounts,
-//         'current_page' => $users->currentPage(),
-//         'last_page' => $users->lastPage(),
-//         'per_page' => $users->perPage(),
-//         'total' => $users->total(),
-//     ], 200);
-// }
 public function searchUsers(Request $request)
 {
-    $perPage = $request->input('per_page', 3);
+    $perPage = $request->input('per_page', 5);
     $search = $request->input('search');
 
     $query = User::query()->with('pointages');

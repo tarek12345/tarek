@@ -38,7 +38,7 @@ Route::middleware('auth:sanctum')->post('logout', [AuthController::class, 'logou
 Route::middleware('auth:sanctum')->put('/users/{id}', [AuthController::class, 'updateUser']);
 
 Route::middleware('guest')->post('forgot-password', [AuthController::class, 'forgotPassword']);
-Route::post('/verify-reset-token', [UserController::class, 'verifyResetToken']);
+Route::post('/verify-reset-token', [AuthController::class, 'verifyResetToken']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
 
@@ -50,7 +50,7 @@ Route::post('/send', [ChatController::class, 'sendMessage']);
 Route::get('/chat/unread/{userId}', [ChatController::class, 'getUnreadMessages']);
 Route::post('/send-file', [ChatController::class, 'sendFile']);
 Route::post('/messages/mark-read/{convId}/{userId}', [ChatController::class, 'markAsRead']);
-// Pointage 
+Route::delete('/messages/{messageId}/user/{userId}', [ChatController::class, 'deleteMessage']);// Pointage 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('users/{id}', [AuthController::class, 'getUserById']); // Added semicolon here
     Route::delete('/users/{id}', [AuthController::class, 'deleteUser']);
@@ -118,7 +118,7 @@ Route::delete('/paix/{id}', [PaixController::class, 'deletePaix']);
 // Toutes les paies avec utilisateurs
 Route::get('/paix-with-users', [PaixController::class, 'getAllPaixWithUsers']);
 
-
+Route::patch('/paixconfigs/{id}/edit', [PaixController::class, 'EditConfigPaix']);
 // Paies authentifiées
 Route::middleware('auth:sanctum')
 ->get('/paies', [PaixController::class, 'getPaix']);

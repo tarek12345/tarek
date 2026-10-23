@@ -17,9 +17,11 @@ public function getConversations($userId)
             $q->orderBy('created_at', 'desc');
         }])
         ->withCount(['messages as unread_count' => function ($q) use ($userId) {
-            $q->where('receiver_id', $userId)->where('is_read', 0);
+            $q->where('receiver_id', $userId)
+              ->where('sender_id', '!=', $userId)
+              ->where('is_read', 0);
         }])
-        ->orderBy('updated_at', 'desc') // 🔥 très important
+        ->orderBy('updated_at', 'desc')
         ->get();
 
     return response()->json($convs);
@@ -121,10 +123,13 @@ public function sendMessage(Request $request)
 public function getUnreadMessages($userId)
 {
     $count = Message::where('receiver_id', $userId)
+                    ->where('sender_id', '!=', $userId)
                     ->where('is_read', 0)
                     ->count();
 
-    return response()->json(['unread' => $count]);
+    return response()->json([
+        'unread' => $count
+    ]);
 }
 
 
@@ -138,5 +143,39 @@ public function markAsRead($convId, $userId)
     return response()->json(['status' => 'ok']);
 }
 
-// chat  from file 
+// Supprimer un message envoyé par l'utilisateur
+public function deleteMessage($messageId, $userId)
+{
+    try {
+        $message = Message::findOrFail($messageId);
+
+        if ($message->sender_id != $userId) {
+            return response()->json([
+                'error' => 'Vous ne pouvez supprimer que vos propres messages.'
+            ], 403);
+        }
+
+        if ($message->file_url) {
+            $filePath = str_replace(asset('storage/'), '', $message->file_url);
+
+            if (\Storage::disk('public')->exists($filePath)) {
+                \Storage::disk('public')->delete($filePath);
+            }
+        }
+
+        $message->delete();
+
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'Message supprimé avec succès.'
+        ]);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
+
+
 }

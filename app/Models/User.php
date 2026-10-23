@@ -16,6 +16,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'failed_login_attempts',
+        'locked_until',
         'sexe',
         'role',
         'profile_image',
@@ -36,4 +38,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Pointage::class);
     }
+    public function taches()
+{
+    return $this->hasMany(Tache::class, 'user_id');
+}
 }

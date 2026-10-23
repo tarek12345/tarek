@@ -963,5 +963,37 @@ return response()->file(
     }
 
 }
+public function EditConfigPaix(Request $request, $id)
+{
+    $validated = $request->validate([
+        'nom' => 'required|string|max:255',
+        'prenom' => 'nullable|string|max:255',
+        'matricule' => 'nullable|string|max:255',
+        'matricule_fiscal' => 'nullable|string|max:255',
+        'cin' => 'nullable|string|max:255',
+        'cnss' => 'nullable|string|max:255',
+        'poste' => 'nullable|string|max:255',
+    ]);
 
+
+    $config = PaixConfig::find($id);
+
+
+    if (!$config) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Configuration introuvable.'
+        ], 404);
+    }
+
+
+    $config->update($validated);
+
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Configuration mise à jour avec succès.',
+        'data' => $config
+    ], 200);
+}
 }
